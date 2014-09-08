@@ -1,0 +1,374 @@
+{\rtf1\ansi\ansicpg1252\cocoartf1138\cocoasubrtf470
+{\fonttbl\f0\fswiss\fcharset0 Helvetica;\f1\fmodern\fcharset0 Courier;}
+{\colortbl;\red255\green255\blue255;\red38\green0\blue212;\red255\green255\blue234;}
+\paperw11900\paperh16840\margl1440\margr1440\vieww19140\viewh10180\viewkind0
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural
+
+\f0\fs24 \cf0 \
+\
+#LG5\
+Si_gnF.scaffold10535 Si_gnF.scaffold02694\
+\
+#LGS\
+Si_gnF.scaffold00413  Si_gnF.scaffold00779\
+\
+#LG1 \
+Si_gnF.scaffold02883  Si_gnF.scaffold02230\
+\uc0\u8232 #LG14\
+Si_gnF.scaffold01315  Si_gnF.scaffold01122\
+\
+#LG15\
+Si_gnF.scaffold04903  Si_gnF.scaffold04643\
+\
+#LG10\
+Si_gnF.scaffold00433  Si_gnF.scaffold03813\
+\
+#LG6\
+Si_gnF.scaffold07837 Si_gnF.scaffold05960\
+\
+Si_gnF.scaffold03327  Si_gnF.scaffold05118\
+\
+\
+\
+## full list of scaffolds\
+Si_gnF.scaffold10535\
+Si_gnF.scaffold02694\
+Si_gnF.scaffold00413\
+Si_gnF.scaffold00779\
+Si_gnF.scaffold02883\
+Si_gnF.scaffold02230\
+Si_gnF.scaffold01315\
+Si_gnF.scaffold01122\
+Si_gnF.scaffold04903\
+Si_gnF.scaffold04643\
+Si_gnF.scaffold00433\
+Si_gnF.scaffold03813\
+Si_gnF.scaffold07837\
+Si_gnF.scaffold05960\
+Si_gnF.scaffold03327\
+Si_gnF.scaffold05118\
+\
+\
+ruby ~/gitStuff/tidbits/fastaSubset/fastaSubset.rb -f ~/db/genomic/S_invicta/Si_gnF/454Scaffolds.fna -s 'Si_gnF.scaffold10535 Si_gnF.scaffold02694 Si_gnF.scaffold00413 Si_gnF.scaffold00779 Si_gnF.scaffold02883 Si_gnF.scaffold02230 Si_gnF.scaffold01315 Si_gnF.scaffold01122 Si_gnF.scaffold04903 Si_gnF.scaffold04643 Si_gnF.scaffold00433 Si_gnF.scaffold03813 Si_gnF.scaffold07837 Si_gnF.scaffold05960 Si_gnF.scaffold03327 Si_gnF.scaffold05118'   > /scratch/cluster/monthly/ywurm/RADsubsetting/16scaffolds.fasta\
+\
+cd  /scratch/cluster/monthly/ywurm/RADsubsetting\
+bwa index 16scaffolds.fasta \
+\
+\
+## subsetting RAD data\
+\
+I want only unique radtags to make it easier. \
+cat rad13.pools rad12.pools rad16.pools | cut -f 2 | sort | uniq | wc -l  # 48\
+cat rad13.pools rad12.pools rad16.pools > fortyeight.pools\
+rad13_P034_A03_little_b	CAACT\
+rad13_P034_B03_little_b	CACAG\
+rad13_P034_C03_little_b	CAGTC\
+rad13_P034_D03_B	CATGA\
+rad13_P034_E03_little_b	CCAAC\
+rad13_P034_F03_little_b	CCCCA\
+rad13_P034_G03_little_b	CCGGT\
+rad13_P034_H03_B	CCTTG\
+rad13_P034_A08_little_b	TGACC\
+rad13_P034_B08_B	TGCAA\
+rad13_P034_C08_B	TGGTT\
+rad13_P034_D08_B	TGTGG\
+rad13_P034_E08_little_b	TTAAT\
+rad13_P034_F08_B	TTCCG\
+rad13_P034_G08_little_b	TTGGC\
+rad13_P034_H08_B	TTTTA\
+rad12_P034_A02_little_b	AGAGT\
+rad12_P034_B02_B	AGCTG\
+rad12_P034_C02_B	AGGAC\
+rad12_P034_D02_little_b	AGTCA\
+rad12_P034_E02_B	ATATC\
+rad12_P034_F02_little_b	ATCGA\
+rad12_P034_G02_B	ATGCT\
+rad12_P034_H02_B	ATTAG\
+rad12_P034_A05_little_b	GAAGC\
+rad12_P034_B05_B	GACTA\
+rad12_P034_C05_B	GAGAT\
+rad12_P034_D05_little_b	GATCG\
+rad12_P034_E05_little_b	GCATT\
+rad12_P034_F05_little_b	GCCGG\
+rad12_P034_G05_B	GCGCC\
+rad12_P034_H05_little_b	GCTAA\
+rad16_P034_A09_little_b	AAAAA\
+rad16_P034_B09_B	AACCC\
+rad16_P034_C09_B	AAGGG\
+rad16_P034_D09_little_b	AATTT\
+rad16_P034_E09_B	ACACG\
+rad16_P034_F09_B	ACCAT\
+rad16_P034_G09_little_b	ACGTA\
+rad16_P034_H09_B	ACTGC\
+rad16_P034_A12_B	CGATA\
+rad16_P034_B12_B	CGCGC\
+rad16_P034_C12_little_b	CGGCG\
+rad16_P034_D12_little_b	CGTAT\
+rad16_P034_E12_little_b	CTAGG\
+rad16_P034_F12_little_b	CTCTT\
+rad16_P034_G12_little_b	CTGAA\
+rad16_P034_H12_B	CTTCC\
+\
+\
+00inputFastq]$ cp ../../../data/2010-06-21-RAD12Het/RAD12_TeBIxj5NT1ET.seq  ../../../data/2010-06-27-RAD13Het/RAD13_jX7DnfXOBchR.seq ../../../data/2010-06-27-RAD16Het/RAD16_2D1oEOcTv51b.seq /scratch/cluster/monthly/ywurm/RADsubsetting/\
+\
+\
+cd  /scratch/cluster/monthly/ywurm/RADsubsetting/\
+cat *seq > all.fastq\
+\
+bwa aln -t 15  16scaffolds.fasta all.fastq > aln_sa.sai\
+\
+bwa samse 16scaffolds.fasta aln_sa.sai all.fastq > aln.sam\
+samtools view -b -t 16scaffolds.fasta.fai -o aln.bam aln.sam\
+\
+## NEED TO MAKE BAM\
+\
+samtools view -F 0x04 -b aln.bam > aln.onlyMapping.bam   # skips unmapped reads\
+java -jar ~/soft/picard-tools-1.70/SamToFastq.jar INPUT=aln.onlyMapping.bam FASTQ=mapped.fastq   ## TRYING THIS.\
+\
+#from top hat\
+bam2fastx  --fastq \
+\
+\
+\
+Alternative - with bwa -B 5\
+bwa aln -B 5 -t 15  16scaffolds.fasta all.fastq > aln_sa.sai\
+bwa samse 16scaffolds.fasta aln_sa.sai all.fastq > aln.sam\
+samtools view -b -t 16scaffolds.fasta.fai -o aln.bam aln.sam\
+\
+samtools view -F 0x04 -b aln.bam > aln.onlyMapping.bam   # skips unmapped reads\
+java -jar ~/soft/picard-tools-1.70/SamToFastq.jar INPUT=aln.onlyMapping.bam FASTQ=mapped.fastq   ## TRYING TH\
+\
+\
+# but those are truncated (don't have tags) - getting ids to get full sequences from original fastq\
+egrep '^@' mapped.fastq > mapped.fastq.ids.withAt &\
+##THE following was too slow ## cat all.fastq | ruby parse_fastq.rb mapped.fastq.ids > mapped.fastq.ids.full.fastq\
+grep -f mapped.fastq.ids.withAt -F --mmap -A 3 all.fastq | grep -v '^--' > mapped.fastq.ids.full.fastq.grep2\
+\
+\
+\
+\
+\
+\
+\
+Trying to load into /mnt2/yannickstuff/myrun\
+process_radtags -f raw/mapped.fastq.ids.full.fastq.grep2 -o samples -b raw/barcodes  -q -e ecoRI -D \
+\
+cd samples/\
+move.sh ##to rename files in samples   Challenge them to do it!  (but give the file additionally)\
+\
+cat r16_H09_B.fq r16_G09_little_b.fq r16_A12_B.fq r16_E09_B.fq r16_G12_little_b.fq r16_H12_B.fq r16_E12_little_b.fq r16_D12_little_b.fq > syntheticMother.fq\
+\
+\
+eliminate:  r12_G05_B.fq r13_F03_little_b.fq (too weak coverage)\
+\
+### creating db; user=stacks    password=CeskyKrumlov\
+mysql --defaults-file=/usr/local/share/stacks/sql/mysql.cnf      -e "CREATE DATABASE tut_radtags"\
+mysql --defaults-file=/usr/local/share/stacks/sql/mysql.cnf    < /usr/local/share/stacks/sql/stacks.sql\
+\
+denovo_map.pl -m 3 -M 2 -n 3  -B tut_radtags -b 1 -t -a 2012-06-14 -D "ywGp9Test44" -o ./stacks2  -p ./samples/syntheticMother.fq -r samples/r16_H09_B.fq -r samples/r16_G09_little_b.fq -r samples/r16_A12_B.fq -r samples/r16_E09_B.fq -r samples/r16_G12_little_b.fq -r samples/r16_H12_B.fq -r samples/r13_H03_B.fq -r samples/r16_E12_little_b.fq -r samples/r13_D03_B.fq -r samples/r13_D08_B.fq -r samples/r16_B12_B.fq -r samples/r16_D12_little_b.fq -r samples/r16_D09_little_b.fq -r samples/r13_H08_B.fq -r samples/r13_E03_little_b.fq -r samples/r12_H02_B.fq -r samples/r16_F12_little_b.fq -r samples/r13_C08_B.fq -r samples/r13_G03_little_b.fq -r samples/r16_F09_B.fq -r samples/r16_B09_B.fq -r samples/r16_A09_little_b.fq -r samples/r13_G08_little_b.fq -r samples/r13_B08_B.fq -r samples/r16_C12_little_b.fq -r samples/r13_E08_little_b.fq -r samples/r12_G02_B.fq -r samples/r12_E02_B.fq -r samples/r13_A03_little_b.fq -r samples/r13_F08_B.fq -r samples/r12_H05_little_b.fq -r samples/r13_C03_little_b.fq -r samples/r13_A08_little_b.fq -r samples/r16_C09_B.fq -r samples/r12_F05_little_b.fq -r samples/r13_B03_little_b.fq -r samples/r12_B02_B.fq -r samples/r12_E05_little_b.fq -r samples/r12_C02_B.fq -r samples/r12_C05_B.fq -r samples/r12_B05_B.fq -r samples/r12_A05_little_b.fq -r samples/r12_D02_little_b.fq -r samples/r12_A02_little_b.fq -r samples/r12_D05_little_b.fq -r samples/r12_F02_little_b.fq \
+\
+\
+# it crashed on the small instance (with the big synthetic individual  - ok on bigger instance. \
+\
+\
+\
+\
+\
+\
+genotypes  -b 1 -r 25 -m 5 -o rqtl -P stacks2/ -e ecoRI   --> \
+\
+\
+\
+\
+### same with RADtags\
+~/gitStuff/johnomics-RADtools-a814a6b/RADpools  -v -i mapped.fastq.ids.full.fastq.grep2  -d fortyeight.pools  --sanger --enzyme CAATCC --trim 72 --quality 4 --max_processes 10 2>&1 > RADpools-sanger-caatnc.stdouterr\
+\
+\
+sudo chmod a+rwX /usr/local/share/stacks/php/export\
+\
+\
+\
+\
+\
+## PRACTICAL  - on deserve with no db\
+\
+ ### need to quality filter first\
+\
+../../stacks/stacks-0.9993/process_radtags -f raw/mapped.fastq.ids.full.fastq.grep2 -o samples -b raw/barcodes  -q -e ecoRI -D\
+sh move.sh  # have this online - or as a challenge!\
+cd samples; cat r16_H09_B.fq r16_G09_little_b.fq r16_A12_B.fq r16_E09_B.fq r16_G12_little_b.fq r16_H12_B.fq r16_E12_little_b.fq r16_D12_little_b.fq > syntheticMother.fq ; cd ..\
+time ../../stacks/stacks-0.9993/scripts/denovo_map.pl -T 14 -S -m 2 -M 2 -n 3 -b 1 -t -P 2 -e ../../stacks/stacks-0.9993/ -o stacks -p samples/syntheticMother.fq -r samples/r12_C02_B.fq -r samples/r12_E05_little_b.fq -r samples/r12_H02_B.fq -r samples/r13_B08_B.fq -r samples/r13_E03_little_b.fq -r samples/r13_G08_little_b.fq -r samples/r16_B09_B.fq -r samples/r16_D12_little_b.fq -r samples/r16_G09_little_b.fq -r samples/r12_A02_little_b.fq -r samples/r12_C05_B.fq -r samples/r12_F02_little_b.fq -r samples/r12_H05_little_b.fq -r samples/r13_C03_little_b.fq -r samples/r13_E08_little_b.fq -r samples/r13_H03_B.fq -r samples/r16_B12_B.fq -r samples/r16_E09_B.fq -r samples/r16_G12_little_b.fq -r samples/r12_A05_little_b.fq -r samples/r12_D02_little_b.fq -r samples/r12_F05_little_b.fq -r samples/r13_A03_little_b.fq -r samples/r13_C08_B.fq -r samples/r13_F03_little_b.fq -r samples/r13_H08_B.fq -r samples/r16_C09_B.fq -r samples/r16_E12_little_b.fq -r samples/r16_H09_B.fq -r samples/r12_B02_B.fq -r samples/r12_D05_little_b.fq -r samples/r12_G02_B.fq -r samples/r13_A08_little_b.fq -r samples/r13_D03_B.fq -r samples/r13_F08_B.fq -r samples/r16_A09_little_b.fq -r samples/r16_C12_little_b.fq -r samples/r16_F09_B.fq -r samples/r16_H12_B.fq -r samples/r12_B05_B.fq -r samples/r12_E02_B.fq -r samples/r12_G05_B.fq -r samples/r13_B03_little_b.fq -r samples/r13_D08_B.fq -r samples/r13_G03_little_b.fq -r samples/r16_A12_B.fq -r samples/r16_D09_little_b.fq -r samples/r16_F12_little_b.fq\
+\
+# runtime 6.5 minutes using two threads (-T 2)\
+\
+\
+## not used!\
+## then basically, I need to identify  - only genotypes where there are exactly two alleles in SyntheticMother   -- Stack ID	\
+   in stacks/syntheticMother.matches.tsv   - in R.\
+\
+\
+alleles.all <- read.table(file      = 'stacks/batch_1.catalog.alleles.tsv', col.names=c('SqlID', 'SampleID', 'StackID', 'Haplotype', 'Percent', 'Count'))\
+alleles.all.counts <-  table(alleles.all$StackID)\
+tags.biallelic     <- names(alleles.all.counts)[alleles.all.counts == 2]\
+\
+write.table(tags.biallelic,  file ='stacks/biallelicMarkers.txt', row=F, quote=F, col=F)\
+\
+\
+
+\fs8 \
+## Better alternative - eliminate those that don't have two alleles overall\
+tags.all     <- read.table(file      = 'stacks/batch_1.catalog.tags.tsv', \
+                           col.names = c('SqlID', 'SampleID', 'StackID', 'Chromosome', 'Basepair', 'Strand', 'SequenceType', 'SequenceID', 'Sequence', 'DeleveragedFlag', 'Blacklisted', 'VeryDeep'))\
+tags.all.ids <- tags.all$StackID  # length 22761\
+\
+\
+alleles.all <- read.table(file      = 'stacks/batch_1.catalog.alleles.tsv', col.names=c('SqlID', 'SampleID', 'StackID', 'Haplotype', 'Percent', 'Count'))\
+alleles.all.counts <-  table(alleles.all$StackID)\
+tags.biallelic     <- names(alleles.all.counts)[alleles.all.counts == 2]\
+\
+\
+tags.blacklist     <- tags.all.ids[ !(tags.all.ids %in% tags.biallelic) ]  # blacklisting 20992\
+write.table(tags.blacklist,  file ='stacks/blacklistedMarkers.txt', row=F, quote=F, col=F)\
+
+\fs22 \
+
+\fs10 ## then run \
+
+\fs12 ## ../../stacks/stacks-0.9993/genotypes -e ecoRI -P ./stacks/ -b 1 -B stacks/blacklistedMarkers.txt -t DH -o joinmap -r 35 -m 3\
+\
+
+\fs24 \
+\
+\
+## rqtl approach - # note: rqtl output AS DISTRIBUTED is buggy (includes 1769 loci, ie. all non-blacklisted SNPs).\
+../../stacks/stacks-0.9993-edited/genotypes -e ecoRI -P ./stacks/ -b 1 -t DH -o rqtl -W stacks/biallelicMarkers.txt -m 3 -r 35\
+cp ./stacks/batch_1.genotypes_35.loc stacks.rqtl\
+\
+\
+\
+\
+\
+\
+\
+\
+## CAN BE DONE ON LOCAL MACHINES. \
+\
+\
+\
+\
+## need to load one of the two into R\
+ (perhaps subset the rqtl output (if I instead use whitelist))\
+\
+\pard\pardeftab720
+
+\f1\fs28 \cf2 \cb3 install.packages("qtl")\
+library(qtl)\
+\
+# had to make a and bs uppercase. and remove ##comments\
+solenopsis             <- read.cross('csv','',   'stacks.rqtl2', genotypes=c("a","h","b","d","c"),phefile='pheno.dat', alleles= c('a', 'b'))\
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural
+
+\f0\fs24 \cf0 \cb1 \
+\
+What can you conclude from \
+plotMissing(solenopsis)\
+\
+\
+# graph of genotyped per individual\
+plot(ntyped(solenopsis), ylab="Number genotyped markers", main="Number of genotypes per individual", xlab="individual")\
+\
+#remove individuals with less than 35 genotypes. \
+\
+solenopsis.min35 <- subset(solenopsis, ind = ntyped(solenopsis) > 35)\
+\
+#check if it worked: (homogeneous)\
+plotMissing(solenopsis.min35)  \
+\
+\pard\pardeftab720\sl160
+\cf0 \
+## checking for Gp9 linkage. \
+solenopsis$pheno$gp9 = as.numeric( as.factor( gsub(x=solenopsis$pheno$id, 'r.*[0-9]_', '')))\
+\
+\
+\
+\
+\
+ a | ruby -pe 'gsub( /([ab])[ab]/ , "\\\\1")'\
+\
+## building map\
+write.cross(solenopsis.min35, file="solenopsis.min35")\
+write.cross(
+\f1\fs28 \cf2 \cb3 switchAlleles(
+\f0\fs24 \cf0 \cb1 solenopsis.min35, 
+\f1\fs28 \cf2 \cb3 markers = markernames(
+\f0\fs24 \cf0 \cb1 solenopsis.min35))\
+                   , file="solenopsis.flipped")\
+ruby -pe 'gsub( /([ab])\{2\}/ , "\\\\1")' < solenopsis.min35.csv > solenopsis.min35.haploids.csv\
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural
+\cf0 ruby -pe 'gsub(/(\\d)([,\\n])/, "\\\\1_flip\\\\2") if $_.match(/^id/)' < solenopsis.flipped.csv  | ruby -pe 'gsub( /([ab])\{2\}/ , "\\\\1")' > solenopsis.flipped.changedmarkerids.csv\
+ruby -pe 'sub(/[A-Za-z0-9_]*,/, "")'  <  solenopsis.flipped.changedmarkerids.csv > solenopsis.flipped.changedmarkerids.nosampleids.csv\
+\
+ paste -d ',' solenopsis.min35.haploids.csv solenopsis.flipped.changedmarkerids.nosampleids.csv > solenopsis.normalAndFlipped.csv\
+\pard\pardeftab720\sl160
+\cf0 # these markers have different identifiers. \
+\pard\pardeftab720
+
+\f1\fs28 \cf2 \cb3 \
+\
+solenopsis.min35.normalAndFlipped <- read.cross('csv','',   '
+\f0\fs24 \cf0 \cb1 solenopsis.normalAndFlipped.csv
+\f1\fs28 \cf2 \cb3 ', genotypes=c("a","h","b","d","c"),phefile='pheno.dat', alleles= c('a', 'b'))\
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardeftab720\pardirnatural
+
+\f0\fs24 \cf0 \cb1 \
+\
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural
+\cf0 \
+\
+\
+\
+\
+\
+### making map\
+\pard\pardeftab720\sl160
+\cf0 	\
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural
+\cf0 a = checkAlleles(solenopsis.min35)\
+solenopsis.min35.clean <- switchAlleles(solenopsis.min35, markers=checkAlleles(solenopsis.min35)$marker)\
+solenopsis.min35.clean2   <- switchAlleles(solenopsis.min35.clean, markers=checkAlleles(solenopsis.min35.clean)$marker)\
+\
+rf <- pull.rf(solenopsis.min35.clean)\
+lod <- pull.rf(solenopsis.min35.clean, what='lod')\
+plot(as.numeric(rf), as.numeric(lod))\
+\
+mymap = formLinkageGroups(solenopsis.min35.clean, max.rf=.35, min.lod=2.75, reorgMarkers=TRUE); plotRF(mymap, alternate.chrid=TRUE)\
+\
+\
+\
+mymap = formLinkageGroups(solenopsis.min35.normalAndFlipped, max.rf=.35, min.lod=8, reorgMarkers=TRUE); plotRF(mymap, alternate.chrid=TRUE)\
+## deleting everything thats duplicated (ie. every other LG)\
+keep = seq(1, 25, by=2)\
+mymap.singlecopy <- subset(mymap, chr=keep)\
+\
+toswitch <- markernames(mymap.singlecopy, chr = 15:25)\
+mymap.singlecopy.someflipped <- switchAlleles(mymap.singlecopy, markers=toswitch)\
+\
+\
+\
+rf <- pull.rf(mymap.singlecopy.someflipped )\
+lod <- pull.rf(mymap.singlecopy.someflipped , what='lod')\
+plot(as.numeric(rf), as.numeric(lod))\
+\
+\
+\
+mymapsinglecopy2 = formLinkageGroups(mymap.singlecopy.someflipped, max.rf=.35, min.lod=8, reorgMarkers=TRUE); plotRF(mymapsinglecopy2, alternate.chrid=TRUE)\
+\
+\
+## stacks installation. \
+#semi-bu : -e - all binaries and scripts need to be in a single place. \
+\
+\
+\
+TRY: EXPORT JOINMAP  and thread mapper.\
+}
