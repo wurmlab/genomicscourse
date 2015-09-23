@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>MSc Bioinformatics</title>
+  <meta name="author" content="Bruno Vieira">
+
+  <link rel="stylesheet" href="vendors/revealjs/css/reveal.css">
+  <link rel="stylesheet" href="vendors/revealjs/css/print/reveal-like-pdf.css">
+  <link rel="stylesheet" href="vendors/Font-Awesome/css/font-awesome.min.css">
+  <link rel="stylesheet" href="theme/style.css">
+</head>
+
+<body>
+
+  <div class="reveal">
+    <div class="slides">
+      
+<section data-state=front>
+<h2 id="msc-bioinformatics">MSc Bioinformatics</h2>
+<h3 id="qa-and-assembly">QA and Assembly</h3>
+<!-- We will need a Flash presentation from you which should be a maximum of 5 minutes with a brief introduction and synopsis of your career plus your work/involvement in the areas this workshop is covering and a maximum of 4 slides - this needs to be with us by latest 8 September (apologies for the short notice). -->
+
+<p><small style="float: right;"><a href="//bmpvieira.com/assembly14" target="_blank">bmpvieira.com/assembly14</a></small>
+<br></p>
+<p><img style="width: 30%; float: right; padding-right: 1em;" alt="bmpvieira" src="img/bmpvieira.png" /></p>
+<p><a href="http://bmpvieira.com">Bruno Vieira</a> | <i class="fa fa-twitter"></i> <a href="//twitter.com/bmpvieira" target="_blank">@bmpvieira</a></p>
+<p>Phd Student @ <a href="http://www.qmul.ac.uk" target="_blank"><img style="width: 25%; float: right; padding-right: 1em;" alt="QMUL" src="img/Queen_Mary,_University_of_London_logo.svg" /></a></p>
+<p>Bioinformatics and Population Genomics</p>
+<p><span style="font-size:0.8em;">
+Supervisor:<br>Yannick Wurm | <i class="fa fa-twitter"></i>  <a href="//twitter.com/yannick__" target="_blank">@yannick__</a>
+</span><br>
+<small>
+<!-- Before:
+<br>
+<a href="http://www.ciencias.ulisboa.pt" target="_blank"><img style="max-height: 7%;  float: left;" alt="FCUL" src="img/fcul.png" /></a>
+<a href="http://cobig2.com" target="_blank"><img style="max-height: 7%; float: left;" alt="CoBiG2" src="img/cobig2.png" /></a>
+<a href="http://eseb2013.com" target="_blank"><img style="max-height: 7%; float: left;" alt="eseb2013" src="img/eseb2013.png" /></a>
+<a href="https://geekli.st" target="_blank"><img style="max-height: 7%; float: left;" alt="geeklist" src="img/geeklist.png" />
+<a href="http://www.bbsrc.ac.uk" target="_blank"><img style="max-height: 7%; float: left;" alt="bbsrc" src="img/bbsrc.png" /> --></p>
+<p></small></p>
+<div style="position:absolute; top: 82%; font-size:.35em;">
+© 2014 <a href="http://bmpvieira.com" target="_blank">Bruno Vieira</a> <a href="http://creativecommons.org/licenses/by/4.0/deed.en_US" target="_blank">CC-BY 4.0</a>
+</div>
+
+
+</section>
+
+<section>
+<h3 id="download-data">Download data</h3>
+<p><a href="https://bit.ly/ant-reads">bit.ly/ant-reads</a></p>
+<h3 id="useful-books">Useful books</h3>
+<ul>
+<li><a href="http://cli.learncodethehardway.org/book/">The Command Line Crash Course</a></li>
+<li><a href="http://shop.oreilly.com/product/0636920030157.do">Bioinformatics Data Skills</a></li>
+</ul>
+<h3 id="papers">Papers</h3>
+<p><a href="http://doi.org/10.1038/nmeth.1935"><em>De novo</em> genome assembly: what every biologist should know</a></p>
+<p><a href="http://doi.org/10.1186/2047-217X-2-10">Assemblathon 2: evaluating de novo methods of genome assembly[...]</a></p>
+</section>
+
+<section data-state=title>
+<h2 id="genome-assembly">Genome Assembly</h2>
+<center>
+<a href="http://doi.org/10.1038/nmeth.1935" target="__blank"><img src="img/assembly-paper.png" /></a>
+</center>
+
+
+</section>
+
+<section>
+<p><img src="img/assembly.png" />
+<small>
+<a href="http://bioinformatics.udel.edu/sites/bioinformatics.udel.edu/files/pdfs/AnnotationWrkshp/GenomeSequenceAssembly-Chen.pdf">Chen 2011</a>
+</small></p>
+</section>
+
+<section>
+<h3 id="types">Types</h3>
+<p><strong>Algoritms</strong></p>
+<ul>
+<li>Overlap Layout Consensus</li>
+<li>De Bruijn</li>
+</ul>
+<p><strong>Strategies</strong></p>
+<ul>
+<li>De Novo</li>
+<li>Reference guided</li>
+</ul>
+<p><br>
+<small>
+<a href="http://www.nature.com/nrg/journal/v14/n3/box/nrg3367_BX2.html">Assembly paradigms</a>
+</small></p>
+</section>
+
+<section>
+<h3 id="overlap-layout-consensus">Overlap/Layout/Consensus</h3>
+<p><img style="width: 100%;" src="img/olc.png" /></p>
+</section>
+
+<section>
+<h3 id="overlap-layout-consensus">Overlap/Layout/Consensus</h3>
+<p><img style="width: 70%;" src="img/olc.png" /></p>
+<ul>
+<li style="font-size: .5em; line-height: 1.2;" class="fragment fade-in">A node corresponds to a read, an edge denotes an overlap between two reads.</li>
+<li style="font-size: .5em; line-height: 1.2;" class="fragment fade-in">The overlap graph is used to compute a layout of reads and consensus sequence of contigs by pair-wise sequence alignment.</li>
+<li style="font-size: .5em; line-height: 1.2;" class="fragment fade-in">Good for sequences with limited number of reads but significant overlap. Computational intensive for short reads (short and high error rate).</li>
+<li style="font-size: .5em; line-height: 1.2;" class="fragment fade-in">Example assemblers: Celera Assembler, Arachne, CAP and PCAP</li>
+</ul>
+
+<p><small>
+<a href="http://bioinformatics.udel.edu/sites/bioinformatics.udel.edu/files/pdfs/AnnotationWrkshp/GenomeSequenceAssembly-Chen.pdf">Chen 2011</a>
+</small></p>
+</section>
+
+<section>
+<h3 id="de-brujin">de Brujin</h3>
+<p><img style="width: 100%;" src="img/brujin.png" /></p>
+</section>
+
+<section>
+<h3 id="de-brujin">de Brujin</h3>
+<p><img style="width: 70%;" src="img/brujin.png" /></p>
+<ul>
+<li style="font-size: .5em; line-height: 1.2;" class="fragment fade-in">No need for all against all overlap discovery.</li>
+<li style="font-size: .5em; line-height: 1.2;" class="fragment fade-in">Break reads into smaller sequences of DNA (K-mers, K denotes the length in bases of these sequences).</li>
+<li style="font-size: .5em; line-height: 1.2;" class="fragment fade-in">Captures overlaps of length K-1 between these K-mers.</li>
+<li style="font-size: .5em; line-height: 1.2;" class="fragment fade-in">More sensitive to repeats and sequencing errors.</li>
+<li style="font-size: .5em; line-height: 1.2;" class="fragment fade-in">By construction, the graph contains a path corresponding to the original sequence.</li>
+<li style="font-size: .5em; line-height: 1.2;" class="fragment fade-in">Example assemblers: Euler, Velvet, ABySS, AllPaths, SOAPdenovo, CLC Bio</li>
+</ul>
+
+<p><small>
+<a href="http://bioinformatics.udel.edu/sites/bioinformatics.udel.edu/files/pdfs/AnnotationWrkshp/GenomeSequenceAssembly-Chen.pdf">Chen 2011</a>
+</small></p>
+</section>
+
+<section>
+<p><img src="img/brujin-graph-complex.png" />
+<small>
+<a href="http://schatzlab.cshl.edu/presentations/2012-09-27.BtG.Assembly%20Primer.pdf">Schatz 2012</a>
+</small></p>
+</section>
+
+<section>
+<p><img src="img/brujin-graph-simple.png" />
+<small>
+<a href="http://schatzlab.cshl.edu/presentations/2012-09-27.BtG.Assembly%20Primer.pdf">Schatz 2012</a>
+</small></p>
+</section>
+
+<section>
+<h3 id="too-many-assemblers">Too many assemblers</h3>
+<p><a href="http://seqanswers.com/wiki/De-novo_assembly">seqanswers.com/wiki/De-novo_assembly</a></p>
+<p><br>
+A5, ABySS, ALLPATHS, CABOG, CLCbio, Contrail, Curtain, DecGPU, Forge, Geneious, GenoMiner, IDBA, Lasergene, MIRA, Newbler, PE-Assembler, QSRA, Ray, SeqMan NGen, SeqPrep, Sequencher, SHARCGS, SHORTY, SHRAP, SOAPdenovo, SR-ASM, SuccinctAssembly, SUTTA, Taipan, VCAKE, Velvet</p>
+</section>
+
+<section>
+<h3 id="benchmarking">Benchmarking</h3>
+<ul>
+<li><a href="http://assemblathon.org/assemblathon1">Assemblathon 1</a></li>
+<li><a href="http://assemblathon.org/assemblathon2">Assemblathon 2</a></li>
+<li><a href="http://gage.cbcb.umd.edu">GAGE</a></li>
+<li><a href="http://nucleotid.es">Nucleotid.es</a></li>
+</ul>
+<p><br>
+<a href="http://assemblathon.org/post/44431925986/why-we-need-the-assemblathon">Why we need the assemblathon</a></p>
+</section>
+
+<section>
+<h3 id="assembly-quality-assessment">Assembly quality assessment</h3>
+<ul>
+  <li>
+    Accuracy or “Correctness”
+    <ul class="fragment fade-in">
+      <li class="fragment fade-in">Base accuracy – the frequency of calling the correct nucleotide at a given position in the assembly.</li>
+      <li class="fragment fade-in">Mis-assembly rate – the frequency of rearrangements, significant insertions, deletions and inversions.</li>
+    </ul>
+  </li>
+</ul>
+
+
+</section>
+
+<section>
+<h3 id="assembly-quality-assessment">Assembly quality assessment</h3>
+<ul>
+<li>
+  Continuity
+  <ul>
+    <li class="fragment fade-in">Lengths distribution of contigs/scaffolds.</li>
+    <li class="fragment fade-in">Average length, minimum and maximum lengths, combined total lengths.</li>
+    <li class="fragment fade-in">N50 captures how much of the assembly is covered by relatively large contigs.</li>
+  </ul>
+</li>
+</ul>
+
+</section>
+
+<section>
+<p><img src="img/n50.png" /></p>
+</section>
+
+<section>
+<h3 id="assembly-quality-assessment">Assembly quality assessment</h3>
+<ul>
+<li>N50</li>
+<li>NG50</li>
+</ul>
+<p><br></p>
+<h3 id="-n50-must-die-http-korflab-ucdavis-edu-datasets-assemblathon-assemblathon1-assemblathon_talk-pdf-"><a href="http://korflab.ucdavis.edu/datasets/Assemblathon/Assemblathon1/assemblathon_talk.pdf">N50 must die?</a></h3>
+</section>
+
+<section>
+<h3 id="assembly-quality-assessment">Assembly quality assessment</h3>
+<ul>
+  <li class="fragment fade-in"><strong>Fragment analysis</strong> - Count how many randomly chosen fragments from species A genome can be found in assembly</li>
+  <li class="fragment fade-in"><strong>Repeat analysis</strong> - Choose fragments that either overlap or don’t overlap a known repeat</li>
+  <li class="fragment fade-in"><strong>Gene finding</strong> - How many genes are present in each assembly? (<a href="http://korflab.ucdavis.edu/datasets/cegma/#SCT2">CEGMA</a>)</li>
+</ul>
+
+</section>
+
+<section>
+<h3 id="assembly-quality-assessment">Assembly quality assessment</h3>
+<ul>
+  <li class="fragment fade-in"><strong>Contamination</strong> - “all libraries will contain some bacterial contamination”</li>
+  <li class="fragment fade-in"><strong>Mauve analysis</strong> - Uses whole genome alignment to reveal</li>
+  <li class="fragment fade-in"><strong>BWA analysis</strong> - Align contigs to genome</li>
+  <li class="fragment fade-in"><strong><a href="http://en.wikipedia.org/wiki/Optical_mapping">Optical Maps</a> / <a href="http://www.bionanogenomics.com/technology/why-genome-mapping/">Irys</a></strong></li>
+
+</ul>
+
+
+
+</section>
+
+<section>
+<p><img src="img/ingredients.png" /></p>
+</section>
+
+<section>
+<h3 id="-fastqc-http-www-bioinformatics-babraham-ac-uk-projects-fastqc-"><a href="http://www.bioinformatics.babraham.ac.uk/projects/fastqc/">FastQC</a></h3>
+<p><img style="width: 70%;" src="img/fastqc.png" /></p>
+<p><a href="http://www.bioinformatics.babraham.ac.uk/projects/fastqc/Help/3%20Analysis%20Modules">FastQC Documentation</a></p>
+</section>
+
+<section>
+<p><img src="img/fastx-quals.png" /></p>
+</section>
+
+<section>
+<p><img src="img/trim.png" /></p>
+</section>
+
+<section>
+<h3 id="-diginorm-http-arxiv-org-abs-1203-4802-"><a href="http://arxiv.org/abs/1203.4802">Diginorm</a></h3>
+<blockquote>
+<p>&quot;(...)systematizes coverage in shotgun sequencing data sets, thereby decreasing sampling variation, discarding redundant data, and removing the majority of errors.&quot;</p>
+</blockquote>
+</section>
+
+<section>
+<h3 id="-diginorm-http-arxiv-org-abs-1203-4802-"><a href="http://arxiv.org/abs/1203.4802">Diginorm</a></h3>
+<blockquote>
+<p>&quot;(...)reduces the size of shotgun data sets and decreases the memory and time requirements for de novo sequence assembly, all without significantly impacting content of the generated contigs.&quot;</p>
+</blockquote>
+<p><span class="fragment fade-in">Magic?</span> <span class="fragment fade-in">No, <a href="http://en.wikipedia.org/wiki/Bloom_filter">Bloom filters</a></span></p>
+</section>
+
+<section>
+<h3 id="-diginorm-http-arxiv-org-abs-1203-4802-"><a href="http://arxiv.org/abs/1203.4802">Diginorm</a></h3>
+<p><img style="width: 50%;" src="img/raw-coverage.png" /><img style="width: 50%;" src="img/norm-coverage.png" /></p>
+<p><a href="http://ivory.idyll.org/blog/what-is-diginorm.html">What is digital normalization, anyway?</a></p>
+<p><a href="http://ivory.idyll.org/blog/why-you-shouldnt-use-diginorm.html">Why you shouldn&#39;t use digital normalization</a></p>
+</section>
+
+<section>
+<h3 id="fast-span-style-color-green-a-span-">Fast<span style="color: green;">a</span></h3>
+<p><img src="img/fasta.png" /></p>
+</section>
+
+<section>
+<h3 id="fast-span-style-color-green-q-span-">Fast<span style="color: green;">q</span></h3>
+<p><img src="img/fastq.png" /></p>
+</section>
+
+<section>
+<h3 id="fast-span-style-color-green-q-span-">Fast<span style="color: green;">q</span></h3>
+<p><img src="img/fastq-id.png" /></p>
+</section>
+
+<section>
+<p><img src="img/quals.png" /></p>
+</section>
+
+<section>
+<h3 id="interleaved-format">Interleaved format</h3>
+<p><img src="img/fastq-interleaved.png" /></p>
+</section>
+
+<section>
+<h3 id="practical">Practical</h3>
+<p><a href="http://bmpvieira.com/assembly14-practical">bmpvieira.com/assembly14-practical</a></p>
+</section>
+
+<section>
+
+</section>
+
+    </div>
+  </div>
+
+<script src="vendors/jquery-1.11.0.min.js"></script>
+
+<!-- reveal -->
+<script src="vendors/revealjs/lib/js/head.min.js"></script>
+<script src="vendors/revealjs/js/reveal.js"></script>
+<script>
+  Reveal.initialize({
+
+    // Display controls in the bottom right corner
+    controls: false,
+
+    // Display a presentation progress bar
+    progress: true,
+
+    // Display a subtle timer bar (time is in minutes)
+    timeRemaining: 10,
+
+    // Push each slide change to the browser history
+    history: true,
+
+    // Enable keyboard shortcuts for navigation
+    keyboard: true,
+
+    // Enable the slide overview mode
+    overview: true,
+
+    // Vertical centering of slides
+    center: false,
+
+    // Loop the presentation
+    loop: false,
+
+    // Change the presentation direction to be RTL
+    rtl: false,
+
+    // Number of milliseconds between automatically proceeding to the
+    // next slide, disabled when set to 0, this value can be overwritten
+    // by using a data-autoslide attribute on your slides
+    autoSlide: 0,
+
+    // Enable slide navigation via mouse wheel
+    mouseWheel: false,
+
+    // Apply a 3D roll to links on hover
+    rollingLinks: false,
+
+    // Transition style
+    transition: 'linear', // default/cube/page/concave/zoom/linear/fade/none
+
+    dependencies: [
+        // Cross-browser shim that fully implements classList - https://github.com/eligrey/classList.js/
+        { src: 'vendors/revealjs/lib/js/classList.js', condition: function() { return !document.body.classList; } },
+
+        // Interreveal/pret Markdown in <section> elements
+    { src: 'vendors/revealjs/plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+    { src: 'vendors/revealjs/plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); }, callback: function() { baconDemo() } },
+
+        // Syntareveal/x highlight for <code> elements
+          { src: 'vendors/revealjs/plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } },
+
+          // Zoom reveal/in and out with Alt+click
+          { src: 'vendors/revealjs/plugin/zoom-js/zoom.js', async: true, condition: function() { return !!document.body.classList; } },
+
+          // Speakreveal/er notes
+          { src: 'vendors/revealjs/plugin/notes/notes.js', async: true, condition: function() { return !!document.body.classList; } },
+
+          // Remotreveal/e control your reveal.js presentation using a touch device
+          // { src: 'reveal/plugin/remotes/remotes.js', async: true, condition: function() { return !!document.body.classList; } }
+          ]
+
+          });
+    </script>
+</body>
+
