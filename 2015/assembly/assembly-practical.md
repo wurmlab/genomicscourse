@@ -1,10 +1,10 @@
 # Preparation
 
 ```bash
-mkdir 2014-09-30_assemblies
-cd 2014-09-30_assemblies
-wget bit.ly/ant-reads
-unzip ant-reads
+mkdir 2015-10-05_experiment1
+cd 2015-10-05_experiment1
+cp /data/SBCS-MSc-BioInf/reads.tar.gz .
+tar xzvf reads.tar.gz
 ```
 
 # Trimming
@@ -20,14 +20,22 @@ On biolinux 8, just do:
 ```bash
 sudo apt-get install seqtk
 ```
+On the cluster, you need to download the source code and compile it
+
+```bash
+git clone git@github.com:lh3/seqtk.git
+cd seqtk
+make
+```
+
 
 ### Run
 Open the reads in FastQC and figure out how much you should trim from the left and right side.
 Replace x and y below acordingly.
 
 ```bash
-seqtk trimfq -b x -e y ant.pe1.fastq > ant.pe1.trimmed.fastq
-seqtk trimfq -b x -e y ant.pe2.fastq > ant.pe2.trimmed.fastq
+seqtk trimfq -b x -e y sample1.pe1.fastq > sample1.pe1.trimmed.fastq
+seqtk trimfq -b x -e y sample1.pe2.fastq > sample1.pe2.trimmed.fastq
 ```
 
 # Digital normalization
@@ -37,21 +45,30 @@ seqtk trimfq -b x -e y ant.pe2.fastq > ant.pe2.trimmed.fastq
 
 ## Install
 
+On Biolinux
+
 ```bash
-sudo apt-get install git
-cd /usr/local/share
-sudo git clone git://github.com/ged-lab/khmer.git
+git clone git://github.com/ged-lab/khmer.git
 cd khmer
 sudo git checkout v1.1
 sudo make install
 ```
+
+On the cluster
+```bash
+module load virtualenv
+virtualenv khmerEnv
+source khmerEnv/bin/activate
+pip install khmer
+```
+
 ## Run
 Like you did for filtering, run FastQC on the output after each step of diginorm.
 
 ### Preparation - interleave FastQ
 
 ```bash
-interleave-reads.py ant.pe1.trimmed.fastq ant.pe2.trimmed.fastq -o ant.pe12.trimmed.fastq
+interleave-reads.py sample1.pe1.trimmed.fastq sample1.pe2.trimmed.fastq -o sample1.pe12.trimmed.fastq
 ```
 
 ### First pass - normalize
@@ -59,7 +76,7 @@ interleave-reads.py ant.pe1.trimmed.fastq ant.pe2.trimmed.fastq -o ant.pe12.trim
 Normalize everything to a coverage of 20
 
 ```bash
-normalize-by-median.py -p -k 20 -C 20 -N 2 -x 1e9 --savetable normC20k20.kh  ant.pe12.trimmed.fastq
+normalize-by-median.py -p -k 20 -C 20 -N 2 -x 1e9 --savetable normC20k20.kh  sample1.pe12.trimmed.fastq
 ```
 
 This produces a set of '.keep' files, as well as a normC20k20.kh
@@ -90,21 +107,37 @@ This leaves you with a PE file (\*.keep.abundfilt.pe).
 To de-interleave that PE file, run the following:
 
 ```bash
-split-paired-reads.py ant.pe12.trimmed.keep.abundfilt.pe
+split-paired-reads.py sample1.pe12.trimmed.keep.abundfilt.pe
 ```
 
 # Assembly
-Good list to start choosing assemblers to test:  
-http://davis-assembly-masterclass-2013.readthedocs.org/en/latest/outputs/opinionated-guide.html
+Good websites to start choosing assemblers to test:  
+* http://davis-assembly-masterclass-2013.readthedocs.org/en/latest/outputs/opinionated-guide.html
+* http://nucleotid.es
+
+## SOAPdenovo
+> A novel short-read assembly method that can build a de novo draft assembly for the human-sized genomes
+
+### Install
+
+```bash
+module load SOAP/2.40
+```
+
+### Run
+
+```bash
+SOAPdenovo all -s soap-config -K 63 -R -o graph
+```
 
 ## ABySS
 
 ### Install
-We're lucky! ABySS is already installed on biolinux 8.
+ABySS is already installed on biolinux 8.
 
 ### Run
 ```bash
-abyss-pe k=21 name='ant-abyss-k21' in="ant.pe1.fastq ant.pe2.fastq"
+abyss-pe k=21 name='sample1-abyss-k21' in="sample1.pe1.fastq sample1.pe2.fastq"
 ```
 
 ## Velvet
@@ -115,8 +148,8 @@ Velvet is already installed on biolinux 8.
 
 ### Run
 ```bash
-velveth ant-velvet-k21 21 -fastq -shortPaired -separate -fastq ant.pe1.fastq ant.pe2.fastq
-velvetg ant-velvet-k21 -exp_cov auto -cov_cutoff auto
+velveth sample1-velvet-k21 21 -fastq -shortPaired -separate -fastq sample1.pe1.fastq sample1.pe2.fastq
+velvetg sample1-velvet-k21 -exp_cov auto -cov_cutoff auto
 ```
 Run some more with different kmer values to compare later
 
@@ -133,14 +166,7 @@ sudo PREFIX=/usr/local ./spades_compile.sh
 ### Run
 
 ```bash
-spades.py --sc --pe1-12 reads.clean.fastq -o ant-spades
-```
-
-## SOAPdenovo
-> A novel short-read assembly method that can build a de novo draft assembly for the human-sized genomes
-
-```bash
-SOAPdenovo all -s soap-config -K 63 -R -o graph
+spades.py --sc --pe1-12 reads.clean.fastq -o sample1-spades
 ```
 
 # Metrics
@@ -152,7 +178,7 @@ SOAPdenovo all -s soap-config -K 63 -R -o graph
 wget http://downloads.sourceforge.net/project/quast/quast-2.3.tar.gz
 tar xzvf quast-2.3.tar.gz
 cd quast
-./quast.py ../ant-abyss-contigs.fa ../ant-abyss-scaffolds.fa ../ant-velvet-k21/contigs.fa ../ant-spades/contigs.fasta
+./quast.py ../sample1-abyss-contigs.fa ../sample1-abyss-scaffolds.fa ../sample1-velvet-k21/contigs.fa ../sample1-spades/contigs.fasta
 firefox quast_results/latest/report.html
 ```
 
@@ -163,7 +189,7 @@ firefox quast_results/latest/report.html
 module load busco
 wget http://busco.ezlab.org/files/arthropoda_buscos.tar.gz
 tar xzvf arthropoda_buscos.tar.gz
-busco -o ANT -in ../ant-soap/contigs.fasta -l arthropod -m genome
+busco -o sample1-busco -in ../sample1-assembly/contigs.fasta -l arthropod -m genome
 ```
 
 ## [Cegma](http://korflab.ucdavis.edu/datasets/cegma/)
@@ -171,5 +197,5 @@ busco -o ANT -in ../ant-soap/contigs.fasta -l arthropod -m genome
 
 ```bash
 module load cegma
-cegma -g ../ant-soap/contigs.fasta
+cegma --genome ../sample1-assembly/contigs.fasta
 ```
