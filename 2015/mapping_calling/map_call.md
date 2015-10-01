@@ -25,60 +25,59 @@ We will align the reads to a subset of the reference genome assembly of the spec
 
 ## Before we start the analysis
 
-First use `ssh` to log into the cluster.
-```bash
-source /data/SBCS-MSc-BioInf/2015-10-01.alignment_and_variant-calling/alignment_and_variant-calling-source.sh
-```
+### Connect to the cluster and load the modules we will be using
 
-Then start a new qlogin session:
-```bash
-qloginfat
-```
+Log in to the the cluster as you have been told in previous practicals.
 
 Now type into the console:
 ```bash
-module load samtools/1.1
-module load bcftools/1.1
-module load HTSlib/1.1
+module load samtools/1.1 bcftools/1.1 HTSlib/1.1
 ```
-This loads the right version of the tools we are using in this practical. You need to type this if you restart a new qlogin session, otherwise you will be using the wrong version of the tools and the practical will not work!
+This loads the right version of the tools we are using in this practical. You need to type this if you restart a new session on the cluster, otherwise you will be using the wrong version of the tools and the practical will not work!
+
+### Create a directory for your analysis
 
 To create a directory for the analysis in this practical, type, in your home directory:
 
 ```bash
-mkdir 2015-10.MSc-alignment_and_variant-calling
+mkdir 2015-10-map-call-practical
 ```
 
-Use `cd` to go into that directory. Now you will need to get the data we are using. The data is stored in a folder called:
+Use `cd` to go into that directory.
+
+There, use `mkdir` to create a directory called `data` and one called `2015-10-07-analysis`.
+
+### Create soft links for the data in the new directory
+
+The input data is stored in a folder called:
 ```bash
-/data/SBCS-MSc-BioInf/2014-10-01.alignment_and_variant-calling/data/
+/data/SBCS-MSc-BioInf/2015-10-practical/map_call
 ```
+In it, you can find a file with the reference assembly (`reference.fa`) and a directory with the reads  in the `.fq` format (`reads`). Make a soft link to those files from the new `data/` directory:
 
-Copy it into your current directory:
 ```bash
-cp -r /data/SBCS-MSc-BioInf/2014-10-01.alignment_and_variant-calling/data .
+cd ~/2015-10-map-call-practical/data
+ln -sf /data/SBCS-MSc-BioInf/2015-10-practical/map_call/reference.fa .
+ln -sf /data/SBCS-MSc-BioInf/2015-10-practical/map_call/reads/* .
 ```
-The `-r` option makes `cp` use 'recursive' copy, which is necessary to copy whole folders. The `.` indicates your current directory.
 
-You should now have a directory called `data/` in your current directory. Have a look at what's inside it. You should be able to see a fasta file with the reference assembly.
+By doing this, you create a soft link to the data instead of copying it, so you don't multiply the amount of space you are using up. Never use the command `rm` on soft links, as it will also delete the original data. Instead, use the command `unlink`.
+
+You should see the reads for 14 samples.
 
 #### Q. How many scaffolds are there in the assembly? (Try using `grep`)
 #### Q. (important!) Why does each sample have two sets of reads?
 #### Q. What is each line of the `.fq` file?
 #### Q. How many reads do we have in individual f1_B?
-#### Q. What is the expected coverage per base pair of individual f1_B?
+#### Q. What's the size of each read (all reads have equal size)?
+#### Q. Knowing that each scaffold is 200kb, what is the expected coverage per base pair of individual f1_B?
 
-We are now going to create a directory where you will process the analysis itself, and we are going to copy the data (sequence reads and reference genome) into it. This way, you keep the original data in the `data/` directory, just in case something goes wrong.
-
+### Create soft links from the data
 ``` bash
 ## Go back to the original directory:
-cd ~/2015-10.MSc-alignment_and_variant-calling
-mkdir 2015-10-01.analysis
-cd 2015-10-01.analysis
-## Copy in the sequence reads
-cp ../data/reads/* .
-## Copy in the reference assembly fasta:
-cp ../data/reference.fa .
+cd ~/2015-10-map-call-practical/2015-10-07-analysis
+ln -sf ../data/reference.fa .
+ln -sf ../data/*.fq .
 ```
 
 Note that the star `*` refers to all the files in the `../data/reads/` directory. The `.` is the current directory.
@@ -94,29 +93,19 @@ bowtie2-build reference.fa reference_index
 
 Now the alignment step:
 ```bash
-bowtie2 \
- -x reference_index \
- -1 f1_B-1.fq \
- -2 f1_B-2.fq \
- > f1_B.sam
+bowtie2 -x reference_index -1 f1_B.1.fq -2 f1_B.2.fq > f1_B.sam
 ```
 #### Q. What do the parameter `-x`, `-1` and `-2` mean?
-#### Q. What does the symbol `\` mean?
 
 The command produced a SAM file (Sequence Alignment/Map file), which is the standard file used to store sequence alignments. Have a quick look at the file by typing `less f1.sam`. The file includes a header (lines starting with the `@` symbol), and a line for every read aligned to the reference assembly. For each read, we are given a mapping quality values, the position of both pairs, the actual sequence and its quality by base-pair, and a series of flags with additional measures of mapping quality.
 
-We now need to run bowtie2 for all the other samples. We could do this by typing the same command another 13 times (changing the sample name), or we can write a small for loop in bash to do that for us:
+We now need to run bowtie2 for all the other samples. We could do this by typing the same command another 13 times (changing the sample name), or we can use the `GNU parallel` tool:
 ```bash
-## Declare a variable (an array) with the sample names
-SAMPLES=(f1_B f1b f2_B f2b f3_B f3b f4_B f4b f5_B f5b f6_B f6b f7_B f7b)
-## Loop through the array (this will take a few minutes)
-for SAMPLE in ${SAMPLES[*]}; do
- bowtie2 \
-  -x reference_index \
-  -1 ${SAMPLE}-1.fq \
-  -2 ${SAMPLE}-2.fq \
-  >  ${SAMPLE}.sam
-done
+## Create a file with all sample names
+ls *fq | cut -d '.' -f 1 | sort | uniq > names.txt
+
+## Run bowtie with each sample (will take a few minutes)
+parallel "bowtie2 -x reference_index -1 {}.1.fq -2 {}.2.fq > {}.sam" :::: names.txt
 ```
 
 Because SAM files include a lot of information, they tend to occupy a lot of space (even in our case). Therefore, SAM files are generally compressed into BAM files (Binary sAM). Most tools that use aligned reads requires BAM files that have been sorted and indexed by genomic position. This is done using `samtools`, a set tools create to manipulate SAM/BAM files. To compress and sort a SAM file for a given sample, we type:
@@ -135,13 +124,10 @@ We can minimise the number of commands and the number of intermediate files by p
 samtools view -Sb f1_B.sam | samtools sort - f1.sorted
 ```
 
-Again, we can write a for loop to run this step for all the samples:
+Again, we can use parallel to run this step for all the samples:
 ```bash
-for SAMPLE in ${SAMPLES[*]}; do
-  samtools view -Sb ${SAMPLE}.sam \
-    | samtools sort - ${SAMPLE}.sorted
-  samtools index ${SAMPLE}.sorted.bam
-done
+parallel "samtools view -Sb {}.sam | samtools sort - {}.sorted" :::: names.txt
+parallel "samtools index {}.sorted.bam" :::: names.txt
 ```
 
 ## Variant calling
@@ -159,34 +145,28 @@ samtools mpileup -uf reference.fa *sorted.bam \
 ```
 #### Q. What does the symbol`*` mean here?
 
-If you type `bcftools` in the console, you will see that this programme has a series of tools to manipulate VCF/BCF files. The tool we want to use is `bcftools call`, which does SNP and indel calling. As well as the consensus caller (option `-c`), which we are using, bcftools includes the multiallelic caller (option `-m`). Because we have a relatively small number of samples and low coverage for each of the sample, the consensus caller will do. Before we carry on, we need to remember that we are analysing males ants, which have haploid genomes! Because of this, we need to use option -S, which allows the user to add a list with two columns, the first with the name of the samples, the second with their ploidy (0, 1 or 2).
+If you type `bcftools` in the console, you will see that this programme has a series of tools to manipulate VCF/BCF files. The tool we want to use is `bcftools call`, which does SNP and indel calling. As well as the consensus caller (option `-c`), which we are using, bcftools includes the multiallelic caller (option `-m`). Because we have a relatively small number of samples and low coverage for each of the sample, the consensus caller will do. Before we carry on, we need to remember that we are analysing males ants, which have haploid genomes! Because of this, we need to use option -S, which allows the user to add a list with two columns, the first with the name of the samples (i.e. tha name of the `bam` files), the second with their ploidy (1 or 2).
 
-To create this file, we create two files, one with each column, then we merge it (bit hacky, I know...):
-```bash
-ls *sorted.bam > name_column #file with names column
-#column with ploidy level (always 1)
-for i in *sorted.bam; do echo 1 >> ploidy_column; done
-## paste takes the input of different files and merges them as columns
-paste name_column ploidy_column > samples.names
-```
-#### Q. What does the symbol`>>` do in this case?
+#### Q. Make a file (called ploidy_per_sample.txt) with a column with the bam file names (e.g. f1_B.sorted.bam) and a column with the ploidy level (i.e. 1).
 
-Now we run the bcftools call command and save the result into a VCF file. We are adding the option `-v` to output variant sites only (generally we are also interested in the positions without a call. Why is this?)
+Now we run the bcftools call command and save the result into a VCF file.
 ```bash
-bcftools call -c raw_calls.bcf -v -S samples.names > variant_calls.vcf
+bcftools call -c raw_calls.bcf -v -S ploidy_per_sample.txt > variant_calls.vcf
 ```
 #### Q. What does the parameter `-v` do? Under what situation would you leave it out?
 
-Let's take a look at the VCF file produced by typing `less -S variant_calls.vcf`. The file is composed of a header, with lines starting with "#", and rows for all the variant positions. Have a look at the different columns and check what each is (the header includes labels). Notice that some columns include several fields.
+Let's take a look at the VCF file produced by typing `less -S variant_calls.vcf`. The file is composed of a header and of and rows for all the variant positions. Have a look at the different columns and check what each is (the header includes labels). Notice that some columns include several fields.
 #### Q. Use `less` to look at the VCF file. Where does the Header start and end?
 #### Q. Can you tell how the genotype of each sample is coded?
 #### Q. How many variants were identified?
 #### Q. Can you tell the difference between SNPs and indels? How many of each have been identified?
 
-## Variant filtering
-Not all variants that we called are necessarily of good quality, so it is essential to have a quality filter step. The VCF includes several fields with quality information. The most obvious is the column QUAL, which gives us a Phred-scale quality score. This is defined as -10log10 (ALT call is wrong). A small QUAL value indicates that there is a high probability that the ALT call is wrong  while high QUAL value indicates that there is low probability that the call is wrong. Sites with low QUAL have low call quality and should be filtered out of the VCF.
+## Quality filtering of variant calls
+Not all variants that we called are necessarily of good quality, so it is essential to have a quality filter step. The VCF includes several fields with quality information. The most obvious is the column QUAL, which gives us a Phred-scale quality score.
 
-To do this, we can use `bcftools filter`. We have to supply an expression. `bcftools` removes any call for which the expression is true. In our case, we want to remove any call that doesn't reach a threshold QUAL value of 30 (which indicates that there is a 0.001 probability that the call is wrong):
+#### Q. What does a Phred-scale quality score of 30 mean?
+
+Using `bcftools filter`. We have to supply an expression, we can remove anything wt=ith quality call smaller than 30.
 ``` bash
 bcftools filter --exclude 'QUAL < 30' variant_calls.vcf \
  > filtered_variant_calls.vcf
@@ -197,9 +177,9 @@ In more serious analysis, it may be important to filter by other parameters.
 
 ## Viewing the results using IGV (Integrative Genome Viewer)
 
-In this part of the practical, we are going to use the software IGV to visualise the alignments we created and check some of the positions where variants were called.
+In this part of the practical, we are going to use the software IGV on our local computer to visualise the alignments we created and check some of the positions where variants were called.
 
-First, download the IGV software (you will need to give your register your email address). Unzip it to your desktop (or wherever you want it), and click it to open. If you can't click it, type, on a new terminal window:
+First, download the IGV software (you will need to register your email address). Unzip it to your desktop (or wherever you want it), and click it to open. If you can't click it, type, on a new terminal window:
 ```bash
 cd ~/Desktop/IGV_2_3_35/
 ./igv.sh
@@ -217,7 +197,7 @@ You can loads some of the BAMS and the VCF file you produced.
 
 ## Simple analysis of the VCFs
 
-In this section we are going to analyse the genotypes of the different regions. We are using the software MeV to create a heat map of the genotypes, and to run Principal Component Analysis (PCA). MeV was written to analyse microarray gene expression data, so we need to transform the VCF to a format that resembles this type of data. For now, we will analyse the genotypes of one scaffold only, but you should do this for both scaffolds.
+In this section we are going to analyse the genotypes of the different regions. We are using the software MeV to create a heat map of the genotypes, and to run Principal Component Analysis (PCA). MeV needs a particular, non-standard format for the data.
 
 #### Q. Run the following commands. Do you understand what each is doing?
 
