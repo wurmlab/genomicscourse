@@ -124,6 +124,18 @@ Good websites to start choosing assemblers to test:
 module load SOAP/2.40
 ```
 
+### Config file
+```
+max_rd_len=101
+[LIB]
+avg_ins=470
+reverse_seq=0
+asm_flags=3
+rank=1
+q1=/data/SBCS-MSc-BioInf/USER/sample1.pe1.fastq
+q2=/data/SBCS-MSc-BioInf/USER/sample1.pe2.fastq
+```
+
 ### Run
 
 ```bash
