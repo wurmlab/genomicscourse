@@ -202,26 +202,7 @@ In this section we are going to analyse the genotypes of the different regions. 
 #### Q. Run the following commands. Do you understand what each is doing?
 
 ```bash
-# Create a matrix with:
- # header
- # column for scaffold
- # column for position
- # column each for the genotype of each sample
 
-# Header
-cp ../data/snp_matrix_header.txt Si_gnH_scaffold00001_snp_matrix.txt
-
-# VCF to matrix (add to file with header)
-bcftools query filtered_variant_calls.vcf \
- -t Si_gnH.scaffold00001_sub \
- -f '%CHROM\t%POS[\t%GT]\n' \
-  >> Si_gnH_scaffold00001_snp_matrix.txt
-
-# Mev expects the genotypes in a format that 'looks' like gene expression.
-## Zeros are not allowed, so substitute 0 genotypes to -1
-## Using a ruby 'one-liner' and regular expressions
-cat Si_gnH_scaffold00001_snp_matrix.txt | ruby -pe 'gsub(/\t0/, "\t-1")' \
- > Si_gnH_scaffold00001_snp_matrix_recoded.txt
 ```
 
 Make sure that the samples in the header of the SNP matrix are in the same order as the ones printed from the VCF file. if they are not, you will have to manually edit the header using nano or Excel.

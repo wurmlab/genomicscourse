@@ -18,7 +18,11 @@ if [ -e $vcf ]; then
    # column each for the genotype of each sample
 
   # Header
-  cp /data/SBCS-MSc-BioInf/2015-10-practical/data/snp_matrix_header.txt tmp_snp_matrix.txt
+  echo scaffold position `grep "#CHROM" $vcf | \
+    ruby -pe 'gsub(/.+FORMAT\t/, "")'` \
+    > tmp_snp_matrix.txt
+
+  cat tmp_snp_matrix.txt
 
   # VCF to matrix (add to file with header)
   bcftools query $vcf \
