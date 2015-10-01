@@ -1,213 +1,102 @@
 # Preparation
 
 ```bash
+# Create a folder and copy raw data to it
 mkdir 2015-10-05_experiment1
 cd 2015-10-05_experiment1
-cp /data/SBCS-MSc-BioInf/reads.tar.gz .
-tar xzvf reads.tar.gz
+cp /data/SBCS-MSc-BioInf/data/* .
+# Load all the tools we are going to use
+module load seqtk khmer SOAP cegma
 ```
 
-# Trimming
+# Part 1 - Cleaning reads
 
-After each filtering step, you should verify your output with FastQC to see how it changed your data.
+## Raw reads quality assessment
 
-## [seqtk](https://github.com/lh3/seqtk)
+### [FastQC](http://www.bioinformatics.babraham.ac.uk/projects/fastqc/) ([documentation](http://www.bioinformatics.babraham.ac.uk/projects/fastqc/Help/))
+> A quality control tool for high throughput sequence data.
+
+Copy the raw sequence files (reads.pe*.fastq.gz) from the cluster to your local machine and run FastQC on them (to speed this practical, you can choose to run FastQC on only one of the files).
+Interpret the results ([you can check the documentation to understand what each plot means](http://www.bioinformatics.babraham.ac.uk/projects/fastqc/Help/3%20Analysis%20Modules/)).
+
+## Trimming
+
+### [seqtk](https://github.com/lh3/seqtk) ([documentation](http://manpages.ubuntu.com/manpages/vivid/man1/seqtk.1.html))
 > A fast and lightweight tool for processing sequences in the FASTA or FASTQ format.
 
-### Install
-On biolinux 8, just do:
+Based on the results from FastQC, figure out how much you should trim from the left and right side of the sequences.
+Replace x and y below accordingly.
 
 ```bash
-sudo apt-get install seqtk
-```
-On the cluster, you need to download the source code and compile it
-
-```bash
-git clone git@github.com:lh3/seqtk.git
-cd seqtk
-make
+seqtk trimfq -b x -e y reads.pe1.fastq > reads.pe1.trimmed.fastq
+seqtk trimfq -b x -e y reads.pe2.fastq > reads.pe2.trimmed.fastq
 ```
 
+## Quality assessment of trimmed reads
+Run FastQC on the ```\*trimmed.fastq``` files and compare the results with what you had before trimming.
 
-### Run
-Open the reads in FastQC and figure out how much you should trim from the left and right side.
-Replace x and y below acordingly.
+## Digital normalization (diginorm)
 
-```bash
-seqtk trimfq -b x -e y sample1.pe1.fastq > sample1.pe1.trimmed.fastq
-seqtk trimfq -b x -e y sample1.pe2.fastq > sample1.pe2.trimmed.fastq
-```
-
-# Digital normalization
-
-## [khmer](https://github.com/ged-lab/khmer)
+### [khmer](https://github.com/ged-lab/khmer) ([documentation](http://khmer.readthedocs.org/en/v2.0/))
 > In-memory nucleotide sequence k-mer counting, filtering, graph traversal and more
 
-## Install
-
-On Biolinux
-
 ```bash
-git clone git://github.com/ged-lab/khmer.git
-cd khmer
-sudo git checkout v1.1
-sudo make install
+# Step 1 - Interleave FastQs (i.e., merge both paired end files into a single file as a requirement of khmer)
+interleave-reads.py reads.pe1.trimmed.fastq reads.pe2.trimmed.fastq -o reads.pe12.trimmed.fastq
+# Step 2 - normalize everything to a depth coverage of 20x, filter low abundance khmers, remove orphaned reads
+normalize-by-median.py -p -k 20 -C 20 -N 2 -x 1e9 --savetable filteringtable.kh  reads.pe12.trimmed.fastq && filter-abund.py -V filteringtable.kh *.keep && extract-paired-reads.py *.abundfilt
+# Step 3 - De-interleave filtered reads
+split-paired-reads.py reads.pe12.trimmed.keep.abundfilt.pe
+# Step 4 (optional) - Rename output reads to something more user friendly
+mv reads.pe1.trimmed.keep.abundfilt.pe reads.filtered.pe1.fastq
+mv reads.pe2.trimmed.keep.abundfilt.pe reads.filtered.pe2.fastq
 ```
 
-On the cluster
-```bash
-module load virtualenv
-virtualenv khmerEnv
-source khmerEnv/bin/activate
-pip install khmer
-```
+## Quality assessment of normalized reads
+Once again, copy the resulting ```*trimmed.keep.abundfilt*``` files to you local machine and run FastQC. What was the effect of diginorm?
 
-## Run
-Like you did for filtering, run FastQC on the output after each step of diginorm.
+# Part 2  - Assembling reads
 
-### Preparation - interleave FastQ
-
-```bash
-interleave-reads.py sample1.pe1.trimmed.fastq sample1.pe2.trimmed.fastq -o sample1.pe12.trimmed.fastq
-```
-
-### First pass - normalize
-
-Normalize everything to a coverage of 20
-
-```bash
-normalize-by-median.py -p -k 20 -C 20 -N 2 -x 1e9 --savetable normC20k20.kh  sample1.pe12.trimmed.fastq
-```
-
-This produces a set of '.keep' files, as well as a normC20k20.kh
-database file.
-
-### Second pass - filter low abundance kmers
-
-Use 'filter-abund' to trim off any k-mers that are abundance-1 in
-high-coverage reads.  The -V option is used to make this work better
-for variable coverage data sets:
-
-```bash
-filter-abund.py -V normC20k20.kh *.keep
-```
-
-This produces .abundfilt files containing the trimmed sequences.
-
-### Post-processing
-
-The process of error trimming could have orphaned reads, so split the
-PE file into still-interleaved and non-interleaved reads
-
-```bash
-extract-paired-reads.py *.abundfilt
-```
-This leaves you with a PE file (\*.keep.abundfilt.pe).
-
-To de-interleave that PE file, run the following:
-
-```bash
-split-paired-reads.py sample1.pe12.trimmed.keep.abundfilt.pe
-```
-
-# Assembly
-Good websites to start choosing assemblers to test:  
+## Assembly
+To be pragmatic, we are going to use just SOAPdenovo to assemble our reads, but many more assembler are available out there, each one with it's own pros and cons. Picking the right one is not a trivial task. Here are some websites to start picking an assembler:  
 * http://davis-assembly-masterclass-2013.readthedocs.org/en/latest/outputs/opinionated-guide.html
 * http://nucleotid.es
 
-## SOAPdenovo
+### [SOAPdenovo](http://soap.genomics.org.cn) ([documentation](https://github.com/aquaskyline/SOAPdenovo2))
 > A novel short-read assembly method that can build a de novo draft assembly for the human-sized genomes
 
-### Install
+#### Config file
+SOAPdenovo gets most of it's parameters from a configuration file that you need to create. 
+You can simply create a new text file (name it soap-config.txt) and copy paste the content below, and move that file to the cluster. Adjust ```q1``` and ```q2``` to match the PATH of your files (i.e., replace ```USER```).
 
-```bash
-module load SOAP/2.40
 ```
-
-### Config file
-```
-max_rd_len=101
+max_rd_len=101          # maximal read length
 [LIB]
-avg_ins=470
-reverse_seq=0
-asm_flags=3
-rank=1
-q1=/data/SBCS-MSc-BioInf/USER/sample1.pe1.fastq
-q2=/data/SBCS-MSc-BioInf/USER/sample1.pe2.fastq
+avg_ins=470             # average insert size
+reverse_seq=0           # if sequence needs to be reversed
+asm_flags=3             # in which part(s) the reads are used
+rank=1                  # in which order the reads are used while scaffolding
+q1=/data/SBCS-MSc-BioInf/USER/reads.filtered.pe1.fastq
+q2=/data/SBCS-MSc-BioInf/USER/reads.filtered.pe2.fastq
 ```
 
-### Run
+#### Run
 
 ```bash
-SOAPdenovo all -s soap-config -K 63 -R -o graph
+SOAPdenovo all -s soap-config.txt -K 63 -R -o graph
 ```
 
-## ABySS
+## Assembly quality assessment
 
-### Install
-ABySS is already installed on biolinux 8.
-
-### Run
-```bash
-abyss-pe k=21 name='sample1-abyss-k21' in="sample1.pe1.fastq sample1.pe2.fastq"
-```
-
-## Velvet
-
-### Install
-
-Velvet is already installed on biolinux 8.
-
-### Run
-```bash
-velveth sample1-velvet-k21 21 -fastq -shortPaired -separate -fastq sample1.pe1.fastq sample1.pe2.fastq
-velvetg sample1-velvet-k21 -exp_cov auto -cov_cutoff auto
-```
-Run some more with different kmer values to compare later
-
-## SPAdes
-
-### Install
-
-```bash
-wget http://spades.bioinf.spbau.ru/release2.5.1/SPAdes-2.5.1.tar.gz
-tar -xzf SPAdes-2.5.1.tar.gz
-cd SPAdes-2.5.1
-sudo PREFIX=/usr/local ./spades_compile.sh
-```
-### Run
-
-```bash
-spades.py --sc --pe1-12 reads.clean.fastq -o sample1-spades
-```
-
-# Metrics
-
-## [Quast](http://bioinf.spbau.ru/quast)
-> Quality Assessment Tool for Genome Assemblies
-
-```bash
-wget http://downloads.sourceforge.net/project/quast/quast-2.3.tar.gz
-tar xzvf quast-2.3.tar.gz
-cd quast
-./quast.py ../sample1-abyss-contigs.fa ../sample1-abyss-scaffolds.fa ../sample1-velvet-k21/contigs.fa ../sample1-spades/contigs.fasta
-firefox quast_results/latest/report.html
-```
-
-## [Busco](http://busco.ezlab.org)
-> Assessing genome assembly and annotation completeness with single-copy orthologs
-
-```bash
-module load busco
-wget http://busco.ezlab.org/files/arthropoda_buscos.tar.gz
-tar xzvf arthropoda_buscos.tar.gz
-busco -o sample1-busco -in ../sample1-assembly/contigs.fasta -l arthropod -m genome
-```
-
-## [Cegma](http://korflab.ucdavis.edu/datasets/cegma/)
+### [Cegma](http://korflab.ucdavis.edu/datasets/cegma/)
 > A pipeline to accurately annotate core genes in eukaryotic genomes
 
+For assemblies quality assessment we use cegma.
+
 ```bash
-module load cegma
 cegma --genome ../sample1-assembly/contigs.fasta
 ```
+
+## Extra
+
+If you've completed the practical, you can try changing some of the parameters in some steps and see what happens, or try [other assemblers](assembly-practical-extra-assemblers.md) or [quality assessment tools](assembly-practical-extra-qa.md)
