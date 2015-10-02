@@ -1,9 +1,8 @@
-## MSc Bioinformatics
-### QA and Assembly
+## BIO721P Genome-Bioinformatics
+### Genome assembly 
+(and quality assessment)
 
-<!-- We will need a Flash presentation from you which should be a maximum of 5 minutes with a brief introduction and synopsis of your career plus your work/involvement in the areas this workshop is covering and a maximum of 4 slides - this needs to be with us by latest 8 September (apologies for the short notice). -->
-
-<small style="float: right;"><a href="//bmpvieira.com/assembly14" target="_blank">bmpvieira.com/assembly14</a></small>
+<small style="float: right;"><a href="//bmpvieira.com/assembly15" target="_blank">bmpvieira.com/assembly15</a></small>
 <br>
 
 <img style="width: 30%; float: right; padding-right: 1em;" alt="bmpvieira" src="img/bmpvieira.png" />
@@ -19,25 +18,13 @@ Supervisor:
 Yannick Wurm | <i class="fa fa-twitter"></i>  <a href="//twitter.com/yannick__" target="_blank">@yannick__</a>
 </span><br>
 <small>
-<!-- Before:
-<br>
-<a href="http://www.ciencias.ulisboa.pt" target="_blank"><img style="max-height: 7%;  float: left;" alt="FCUL" src="img/fcul.png" /></a>
-<a href="http://cobig2.com" target="_blank"><img style="max-height: 7%; float: left;" alt="CoBiG2" src="img/cobig2.png" /></a>
-<a href="http://eseb2013.com" target="_blank"><img style="max-height: 7%; float: left;" alt="eseb2013" src="img/eseb2013.png" /></a>
-<a href="https://geekli.st" target="_blank"><img style="max-height: 7%; float: left;" alt="geeklist" src="img/geeklist.png" />
-<a href="http://www.bbsrc.ac.uk" target="_blank"><img style="max-height: 7%; float: left;" alt="bbsrc" src="img/bbsrc.png" /> -->
 
 </small>
 <div style="position:absolute; top: 82%; font-size:.35em;">
-© 2014 <a href="http://bmpvieira.com" target="_blank">Bruno Vieira</a> <a href="http://creativecommons.org/licenses/by/4.0/deed.en_US" target="_blank">CC-BY 4.0</a>
+© 2015 <a href="http://bmpvieira.com" target="_blank">Bruno Vieira</a> <a href="http://creativecommons.org/licenses/by/4.0/deed.en_US" target="_blank">CC-BY 4.0</a>
 </div>
 
-
 ---
-
-### Download data
-
-[bit.ly/ant-reads](https://bit.ly/ant-reads)
 
 ### Useful books
 
@@ -49,9 +36,26 @@ Yannick Wurm | <i class="fa fa-twitter"></i>  <a href="//twitter.com/yannick__" 
 
 [Assemblathon 2: evaluating de novo methods of genome assembly[...]](http://doi.org/10.1186/2047-217X-2-10)
 
+[A field guide to whole-genome sequencing, assembly and annotation](http://doi.org/10.1111/eva.12178)
+
 ---
 
-## Genome Assembly
+<img src="img/bigpicture.png" />
+<br>
+<small>
+[Ekblom 2014](http://doi.org/10.1111/eva.12178)
+</small>
+
+---
+
+<img src="img/assembly.png" />
+<small>
+[Chen 2011](http://bioinformatics.udel.edu/sites/bioinformatics.udel.edu/files/pdfs/AnnotationWrkshp/GenomeSequenceAssembly-Chen.pdf)
+</small>
+
+---
+
+## Part I - Manual genome Assembly
 
 <center>
 <a href="http://doi.org/10.1038/nmeth.1935" target="__blank"><img src="img/assembly-paper.png" /></a>
@@ -60,10 +64,87 @@ Yannick Wurm | <i class="fa fa-twitter"></i>  <a href="//twitter.com/yannick__" 
 
 ---
 
-<img src="img/assembly.png" />
-<small>
-[Chen 2011](http://bioinformatics.udel.edu/sites/bioinformatics.udel.edu/files/pdfs/AnnotationWrkshp/GenomeSequenceAssembly-Chen.pdf)
-</small>
+## Part II - Reads quality assessment and cleaning
+
+---
+
+### [FastQC](http://www.bioinformatics.babraham.ac.uk/projects/fastqc/)
+
+<img style="width: 70%;" src="img/fastqc.png" />
+
+[FastQC Documentation](http://www.bioinformatics.babraham.ac.uk/projects/fastqc/Help/3%20Analysis%20Modules)
+
+---
+
+<img src="img/fastx-quals.png" />
+
+---
+
+<img src="img/trim.png" />
+
+---
+
+### [Diginorm](http://arxiv.org/abs/1203.4802)
+
+>"(...)systematizes coverage in shotgun sequencing data sets, thereby decreasing sampling variation, discarding redundant data, and removing the majority of errors."
+
+---
+
+### [Diginorm](http://arxiv.org/abs/1203.4802)
+
+>"(...)reduces the size of shotgun data sets and decreases the memory and time requirements for de novo sequence assembly, all without significantly impacting content of the generated contigs."
+
+<span class="fragment fade-in">Magic?</span> <span class="fragment fade-in">No, [Bloom filters](http://en.wikipedia.org/wiki/Bloom_filter)</span>
+
+---
+
+### [Diginorm](http://arxiv.org/abs/1203.4802)
+
+<img style="width: 50%;" src="img/raw-coverage.png" /><img style="width: 50%;" src="img/norm-coverage.png" />
+
+
+
+[What is digital normalization, anyway?](http://ivory.idyll.org/blog/what-is-diginorm.html)
+
+[Why you shouldn't use digital normalization](http://ivory.idyll.org/blog/why-you-shouldnt-use-diginorm.html)
+
+---
+
+### Fast<span style="color: green;">a</span>
+
+<img src="img/fasta.png" />
+
+---
+
+### Fast<span style="color: green;">q</span>
+
+<img src="img/fastq.png" />
+
+---
+### Fast<span style="color: green;">q</span>
+
+<img src="img/fastq-id.png" />
+
+---
+
+<img src="img/quals.png" />
+
+---
+
+### Interleaved format
+
+<img src="img/fastq-interleaved.png" />
+
+
+---
+
+### Practical
+
+[Part II]()
+
+---
+
+## Part III - Assembling reads
 
 ---
 
@@ -216,10 +297,12 @@ A5, ABySS, ALLPATHS, CABOG, CLCbio, Contrail, Curtain, DecGPU, Forge, Geneious, 
 ### Assembly quality assessment
 
 <ul>
-  <li class="fragment fade-in">**Fragment analysis** - Count how many randomly chosen fragments from species A genome can be found in assembly</li>
+  <li class="fragment fade-in">**Fragment analysis** - Count how many randomly chosen fragments from a species genome can be found in the assembly</li>
   <li class="fragment fade-in">**Repeat analysis** - Choose fragments that either overlap or don’t overlap a known repeat</li>
   <li class="fragment fade-in">**Gene finding** - How many genes are present in each assembly? ([CEGMA](http://korflab.ucdavis.edu/datasets/cegma/#SCT2))</li>
 </ul>
+
+[source](http://korflab.ucdavis.edu/datasets/Assemblathon/Assemblathon1/assemblathon_talk.pdf)
 
 ---
 
@@ -227,13 +310,12 @@ A5, ABySS, ALLPATHS, CABOG, CLCbio, Contrail, Curtain, DecGPU, Forge, Geneious, 
 
 <ul>
   <li class="fragment fade-in">**Contamination** - “all libraries will contain some bacterial contamination”</li>
-  <li class="fragment fade-in">**Mauve analysis** - Uses whole genome alignment to reveal</li>
+  <li class="fragment fade-in">**Mauve analysis** - Uses whole genome alignment</li>
   <li class="fragment fade-in">**BWA analysis** - Align contigs to genome</li>
   <li class="fragment fade-in">**[Optical Maps](http://en.wikipedia.org/wiki/Optical_mapping) / [Irys](http://www.bionanogenomics.com/technology/why-genome-mapping/)**</li>
-
 </ul>
 
-
+[source](http://korflab.ucdavis.edu/datasets/Assemblathon/Assemblathon1/assemblathon_talk.pdf)
 
 ---
 
@@ -241,78 +323,16 @@ A5, ABySS, ALLPATHS, CABOG, CLCbio, Contrail, Curtain, DecGPU, Forge, Geneious, 
 
 ---
 
-### [FastQC](http://www.bioinformatics.babraham.ac.uk/projects/fastqc/)
-
-<img style="width: 70%;" src="img/fastqc.png" />
-
-[FastQC Documentation](http://www.bioinformatics.babraham.ac.uk/projects/fastqc/Help/3%20Analysis%20Modules)
-
----
-
-<img src="img/fastx-quals.png" />
-
----
-
-<img src="img/trim.png" />
-
----
-
-### [Diginorm](http://arxiv.org/abs/1203.4802)
-
->"(...)systematizes coverage in shotgun sequencing data sets, thereby decreasing sampling variation, discarding redundant data, and removing the majority of errors."
-
----
-
-### [Diginorm](http://arxiv.org/abs/1203.4802)
-
->"(...)reduces the size of shotgun data sets and decreases the memory and time requirements for de novo sequence assembly, all without significantly impacting content of the generated contigs."
-
-<span class="fragment fade-in">Magic?</span> <span class="fragment fade-in">No, [Bloom filters](http://en.wikipedia.org/wiki/Bloom_filter)</span>
-
----
-
-### [Diginorm](http://arxiv.org/abs/1203.4802)
-
-<img style="width: 50%;" src="img/raw-coverage.png" /><img style="width: 50%;" src="img/norm-coverage.png" />
-
-
-
-[What is digital normalization, anyway?](http://ivory.idyll.org/blog/what-is-diginorm.html)
-
-[Why you shouldn't use digital normalization](http://ivory.idyll.org/blog/why-you-shouldnt-use-diginorm.html)
-
----
-
-### Fast<span style="color: green;">a</span>
-
-<img src="img/fasta.png" />
-
----
-
-### Fast<span style="color: green;">q</span>
-
-<img src="img/fastq.png" />
-
----
-### Fast<span style="color: green;">q</span>
-
-<img src="img/fastq-id.png" />
-
----
-
-<img src="img/quals.png" />
-
----
-
-### Interleaved format
-
-<img src="img/fastq-interleaved.png" />
-
-
----
-
 ### Practical
 
-[bmpvieira.com/assembly14-practical](http://bmpvieira.com/assembly14-practical)
+[Part III]()
+
+---
+
+## Part IV - Try manual assembly again? (optional/homework)
+
+<center>
+<a href="http://doi.org/10.1038/nmeth.1935" target="__blank"><img src="img/assembly-paper.png" /></a>
+</center>
 
 ---
