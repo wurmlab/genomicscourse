@@ -9,7 +9,7 @@ cp /data/SBCS-MSc-BioInf/data/* .
 module load seqtk khmer SOAP cegma
 ```
 
-# Part 1 - Cleaning reads
+# Part 2 - Cleaning reads
 
 ## Raw reads quality assessment
 

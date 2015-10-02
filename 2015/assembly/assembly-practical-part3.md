@@ -1,4 +1,4 @@
-# Part 2  - Assembling reads
+# Part 3  - Assembling reads
 
 ## Assembly
 To be pragmatic, we are going to use just SOAPdenovo to assemble our reads, but many more assembler are available out there, each one with it's own pros and cons. Picking the right one is not a trivial task. Here are some websites to start picking an assembler:  
