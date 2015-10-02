@@ -1,0 +1,71 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta http-equiv="Content-Style-Type" content="text/css" />
+  <meta name="generator" content="pandoc" />
+  <title></title>
+  <style type="text/css">code{white-space: pre;}</style>
+  <style type="text/css">
+table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
+  margin: 0; padding: 0; vertical-align: baseline; border: none; }
+table.sourceCode { width: 100%; line-height: 100%; }
+td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
+td.sourceCode { padding-left: 5px; }
+code > span.kw { color: #007020; font-weight: bold; }
+code > span.dt { color: #902000; }
+code > span.dv { color: #40a070; }
+code > span.bn { color: #40a070; }
+code > span.fl { color: #40a070; }
+code > span.ch { color: #4070a0; }
+code > span.st { color: #4070a0; }
+code > span.co { color: #60a0b0; font-style: italic; }
+code > span.ot { color: #007020; }
+code > span.al { color: #ff0000; font-weight: bold; }
+code > span.fu { color: #06287e; }
+code > span.er { color: #ff0000; font-weight: bold; }
+  </style>
+</head>
+<body>
+<h1 id="preparation">Preparation</h1>
+<pre class="sourceCode bash"><code class="sourceCode bash"><span class="co"># Create a folder and copy raw data to it</span>
+<span class="kw">mkdir</span> 2015-10-05_experiment1
+<span class="kw">cd</span> 2015-10-05_experiment1
+<span class="kw">cp</span> /data/SBCS-MSc-BioInf/data/* .
+<span class="co"># Load all the tools we are going to use</span>
+<span class="kw">module</span> load seqtk khmer SOAP cegma</code></pre>
+<h1 id="part-1---cleaning-reads">Part 1 - Cleaning reads</h1>
+<h2 id="raw-reads-quality-assessment">Raw reads quality assessment</h2>
+<h3 id="fastqc-documentation"><a href="http://www.bioinformatics.babraham.ac.uk/projects/fastqc/">FastQC</a> (<a href="http://www.bioinformatics.babraham.ac.uk/projects/fastqc/Help/">documentation</a>)</h3>
+<blockquote>
+<p>A quality control tool for high throughput sequence data.</p>
+</blockquote>
+<p>Copy the raw sequence files (reads.pe*.fastq.gz) from the cluster to your local machine and run FastQC on them (to speed this practical, you can choose to run FastQC on only one of the files). Interpret the results (<a href="http://www.bioinformatics.babraham.ac.uk/projects/fastqc/Help/3%20Analysis%20Modules/">you can check the documentation to understand what each plot means</a>).</p>
+<h2 id="trimming">Trimming</h2>
+<h3 id="seqtk-documentation"><a href="https://github.com/lh3/seqtk">seqtk</a> (<a href="http://manpages.ubuntu.com/manpages/vivid/man1/seqtk.1.html">documentation</a>)</h3>
+<blockquote>
+<p>A fast and lightweight tool for processing sequences in the FASTA or FASTQ format.</p>
+</blockquote>
+<p>Based on the results from FastQC, figure out how much you should trim from the left and right side of the sequences. Replace x and y below accordingly.</p>
+<pre class="sourceCode bash"><code class="sourceCode bash"><span class="kw">seqtk</span> trimfq -b x -e y reads.pe1.fastq <span class="kw">&gt;</span> reads.pe1.trimmed.fastq
+<span class="kw">seqtk</span> trimfq -b x -e y reads.pe2.fastq <span class="kw">&gt;</span> reads.pe2.trimmed.fastq</code></pre>
+<h2 id="quality-assessment-of-trimmed-reads">Quality assessment of trimmed reads</h2>
+<p>Run FastQC on the <code>\*trimmed.fastq</code> files and compare the results with what you had before trimming.</p>
+<h2 id="digital-normalization-diginorm">Digital normalization (diginorm)</h2>
+<h3 id="khmer-documentation"><a href="https://github.com/ged-lab/khmer">khmer</a> (<a href="http://khmer.readthedocs.org/en/v2.0/">documentation</a>)</h3>
+<blockquote>
+<p>In-memory nucleotide sequence k-mer counting, filtering, graph traversal and more</p>
+</blockquote>
+<pre class="sourceCode bash"><code class="sourceCode bash"><span class="co"># Step 1 - Interleave FastQs (i.e., merge both paired end files into a single file as a requirement of khmer)</span>
+<span class="kw">interleave-reads.py</span> reads.pe1.trimmed.fastq reads.pe2.trimmed.fastq -o reads.pe12.trimmed.fastq
+<span class="co"># Step 2 - normalize everything to a depth coverage of 20x, filter low abundance khmers, remove orphaned reads</span>
+<span class="kw">normalize-by-median.py</span> -p -k 20 -C 20 -N 2 -x 1e9 --savetable filteringtable.kh  reads.pe12.trimmed.fastq <span class="kw">&amp;&amp;</span> <span class="kw">filter-abund.py</span> -V filteringtable.kh *.keep <span class="kw">&amp;&amp;</span> <span class="kw">extract-paired-reads.py</span> *.abundfilt
+<span class="co"># Step 3 - De-interleave filtered reads</span>
+<span class="kw">split-paired-reads.py</span> reads.pe12.trimmed.keep.abundfilt.pe
+<span class="co"># Step 4 (optional) - Rename output reads to something more user friendly</span>
+<span class="kw">mv</span> reads.pe1.trimmed.keep.abundfilt.pe reads.filtered.pe1.fastq
+<span class="kw">mv</span> reads.pe2.trimmed.keep.abundfilt.pe reads.filtered.pe2.fastq</code></pre>
+<h2 id="quality-assessment-of-normalized-reads">Quality assessment of normalized reads</h2>
+<p>Once again, copy the resulting <code>*trimmed.keep.abundfilt*</code> files to you local machine and run FastQC. What was the effect of diginorm?</p>
+</body>
+</html>

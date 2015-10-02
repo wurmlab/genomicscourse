@@ -32,11 +32,11 @@ Yannick Wurm | <i class="fa fa-twitter"></i>  <a href="//twitter.com/yannick__" 
 * [Bioinformatics Data Skills](http://shop.oreilly.com/product/0636920030157.do)
 
 ### Papers
-[*De novo* genome assembly: what every biologist should know](http://doi.org/10.1038/nmeth.1935)
+* [*De novo* genome assembly: what every biologist should know](http://doi.org/10.1038/nmeth.1935)
 
-[Assemblathon 2: evaluating de novo methods of genome assembly[...]](http://doi.org/10.1186/2047-217X-2-10)
+* [Assemblathon 2: evaluating de novo methods of genome assembly[...]](http://doi.org/10.1186/2047-217X-2-10)
 
-[A field guide to whole-genome sequencing, assembly and annotation](http://doi.org/10.1111/eva.12178)
+* [A field guide to whole-genome sequencing, assembly and annotation](http://doi.org/10.1111/eva.12178)
 
 ---
 
@@ -140,7 +140,7 @@ Yannick Wurm | <i class="fa fa-twitter"></i>  <a href="//twitter.com/yannick__" 
 
 ### Practical
 
-[Part II]()
+[Part II](/MScGenomicsCourse/2015/assembly/assembly-practical-part2.html)
 
 ---
 
@@ -325,7 +325,7 @@ A5, ABySS, ALLPATHS, CABOG, CLCbio, Contrail, Curtain, DecGPU, Forge, Geneious, 
 
 ### Practical
 
-[Part III]()
+[Part III](/MScGenomicsCourse/2015/assembly/assembly-practical-part3.html)
 
 ---
 
