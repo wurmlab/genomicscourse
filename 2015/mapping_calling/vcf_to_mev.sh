@@ -18,11 +18,10 @@ if [ -e $vcf ]; then
    # column each for the genotype of each sample
 
   # Header
-  echo scaffold position `grep "#CHROM" $vcf | \
-    ruby -pe 'gsub(/.+FORMAT\t/, "")'` \
+  echo scaffold position `grep "#CHROM" $vcf \
+    | ruby -pe 'gsub(/.+FORMAT\t/, "")'` \
+    | ruby -pe 'gsub(/ /, "\t")' \
     > tmp_snp_matrix.txt
-
-  cat tmp_snp_matrix.txt
 
   # VCF to matrix (add to file with header)
   bcftools query $vcf \
@@ -32,7 +31,7 @@ if [ -e $vcf ]; then
   # Mev expects the genotypes in a format that 'looks' like gene expression.
   ## Zeros are not allowed, so substitute 0 genotypes to -1
   ## Using a ruby 'one-liner' and regular expressions
-  cat tmp_snp_matrix.txt | ruby -pe 'gsub(/\t0/, "\t-1")' > snp_matrix.txt
+  cat tmp_snp_matrix.txt | ruby -pe 'gsub(/\t0/, "\t-1")'
 
   # rm temp file
   rm tmp_snp_matrix.txt
