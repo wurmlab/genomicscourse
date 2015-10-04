@@ -4,5 +4,7 @@ Course material for the practicals organised by the Wurm lab for the MSc Bioinfo
 Practicals include:
 * Genome assembly
 * Read mapping and variant calling
+
 Folders organised by year.
+
 [2015 Timetable](https://docs.google.com/spreadsheets/d/1t8yWgW-x1FjQMvjAr1_dMEsdzqS49oio9Q_ICj0zdkE/pubhtml)
