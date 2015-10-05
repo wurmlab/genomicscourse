@@ -11,7 +11,7 @@ To be pragmatic, we are going to use just SOAPdenovo to assemble our reads, but 
 
 #### Config file
 SOAPdenovo gets most of it's parameters from a configuration file that you need to create.
-You can simply create a new text file (name it soap-config.txt) and copy paste the content below, and move that file to the cluster. Adjust ```q1``` and ```q2``` to match the PATH of your files (i.e., replace ```USER```).
+You can simply create a new text file (name it soap-config.txt) and copy paste the content below, and move that file to the cluster. Adjust ```q1``` and ```q2``` to match the PATH of your files.
 
 ```
 max_rd_len=101          # maximal read length
@@ -32,7 +32,7 @@ SOAPdenovo-63mer all -s soap-config.txt -K 63 -R -o assembly
 
 The final log output should look like this:
 
-```bash
+```
 Scaffold number                  1304
 In-scaffold contig number        6649
 Total scaffold length            2596609
