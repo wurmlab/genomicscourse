@@ -7,6 +7,17 @@ cd 2015-10-05_experiment1
 cp /data/SBCS-MSc-BioInf/data/* .
 # Load all the tools we are going to use
 module load seqtk khmer SOAP cegma
+# If seqtk and khmer are not available do:
+# For seqtk
+git clone git@github.com:lh3/seqtk.git
+cd seqtk
+make
+# For khmer
+module load virtualenv
+virtualenv khmer
+. khmer/bin/activate
+module load gcc/4.8.2
+pip install khmer
 ```
 
 # Part 2 - Cleaning reads
@@ -16,7 +27,7 @@ module load seqtk khmer SOAP cegma
 ### [FastQC](http://www.bioinformatics.babraham.ac.uk/projects/fastqc/) ([documentation](http://www.bioinformatics.babraham.ac.uk/projects/fastqc/Help/))
 > A quality control tool for high throughput sequence data.
 
-Copy the raw sequence files (reads.pe*.fastq.gz) from the cluster to your local machine and run FastQC on them (to speed this practical, you can choose to run FastQC on only one of the files).
+Copy the raw sequence files (/data/SBCS-MSc-BioInf/data/reads.pe*.fastq.gz) from the cluster to your local machine and run FastQC on them (to speed this practical, you can choose to run FastQC on only one of the files).
 Interpret the results ([you can check the documentation to understand what each plot means](http://www.bioinformatics.babraham.ac.uk/projects/fastqc/Help/3%20Analysis%20Modules/)).
 
 ## Trimming
@@ -44,12 +55,12 @@ Run FastQC on the ```\*trimmed.fastq``` files and compare the results with what 
 # Step 1 - Interleave FastQs (i.e., merge both paired end files into a single file as a requirement of khmer)
 interleave-reads.py reads.pe1.trimmed.fastq reads.pe2.trimmed.fastq -o reads.pe12.trimmed.fastq
 # Step 2 - normalize everything to a depth coverage of 20x, filter low abundance khmers, remove orphaned reads
-normalize-by-median.py -p -k 20 -C 20 -N 2 -x 1e9 --savetable filteringtable.kh  reads.pe12.trimmed.fastq && filter-abund.py -V filteringtable.kh *.keep && extract-paired-reads.py *.abundfilt
+normalize-by-median.py -p -k 20 -C 20 -N 2 -x 1e9 -s filteringtable.kh  reads.pe12.trimmed.fastq && filter-abund.py -V filteringtable.kh *.keep && extract-paired-reads.py reads.pe12.trimmed.fastq.keep.abundfilt
 # Step 3 - De-interleave filtered reads
-split-paired-reads.py reads.pe12.trimmed.keep.abundfilt.pe
+split-paired-reads.py reads.pe12.trimmed.fastq.keep.abundfilt.pe
 # Step 4 (optional) - Rename output reads to something more user friendly
-mv reads.pe1.trimmed.keep.abundfilt.pe reads.filtered.pe1.fastq
-mv reads.pe2.trimmed.keep.abundfilt.pe reads.filtered.pe2.fastq
+mv reads.pe12.trimmed.fastq.keep.abundfilt.pe.1 reads.filtered.pe1.fastq
+mv reads.pe12.trimmed.fastq.keep.abundfilt.pe.2 reads.filtered.pe2.fastq
 ```
 
 ## Quality assessment of normalized reads

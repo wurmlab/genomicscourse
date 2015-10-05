@@ -7,6 +7,7 @@
   <title></title>
   <style type="text/css">code{white-space: pre;}</style>
   <style type="text/css">
+div.sourceCode { overflow-x: auto; }
 table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
   margin: 0; padding: 0; vertical-align: baseline; border: none; }
 table.sourceCode { width: 100%; line-height: 100%; }
@@ -42,18 +43,34 @@ avg_ins=470             # average insert size
 reverse_seq=0           # if sequence needs to be reversed
 asm_flags=3             # in which part(s) the reads are used
 rank=1                  # in which order the reads are used while scaffolding
-q1=/data/SBCS-MSc-BioInf/USER/reads.filtered.pe1.fastq
-q2=/data/SBCS-MSc-BioInf/USER/reads.filtered.pe2.fastq</code></pre>
+q1=reads.filtered.pe1.fastq
+q2=reads.filtered.pe2.fastq</code></pre>
 <h4 id="run">Run</h4>
-<pre class="sourceCode bash"><code class="sourceCode bash"><span class="kw">SOAPdenovo</span> all -s soap-config.txt -K 63 -R -o graph</code></pre>
+<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash"><span class="kw">SOAPdenovo-63mer</span> all -s soap-config.txt -K 63 -R -o assembly</code></pre></div>
+<p>The final log output should look like this:</p>
+<p><code>bash Scaffold number                  1304 In-scaffold contig number        6649 Total scaffold length            2596609 Average scaffold length          1991 Filled gap number                1 Longest scaffold                 11843 Scaffold and singleton number    1857 Scaffold and singleton length    2727151 Average length                   1468 N50                              2504 N90                              778 Weak points                      0</code></p>
+<p>Question: What do these value mean? Which ones do we want higher and which ones do we want smaller? You can try running again with another K value and see what happens. Where are the assembly scaffolds? What file format is that?</p>
 <h2 id="assembly-quality-assessment">Assembly quality assessment</h2>
 <h3 id="cegma"><a href="http://korflab.ucdavis.edu/datasets/cegma/">Cegma</a></h3>
 <blockquote>
 <p>A pipeline to accurately annotate core genes in eukaryotic genomes</p>
 </blockquote>
 <p>For assemblies quality assessment we use cegma.</p>
-<pre class="sourceCode bash"><code class="sourceCode bash"><span class="kw">cegma</span> --genome ../sample1-assembly/contigs.fasta</code></pre>
+<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash"><span class="kw">cegma</span> --genome assembly.scafSeq</code></pre></div>
+<p>CEGMA is very slow, while it runs you can try another faster alternative like Quast.</p>
+<h2 id="quast"><a href="http://bioinf.spbau.ru/quast">Quast</a></h2>
+<blockquote>
+<p>Quality Assessment Tool for Genome Assemblies</p>
+</blockquote>
+<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash"><span class="kw">wget</span> http://downloads.sourceforge.net/project/quast/quast-2.3.tar.gz
+<span class="kw">tar</span> xzvf quast-2.3.tar.gz
+<span class="kw">module</span> load python/2.7.9
+<span class="co"># Basic statistics (quick), similar to SOAPdenovo log</span>
+<span class="kw">./quast-2.3/quast.py</span> assembly.scafSeq
+<span class="co"># Eukaryotic genes finding (slower), similar to CEGMA</span>
+<span class="kw">./quast-2.3/quast.py</span> -f -e assembly.scafSeq
+<span class="co"># Results in quast_results/latest/report.html</span></code></pre></div>
 <h2 id="extra">Extra</h2>
-<p>If you've completed the practical, you can try changing some of the parameters in some steps and see what happens, or try <a href="assembly-practical-extra-assemblers.md">other assemblers</a> or <a href="assembly-practical-extra-qa.md">quality assessment tools</a></p>
+<p>If you've completed the practical, you can try changing some of the parameters in some steps and see what happens, or try <a href="assembly-practical-extra-assemblers.html">other assemblers</a> or <a href="assembly-practical-extra-qa.html">quality assessment tools</a>. You can also try to do the manual assembly again using k-mers this time. There is also several links to papers and online resources on the slides of the talk that you can check out.</p>
 </body>
 </html>
