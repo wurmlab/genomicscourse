@@ -1,9 +1,10 @@
 # Part 3  - Assembling reads
 
 ## Assembly
-To be pragmatic, we are going to use just SOAPdenovo to assemble our reads, but many more assembler are available out there, each one with it's own pros and cons. Picking the right one is not a trivial task. Here are some websites to start picking an assembler:  
-* http://davis-assembly-masterclass-2013.readthedocs.org/en/latest/outputs/opinionated-guide.html
-* http://nucleotid.es
+To be pragmatic, we are going to use just SOAPdenovo to assemble our reads, but many more assembler are available out there, each one with it's own pros and cons. Picking the right one is not a trivial task. Here are some websites to start picking an assembler:
+
+* [An opinionated guide](http://davis-assembly-masterclass-2013.readthedocs.org/en/latest/outputs/opinionated-guide.html)
+* [nucleotid.es](http://nucleotid.es)
 
 ### [SOAPdenovo](http://soap.genomics.org.cn) ([documentation](https://github.com/aquaskyline/SOAPdenovo2))
 > A novel short-read assembly method that can build a de novo draft assembly for the human-sized genomes
