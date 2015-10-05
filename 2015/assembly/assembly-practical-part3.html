@@ -52,7 +52,18 @@ q2=reads.filtered.pe2.fastq</code></pre>
 <h4 id="run">Run</h4>
 <div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash"><span class="kw">SOAPdenovo-63mer</span> all -s soap-config.txt -K 63 -R -o assembly</code></pre></div>
 <p>The final log output should look like this:</p>
-<p><code>Scaffold number                  1304 In-scaffold contig number        6649 Total scaffold length            2596609 Average scaffold length          1991 Filled gap number                1 Longest scaffold                 11843 Scaffold and singleton number    1857 Scaffold and singleton length    2727151 Average length                   1468 N50                              2504 N90                              778 Weak points                      0</code></p>
+<pre><code>Scaffold number                  1304
+In-scaffold contig number        6649
+Total scaffold length            2596609
+Average scaffold length          1991
+Filled gap number                1
+Longest scaffold                 11843
+Scaffold and singleton number    1857
+Scaffold and singleton length    2727151
+Average length                   1468
+N50                              2504
+N90                              778
+Weak points                      0</code></pre>
 <p>Question: What do these value mean? Which ones do we want higher and which ones do we want smaller? You can try running again with another K value and see what happens. Where are the assembly scaffolds? What file format is that?</p>
 <h2 id="assembly-quality-assessment">Assembly quality assessment</h2>
 <h3 id="cegma"><a href="http://korflab.ucdavis.edu/datasets/cegma/">Cegma</a></h3>
