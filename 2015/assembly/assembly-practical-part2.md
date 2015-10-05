@@ -7,9 +7,10 @@ cd 2015-10-05_experiment1
 cp /data/SBCS-MSc-BioInf/data/* .
 # Load all the tools we are going to use
 module load seqtk khmer SOAP cegma
+
 # If seqtk and khmer are not available do:
 # For seqtk
-git clone git@github.com:lh3/seqtk.git
+git clone https://github.com/lh3/seqtk.git
 cd seqtk
 make
 # For khmer
@@ -39,8 +40,8 @@ Based on the results from FastQC, figure out how much you should trim from the l
 Replace x and y below accordingly.
 
 ```bash
-seqtk trimfq -b x -e y reads.pe1.fastq > reads.pe1.trimmed.fastq
-seqtk trimfq -b x -e y reads.pe2.fastq > reads.pe2.trimmed.fastq
+seqtk trimfq -b x -e y reads.pe1.fastq.gz > reads.pe1.trimmed.fastq
+seqtk trimfq -b x -e y reads.pe2.fastq.gz > reads.pe2.trimmed.fastq
 ```
 
 ## Quality assessment of trimmed reads

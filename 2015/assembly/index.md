@@ -1,5 +1,5 @@
 ## BIO721P Genome-Bioinformatics
-### Genome assembly 
+### Genome assembly
 (and quality assessment)
 
 <small style="float: right;"><a href="//bmpvieira.com/assembly15" target="_blank">bmpvieira.com/assembly15</a></small>
@@ -26,10 +26,6 @@ Yannick Wurm | <i class="fa fa-twitter"></i>  <a href="//twitter.com/yannick__" 
 
 ---
 
-<img src="img/yannick-overview.png"></img>
-
----
-
 ### Useful books
 
 * [The Command Line Crash Course](http://cli.learncodethehardway.org/book/)
@@ -44,6 +40,9 @@ Yannick Wurm | <i class="fa fa-twitter"></i>  <a href="//twitter.com/yannick__" 
 
 ---
 
+<img src="img/yannick-overview.png"></img>
+
+---
 <img src="img/bigpicture.png" />
 <br>
 <small>
@@ -81,32 +80,46 @@ Yannick Wurm | <i class="fa fa-twitter"></i>  <a href="//twitter.com/yannick__" 
 ---
 
 <ul>
-<li class="fragment">Quality trimming
-<ul>
-<li>Based on quality scores</li>
-</ul>
-</li>
-<li class="fragment">Ambiguity trimming
-<ul>
-<li>Remove stretches of N</li>
-</ul>
-</li>
-<li class="fragment">Adapter sequence trimming
-<ul>
-<li>Remove sequence adapters</li>
-</ul>
-</li>
-<li class="fragment">Base trim
-<ul>
-<li>Remove a specified number of bases at either 3' or 5' end of the reads/li>
-</ul>
-</li>
-<li class="fragment">
-Length trim
-<ul>
-<li>Remove reads shorter or longer that specified length</li>
-</ul>
-</li>
+  <li class="fragment">
+    Quality trimming
+    <ul>
+      <li>
+        Based on quality scores
+      </li>
+    </ul>
+  </li>
+  <li class="fragment">
+    Ambiguity trimming
+    <ul>
+      <li>
+        Remove stretches of N
+      </li>
+    </ul>
+  </li>
+  <li class="fragment">
+    Adapter sequence trimming
+    <ul>
+      <li>
+        Remove sequence adapters
+      </li>
+    </ul>
+  </li>
+  <li class="fragment">
+    Base trim
+    <ul>
+      <li>
+        Remove a specified number of bases at either 3' or 5' end of the reads
+      </li>
+    </ul>
+  </li>
+  <li class="fragment">
+    Length trim
+    <ul>
+      <li>
+        Remove reads shorter or longer that specified length
+      </li>
+    </ul>
+  </li>
 </ul>
 
 ---

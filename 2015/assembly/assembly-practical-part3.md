@@ -45,7 +45,7 @@ Average length                   1468
 N50                              2504
 N90                              778
 Weak points                      0
- ```
+```
 
 Question: What do these value mean? Which ones do we want higher and which ones do we want smaller? You can try running again with another K value and see what happens. Where are the assembly scaffolds? What file format is that?
 
