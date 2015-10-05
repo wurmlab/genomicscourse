@@ -7,6 +7,7 @@
   <title></title>
   <style type="text/css">code{white-space: pre;}</style>
   <style type="text/css">
+div.sourceCode { overflow-x: auto; }
 table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
   margin: 0; padding: 0; vertical-align: baseline; border: none; }
 table.sourceCode { width: 100%; line-height: 100%; }
@@ -28,22 +29,13 @@ code > span.er { color: #ff0000; font-weight: bold; }
 </head>
 <body>
 <h1 id="more-assembly-quality-assessment-tools">More assembly quality assessment tools</h1>
-<h2 id="quast"><a href="http://bioinf.spbau.ru/quast">Quast</a></h2>
-<blockquote>
-<p>Quality Assessment Tool for Genome Assemblies</p>
-</blockquote>
-<pre class="sourceCode bash"><code class="sourceCode bash"><span class="kw">wget</span> http://downloads.sourceforge.net/project/quast/quast-2.3.tar.gz
-<span class="kw">tar</span> xzvf quast-2.3.tar.gz
-<span class="kw">cd</span> quast
-<span class="kw">./quast.py</span> scaffolds.fasta
-<span class="co"># Results in quast_results/latest/report.html</span></code></pre>
 <h2 id="busco"><a href="http://busco.ezlab.org">Busco</a></h2>
 <blockquote>
 <p>Assessing genome assembly and annotation completeness with single-copy orthologs</p>
 </blockquote>
-<pre class="sourceCode bash"><code class="sourceCode bash"><span class="kw">module</span> load busco
+<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash"><span class="kw">module</span> load python/3.4.3 hmmer/3.1 augustus/3.0.2 EMBOSS/6.6.0
 <span class="kw">wget</span> http://busco.ezlab.org/files/arthropoda_buscos.tar.gz
 <span class="kw">tar</span> xzvf arthropoda_buscos.tar.gz
-<span class="kw">busco</span> -o busco-report -in scaffolds.fasta -l arthropod -m genome</code></pre>
+<span class="kw">python</span> /data/SBCS-MSc-BioInf/busco.py -o busco-output -in assembly.scafSeq -l arthropoda -m genome</code></pre></div>
 </body>
 </html>
