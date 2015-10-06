@@ -24,7 +24,13 @@ We will align the reads to a subset of the reference genome assembly of the spec
 
 ### Connect to the cluster and load the modules we will be using
 
-Log in to the cluster as you have been told in previous practical.
+```bash
+# First, login to Apocrita
+ssh abc123@login.hpc.qmul.ac.uk
+
+# From there, log into the MSc machine:
+ssh dn36 # or ssh dn42
+```
 
 Now type into the console:
 
