@@ -163,8 +163,7 @@ There are several approaches to call variants. The simplest approach is to look 
 samtools faidx reference.fa
 
 # Run samtools mpileup
-samtools mpileup -uf reference.fa *sorted.bam \
- > raw_calls.bcf
+samtools mpileup -uf reference.fa *sorted.bam > raw_calls.bcf
 ```
 
 #### Q. What does the symbol`*` mean here?
