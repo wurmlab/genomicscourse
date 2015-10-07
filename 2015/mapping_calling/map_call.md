@@ -186,11 +186,11 @@ Let's take a look at the VCF file produced by typing `less -S variant_calls.vcf`
 
 #### Q. Use `less` to look at the VCF file. Where does the Header start and end?
 
-#### Q. Can you tell how the genotype of each sample is coded?
+#### Q. How is the genotype of each sample coded?
 
 #### Q. How many variants were identified?
 
-#### Q. Can you tell the difference between SNPs and indels? How many of each has been identified?
+#### Q. Can you tell the difference between SNPs and indels? How many of each have been identified?
 
 ## Quality filtering of variant calls
 
@@ -198,7 +198,7 @@ Not all variants that we called are necessarily of good quality, so it is essent
 
 #### Q. What does a Phred-scale quality score of 30 mean?
 
-Using `bcftools filter`. We have to supply an expression, we can remove anything with quality call smaller than 30.
+We will filter the VCF using `bcftools filter`. We can remove anything with quality call smaller than 30:
 
 ```bash
 bcftools filter --exclude 'QUAL < 30' variant_calls.vcf > filtered_variant_calls.vcf
@@ -206,9 +206,9 @@ bcftools filter --exclude 'QUAL < 30' variant_calls.vcf > filtered_variant_calls
 
 In more serious analysis, it may be important to filter by other parameters.
 
-#### Can you find any other parameters indicating the quality of the site?
+#### Q. Can you find any other parameters indicating the quality of the site?
 
-#### Can you find any other parameters indicating the quality of the call for a given individual on a given site?
+#### Q. Can you find any other parameters indicating the quality of the call for a given individual on a given site?
 
 ## Viewing the results using IGV (Integrative Genome Viewer)
 
@@ -229,7 +229,7 @@ To run IGV, you need to define a genome file, which you have to create from the 
 
 You can loads some of the BAMS and the VCF file you produced.
 
-#### Q. Has mpileup recovered the same positions as IGV?
+#### Q. Has bcftools/mpileup recovered the same positions as IGV?
 
 #### Q. Do you think our filtering was effective?
 
@@ -253,6 +253,6 @@ If you don't have MEV installed, download it [here](http://sourceforge.net/proje
 
 Open the application and import the data (under File). A heat map is produced automatically.
 
-#### Analyse the variant calls:
+#### Q. Analyse the variant calls:
 
 In MeV, perform hierarchical clustering of the data and do a PCA. Can you find any consistent difference between B and b samples in our data?
