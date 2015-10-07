@@ -1,0 +1,113 @@
+﻿* Open New Words Document 
+* Log into Afra and select the *curate* option
+* Drag the first gene appearing in the maker track on the yellow editing track 
+* right click on the gene intron (Grey area) 
+* select *Get Sequence*
+* a new window will appear: copy and paste on your document the Protein sequence, the CDS sequence and the genomic sequence as they will come in handy later. 
+* note down the gene ID, you can find it on the first line of the genomic sequence (e.g. >afra-Si_gnH.scaffold00042-mRNA-1 Si_gnH.scaffold00042:367232..368768(-) genomic 1537bp)
+
+
+* Copy the Protein Sequence
+* BLAST against NCBI
+   * Look for all the hits present and select those with the highest identity value
+* If a Solenopsis invicta hit is present, analyse it first. Note down all the peculiarities you see:
+   * check that the e-value is close to zero, meaning that your results are not due to chance 
+   * check that the length of your query equals the length of the match, if it does not, it probably means there is an missing or extra sequence in your gene model
+* Make a comparison with the closest related organism available (eg. Solenopsis, Atta cepahlotes...).  Note down all the peculiarities you see.
+* Make a comparison with an independent organism (eg. Apis mellifera, Drosophila melanogaster, Nasonia vitripennis).  Note down all the peculiarities you see.
+* Once you have all the comparisons available you need to make a sensible decision about the fate of your gene
+
+
+* If RNA evidence point out the presence of an exon and the maker track doesn’t show one, a BLAST search is needed to assess the presence of that exon. 
+* If also BLAST suggests that particular exon could be present, look for the precise coordinates. 
+* Using the coordinates found, look for EST evidence in Afra
+* If EST evidence are present, drag that particular exon on the edit track and select both the gene model and the exon found. 
+* Right click, and select *merge* from the menu
+* To confirm your choice of exon, repeat BLAST. 
+* If BLAST results show that the exon is in the right place, save the protein sequence you curated
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+1. START AND STOP TRANSLATION SITES
+
+
+* Note down the length of your query against the length of the match as this information is important if you need to resize the gene on Afra.
+* Locate the reading frame where your gene start 
+* If needed look for ATG - M to produce and new start site (usually M is highlighted in green)
+* If needed look for TAG ("amber"), TAA ("ochre"), TGA ("opal" or "umber") - * stop codons (usually * is highlighted in red) 
+* Be careful when you set a new translation start/stop you need to make sure you select the whole gene by double-clicking or clicking on one intron, and not the single exon. You can use the set translation start/stop button on the menu it appears when you right click on the location where you need to set the new site. 
+NB. Afra will automatically calculate UTRs, so be careful when you set your translation sites not to change reading frame. 
+
+
+1. CHECK SPLICE SITES 
+
+
+* Introns generally begin with GT and end in AG
+* You may need to shift the start and ends of introns to ensure exon reading frame stays appropriate
+
+
+1. MERGE OR SPLIT TRANSCRIPT
+
+
+* Blast results could point out that the gene model is too long or too short. 
+* If the gene model is too long: 
+   * according to BLAST see where it could be split
+   * if you need to look for a specific region use the sequence search track (you can copy the AA sequence - not more than 5-6AA - and paste it in Afra or JBrowse
+   * once you locate the region in JBrowse select from the right-click menu *split transcript*
+   * Check the new translation starts and stops and modify them if needed, paying attention at the reading frame you are in.
+   * BLAST both the new sequences to check if your guess is correct
+* If the gene model is too short: 
+   * according to BLAST, check the gene boundaries and see where the sequence is likely to be missing
+   * according to your blast result, locate the scaffold you are working on and look for a possible gene on the same scaffold that could be merged with your gene model. 
+   * Drag the selected gene on the edit track, select both genes and select *merge* from the right-click menu. 
+   * Check the new translation starts and stops and modify them if needed, paying attention to the reading frame you are in. 
+   * BLAST against Uniprot or NCBI to check if your guess is correct.
+   * According to your BLAST results you can modify the gene further, adding extra sequences in the same way or splitting the transcript if needed. 
+
+
+
+
+
+
+1. ADD EXON
+
+
+* If RNA evidence point out the presence of an exon and the maker track doesn’t show one, a BLAST search is needed to assess the presence of that exon. 
+* If also BLAST suggests that particular exon could be present, look for the precise coordinates 
+* Using the coordinates found, look for EST evidence in Afra
+* If EST evidence are present, drag that particular exon on the edit track and select both the gene model and the exon found. 
+* Right click, and select *merge* from the menu
+* To confirm your choice of exon, repeat BLAST. 
+* If your BLAST search does not show enough evidence for the new exon to exist, it is likely that an error occurred in the process. In this case try to repeat the process again maybe using evidence from another track.
+
+
+1. REMOVE EXON
+
+
+* If RNA evidence show an exon where there should not be one, a BLAST search is needed to assess the presence of an extra sequence
+* If also BLAST suggest that there is an extra sequence, look for the precise coordinates.
+* Using the coordinates found, look for the precise location in Afra and remove the exon using right click and selecting *delete exon* from the menu. 
+*  BLAST to check if your guess is correct.

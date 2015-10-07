@@ -40,7 +40,11 @@ code > span.er { color: #ff0000; font-weight: bold; }
 <p>We will align the reads to a subset of the reference genome assembly of the species (the same regions we tried to assemble earlier) using the aligner <code>bowtie2</code>. We will try to find positions that differ between each individual and the reference with the software <code>samtools</code> and <code>bcftools</code>.</p>
 <h2 id="before-we-start-the-analysis">Before we start the analysis</h2>
 <h3 id="connect-to-the-cluster-and-load-the-modules-we-will-be-using">Connect to the cluster and load the modules we will be using</h3>
-<p>Log in to the cluster as you have been told in previous practical.</p>
+<pre class="sourceCode bash"><code class="sourceCode bash"><span class="co"># First, login to Apocrita</span>
+<span class="kw">ssh</span> abc123@login.hpc.qmul.ac.uk
+
+<span class="co"># From there, log into the MSc machine:</span>
+<span class="kw">ssh</span> dn36 <span class="co"># or ssh dn42</span></code></pre>
 <p>Now type into the console:</p>
 <pre class="sourceCode bash"><code class="sourceCode bash"><span class="kw">module</span> load samtools/1.1 bcftools/1.1 HTSlib/1.1</code></pre>
 <p>This loads the right version of the tools we are using in this practical. You need to type this if you restart a new session on the cluster, otherwise you will be using the wrong version of the tools and the practical will not work!</p>
@@ -105,8 +109,7 @@ code > span.er { color: #ff0000; font-weight: bold; }
 <span class="kw">samtools</span> faidx reference.fa
 
 <span class="co"># Run samtools mpileup</span>
-<span class="kw">samtools</span> mpileup -uf reference.fa *sorted.bam \
- <span class="kw">&gt;</span> raw_calls.bcf</code></pre>
+<span class="kw">samtools</span> mpileup -uf reference.fa *sorted.bam <span class="kw">&gt;</span> raw_calls.bcf</code></pre>
 <h4 id="q.-what-does-the-symbol-mean-here">Q. What does the symbol<code>*</code> mean here?</h4>
 <p>If you type <code>bcftools</code> in the console, you will see that this programme has a series of tools to manipulate VCF/BCF files. The tool we want to use is <code>bcftools call</code>, which does SNP and indel calling. As well as the consensus caller (option <code>-c</code>), which we are using, bcftools includes the multiallelic caller (option <code>-m</code>). Because we have a relatively small number of samples and low coverage for each of the sample, the consensus caller will do. Before we carry on, we need to remember that we are analysing male ants, which have haploid genomes! Because of this, we need to use option -S, which allows the user to add a list with two columns, the first with the name of the samples (i.e. that name of the <code>bam</code> files), the second with their ploidy (1 or 2).</p>
 <h4 id="q.-make-a-file-called-ploidy_per_sample.txt-with-a-column-with-the-bam-file-names-e.g.-f1_b.sorted.bam-and-a-column-with-the-ploidy-level-i.e.-1.">Q. Make a file (called ploidy_per_sample.txt) with a column with the bam file names (e.g. f1_B.sorted.bam) and a column with the ploidy level (i.e. 1).</h4>
