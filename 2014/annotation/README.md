@@ -2,6 +2,9 @@ Crowdsourcing gene predictions & estimating population sizes
 ============================================================
 Talk given in a seminar at the Queen Mary, University of London.
 
+* [slides] (http://wurmlab.github.io/MScGenomicsCourse/2014/annotation)
+* [practical (also linked in the last slide)](https://docs.google.com/document/d/1unZua1wysrTmVtpTM9rUptKrmkkhcxV4s6YYP3mz0NM/edit?usp=sharing)
+
 ```bash
 # Install homebrew
 brew install n # Install Node.js version manager
