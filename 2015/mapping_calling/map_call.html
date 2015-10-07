@@ -126,8 +126,7 @@ code > span.er { color: #ff0000; font-weight: bold; }
 <p>Not all variants that we called are necessarily of good quality, so it is essential to have a quality filter step. The VCF includes several fields with quality information. The most obvious is the column QUAL, which gives us a Phred-scale quality score.</p>
 <h4 id="q.-what-does-a-phred-scale-quality-score-of-30-mean">Q. What does a Phred-scale quality score of 30 mean?</h4>
 <p>Using <code>bcftools filter</code>. We have to supply an expression, we can remove anything with quality call smaller than 30.</p>
-<pre class="sourceCode bash"><code class="sourceCode bash"><span class="kw">bcftools</span> filter --exclude <span class="st">&#39;QUAL &lt; 30&#39;</span> variant_calls.vcf \
- <span class="kw">&gt;</span> filtered_variant_calls.vcf</code></pre>
+<pre class="sourceCode bash"><code class="sourceCode bash"><span class="kw">bcftools</span> filter --exclude <span class="st">&#39;QUAL &lt; 30&#39;</span> variant_calls.vcf <span class="kw">&gt;</span> filtered_variant_calls.vcf</code></pre>
 <p>In more serious analysis, it may be important to filter by other parameters.</p>
 <h4 id="can-you-find-any-other-parameters-indicating-the-quality-of-the-site">Can you find any other parameters indicating the quality of the site?</h4>
 <h4 id="can-you-find-any-other-parameters-indicating-the-quality-of-the-call-for-a-given-individual-on-a-given-site">Can you find any other parameters indicating the quality of the call for a given individual on a given site?</h4>
