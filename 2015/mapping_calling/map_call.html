@@ -119,17 +119,17 @@ code > span.er { color: #ff0000; font-weight: bold; }
 <p>The file produced a VCF (Variant Call Format) format telling the position, nature and quality of the called variants. The VCF format is the standard format used</p>
 <p>Let's take a look at the VCF file produced by typing <code>less -S variant_calls.vcf</code>. The file is composed of a header and of and rows for all the variant positions. Have a look at the different columns and check what each is (the header includes labels). Notice that some columns include several fields.</p>
 <h4 id="q.-use-less-to-look-at-the-vcf-file.-where-does-the-header-start-and-end">Q. Use <code>less</code> to look at the VCF file. Where does the Header start and end?</h4>
-<h4 id="q.-can-you-tell-how-the-genotype-of-each-sample-is-coded">Q. Can you tell how the genotype of each sample is coded?</h4>
+<h4 id="q.-how-is-the-genotype-of-each-sample-coded">Q. How is the genotype of each sample coded?</h4>
 <h4 id="q.-how-many-variants-were-identified">Q. How many variants were identified?</h4>
-<h4 id="q.-can-you-tell-the-difference-between-snps-and-indels-how-many-of-each-has-been-identified">Q. Can you tell the difference between SNPs and indels? How many of each has been identified?</h4>
+<h4 id="q.-can-you-tell-the-difference-between-snps-and-indels-how-many-of-each-have-been-identified">Q. Can you tell the difference between SNPs and indels? How many of each have been identified?</h4>
 <h2 id="quality-filtering-of-variant-calls">Quality filtering of variant calls</h2>
 <p>Not all variants that we called are necessarily of good quality, so it is essential to have a quality filter step. The VCF includes several fields with quality information. The most obvious is the column QUAL, which gives us a Phred-scale quality score.</p>
 <h4 id="q.-what-does-a-phred-scale-quality-score-of-30-mean">Q. What does a Phred-scale quality score of 30 mean?</h4>
-<p>Using <code>bcftools filter</code>. We have to supply an expression, we can remove anything with quality call smaller than 30.</p>
+<p>We will filter the VCF using <code>bcftools filter</code>. We can remove anything with quality call smaller than 30:</p>
 <pre class="sourceCode bash"><code class="sourceCode bash"><span class="kw">bcftools</span> filter --exclude <span class="st">&#39;QUAL &lt; 30&#39;</span> variant_calls.vcf <span class="kw">&gt;</span> filtered_variant_calls.vcf</code></pre>
 <p>In more serious analysis, it may be important to filter by other parameters.</p>
-<h4 id="can-you-find-any-other-parameters-indicating-the-quality-of-the-site">Can you find any other parameters indicating the quality of the site?</h4>
-<h4 id="can-you-find-any-other-parameters-indicating-the-quality-of-the-call-for-a-given-individual-on-a-given-site">Can you find any other parameters indicating the quality of the call for a given individual on a given site?</h4>
+<h4 id="q.-can-you-find-any-other-parameters-indicating-the-quality-of-the-site">Q. Can you find any other parameters indicating the quality of the site?</h4>
+<h4 id="q.-can-you-find-any-other-parameters-indicating-the-quality-of-the-call-for-a-given-individual-on-a-given-site">Q. Can you find any other parameters indicating the quality of the call for a given individual on a given site?</h4>
 <h2 id="viewing-the-results-using-igv-integrative-genome-viewer">Viewing the results using IGV (Integrative Genome Viewer)</h2>
 <p>In this part of the practical, we are going to use the software IGV on our local computer to visualise the alignments we created and check some of the positions where variants were called.</p>
 <p>First, download the IGV software (you will need to register your email address). Unzip it to your desktop (or wherever you want it), and click it to open. If you can't click it, type, on a new terminal window:</p>
@@ -139,7 +139,7 @@ code > span.er { color: #ff0000; font-weight: bold; }
 <p>We then need to get a copy the reference assembly fasta and some of the alignments (and their index files) from the cluster to your PC. Make sure you transfer BAMs from the two different colony types.</p>
 <p>To run IGV, you need to define a genome file, which you have to create from the fasta alignment (Genome &gt; Genomes from file, then choose the assembly fasta file.</p>
 <p>You can loads some of the BAMS and the VCF file you produced.</p>
-<h4 id="q.-has-mpileup-recovered-the-same-positions-as-igv">Q. Has mpileup recovered the same positions as IGV?</h4>
+<h4 id="q.-has-bcftoolsmpileup-recovered-the-same-positions-as-igv">Q. Has bcftools/mpileup recovered the same positions as IGV?</h4>
 <h4 id="q.-do-you-think-our-filtering-was-effective">Q. Do you think our filtering was effective?</h4>
 <h2 id="simple-analysis-of-the-variants">Simple analysis of the variants</h2>
 <p>In this section we are going to analyse the genotypes we identified. We are going to use the software MeV to create a heat map of the genotypes and to run Principal Component Analysis (PCA). MeV does not use the standard VCF. Instead, it requires a variant matrix in a particular, non-standard format: one column for the scaffold name, one column with the variant position, and a column for each sample with the genotype.</p>
@@ -151,7 +151,7 @@ code > span.er { color: #ff0000; font-weight: bold; }
 <p>Now download the variant matrix from the cluster to your PC.</p>
 <p>If you don't have MEV installed, download it <a href="http://sourceforge.net/projects/mev-tm4/files/">here</a>.</p>
 <p>Open the application and import the data (under File). A heat map is produced automatically.</p>
-<h4 id="analyse-the-variant-calls">Analyse the variant calls:</h4>
+<h4 id="q.-analyse-the-variant-calls">Q. Analyse the variant calls:</h4>
 <p>In MeV, perform hierarchical clustering of the data and do a PCA. Can you find any consistent difference between B and b samples in our data?</p>
 </body>
 </html>
