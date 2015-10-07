@@ -201,8 +201,7 @@ Not all variants that we called are necessarily of good quality, so it is essent
 Using `bcftools filter`. We have to supply an expression, we can remove anything with quality call smaller than 30.
 
 ```bash
-bcftools filter --exclude 'QUAL < 30' variant_calls.vcf \
- > filtered_variant_calls.vcf
+bcftools filter --exclude 'QUAL < 30' variant_calls.vcf > filtered_variant_calls.vcf
 ```
 
 In more serious analysis, it may be important to filter by other parameters.
