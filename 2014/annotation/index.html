@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>MSc Bioinformatics</title>
+
+  <link rel="stylesheet" href="vendors/revealjs/css/reveal.css">
+  <link rel="stylesheet" href="vendors/revealjs/css/print/reveal-like-pdf.css">
+  <link rel="stylesheet" href="vendors/Font-Awesome/css/font-awesome.min.css">
+  <link rel="stylesheet" href="theme/style.css">
+</head>
+
+<body>
+
+  <div class="reveal">
+    <div class="slides">
+      
+<section data-state=front>
+<h2 id="msc-bioinformatics">MSc Bioinformatics</h2>
+<h3 id="gene-predictions">Gene predictions</h3>
+<p><a href="//bmpvieira.com/annotation14" target="_blank">bmpvieira.com/annotation14</a></p>
+<p>Bruno Vieira | <i class="fa fa-twitter"></i> <a href="//twitter.com/bmpvieira" target="_blank">@bmpvieira</a><br>Elena Shanti Franchina</p>
+<p><img src="img/Queen_Mary,_University_of_London_logo.svg" alt="QMUL" style="float: left; padding: 1%; max-width: 26%; vertical-align: text-bottom;" /></p>
+</section>
+
+<section>
+<h3 id="why-is-this-important-">Why is this important?</h3>
+<p><span class="fragment" style="font-size: 1.5em; line-height: 1.3em;">Genes are the basic building block of organisms</span></p>
+</section>
+
+<section>
+<h3 id="how-">How?</h3>
+<p><img class="stretch" style="max-width: 75%;" src="img/gene-prediction-models.png" alt="Gene prediction models" /></p>
+<p><hr>
+<small>
+Gene prediction models
+ <a href="//dx.doi.org/10.1016/j.gene.2010.04.008" target="_blank">(Sleator, 2010)</a>
+</small></p>
+</section>
+
+<section>
+<section data-background="img/MAKER.jpg"></section>
+
+</section>
+
+<section>
+<section data-background="img/afra-demo-tutorial.png"></section>
+
+</section>
+
+<section>
+<section data-background="img/afra-demo-editing.mov.gif"></section>
+
+</section>
+
+<section>
+<section data-background="img/afra-demo-tutorial-highlight.png"></section>
+
+</section>
+
+<section>
+<h3 id="webapollo-afra">WebApollo -&gt; Afra</h3>
+<p><i class="fa fa-github-alt"></i> <a href="//github.com/gmod/apollo" target="_blank">gmod/apollo</a>
+→
+<i class="fa fa-github-alt"></i> <a href="//github.com/yeban/afra" target="_blank">yeban/afra</a></p>
+<p><br></p>
+<p><img src="http://yannick.poulet.org/img/anuragpriyam.jpg" alt="Anurag Priyam"> Anurag Priyam | <i class="fa fa-twitter"></i> <a href="//twitter.com/yeban" target="_blank">@yeban</a></p>
+</section>
+
+<section>
+<h3 id="blast">BLAST</h3>
+<ul>
+<li><a href="http://mcclintock.generationcp.org/index.php?option=com_content&amp;task=view&amp;id=27&amp;Itemid=46">Understanding BLAST Output</a></li>
+<li><a href="http://www.ncbi.nlm.nih.gov/books/NBK1734/">Example-Driven Web-Based BLAST Tutorial</a></li>
+</ul>
+</section>
+
+<section>
+<h3 id="missing-exon">Missing Exon</h3>
+<p><img src="img/missing-exon1.png" alt="15.afra original"></p>
+</section>
+
+<section>
+<h3 id="missing-exon">Missing Exon</h3>
+<p><img src="img/missing-exon2.png" alt="15.jbrowse original"></p>
+</section>
+
+<section>
+<h3 id="missing-exon">Missing Exon</h3>
+<p><img src="img/missing-exon3.png" alt="15. missing exon afra"></p>
+</section>
+
+<section>
+<h3 id="extra-exon">Extra Exon</h3>
+<p><img src="img/extra-exon1.png" alt="4. blast solenopsis2"></p>
+</section>
+
+<section>
+<h3 id="split">Split</h3>
+<p><img src="img/split1.png" alt="B. afra gene before edit"></p>
+</section>
+
+<section>
+<h3 id="split">Split</h3>
+<p><img src="img/split2.png" alt="2 possible gene..."></p>
+</section>
+
+<section>
+<h3 id="split">Split</h3>
+<p><img src="img/split3.png" alt="12.curation afra1"></p>
+</section>
+
+<section>
+<h3 id="practical">Practical</h3>
+<ul>
+<li><a href="http://afra.sbcs.qmul.ac.uk/#login">Afra Login</a></li>
+<li><a href="http://afra.sbcs.qmul.ac.uk/curate?id=4980">Task</a></li>
+<li><a href="https://docs.google.com/document/d/1unZua1wysrTmVtpTM9rUptKrmkkhcxV4s6YYP3mz0NM/edit?usp=sharing">Cookbook</a></li>
+</ul>
+
+</section>
+
+    </div>
+  </div>
+
+<script src="vendors/jquery-1.11.0.min.js"></script>
+
+<!-- reveal -->
+<script src="vendors/revealjs/lib/js/head.min.js"></script>
+<script src="vendors/revealjs/js/reveal.js"></script>
+<script>
+  Reveal.initialize({
+
+    // Display controls in the bottom right corner
+    controls: false,
+
+    // Display a presentation progress bar
+    progress: true,
+
+    // Display a subtle timer bar (time is in minutes)
+    timeRemaining: 15,
+
+    // Push each slide change to the browser history
+    history: true,
+
+    // Enable keyboard shortcuts for navigation
+    keyboard: true,
+
+    // Enable the slide overview mode
+    overview: true,
+
+    // Vertical centering of slides
+    center: false,
+
+    // Loop the presentation
+    loop: false,
+
+    // Change the presentation direction to be RTL
+    rtl: false,
+
+    // Number of milliseconds between automatically proceeding to the
+    // next slide, disabled when set to 0, this value can be overwritten
+    // by using a data-autoslide attribute on your slides
+    autoSlide: 0,
+
+    // Enable slide navigation via mouse wheel
+    mouseWheel: false,
+
+    // Apply a 3D roll to links on hover
+    rollingLinks: false,
+
+    // Transition style
+    transition: 'linear', // default/cube/page/concave/zoom/linear/fade/none
+
+    dependencies: [
+        // Cross-browser shim that fully implements classList - https://github.com/eligrey/classList.js/
+        { src: 'vendors/revealjs/lib/js/classList.js', condition: function() { return !document.body.classList; } },
+
+        // Interreveal/pret Markdown in <section> elements
+    { src: 'vendors/revealjs/plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+    { src: 'vendors/revealjs/plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); }, callback: function() { baconDemo() } },
+
+        // Syntareveal/x highlight for <code> elements
+          { src: 'vendors/revealjs/plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } },
+
+          // Zoom reveal/in and out with Alt+click
+          { src: 'vendors/revealjs/plugin/zoom-js/zoom.js', async: true, condition: function() { return !!document.body.classList; } },
+
+          // Speakreveal/er notes
+          { src: 'vendors/revealjs/plugin/notes/notes.js', async: true, condition: function() { return !!document.body.classList; } },
+
+          // Remotreveal/e control your reveal.js presentation using a touch device
+          // { src: 'reveal/plugin/remotes/remotes.js', async: true, condition: function() { return !!document.body.classList; } }
+          ]
+
+          });
+    </script>
+</body>
