@@ -146,6 +146,7 @@ code > span.er { color: #ff0000; font-weight: bold; }
 <p>Run the following script. It will read in the VCF and transform it to the genotype matrix in the required format:</p>
 <pre class="sourceCode bash"><code class="sourceCode bash"><span class="co"># Create a soft link to the script</span>
 <span class="kw">ln</span> -sf /data/SBCS-MSc-BioInf/2015-10-practical/map_call/vcf_to_mev.sh .
+<span class="co"># Run script to create variant matrix</span>
 <span class="kw">./vcf_to_mev.sh</span> filtered_variant_calls.vcf <span class="kw">&gt;</span> mev_var.txt</code></pre>
 <h4 id="bonus-q-do-at-home-if-you-have-time.-one-of-the-most-common-and-tedious-jobs-for-bioinformaticians-is-to-transform-data-from-one-format-to-another.-can-you-write-your-own-script-to-create-the-variant-matrix-for-mev">Bonus Q (do at home if you have time). One of the most common (and tedious) jobs for Bioinformaticians is to transform data from one format to another. Can you write your own script to create the variant matrix for MeV?</h4>
 <p>Now download the variant matrix from the cluster to your PC.</p>
