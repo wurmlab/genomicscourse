@@ -242,6 +242,7 @@ Run the following script. It will read in the VCF and transform it to the genoty
 ```bash
 # Create a soft link to the script
 ln -sf /data/SBCS-MSc-BioInf/2015-10-practical/map_call/vcf_to_mev.sh .
+# Run script to create variant matrix
 ./vcf_to_mev.sh filtered_variant_calls.vcf > mev_var.txt
 ```
 
