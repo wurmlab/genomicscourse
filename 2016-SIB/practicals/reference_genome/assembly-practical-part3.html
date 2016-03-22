@@ -1,0 +1,91 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta http-equiv="Content-Style-Type" content="text/css" />
+  <meta name="generator" content="pandoc" />
+  <title></title>
+  <style type="text/css">code{white-space: pre;}</style>
+  <style type="text/css">
+div.sourceCode { overflow-x: auto; }
+table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
+  margin: 0; padding: 0; vertical-align: baseline; border: none; }
+table.sourceCode { width: 100%; line-height: 100%; }
+td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
+td.sourceCode { padding-left: 5px; }
+code > span.kw { color: #007020; font-weight: bold; }
+code > span.dt { color: #902000; }
+code > span.dv { color: #40a070; }
+code > span.bn { color: #40a070; }
+code > span.fl { color: #40a070; }
+code > span.ch { color: #4070a0; }
+code > span.st { color: #4070a0; }
+code > span.co { color: #60a0b0; font-style: italic; }
+code > span.ot { color: #007020; }
+code > span.al { color: #ff0000; font-weight: bold; }
+code > span.fu { color: #06287e; }
+code > span.er { color: #ff0000; font-weight: bold; }
+  </style>
+</head>
+<body>
+<h1 id="part-3---assembling-reads">Part 3 - Assembling reads</h1>
+<h2 id="assembly">Assembly</h2>
+<p>To be pragmatic, we are going to use just SOAPdenovo to assemble our reads, but many more assembler are available out there, each one with it's own pros and cons. Picking the right one is not a trivial task. Here are some websites to start picking an assembler:</p>
+<ul>
+<li><a href="http://davis-assembly-masterclass-2013.readthedocs.org/en/latest/outputs/opinionated-guide.html">An opinionated guide</a></li>
+<li><a href="http://nucleotid.es">nucleotid.es</a></li>
+</ul>
+<h3 id="soapdenovo-documentation"><a href="http://soap.genomics.org.cn">SOAPdenovo</a> (<a href="https://github.com/aquaskyline/SOAPdenovo2">documentation</a>)</h3>
+<blockquote>
+<p>A novel short-read assembly method that can build a de novo draft assembly for the human-sized genomes</p>
+</blockquote>
+<h4 id="config-file">Config file</h4>
+<p>SOAPdenovo gets most of it's parameters from a configuration file that you need to create. You can simply create a new text file (name it soap-config.txt) and copy paste the content below, and move that file to the cluster. Adjust <code>q1</code> and <code>q2</code> to match the PATH of your files.</p>
+<pre><code>max_rd_len=101          # maximal read length
+[LIB]
+avg_ins=470             # average insert size
+reverse_seq=0           # if sequence needs to be reversed
+asm_flags=3             # in which part(s) the reads are used
+rank=1                  # in which order the reads are used while scaffolding
+q1=reads.filtered.pe1.fastq
+q2=reads.filtered.pe2.fastq</code></pre>
+<h4 id="run">Run</h4>
+<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash"><span class="kw">SOAPdenovo-63mer</span> all -s soap-config.txt -K 63 -R -o assembly</code></pre></div>
+<p>The final log output should look like this:</p>
+<pre><code>Scaffold number                  1304
+In-scaffold contig number        6649
+Total scaffold length            2596609
+Average scaffold length          1991
+Filled gap number                1
+Longest scaffold                 11843
+Scaffold and singleton number    1857
+Scaffold and singleton length    2727151
+Average length                   1468
+N50                              2504
+N90                              778
+Weak points                      0</code></pre>
+<p>Question: What do these value mean? Which ones do we want higher and which ones do we want smaller? You can try running again with another K value and see what happens. Where are the assembly scaffolds? What file format is that?</p>
+<h2 id="assembly-quality-assessment">Assembly quality assessment</h2>
+<h3 id="cegma"><a href="http://korflab.ucdavis.edu/datasets/cegma/">Cegma</a></h3>
+<blockquote>
+<p>A pipeline to accurately annotate core genes in eukaryotic genomes</p>
+</blockquote>
+<p>For assemblies quality assessment we use cegma.</p>
+<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash"><span class="kw">cegma</span> --genome assembly.scafSeq</code></pre></div>
+<p>CEGMA is very slow, while it runs you can try another faster alternative like Quast.</p>
+<h2 id="quast"><a href="http://bioinf.spbau.ru/quast">Quast</a></h2>
+<blockquote>
+<p>Quality Assessment Tool for Genome Assemblies</p>
+</blockquote>
+<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash"><span class="kw">wget</span> http://downloads.sourceforge.net/project/quast/quast-2.3.tar.gz
+<span class="kw">tar</span> xzvf quast-2.3.tar.gz
+<span class="kw">module</span> load python/2.7.9
+<span class="co"># Basic statistics (quick), similar to SOAPdenovo log</span>
+<span class="kw">./quast-2.3/quast.py</span> assembly.scafSeq
+<span class="co"># Eukaryotic genes finding (slower), similar to CEGMA</span>
+<span class="kw">./quast-2.3/quast.py</span> -f -e assembly.scafSeq
+<span class="co"># Results in quast_results/latest/report.html</span></code></pre></div>
+<h2 id="extra">Extra</h2>
+<p>If you've completed the practical, you can try changing some of the parameters in some steps and see what happens, or try <a href="assembly-practical-extra-assemblers.html">other assemblers</a> or <a href="assembly-practical-extra-qa.html">quality assessment tools</a>. You can also try to do the manual assembly again using k-mers this time. There is also several links to papers and online resources on the slides of the talk that you can check out.</p>
+</body>
+</html>
