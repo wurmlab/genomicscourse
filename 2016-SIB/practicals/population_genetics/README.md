@@ -1,4 +1,4 @@
-# BIO721P Genome-Bioinformatics: read mapping and variant calling
+# Genome-Bioinformatics: read mapping, variant calling and population genetics
 
 Practical aimed at getting students familiar with:
 * Concept of variants and variant calling
@@ -6,5 +6,3 @@ Practical aimed at getting students familiar with:
 * Simple pipelines
 * Standard formats: VCF and SAM/BAM
 * An example of biological analysis
-
-The practical is publicly available [here](http://wurmlab.github.io/MScGenomicsCourse/2015/mapping_calling/map_call.html)
