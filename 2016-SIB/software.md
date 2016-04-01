@@ -4,7 +4,8 @@ Specify versions if necessary
 ```
 seqtk
 kallisto
-R >=3
+R >=3 (in the commandline) 
+RStudio (clickable R)
 ruby >=2.1
 samtools-1.3 (important that it is this version)
 bcftools-1.3
