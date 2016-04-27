@@ -28,7 +28,7 @@ install.packages("blah")
 * adegenet
 * VennDiagram
 * qvalue
-* 
+
 # Bioconductor packages
 * Bioconductor base.  If possible, wait for BioC 3.3 to be released on May 4th.  
 ```R
