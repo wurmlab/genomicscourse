@@ -26,6 +26,8 @@ Bioconductor:  for this:
 source("https://bioconductor.org/biocLite.R"); biocLite()
 topGO
 GenomicRanges
+PopGenome
+adegenet
 ```
 
 # ruby packages/libraries
