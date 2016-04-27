@@ -22,6 +22,9 @@ gnuplot
 ```
 ggplot2
 gplots
+RColorBrewer
+Bioconductor:  for this:
+source("https://bioconductor.org/biocLite.R"); biocLite()
 ```
 
 # ruby packages/libraries
