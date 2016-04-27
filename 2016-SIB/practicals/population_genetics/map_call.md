@@ -24,7 +24,7 @@ grep ">" reference.fa
 
 ```
 
-Now have a look at the .fq files. 
+Now have a look at the `.fq` files. 
 * Why does each sample have two sets of reads?
 * What is each line of the `.fq` file?
 * How many reads do we have in individual f1_B?
