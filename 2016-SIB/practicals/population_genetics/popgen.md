@@ -13,10 +13,10 @@ In the second part, we going to measure genetic differentiation between the two 
 The package `adegenet` uses a object called `r genlight`. To create it, we need to input a matrix where each row is an individual and each column is a locus (i.e. a SNP position). We can do this using bcftools:
 
 ```sh
-bcftools query snps_bi.vcf -f '%CHROM\t%POS[\t%GT]\n' > snp_matrix.txt
+bcftools query snp.vcf -f '%CHROM\t%POS[\t%GT]\n' > snp_matrix.txt
 
 # get sample names
-bcftools query -l snps_bi.vcf.gz > sample_names.txt
+bcftools query -l snp.vcf > sample_names.txt
 
 ```
 
@@ -139,11 +139,11 @@ In theory, the `r PopGenome` can read VCF files directly, using the `readVCF` fu
 mkdir popgenome-vcf
 
 # compress and index the VCF
-bgzip snps_bi.vcf
-tabix -p vcf snps_bi.vcf.gz
+bgzip snp.vcf
+tabix -p vcf snp.vcf.gz
 
-bcftools view snps_bi.vcf.gz scaffold_1 > popgenome-vcf/scaffold_1
-bcftools view snps_bi.vcf.gz scaffold_2 > popgenome-vcf/scaffold_2
+bcftools view snp.vcf.gz scaffold_1 > popgenome-vcf/scaffold_1
+bcftools view snp.vcf.gz scaffold_2 > popgenome-vcf/scaffold_2
 
 ```
 

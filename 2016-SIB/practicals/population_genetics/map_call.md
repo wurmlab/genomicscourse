@@ -24,7 +24,7 @@ grep ">" reference.fa
 
 ```
 
-Now have a look at the `.fq` files. 
+Now have a look at the `.fq` files. You can use `gunzip` to decompress one of them.
 * Why does each sample have two sets of reads?
 * What is each line of the `.fq` file?
 * How many reads do we have in individual f1_B?
@@ -45,7 +45,7 @@ bowtie2-build reference.fa reference_index
 The second step is the alignment itself.
 
 ```bash
-bowtie2 -x reference_index -1 f1_B.1.fq -2 f1_B.2.fq > f1_B.sam
+bowtie2 -x reference_index -1 f1_B.1.fq.gz -2 f1_B.2.fq.gz > f1_B.sam
 ```
 
 The command produced a SAM file (Sequence Alignment/Map file), which is the standard file used to store sequence alignments. Have a quick look at the file by typing `less f1.sam`. The file includes a header (lines starting with the `@` symbol), and a line for every read aligned to the reference assembly. For each read, we are given a mapping quality values, the position of both pairs, the actual sequence and its quality by base pair, and a series of flags with additional measures of mapping quality.
@@ -54,10 +54,10 @@ We now need to run bowtie2 for all the other samples. We could do this by typing
 
 ```bash
 ## Create a file with all sample names
-ls *fq | cut -d '.' -f 1 | sort | uniq > names.txt
+ls *fq.gz | cut -d '.' -f 1 | sort | uniq > names.txt
 
 ## Run bowtie with each sample (will take a few minutes)
-parallel "bowtie2 -x reference_index -1 {}.1.fq -2 {}.2.fq > {}.sam" :::: names.txt
+parallel "bowtie2 -x reference_index -1 {}.1.fq.gz -2 {}.2.fq.gz > {}.sam" :::: names.txt
 ```
 
 Because SAM files include a lot of information, they tend to occupy a lot of space (even in our case). Therefore, SAM files are generally compressed into BAM files (Binary sAM). Most tools that use aligned reads requires BAM files that have been sorted and indexed by genomic position. This is done using `samtools`, a set tools create to manipulate SAM/BAM files:
@@ -66,16 +66,18 @@ Because SAM files include a lot of information, they tend to occupy a lot of spa
 ## SAM to BAM.
 # samtools view: compresses the SAM to BAM
 # samtools sort: sorts by scaffold position (creates f1_B.sorted.bam)
-samtools view -Sb f1_B.sam | samtools sort - f1_B.sorted
+# Note that the argument "-" stands for the input that is being piped in
+samtools view -Sb f1_B.sam | samtools sort - > f1_B.bam
+
 ## This creates a file (f1_B.sorted.bam), which we then index
-samtools index f1_B.sorted.bam   # creates f1_B.sorted.bam.bai
+samtools index f1_B.bam   # creates f1_B.sorted.bam.bai
 ```
 
 Again, we can use parallel to run this step for all the samples:
 
 ```bash
 parallel "samtools view -Sb {}.sam | samtools sort - > {}.bam" :::: names.txt
-parallel "samtools index {}.sorted.bam" :::: names.txt
+parallel "samtools index {}.bam" :::: names.txt
 ```
 
 ## Variant calling
@@ -100,7 +102,7 @@ bcftools call --ploidy 1 -v -m raw_calls.bcf > calls.vcf
 * Do you understand what does the symbol `*` means here?)
 * Do you understand what does why we are using the `-v` option? Is it ever useful to leave it out?)
 
-The file produced a VCF (Variant Call Format) format telling the position, nature and quality of the called variants. The VCF format is the standard format used
+The file produced a VCF (Variant Call Format) format telling the position, nature and quality of the called variants.
 
 Let's take a look at the VCF file produced by typing `less -S variant_calls.vcf`. The file is composed of a header and of and rows for all the variant positions. Have a look at the different columns and check what each is (the header includes labels). Notice that some columns include several fields.
 
@@ -118,15 +120,23 @@ Not all variants that we called are necessarily of good quality, so it is essent
 We will filter the VCF using `bcftools filter`. We can remove anything with quality call smaller than 30:
 
 ```bash
-bcftools filter --exclude 'QUAL < 30' calls.vcf > filtered_calls.vcf
+
+bcftools filter --exclude 'QUAL < 30' calls.vcf | \
+  bcftools view -g ^miss > filtered_calls.vcf
+
 ```
 
 In more serious analysis, it may be important to filter by other parameters.
 
-In the downstream analysis, we only want to look at biallelic SNPs (to keep things simple). 
+In the downstream analysis, we only want to look at sites that are:
+1. snps (-v snps)
+2. biallelic (-m2 -M2)
+3. where the minor allele is present in at least one individual (because we do not care for the sites where all individuals are different from the reference)
 
 ```sh
-bcftools view -m2 -M2 -v snps filtered_calls.vcf > snp.vcf
+
+bcftools view -v snps -m2 -M2 --min-ac 1:minor filtered_calls.vcf > snp.vcf
+
 ```
 
 * Can you find any other parameters indicating the quality of the site?
