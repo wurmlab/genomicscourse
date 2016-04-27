@@ -21,6 +21,7 @@ gnuplot
 # R packages/libraries
 ```
 ggplot2
+gplots
 ```
 
 # ruby packages/libraries
