@@ -25,6 +25,8 @@ gplots
 RColorBrewer
 Bioconductor:  for this:
 source("https://bioconductor.org/biocLite.R"); biocLite()
+topGO
+GenomicRanges
 ```
 
 # ruby packages/libraries
