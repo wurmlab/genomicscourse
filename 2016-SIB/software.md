@@ -40,13 +40,13 @@ biocLite()
 * topGO
 * goseq
 * GenomicRanges
-* BgeeDB
 * edgeR
 * DESeq2
 * limma
 * EDASeq
 * biomaRt
-* tximport
+* BgeeDB # if BioC 3.3
+* tximport # if BioC 3.3
 
 # ruby packages/libraries
 * sequenceserver
