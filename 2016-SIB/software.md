@@ -44,6 +44,7 @@ biocLite()
 * limma
 * EDASeq
 * biomaRt
+* tximport
 
 # ruby packages/libraries
 * sequenceserver
