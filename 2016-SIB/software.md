@@ -10,7 +10,7 @@ Specify versions if necessary
 * samtools (> 1.3.1) (important that it is this version or over)
 * bcftools (> 1.3.1) (important that it is this version or over)
 * bowtie2
-* tophat 2.1.1 https://ccb.jhu.edu/software/tophat/index.shtml. Check that ```gtf_to_fasta``` executable is present.
+* cufflinks. Check that ```gffread``` executable is present.
 * msmc2 (www.github.com/stschiff/msmc2) Can you install this using the D compiler, DMD, please?
 * msmc-tools (www.github.com/stschiff/msmc-tools)
 * gnuplot
