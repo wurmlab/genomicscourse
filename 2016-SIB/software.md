@@ -16,6 +16,8 @@ Specify versions if necessary
 * gnuplot
 * FastQC
 * SRA toolkit http://www.ncbi.nlm.nih.gov/Traces/sra/sra.cgi?cmd=show&f=software&m=software&s=software
+* BUSCO v1.1b1 http://busco.ezlab.org/files/BUSCO_v1.1b1.tar.gz
+* HMMER 3.1b2 http://hmmer.org/download.html
 
 # R packages/libraries 
 ```R
