@@ -39,6 +39,7 @@ install.packages("blah")
 source("https://bioconductor.org/biocLite.R")
 biocLite()
 ```
+* GEOquery
 * topGO
 * goseq
 * GenomicRanges
