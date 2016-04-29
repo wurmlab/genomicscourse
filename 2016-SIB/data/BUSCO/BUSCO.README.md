@@ -8,6 +8,8 @@ STREP-FASTA2.tar.gz = tarball with set3 Streptomyces full gene sets (protein seq
 
 STREP-FASTA3.tar.gz = tarball with set3 Streptomyces full gene sets (protein sequences in FASTA format)
 
+Several gzipped bacterial genomes
+
 
 Info on BUSCO scripts:
 
