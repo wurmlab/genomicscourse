@@ -57,4 +57,4 @@ biocLite()
 
 
 # python packages/libraries
-* ...
+* khmer (runs on a virtualenv of python2.7 - http://khmer.readthedocs.io/en/v2.0/user/install.html)
