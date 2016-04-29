@@ -1,19 +1,13 @@
-# I assumed this is where the data will be stored on the VM
-cd ~/data/rnaseq
+# I assumed that the data will be stored on the VM in ~/data/rnaseq
 
 # download fastq files from ENA:
+cd ~/data/rnaseq/
 tail -n+2  SRP044339.txt | awk -F'\t' '{print "ftp://" $11;}' | xargs -l1 wget
 
-# Download genome + GTF from ensembl 84
-wget ftp://ftp.ensembl.org/pub/release-84/fasta/drosophila_melanogaster/dna/Drosophila_melanogaster.BDGP6.dna_sm.toplevel.fa.gz
-wget ftp://ftp.ensembl.org/pub/release-84/gtf/drosophila_melanogaster/Drosophila_melanogaster.BDGP6.84.gtf.gz
-# Uncompress them
-gunzip ~/data/rnaseq/Drosophila_melanogaster.BDGP6.84.gtf.gz
-gunzip ~/data/rnaseq/Drosophila_melanogaster.BDGP6.dna_sm.toplevel.fa.gz
-
-# Create a fasta file of transcript sequences from GTF and genome files:
-gffread ~/data/rnaseq/Drosophila_melanogaster.BDGP6.84.gtf -g ~/data/rnaseq/Drosophila_melanogaster.BDGP6.dna_sm.toplevel.fa -w ~/data/rnaseq/Drosophila_melanogaster.BDGP6.transcriptome.fa
+# uncompress genome + GTF from ensembl 84
+gunzip ~/data/rnaseq/Drosophila_melanogaster.BDGP6.transcriptome.fa.gz
 
 # Create the Kallisto index
 kallisto index -i ~/data/rnaseq/Drosophila_melanogaster.BDGP6.transcriptome.idx ~/data/rnaseq/Drosophila_melanogaster.BDGP6.transcriptome.fa
+
 
