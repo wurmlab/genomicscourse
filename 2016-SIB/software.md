@@ -2,6 +2,9 @@ Specify versions if necessary
 
 # Software
 
+* Chrome, Firefox
+* standard text editors including emacs, vi and Atom
+* git, htop, tree
 * seqtk
 * kallisto v0.42.5 https://pachterlab.github.io/kallisto/download
 * R >=3 (in the commandline). If possible, wait for R 3.3 to be released on May 3rd.  
