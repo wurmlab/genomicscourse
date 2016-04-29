@@ -18,6 +18,8 @@ Specify versions if necessary
 * SRA toolkit http://www.ncbi.nlm.nih.gov/Traces/sra/sra.cgi?cmd=show&f=software&m=software&s=software
 * BUSCO v1.1b1 http://busco.ezlab.org/files/BUSCO_v1.1b1.tar.gz
 * HMMER 3.1b2 http://hmmer.org/download.html
+* Augustus 3.2.1 http://bioinf.uni-greifswald.de/augustus/binaries/old/augustus-3.2.1.tar.gz (not 3.2.2. as it is only just released and not tested with BUSCO yet)
+* NCBI BLAST http://ftp.ncbi.nlm.nih.gov/blast/executables/blast+/LATEST/
 
 # R packages/libraries 
 ```R
