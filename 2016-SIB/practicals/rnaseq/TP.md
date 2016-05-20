@@ -38,37 +38,60 @@ Please have a look at the first lines of one of these file:
 ```sh
 less ~/data/rnaseq/SRR1515104.fastq.gz
 ```
+
 ![Question](round-help-button.png)
-Identify the lines corresponding to one read, and identify the role of each line. This wikipedia article is useful: <https://en.wikipedia.org/wiki/FASTQ_format>
+Identify the lines corresponding to one read. What is the role of each line? This wikipedia article is useful: <https://en.wikipedia.org/wiki/FASTQ_format>
 
 It is essential to verify that the quality of the reads you will analyze is good. The `FastQC` tool is widely used for this purpose. As it takes some time to run, each `.fastq` file was processed in advance. The fastQC results can be found in the `~/data/rnaseq/FASTQC` folder. 
+
 ![Question](round-help-button.png)
-Open a few `.html` results files from FastQC and make sure you understand the controls performed.
+Open a few `.html` results files from FastQC. What are the reported controls? Are the warnings serious?
 
 ### A reference genome and its annotation
-![Question](round-help-button.png)
+![To do](wrench-and-hammer.png)
 Download the *D. melanogaster* reference genome from the database Ensembl: <http://www.ensembl.org/index.html>. To be sure to understand which version is needed (repeat-masked, soft-masked, toplevel, etc), it is a good practice to look at the `README.txt` files located in folders of the Ensembl FTP.
 
-![Question](round-help-button.png)
+![To do](wrench-and-hammer.png)
 Download also the *D. melanogaster* annotation in `GTF` format from Ensembl
 
 ### A transcriptome index for Kallisto pseudo-mapping
 We will assign reads to transcript using the tool `Kallisto`. The online documentation is available at <https://pachterlab.github.io/kallisto/manual.html>. 
 
-Using the GTF and genome files, we first need to create a fasta file including the sequences of all annotated transcripts. This is done using the `gffread` utility part of the `Cufflinks` package:
+![To do](wrench-and-hammer.png)
+Using the GTF and genome files, create a fasta file including the sequences of all annotated transcripts. This is done using the `gffread` utility part of the `Cufflinks` package:
 ```sh
 gunzip ~/data/rnaseq/Drosophila_melanogaster.BDGP6.84.gtf.gz
 gunzip ~/data/rnaseq/Drosophila_melanogaster.BDGP6.dna_sm.toplevel.fa.gz
 gffread ~/data/rnaseq/Drosophila_melanogaster.BDGP6.84.gtf -g ~/data/rnaseq/Drosophila_melanogaster.BDGP6.dna_sm.toplevel.fa -w ~/data/rnaseq/Drosophila_melanogaster.BDGP6.transcriptome.fa
 ```
-We can then launch the creation of the Kallisto index:
+
+![To do](wrench-and-hammer.png)
+Then launch the creation of the Kallisto index:
 ```sh
 kallisto index -i ~/data/rnaseq/Drosophila_melanogaster.BDGP6.transcriptome.idx ~/data/rnaseq/Drosophila_melanogaster.BDGP6.transcriptome.fa
-
+```
 ![Question](round-help-button.png)
-Is the default kmer-size appropriate? In which case would it be useful to reduce it?
+Is the default k-mer size appropriate? In which case would it be useful to reduce it?
 
 ## "Mapping" the data
+Go back to the `Kallisto` documentation: <https://pachterlab.github.io/kallisto/manual.html>. 
+
+![Question](round-help-button.png)
+What are the relevant parameters to consider?
+
+![Tip](elemental-tip.png)
+For single-end data, the fragment length and standard deviation cannot be estimated directly from the data. The user needs to supply it (**beware, fragment length is not read length!**, see https://groups.google.com/forum/#!topic/kallisto-sleuth-users/h5LeAlWS33w). This information has to be read from the Bioanalyzer/Fragment Analyzer results on the prepared RNA-seq libraries. For this practical, in the absence of this information, we will use length=200bp and sd=30, which should be close enough to real values.
+
+![To do](wrench-and-hammer.png)
+We will now perform the pseudo-alignement with `Kallisto`:
+```sh
+## For one sample:
+
+
+## For all samples:
+for i in *.fastq.gz; do echo $i; kallisto quant -i Drosophila_melanogaster.BDGP6.transcriptome.idx --bias --single -l 200 -s 30 -o ${i%%.*} $i; done
+```
+## TO DO: warn that This is long! 
 
 
 ##################################
@@ -81,3 +104,10 @@ Is the default kmer-size appropriate? In which case would it be useful to reduce
 
 ![Question](round-help-button.png)
 ![Tip](elemental-tip.png)
+![To do](wrench-and-hammer.png)
+
+## TO DO: ask what are characteristics of RNA-seq data (read length, single-end)
+
+## TO DO: look at p-values histogram
+
+## Acknowledge icons from http://www.flaticon.com/search?word=action
