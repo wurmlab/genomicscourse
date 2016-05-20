@@ -26,7 +26,7 @@ Bart introduced very nicely the motivations of this study during his talk on Tue
 
 The RNA-seq data are deposited on the GEO database at the following link: <http://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE59411>. If your are not familiar wiht GEO, please have a look the experiment and samples webpages. In particular, these include links to the raw sequencing data, the processed sequencing data in form of log2(RPKM) values for each gene in each sample (but this is not compulsory for submission), and some metadata allowing to know what experimental conditions the samples correspond to, the protocols used, etc. The raw data are downlaodable from the FTP of the SRA database in the `.sra` format that you need to convert to `.fastq` format using the SRA toolkit, which is quite long.
 
-![Tip](elemental-tip.png)
+![Tip](elemental-tip.png =30x)
 Tip: test
 
 To ... type:
