@@ -1,7 +1,8 @@
 # I assumed that the data will be stored on the VM in ~/data/rnaseq
 
 # Download fastq files from ENA:
-cd ~/data/rnaseq/
-tail -n+2  SRP044339.txt | awk -F'\t' '{print "ftp://" $11;}' | xargs -l1 wget
+mkdir ~/data/rnaseq/FASTQ
+cd ~/data/rnaseq/FASTQ
+tail -n+2  ../SRP044339.txt | awk -F'\t' '{print "ftp://" $11;}' | xargs -l1 wget
 # Alternatively, these files are also available on vital-IT: /scratch/cluster/monthly/jroux/tp_loeche/data/rnaseq/. You can copy all .fastq.gz files
 
