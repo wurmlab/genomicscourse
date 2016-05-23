@@ -27,19 +27,19 @@ Bart introduced very nicely the motivations of this study during his talk on Tue
 ## The data you will need for mapping
 
 ### RNA-seq reads
-The RNA-seq data are deposited on the GEO database at the following link: <http://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE59411>. If your are not familiar wiht GEO, please have a look the experiment and samples webpages. In particular, these include links to the raw sequencing data, the processed sequencing data in form of log2(RPKM) values for each gene in each sample (but this is not compulsory for submission), and some metadata allowing to know what experimental conditions the samples correspond to, the protocols used, etc. The raw data are downloadable from the FTP of the SRA database in the `.sra` format that you need to convert to `.fastq` format using the SRA toolkit, which is quite long.
+The RNA-seq data are deposited on the GEO database at the following link: <http://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE59411>. If your are not familiar with GEO, please have a look the experiment and samples webpages. In particular, these include links to the raw sequencing data, the processed sequencing data in form of log2(RPKM) values for each gene in each sample (but this is not compulsory for submission), and some metadata allowing to know what experimental conditions the samples correspond to, the protocols used, etc. The raw data are downloadable from the FTP of the SRA database in the `.sra` format that you need to convert to `.fastq` format using the SRA toolkit, which is quite long.
 
 ![Tip](elemental-tip.png)
 Tip: All GEO experiments are also mirrored in european equivalent, the ENA database. There, the raw data are available directly in `.fastq` format. This can save you a lot of time!
 
 For this practical, the `.fastq` files were previously downloaded on <http://www.ebi.ac.uk/ena/data/view/SRP044339> and added to your VM data folder (`SRR*.fastq.gz files`). Have a look at the first lines of one of these file:
 ```sh
-less ~/data/rnaseq/SRR1515104.fastq.gz
+zcat ~/data/rnaseq/SRR1515104.fastq.gz | less
 ```
 ![Question](round-help-button.png)
-How many lines correspond to one read? What is the role of each line? This wikipedia article can be useful: <https://en.wikipedia.org/wiki/FASTQ_format>
+How many lines correspond to one read? What is the role of each line? This wikipedia article can be useful: <https://en.wikipedia.org/wiki/FASTQ_format>. What is the length of the reads generated during this RNA-seq experiment? Are the reads single-end or paired-end?
 
-It is essential to verify that the quality of the reads you will analyze is acceptable, and that there is no najor issue wiht the data. The `FastQC` tool is widely used for this purpose. As it takes some time to run, each `.fastq` file was processed in advance. The `fastQC` results can be found in the `~/data/rnaseq/FASTQC` folder. Open a few `.html` results files from FastQC in a browser. 
+It is essential to verify that the quality of the reads you will analyze is acceptable, and that there is no najor issue with the data. The `FastQC` tool is widely used for this purpose. As it takes some time to run, each `.fastq` file was processed in advance. The `fastQC` results can be found in the `~/data/rnaseq/FASTQC` folder. Open a few `.html` results files from FastQC in a browser. 
 
 ![Question](round-help-button.png)
 What are the different sections of the reports indicating? Are there serious warnings?
@@ -49,15 +49,20 @@ What are the different sections of the reports indicating? Are there serious war
 Download the *D. melanogaster* reference genome from the database Ensembl: <http://www.ensembl.org/index.html>. To be sure to understand which version is needed (repeat-masked, soft-masked, toplevel, etc), it is a good practice to look at the `README.txt` files located in folders of the Ensembl FTP.
 
 ![To do](wrench-and-hammer.png)
-Download also the *D. melanogaster* annotation in `GTF` format from Ensembl
+Download also the *D. melanogaster* annotation in `GTF` format from Ensembl. Do not download the "ab initio" file. Open the downloaded file: 
+```sh
+gunzip ~/data/rnaseq/Drosophila_melanogaster.BDGP6.84.gtf.gz
+less ~/data/rnaseq/Drosophila_melanogaster.BDGP6.84.gtf
+```
+![Question](round-help-button.png)
+Identify the lines describing the first multi-exonic gene that you find in the GTF file. What are the different features annotated for this gene?
 
 ### A transcriptome index for Kallisto pseudo-mapping
-We will assign reads to transcript using the tool `Kallisto`. The online documentation is available at <https://pachterlab.github.io/kallisto/manual.html>. 
+We will assign reads to transcript using the tool `Kallisto` (see below), which requires the transcriptome to be indexed. The online documentation is available at <https://pachterlab.github.io/kallisto/manual.html>. 
 
 ![To do](wrench-and-hammer.png)
 Using the GTF and genome files, create a fasta file including the sequences of all annotated transcripts. This is done using the `gffread` utility part of the `Cufflinks` package:
 ```sh
-gunzip ~/data/rnaseq/Drosophila_melanogaster.BDGP6.84.gtf.gz
 gunzip ~/data/rnaseq/Drosophila_melanogaster.BDGP6.dna_sm.toplevel.fa.gz
 gffread ~/data/rnaseq/Drosophila_melanogaster.BDGP6.84.gtf -g ~/data/rnaseq/Drosophila_melanogaster.BDGP6.dna_sm.toplevel.fa -w ~/data/rnaseq/Drosophila_melanogaster.BDGP6.transcriptome.fa
 ```
@@ -71,33 +76,37 @@ kallisto index -i ~/data/rnaseq/Drosophila_melanogaster.BDGP6.transcriptome.idx 
 Is the default k-mer size appropriate? In which case would it be useful to reduce it?
 
 ## "Mapping" the data
-Go back to the `Kallisto` documentation: <https://pachterlab.github.io/kallisto/manual.html>. 
+To quantify the abundances of genes, traditional pipelines were aligning reads to transcriptome/genome and counting how many reads were overlapping each gene. This is conceptually simple, but it is slow, and it left the user with a lot of arbitrary choices to make: for example, what to do with reads overlapping several features? New approaches to this problem have recenty emerged with the pseudo-alignement concept (we will use the `Kallisto` software, but a very similar approach is used in the `Salmon` software). The reads are split into k-mers, and it can be tested very quickly if a k-mer is present in the indexed transcriptome. Then the algorithm is quantifying the transcripts based on their compatibility with k-mers found  in the reads. These softwares are very fast (can be run on your laptop!), do not generate huge intermediate SAM/BAM files, and according the first test, are at least as accurate as traditional approaches.
 
 ![Question](round-help-button.png)
-What are the relevant parameters to consider?
+What are the relevant parameters to consider when launching `Kallisto`?
 
 For single-end data, the fragment length and standard deviation cannot be estimated directly from the data. The user needs to supply it (**beware, fragment length is not read length!**, see https://groups.google.com/forum/#!topic/kallisto-sleuth-users/h5LeAlWS33w). This information has to be read from the Bioanalyzer/Fragment Analyzer results on the prepared RNA-seq libraries. For this practical, in the absence of this information, we will use length=200bp and sd=30, which should be close enough to real values.
 
 ![To do](wrench-and-hammer.png)
-You will now perform the pseudo-alignement with `Kallisto`:
+You will now perform the pseudo-alignement with `Kallisto`. First, launch it on one sample of your choice:
 ```sh
-## For one sample:
+kallisto quant -i Drosophila_melanogaster.BDGP6.transcriptome.idx --bias --single -l 200 -s 30 -o SRRXXXXXXX SRRXXXXXXX.fastq.gz
 
+![Tip](elemental-tip.png)
+Tip: The --bias option allows to correct for (some of) the sequence-specific systematic biases of the Illumina protocol. In practice, the correction is not applied on the estimated counts, but on the effective length of the transcripts. This has no biological meaning, but will result in sequence-bias corrected TPM estimates.
 
-## For all samples:
+This should take only a few minutes. Have a look at the result files produced by `Kallisto`, especially the `abundance.tsv` file.
+![Question](round-help-button.png)
+What is the "TPM" expression unit standing for? How is it calculated? What is the difference with the widely used RPKM/FPKM? Why is it better to use TPMs instead of FPKMs? This blog post can be useful <https://haroldpimentel.wordpress.com/2014/05/08/what-the-fpkm-a-review-rna-seq-expression-units/>.
+
+Bonus part: if you have time, (and want to use your own result files in tomorrow's practicals ;), launch `Kallisto` on all samples of the experiment. This will be a bit long, so you can launch it tonight in your hotel room. 
+```sh
 for i in *.fastq.gz; do echo $i; kallisto quant -i Drosophila_melanogaster.BDGP6.transcriptome.idx --bias --single -l 200 -s 30 -o ${i%%.*} $i; done
 ```
-## TO DO: warn that This is long! 
 
->! Spoiler test
->! Several lines?
->! Is this a good idea?
+<sub>Icons taken from http://www.flaticon.com/search?word=action</sub>
 
-## TO DO implement?
+<!--
+## TO DO: how to implement code folding/hiding?
+          we can just make 2 versions, one with code, one without
+          or change file names to generic file names
 
-
-##################################
-* TO DO: add to github
 * TO DO: prepare short presentation of: 
   * kallisto. Fast + accurate + need deal
   * DTU/DE/DTE. DE confounded by DTU
@@ -107,10 +116,4 @@ for i in *.fastq.gz; do echo $i; kallisto quant -i Drosophila_melanogaster.BDGP6
 ![Question](round-help-button.png)
 ![Tip](elemental-tip.png)
 ![To do](wrench-and-hammer.png)
-
-## TO DO: ask what are characteristics of RNA-seq data (read length, single-end)
-
-## TO DO: look at p-values histogram
-
-## Acknowledge icons from http://www.flaticon.com/search?word=action
-## TO DO: chnage file names to generic file names
+-->
