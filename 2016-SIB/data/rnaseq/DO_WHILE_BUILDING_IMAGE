@@ -1,13 +1,7 @@
 # I assumed that the data will be stored on the VM in ~/data/rnaseq
 
-# download fastq files from ENA:
+# Download fastq files from ENA:
 cd ~/data/rnaseq/
 tail -n+2  SRP044339.txt | awk -F'\t' '{print "ftp://" $11;}' | xargs -l1 wget
-
-# uncompress genome + GTF from ensembl 84
-gunzip ~/data/rnaseq/Drosophila_melanogaster.BDGP6.transcriptome.fa.gz
-
-# Create the Kallisto index
-kallisto index -i ~/data/rnaseq/Drosophila_melanogaster.BDGP6.transcriptome.idx ~/data/rnaseq/Drosophila_melanogaster.BDGP6.transcriptome.fa
-
+# Alternatively, these files are also available on vital-IT: /scratch/cluster/monthly/jroux/tp_loeche/data/rnaseq/. You can copy all .fastq.gz files
 
