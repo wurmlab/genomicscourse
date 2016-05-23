@@ -11,18 +11,18 @@ Julien Roux, version 1, May 2016
 
 ## Introduction
 
-The aim of this practical is to introduce you to the recent, efficient and accurate tools to perform gene expression analysis for population genomics studies. RNA-seq performed on the Illumina platform is now a mature technology (first papers published in 2008), but there are still hurdles for its analysis. Mapping is long, it generates large BAM files to are incovenient to manipulate, reads mapping to multiple location are often just discarded, gene coverage is inequal due to biases during library preparation steps, etc. There have been a few recent methodological developments that are real game-changers for the analysis and interpretation of RNA-seq data and that we will introduce in this practical. 
+The aim of this practical is to introduce you to the recent, efficient and accurate tools to perform gene expression analysis for population genomics studies. RNA-seq performed on the Illumina platform is now a mature technology (first papers published in 2008), but there are still hurdles for its analysis. Mapping is long, it generates large BAM files to are incovenient to manipulate, reads mapping to multiple location are often just discarded, gene coverage is inequal due to biases during library preparation steps, etc. There have been a few recent methodological developments that are real game-changers for the analysis and interpretation of RNA-seq data and that we will discover in this practical. 
 
-For the analyses of this practical, we will make use of data stored in the `~/data/rnaseq/` folder in the virtual machine. When you download or generate data by yourself, it will be convenient to add them to this folder too.
+For the analyses of this practical, you will make use of data stored in the `~/data/rnaseq/` folder in the virtual machine. When you download or generate data by yourself, it will be convenient to add them to this folder too.
 
 ## The biological question and the experiment
 
-We will be reanalyzing RNA-seq data generated in the lab of Bart Deplancke, published last year in the following paper: 
+You will be reanalyzing RNA-seq data generated in the lab of Bart Deplancke, published last year in the following paper: 
 
 Bou Sleiman MS, Osman D, Massouras A, Hoffmann AA, Lemaitre B and Deplancke B. Genetic, molecular and physiological basis of variation in Drosophila gut immunocompetence. Nature Communications. 2015;6:7829. <http://www.nature.com/ncomms/2015/150727/ncomms8829/full/ncomms8829.html>
 A PDF of the paper and the supplementary data are located in the `~/data/papers/` folder (`ncomms8829*` files). 
 
-Bart introduced very nicely the motivations of this study during his talk on Tuesday. Briefly, they aimed at studying how genetic variation in *Drosophila melanogaster* impacts the molecular and cellular processes that constitute gut immunocompetence. They performed RNA-seq on 16 gut samples comprising four susceptible and four resistant DGRP lines in the unchallenged condition and 4h after *Pseudomonas entomophila* infection. We are thus faced with an experimental design with three factors: DGRP lines, infection susceptibility and infection status. For simplicity, we will ignore the DGRP line, and consider the four susceptibility and the four resistant lines as biological replicates.
+Bart introduced very nicely the motivations of this study during his talk on Tuesday. Briefly, they aimed at studying how genetic variation in *Drosophila melanogaster* impacts the molecular and cellular processes that constitute gut immunocompetence. They performed RNA-seq on 16 gut samples comprising four susceptible and four resistant DGRP lines in the unchallenged condition and 4h after *Pseudomonas entomophila* infection. You are thus faced with an experimental design with three factors: DGRP lines, infection susceptibility and infection status. For simplicity, we will ignore the DGRP line, and consider the four susceptibility and the four resistant lines as biological replicates.
 
 ## The data you will need for mapping
 
@@ -58,7 +58,7 @@ less ~/data/rnaseq/Drosophila_melanogaster.BDGP6.84.gtf
 Identify the lines describing the first multi-exonic gene that you find in the GTF file. What are the different features annotated for this gene?
 
 ### A transcriptome index for Kallisto pseudo-mapping
-We will assign reads to transcript using the tool `Kallisto` (see below), which requires the transcriptome to be indexed. The online documentation is available at <https://pachterlab.github.io/kallisto/manual.html>. 
+You will assign reads to transcript using the tool `Kallisto` (see below), which requires the transcriptome to be indexed. The online documentation is available at <https://pachterlab.github.io/kallisto/manual.html>. 
 
 ![To do](wrench-and-hammer.png)
 Using the GTF and genome files, create a fasta file including the sequences of all annotated transcripts. This is done using the `gffread` utility part of the `Cufflinks` package:
@@ -76,22 +76,23 @@ kallisto index -i ~/data/rnaseq/Drosophila_melanogaster.BDGP6.transcriptome.idx 
 Is the default k-mer size appropriate? In which case would it be useful to reduce it?
 
 ## "Mapping" the data
-To quantify the abundances of genes, traditional pipelines were aligning reads to transcriptome/genome and counting how many reads were overlapping each gene (e.g., `BWA`, `Bowtie`, `Tophat`, `STAR` tools). This is conceptually simple, but it is slow, and it leaves the user with a lot of arbitrary choices to make: for example, what to do with reads overlapping several features? New approaches to this problem have recenty emerged with the pseudo-alignement concept (we will use the `Kallisto` software, but a very similar approach is used in the `Salmon` software). First, reads are split into k-mers. Second, the k-mers are mapped to the indexed transcriptome (this is very fast since only perfect match of short sequences is tested). Finally, the individual transcripts are quantified based on their compatibility with the k-mers found in the reads. This procedure is very fast (can be run on your laptop!), does not generate huge intermediate SAM/BAM files, and according the first tests, is yielding results at least as accurate as traditional pipelines.
+To quantify the abundances of genes, traditional pipelines were aligning reads to transcriptome/genome and counting how many reads were overlapping each gene (e.g., `BWA`, `Bowtie`, `Tophat`, `STAR` tools). This is conceptually simple, but it is slow, and it leaves the user with a lot of arbitrary choices to make: for example, what to do with reads overlapping several features? New approaches to this problem have recenty emerged with the pseudo-alignement concept (you will use the `Kallisto` software, but a very similar approach is used in the `Salmon` software). First, reads are split into k-mers. Second, the k-mers are mapped to the indexed transcriptome (this is very fast since only perfect match of short sequences is tested). Finally, the individual transcripts are quantified based on their compatibility with the k-mers found in the reads. This procedure is very fast (can be run on your laptop!), does not generate huge intermediate SAM/BAM files, and according the first tests, is yielding results at least as accurate as traditional pipelines.
 
 ![Question](round-help-button.png)
 What are the relevant parameters to consider when launching `Kallisto`?
 
-For single-end data, the fragment length and standard deviation cannot be estimated directly from the data. The user needs to supply it (**beware, fragment length is not read length**, see https://groups.google.com/forum/#!topic/kallisto-sleuth-users/h5LeAlWS33w). This information has to be read from the Bioanalyzer/Fragment Analyzer results on the prepared RNA-seq libraries. For this practical, in the absence of this information, we will use length=200bp and sd=30, which should be close enough to real values.
+For single-end data, the fragment length and standard deviation cannot be estimated directly from the data. The user needs to supply it (**beware, fragment length is not read length**, see https://groups.google.com/forum/#!topic/kallisto-sleuth-users/h5LeAlWS33w). This information has to be read from the Bioanalyzer/Fragment Analyzer results on the prepared RNA-seq libraries. For this practical, in the absence of this information, you will use length=200bp and sd=30, which should be close enough to real values.
 
 ![To do](wrench-and-hammer.png)
 You will now perform the pseudo-alignement with `Kallisto`. First, launch it on a fastq file of your choice:
 ```sh
-kallisto quant -i Drosophila_melanogaster.BDGP6.transcriptome.idx --bias --single -l 200 -s 30 -o SRRXXXXXXX SRRXXXXXXX.fastq.gz
+kallisto quant -i Drosophila_melanogaster.BDGP6.transcriptome.idx --bias --single -l 200 -s 30 -o kallisto_SRRXXXXXXX SRRXXXXXXX.fastq.gz
 ```
 ![Tip](elemental-tip.png)
 Tip: The `--bias` option allows to correct for some of the (strong) sequence-specific systematic biases of the Illumina protocol. In practice, the correction is not applied to the estimated counts, but to the effective length of the transcripts. This has no biological meaning, but will result in sequence-bias corrected TPM estimates.
 
 This should take a few minutes. Have a look at the result files produced by `Kallisto`, especially the `abundance.tsv` file.
+
 ![Question](round-help-button.png)
 What is the "TPM" expression unit standing for? How is it calculated? What is the difference with the widely used RPKM/FPKM? Why is it better to use TPMs instead of FPKMs? This blog post can be useful <https://haroldpimentel.wordpress.com/2014/05/08/what-the-fpkm-a-review-rna-seq-expression-units/>.
 
