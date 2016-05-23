@@ -87,7 +87,7 @@ For single-end data, the fragment length and standard deviation cannot be estima
 You will now perform the pseudo-alignement with `Kallisto`. First, launch it on one sample of your choice:
 ```sh
 kallisto quant -i Drosophila_melanogaster.BDGP6.transcriptome.idx --bias --single -l 200 -s 30 -o SRRXXXXXXX SRRXXXXXXX.fastq.gz
-
+```
 ![Tip](elemental-tip.png)
 Tip: The --bias option allows to correct for (some of) the sequence-specific systematic biases of the Illumina protocol. In practice, the correction is not applied on the estimated counts, but on the effective length of the transcripts. This has no biological meaning, but will result in sequence-bias corrected TPM estimates.
 
@@ -95,7 +95,7 @@ This should take only a few minutes. Have a look at the result files produced by
 ![Question](round-help-button.png)
 What is the "TPM" expression unit standing for? How is it calculated? What is the difference with the widely used RPKM/FPKM? Why is it better to use TPMs instead of FPKMs? This blog post can be useful <https://haroldpimentel.wordpress.com/2014/05/08/what-the-fpkm-a-review-rna-seq-expression-units/>.
 
-Bonus part: if you have time, (and want to use your own result files in tomorrow's practicals ;), launch `Kallisto` on all samples of the experiment. This will be a bit long, so you can launch it tonight in your hotel room. 
+**Bonus part:** if you have time, (and want to use your own result files in tomorrow's practicals ;), launch `Kallisto` on each sample of the experiment. This will be a bit long, so you can try to launch it tonight in your hotel room. 
 ```sh
 for i in *.fastq.gz; do echo $i; kallisto quant -i Drosophila_melanogaster.BDGP6.transcriptome.idx --bias --single -l 200 -s 30 -o ${i%%.*} $i; done
 ```
