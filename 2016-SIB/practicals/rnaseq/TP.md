@@ -1,12 +1,12 @@
-# Spring School Bioinformatics and Population Genomics 2016 - Leukerbad
+Spring School Bioinformatics and Population Genomics 2016 - Leukerbad
 ---------------------------------------
 
 # Practical: RNA-seq analysis for population genomics
 
-Julien Roux
+Julien Roux, version 1, May 2016
 
 ## Schedule
-* Wednesday 1 June, 16:45 to 17:45: from raw sequencing data to transcript expression levels.
+* **Wednesday 1 June, 16:45 to 17:45: from raw sequencing data to transcript expression levels.**
 * Thursday 2 June, 13:45 to 15:30: gene-level clustering and differential expression analysis.
 
 ## Introduction
@@ -76,42 +76,43 @@ kallisto index -i ~/data/rnaseq/Drosophila_melanogaster.BDGP6.transcriptome.idx 
 Is the default k-mer size appropriate? In which case would it be useful to reduce it?
 
 ## "Mapping" the data
-To quantify the abundances of genes, traditional pipelines were aligning reads to transcriptome/genome and counting how many reads were overlapping each gene. This is conceptually simple, but it is slow, and it left the user with a lot of arbitrary choices to make: for example, what to do with reads overlapping several features? New approaches to this problem have recenty emerged with the pseudo-alignement concept (we will use the `Kallisto` software, but a very similar approach is used in the `Salmon` software). The reads are split into k-mers, and it can be tested very quickly if a k-mer is present in the indexed transcriptome. Then the algorithm is quantifying the transcripts based on their compatibility with k-mers found  in the reads. These softwares are very fast (can be run on your laptop!), do not generate huge intermediate SAM/BAM files, and according the first test, are at least as accurate as traditional approaches.
+To quantify the abundances of genes, traditional pipelines were aligning reads to transcriptome/genome and counting how many reads were overlapping each gene (e.g., `BWA`, `Bowtie`, `Tophat`, `STAR` tools). This is conceptually simple, but it is slow, and it leaves the user with a lot of arbitrary choices to make: for example, what to do with reads overlapping several features? New approaches to this problem have recenty emerged with the pseudo-alignement concept (we will use the `Kallisto` software, but a very similar approach is used in the `Salmon` software). First, reads are split into k-mers. Second, the k-mers are mapped to the indexed transcriptome (this is very fast since only perfect match of short sequences is tested). Finally, the individual transcripts are quantified based on their compatibility with the k-mers found in the reads. This procedure is very fast (can be run on your laptop!), does not generate huge intermediate SAM/BAM files, and according the first tests, is yielding results at least as accurate as traditional pipelines.
 
 ![Question](round-help-button.png)
 What are the relevant parameters to consider when launching `Kallisto`?
 
-For single-end data, the fragment length and standard deviation cannot be estimated directly from the data. The user needs to supply it (**beware, fragment length is not read length!**, see https://groups.google.com/forum/#!topic/kallisto-sleuth-users/h5LeAlWS33w). This information has to be read from the Bioanalyzer/Fragment Analyzer results on the prepared RNA-seq libraries. For this practical, in the absence of this information, we will use length=200bp and sd=30, which should be close enough to real values.
+For single-end data, the fragment length and standard deviation cannot be estimated directly from the data. The user needs to supply it (**beware, fragment length is not read length**, see https://groups.google.com/forum/#!topic/kallisto-sleuth-users/h5LeAlWS33w). This information has to be read from the Bioanalyzer/Fragment Analyzer results on the prepared RNA-seq libraries. For this practical, in the absence of this information, we will use length=200bp and sd=30, which should be close enough to real values.
 
 ![To do](wrench-and-hammer.png)
-You will now perform the pseudo-alignement with `Kallisto`. First, launch it on one sample of your choice:
+You will now perform the pseudo-alignement with `Kallisto`. First, launch it on a fastq file of your choice:
 ```sh
 kallisto quant -i Drosophila_melanogaster.BDGP6.transcriptome.idx --bias --single -l 200 -s 30 -o SRRXXXXXXX SRRXXXXXXX.fastq.gz
 ```
 ![Tip](elemental-tip.png)
 Tip: The `--bias` option allows to correct for some of the (strong) sequence-specific systematic biases of the Illumina protocol. In practice, the correction is not applied to the estimated counts, but to the effective length of the transcripts. This has no biological meaning, but will result in sequence-bias corrected TPM estimates.
 
-This should take only a few minutes. Have a look at the result files produced by `Kallisto`, especially the `abundance.tsv` file.
+This should take a few minutes. Have a look at the result files produced by `Kallisto`, especially the `abundance.tsv` file.
 ![Question](round-help-button.png)
 What is the "TPM" expression unit standing for? How is it calculated? What is the difference with the widely used RPKM/FPKM? Why is it better to use TPMs instead of FPKMs? This blog post can be useful <https://haroldpimentel.wordpress.com/2014/05/08/what-the-fpkm-a-review-rna-seq-expression-units/>.
 
-**Bonus part:** if you have time, and want to use your own result files in tomorrow's practicals (:thumbsup:), launch `Kallisto` on each sample of the experiment. This will be a bit long, so you can try to launch it tonight in your hotel room. 
+### Bonus
+If you have time, and want to use your own result files in tomorrow's practicals (:thumbsup:), launch `Kallisto` on each sample of the experiment. This will be a bit long, so you can try to launch it tonight in your hotel room. 
 ```sh
 for i in *.fastq.gz; do echo $i; kallisto quant -i Drosophila_melanogaster.BDGP6.transcriptome.idx --bias --single -l 200 -s 30 -o ${i%%.*} $i; done
 ```
 
+---------------------------------------
 <sub>Icons taken from http://www.flaticon.com/</sub>
 
 <!--
 ## TO DO: how to implement code folding/hiding?
-          we can just make 2 versions, one with code, one without
+          easiest is probably to have 2 versions, one with code, one without
           or change file names to generic file names
 
 * TO DO: prepare short presentation of: 
-  * kallisto. Fast + accurate + need deal
+  * kallisto. Fast + accurate: game changer
   * DTU/DE/DTE. DE confounded by DTU
   * limma-voom on TPM, etc
-  * pbs: missing genes? missing isoforms? should be better to get better annotation first usign RNA-seq dataset (cufflinks, trinity)
 
 ![Question](round-help-button.png)
 ![Tip](elemental-tip.png)
