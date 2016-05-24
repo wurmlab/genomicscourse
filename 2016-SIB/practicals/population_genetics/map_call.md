@@ -99,7 +99,7 @@ bcftools call --ploidy 1 -v -m raw_calls.bcf > calls.vcf
 
 ```
 
-* Do you understand what does the symbol `*` means here?)
+* Do you understand what does the symbol `*` means here?
 * Do you understand what does why we are using the `-v` option? Is it ever useful to leave it out?
 
 The file produced a VCF (Variant Call Format) format telling the position, nature and quality of the called variants.
