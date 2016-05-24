@@ -104,7 +104,7 @@ bcftools call --ploidy 1 -v -m raw_calls.bcf > calls.vcf
 
 The file produced a VCF (Variant Call Format) format telling the position, nature and quality of the called variants.
 
-Let's take a look at the VCF file produced by typing `less -S variant_calls.vcf`. The file is composed of a header and of and rows for all the variant positions. Have a look at the different columns and check what each is (the header includes labels). Notice that some columns include several fields.
+Let's take a look at the VCF file produced by typing `less -S calls.vcf`. The file is composed of a header and of and rows for all the variant positions. Have a look at the different columns and check what each is (the header includes labels). Notice that some columns include several fields.
 
 * Where does the Header start and end?
 * How is the genotype of each sample coded?
@@ -131,7 +131,7 @@ In more serious analysis, it may be important to filter by other parameters.
 In the downstream analysis, we only want to look at sites that are:
 1. snps (-v snps)
 2. biallelic (-m2 -M2)
-3. where the minor allele is present in at least one individual (because we do not care for the sites where all individuals are different from the reference)
+3. where the minor allele is present in at least one individual (because we do not care for the sites where all individuals are different from the reference, yet equal to each other)
 
 ```sh
 
@@ -144,7 +144,7 @@ bcftools view -v snps -m2 -M2 --min-ac 1:minor filtered_calls.vcf > snp.vcf
 
 ## Viewing the results using IGV (Integrative Genome Viewer)
 
-In this part of the practical, we are going to use the software IGV on our local computer to visualise the alignments we created and check some of the positions where variants were called.
+In this part of the practical, we are going to use the software IGV to visualise the alignments we created and check some of the positions where variants were called.
 
 Open IGV. First, you need to define a genome file, which you have to create from the fasta alignment (Genome > Genomes from file, then choose the assembly fasta file).
 
