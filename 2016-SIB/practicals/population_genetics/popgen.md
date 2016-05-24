@@ -199,7 +199,7 @@ Another useful tool is to do the calculations along a sliding window.
 
 ```r
 
-# Transfor object into object divided by sliding window
+# Transform object into object divided by sliding window
 win_snp <- sliding.window.transform(snp, 
     width=10000, jump=10000, 
     type=2,
