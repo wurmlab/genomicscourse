@@ -49,6 +49,7 @@ lb <- sample_names[grep("b", sample_names)]
 snp_matrix <- snp_matrix[c(bb,lb),]
 
 ```
+
 ### Analysis using `adegenet`
 
 Once this is done, we can create a new `genlight` object that contains all the SNP data
