@@ -49,6 +49,7 @@ lb <- sample_names[grep("b", sample_names)]
 snp_matrix <- snp_matrix[c(bb,lb),]
 
 ```
+
 ### Analysis using `adegenet`
 
 Once this is done, we can create a new `genlight` object that contains all the SNP data
@@ -198,7 +199,7 @@ Another useful tool is to do the calculations along a sliding window.
 
 ```r
 
-# Transfor object into object divided by sliding window
+# Transform object into object divided by sliding window
 win_snp <- sliding.window.transform(snp, 
     width=10000, jump=10000, 
     type=2,

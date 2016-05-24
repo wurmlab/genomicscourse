@@ -3,16 +3,17 @@
 mkdir uniprot
 cd uniprot
 wget ftp://ftp.uniprot.org/pub/databases/uniprot/current_release/knowledgebase/complete/uniprot_sprot.fasta.gz
-wget ftp://ftp.uniprot.org/pub/databases/uniprot/current_release/knowledgebase/complete/uniprot_trembl.fasta.gz
+##wget ftp://ftp.uniprot.org/pub/databases/uniprot/current_release/knowledgebase/complete/uniprot_trembl.fasta.gz
 
+gunzip uniprot_sprot.fasta.gz
 makeblastdb -dbtype prot -parse_seqids -title "UniProtKB-SwissProt" -in uniprot_sprot.fasta
-makeblastdb -dbtype prot -parse_seqids -title "UniProtKB-TrEMBL"   -in uniprot_trembl.fasta
-cd ..
+##makeblastdb -dbtype prot -parse_seqids -title "UniProtKB-TrEMBL"   -in uniprot_trembl.fasta
+##cd ..
 
 
-# get NR
-mkdir nr
-cd nr
-./update_blastdb.pl nr
+### get NR
+##mkdir nr
+##cd nr
+##./update_blastdb.pl nr
 
 

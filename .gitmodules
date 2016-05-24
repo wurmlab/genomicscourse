@@ -1,0 +1,3 @@
+[submodule "2016-SIB/practicals/msmc"]
+	path = 2016-SIB/practicals/msmc
+	url = git@github.com:stschiff/msmc-tools.git
