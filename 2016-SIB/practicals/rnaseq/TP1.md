@@ -1,4 +1,5 @@
-Spring School Bioinformatics and Population Genomics 2016 - Leukerbad
+Leukerbad Spring School Bioinformatics and Population Genomics
+
 ---------------------------------------
 
 # Practical: RNA-seq analysis for population genomics
@@ -6,8 +7,8 @@ Spring School Bioinformatics and Population Genomics 2016 - Leukerbad
 Julien Roux, version 1, May 2016
 
 ## Schedule
-* **Wednesday 1 June, 16:45 to 17:45: from raw sequencing data to transcript expression levels.**
-* Thursday 2 June, 13:45 to 15:30: gene-level clustering and differential expression analysis.
+- [x] **Wednesday 1 June, 16:45 to 17:45: from raw sequencing data to transcript expression levels.**
+- [ ] Thursday 2 June, 13:45 to 15:30: gene-level clustering and differential expression analysis.
 
 ## Introduction
 
@@ -29,7 +30,7 @@ Bart introduced very nicely the motivations of this study during his talk on Tue
 The RNA-seq data are deposited on the GEO database at the following link: <http://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE59411>. If your are not familiar with GEO, please have a look the experiment and samples webpages. In particular, these include links to the raw sequencing data, the processed sequencing data in form of log2(RPKM) values for each gene in each sample (but this is not compulsory for submission), and some metadata allowing to know what experimental conditions the samples correspond to, the protocols used, etc. The GEO page links to the FTP of the SRA database, where you can download the raw data in the `.sra` format. These can be converted to `.fastq` format using the `SRA toolkit` suite.
 
 ![Tip](elemental-tip.png)
-Tip: Converting `.sra` files is quite long. All GEO experiments are also mirrored in european equivalent, the ENA database (see <http://www.ebi.ac.uk/ena/data/view/SRP044339> for our experiment). There, the raw data are available directly in `.fastq` format. This can save you a lot of time!
+Tip: converting `.sra` files is quite long. All GEO experiments are also mirrored in european equivalent, the ENA database (see <http://www.ebi.ac.uk/ena/data/view/SRP044339> for our experiment). There, the raw data are available directly in `.fastq` format. This can save you a lot of time!
 
 Unfortunately, the `.fastq` files for this experiment were too big to be included in the virtual machine image. We will first work on one `.fastq` file that I previously truncated to include only 1 million reads (`~/data/rnaseq/SRR1515119_1M.fastq.gz`). If time allows, you will be able to work on the full dataset at the end of the practical. For now, have a look at the first lines of the truncated file:
 ```sh
@@ -92,7 +93,7 @@ You will now perform the pseudo-alignement with `Kallisto`:
 kallisto quant -i  ~/data/rnaseq/[index file] [Kallisto options] -o ~/data/rnaseq/[output directory for Kallisto results] ~/data/rnaseq/SRR1515119_1M.fastq.gz
 ```
 ![Tip](elemental-tip.png)
-Tip: The `--bias` option allows to correct for some of the (strong) sequence-specific systematic biases of the Illumina protocol. In practice, the correction is not applied to the estimated counts, but to the effective length of the transcripts. This has no biological meaning, but will result in sequence-bias corrected TPM estimates.
+Tip: the `--bias` option allows to correct for some of the (strong) sequence-specific systematic biases of the Illumina protocol. In practice, the correction is not applied to the estimated counts, but to the effective length of the transcripts. This has no biological meaning, but will result in sequence-bias corrected TPM estimates.
 
 This should take a few minutes. Have a look at the result files produced by `Kallisto`, especially the `abundance.tsv` file.
 
@@ -100,7 +101,7 @@ This should take a few minutes. Have a look at the result files produced by `Kal
 What are the rows and columns? What is the "tpm" acronym standing for? How is it calculated? What is the difference with the widely used RPKM/FPKM? Why is it better to use TPMs instead of FPKMs as expression unit? This blog post can be useful <https://haroldpimentel.wordpress.com/2014/05/08/what-the-fpkm-a-review-rna-seq-expression-units/>.
 
 ## Bonus
-If you have time, motivation, enough disk space on your laptop, and want to use your own result files in tomorrow's practicals (:thumbsup:), try to run `Kallisto` on the full dataset of the experiment. This will be a bit long, but it can be left running in your hotel room while you are having fun in the pool, having dinner or sleeping. Otherwise, it may be useful one day after the course.
+If you have time, motivation, enough disk space on your laptop, and want to use your own result files in tomorrow's practicals (:thumbsup:), try to run `Kallisto` on the full dataset of the experiment. This will be a bit long, but it can be left running in your hotel room while you are having fun in the pool tonight. Otherwise, it may be useful some day, after the course.
 ```sh
 ## First, create a directory for the raw data
 mkdir ~/data/rnaseq/FASTQ
@@ -113,6 +114,7 @@ for i in *.fastq.gz; do echo $i; kallisto quant -i ~/data/rnaseq/[index file] [K
 ```
 
 ---------------------------------------
+
 <sub>Icons taken from http://www.flaticon.com/</sub>
 
 <!--
