@@ -51,13 +51,18 @@ For the purposes of this tutorial we will focus on assessing bacterial gene sets
 ### 2.	SETUP
 
 Create new directory in your home directory in which we will run BUSCO analyses and retrieve the required data.
-Unpacking the tarball should give you 4 directories: bacteria (BUSCO bacteria data), GENOS (5 bacterial genomes [DNA FASTA]), PROTS (30 bacterial gene sets [protein FASTA]), and RESULTS (empty for now), and a PERL script: BUSCO_summary_plots.pl
-
+Unpacking the tarball should give you 4 directories: `bacteria` (BUSCO bacteria data), `GENOS` (5 bacterial genomes [DNA FASTA]), `PROTS` (30 bacterial gene sets [protein FASTA]), and `RESULTS` (empty for now), and a PERL script: `BUSCO_summary_plots.pl`
+* Remember to tell Augustus where its configuration files are located
 
 ```sh
-
-do boxes of code like this
-
+mkdir MyBUSCO
+cd MyBUSCO
+wget cegg.unige.ch/pub/SIBCOURSE/BUSCO-datasets.tar.gz
+cp ../../../BUSCO-datasets.tar.gz .
+tar -xzf BUSCO-datasets.tar.gz
+ls –lR
+export AUGUSTUS_CONFIG_PATH=~/software/augustus-3.2.1/config/
+printenv
 ```
 
 And in text `commands` like this.
