@@ -184,4 +184,17 @@ bash busco_geno_set.sh >& busco_geno_set.log.txt &
 *	In the Streptomyces paper by David Studholme (located here: ~/data/BUSCO/Studholme-2016-Streptomyces.pdf) can you identify some of the species whose OGSs we assessed in the previous analysis?
 
 
+### 9.	VISUALISE RESULTS
+* View additional BUSCO analysis results graphically. View PDF chart: `BUSCO_R_PLOTS.pdf`
+
+```sh
+cp run_g*/full_table_* RESULTS/.
+ls -l RESULTS/
+perl BUSCO_summary_plots.pl RESULTS
+```
+
+9.1.	Understanding the results chart:
+*	Which are the best/worst assemblies?
+*	How do the BUSCO results compare with the numbers of contigs/scaffolds for each genome?
+*	How do the two Streptomyces with both assembly and OGS assessments compare?
 
