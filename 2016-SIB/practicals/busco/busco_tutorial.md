@@ -13,29 +13,45 @@ The BUSCO assessment tool (Simão et al. 2015) implements a computational pipeli
 
 ## Suggested Reading
 
-BUSCO manuscript: http://www.ncbi.nlm.nih.gov/pubmed/26059717
-BUSCO website: http://busco.ezlab.org
-Projects using BUSCO: https://scholar.google.ch/scholar?cites=8784869448449883892
-OrthoDB manuscript 2015: http://www.ncbi.nlm.nih.gov/pubmed/25428351
-OrthoDB manuscript 2013: http://www.ncbi.nlm.nih.gov/pubmed/23180791
-OrthoDB website: www.orthodb.org
-Single-copy control manuscript: http://www.ncbi.nlm.nih.gov/pubmed/21148284
-Gene loss manuscript: http://www.ncbi.nlm.nih.gov/pubmed/18021399
-HMM search manuscript: http://www.ncbi.nlm.nih.gov/pubmed/22039361
-Augustus gene predictor manuscript: http://www.ncbi.nlm.nih.gov/pubmed/21216780
-Augustus website: http://bioinf.uni-greifswald.de/augustus
-CEGMA manuscript: http://www.ncbi.nlm.nih.gov/pubmed/17332020
-CEGMA website: http://korflab.ucdavis.edu/datasets/cegma
-ALE manuscript: http://www.ncbi.nlm.nih.gov/pubmed/23303509
-REAPR manuscript: http://www.ncbi.nlm.nih.gov/pubmed/23710727
-QUAST manuscript: http://www.ncbi.nlm.nih.gov/pubmed/23422339
-Streptomyces assessments: http://www.ncbi.nlm.nih.gov/pubmed/26986204
+* BUSCO manuscript: http://www.ncbi.nlm.nih.gov/pubmed/26059717
+* BUSCO website: http://busco.ezlab.org
+* Projects using BUSCO: https://scholar.google.ch/scholar?cites=8784869448449883892
+* OrthoDB manuscript 2015: http://www.ncbi.nlm.nih.gov/pubmed/25428351
+* OrthoDB manuscript 2013: http://www.ncbi.nlm.nih.gov/pubmed/23180791
+* OrthoDB website: www.orthodb.org
+* Single-copy control manuscript: http://www.ncbi.nlm.nih.gov/pubmed/21148284
+* Gene loss manuscript: http://www.ncbi.nlm.nih.gov/pubmed/18021399
+* HMM search manuscript: http://www.ncbi.nlm.nih.gov/pubmed/22039361
+* Augustus gene predictor manuscript: http://www.ncbi.nlm.nih.gov/pubmed/21216780
+* Augustus website: http://bioinf.uni-greifswald.de/augustus
+* CEGMA manuscript: http://www.ncbi.nlm.nih.gov/pubmed/17332020
+* CEGMA website: http://korflab.ucdavis.edu/datasets/cegma
+* ALE manuscript: http://www.ncbi.nlm.nih.gov/pubmed/23303509
+* REAPR manuscript: http://www.ncbi.nlm.nih.gov/pubmed/23710727
+* QUAST manuscript: http://www.ncbi.nlm.nih.gov/pubmed/23422339
+* Streptomyces assessments: http://www.ncbi.nlm.nih.gov/pubmed/26986204
 
 ## Tutorial Instructions
 
 ### 1. BACKGROUND
 
 For the purposes of this tutorial we will focus on assessing bacterial gene sets and genome assemblies as they are smaller than for eukaryotes and the BUSCO assessment set is made up of only 40 conserved orthologues. The same principles apply to the assessment of data from species from other lineages, but working with bacteria means that we can run the analyses and examine the results within the timeframe of the tutorial. We will begin by assessing a selection of bacterial gene set annotations and then a smaller selection of bacterial genome assemblies, downloaded from Ensembl Bacteria (http://bacteria.ensembl.org).
+
+1.1.	In your research projects that involve making use of an assembled genome: 
+* What species do you work with? 
+* What do you know about the quality of the sequenced genome?
+* Do you consider them draft or near-finished assemblies?
+* What kind of measures do you look for the try to judge the quality?
+* Have you ever heard of “The 3 C’s” assessment of assembly quality?
+
+1.2.	From the introduction and your own background reading, can you briefly describe what BUSCO assessments can tell you about the quality of your genome assembly?
+
+1.3.	Can you think of a complementary approach?
+
+### 2.	SETUP
+
+Create new directory in your home directory in which we will run BUSCO analyses and retrieve the required data.
+Unpacking the tarball should give you 4 directories: bacteria (BUSCO bacteria data), GENOS (5 bacterial genomes [DNA FASTA]), PROTS (30 bacterial gene sets [protein FASTA]), and RESULTS (empty for now), and a PERL script: BUSCO_summary_plots.pl
 
 
 ```sh
