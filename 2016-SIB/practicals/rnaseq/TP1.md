@@ -22,7 +22,7 @@ You will be reanalyzing RNA-seq data generated in the lab of Bart Deplancke, pub
 
 Bou Sleiman MS, Osman D, Massouras A, Hoffmann AA, Lemaitre B and Deplancke B. Genetic, molecular and physiological basis of variation in Drosophila gut immunocompetence. *Nature Communications*. 2015;6:7829 (<http://www.nature.com/ncomms/2015/150727/ncomms8829/full/ncomms8829.html>). A PDF of the paper and the supplementary data are located in the `~/data/papers/` folder (`ncomms8829*` files). 
 
-Bart introduced very nicely the motivations of this study during his talk on Tuesday. Briefly, they aimed at studying how genetic variation in *Drosophila melanogaster* impacts the molecular and cellular processes that constitute gut immunocompetence. They performed RNA-seq on 16 gut samples comprising four susceptible and four resistant DGRP lines in the unchallenged condition and 4h after *Pseudomonas entomophila* infection. You are thus faced with an experimental design including three factors: DGRP lines, infection susceptibility and infection status. For simplicity, we will ignore the DGRP line, and consider the four susceptibility and the four resistant lines as biological replicates.
+Bart introduced very nicely the motivations of this study during his talk on Tuesday. Briefly, they aimed at studying how genetic variation in *Drosophila melanogaster* impacts the molecular and cellular processes that constitute gut immunocompetence. They performed RNA-seq on 16 gut samples comprising four susceptible and four resistant DGRP lines in the unchallenged condition and 4h after *Pseudomonas entomophila* infection. 
 
 ## The data you will need to map the reads
 
@@ -98,7 +98,7 @@ Tip: the `--bias` option allows to correct for some of the (strong) sequence-spe
 This should take a few minutes. Have a look at the result files produced by `Kallisto`, especially the `abundance.tsv` file.
 
 ![Question](round-help-button.png)
-What are the rows and columns? What is the "tpm" acronym standing for? How is it calculated? What is the difference with the widely used RPKM/FPKM? Why is it better to use TPMs instead of FPKMs as expression unit? This blog post can be useful <https://haroldpimentel.wordpress.com/2014/05/08/what-the-fpkm-a-review-rna-seq-expression-units/>.
+What are the rows and columns? What is the "tpm" acronym standing for? How is it calculated? What is the difference with the widely used RPKM/FPKM? Why is it more consistent to use TPMs instead of FPKMs as expression unit? This blog post can be useful <https://haroldpimentel.wordpress.com/2014/05/08/what-the-fpkm-a-review-rna-seq-expression-units/>.
 
 ## Bonus
 If you have time, motivation, enough disk space on your laptop, and want to use your own result files in tomorrow's practicals (:thumbsup:), try to run `Kallisto` on the full dataset of the experiment. This will be a bit long, but it can be left running in your hotel room while you are having fun in the pool tonight. Otherwise, it may be useful some day, after the course.
@@ -117,10 +117,10 @@ for i in *.fastq.gz; do echo $i; kallisto quant -i ~/data/rnaseq/[index file] [K
 
 <sub>Icons taken from http://www.flaticon.com/</sub>
 
+<sub>Thanks to Amina Echchiki for proofreading and testing</sub>
+
 <!--
-## TO DO: how to implement code folding/hiding?
-          easiest is probably to have 2 versions, one with code, one without
-          or change file names to generic file names
+* TO DO: how to implement code folding/hiding? Easiest is probably to have 2 versions, one with code, one without... Or change file names to generic file names?
 
 * TO DO: prepare short presentation of: 
   * kallisto. Fast + accurate: game changer
@@ -130,6 +130,5 @@ for i in *.fastq.gz; do echo $i; kallisto quant -i ~/data/rnaseq/[index file] [K
 ![Question](round-help-button.png)
 ![Tip](elemental-tip.png)
 ![To do](wrench-and-hammer.png)
-
 http://www.emoji-cheat-sheet.com/
 -->
