@@ -117,10 +117,10 @@ for i in *.fastq.gz; do echo $i; kallisto quant -i ~/data/rnaseq/[index file] [K
 
 <sub>Icons taken from http://www.flaticon.com/</sub>
 
+<sub>Thanks to Amina Echchiki for proofreading and testing</sub>
+
 <!--
-## TO DO: how to implement code folding/hiding?
-          easiest is probably to have 2 versions, one with code, one without
-          or change file names to generic file names
+* TO DO: how to implement code folding/hiding? Easiest is probably to have 2 versions, one with code, one without... Or change file names to generic file names?
 
 * TO DO: prepare short presentation of: 
   * kallisto. Fast + accurate: game changer
@@ -130,6 +130,5 @@ for i in *.fastq.gz; do echo $i; kallisto quant -i ~/data/rnaseq/[index file] [K
 ![Question](round-help-button.png)
 ![Tip](elemental-tip.png)
 ![To do](wrench-and-hammer.png)
-
 http://www.emoji-cheat-sheet.com/
 -->

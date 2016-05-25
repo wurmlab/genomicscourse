@@ -13,17 +13,17 @@ Julien Roux, version 1, May 2016
 ## Introduction
 Today you will pursue the analysis of Bou Sleiman et al. *Drosophila melanogaster* data. Unless you managed to map all samples yesterday (:clap:), use the pre-processed `Kallisto` results located in the `~/data/rnaseq/kallisto/SRR*` folders. A first step of the practical will be to import the data and sum the transcript-level TPM estimates to gene-level TPM expression estimates. This allows to obtain expression levels that are not affected by differential transcript usage or differential splicing. You will then be able to perform some clustering analyses and study differential expression between strains and experimental conditions. 
 
-In the interest of time, I have written fully most of the R commands, that you can copy-paste. I encourage you to read them fully and try to understand what was done. Feel free to try and modify some parameters, or ask the assistants if sonething is not clear.
+In the interest of time, most of the R commands are written fully, so that you can copy-paste. I encourage you to read them fully and try to understand what was done. Feel free to try and modify some parameters, or ask the assistants if something is not clear.
 
 ## Read and format the metadata
 
-Launch R in the console or using Rstudio.
+Launch R in the console or use Rstudio.
 ```R
 ## path to the data
 dataFolder <- "~/data/rnaseq/"
 ```
 
-You will first read and format the experiment metadata using the GEOquery package (<http://www.bioconductor.org/packages/release/bioc/vignettes/GEOquery/inst/doc/GEOquery.html>). The metadata are located in the `GSE59411_series_matrix.txt` file that we pre-downloaded on the GEO page of the experiment. Metadata can also be read from the `GSE59411_family.soft` file, or by passing the experiment name to the GEOquery package (beware, the format of the resulting R object will slightly differ depending on the approach used). The following steps are a bit boring, but try to understand what was done:
+You will first read and format the experiment metadata using the GEOquery package (<http://www.bioconductor.org/packages/release/bioc/vignettes/GEOquery/inst/doc/GEOquery.html>). The metadata are located in the `GSE59411_series_matrix.txt` file that was pre-downloaded on the GEO page of the experiment. Metadata can also be read from the `GSE59411_family.soft` file, or by passing the experiment name to the GEOquery package (beware, the format of the resulting R object will slightly differ depending on the approach used). The following steps are a bit boring, but try to understand what was done:
 
 ```R
 ## Should not be needed:
@@ -73,7 +73,12 @@ names(files) <- samples$title
 all(file.exists(files))
 ```
 
-To sum up transcript expression levels, `tximport` needs a data.frame with a transcript ID column and a gene ID column. You will retrieve this information from the Ensembl database via the Biomart webservice. Biomart queries require the specification of 1) a dataset to use, 2) a list of filters to select specific Ensembl genes (not needed in our case), 3) a list of attributes to output. It is possible to build the Biomart query from the web interface ([the needed query would be obtain by specifying the following dataset and attributes](<http://www.ensembl.org/biomart/martview/368fdd3310212bc95ef4d904847c1408?VIRTUALSCHEMANAME=default&ATTRIBUTES=dmelanogaster_gene_ensembl.default.feature_page.ensembl_transcript_id|dmelanogaster_gene_ensembl.default.feature_page.ensembl_gene_id&FILTERS=&VISIBLEPANEL=resultspanel)), but there is a Bioconductor package called `biomaRt` that allows to obtain results directly into R:
+To sum up transcript expression levels, `tximport` needs a data.frame with a transcript ID column and a gene ID column. You will retrieve this information from the Ensembl database via the Biomart webservice. Biomart queries require the specification of:
+1) a dataset to use
+2) a list of filters to select specific Ensembl genes (not needed in our case)
+3) a list of attributes to output. 
+
+It is possible to build the Biomart query from the web interface ([the needed query would be obtain by specifying the following dataset and attributes](<http://www.ensembl.org/biomart/martview/368fdd3310212bc95ef4d904847c1408?VIRTUALSCHEMANAME=default&ATTRIBUTES=dmelanogaster_gene_ensembl.default.feature_page.ensembl_transcript_id|dmelanogaster_gene_ensembl.default.feature_page.ensembl_gene_id&FILTERS=&VISIBLEPANEL=resultspanel)), but there is a Bioconductor package called `biomaRt` that allows to obtain results directly into R:
 ```R
 library(biomaRt)
 ## Choose D. melanogaster dataset in Ensembl release 84
@@ -100,11 +105,11 @@ I suggest to have a look at this interesting paper:
 
 Soneson C, Love M and Robinson M. Differential analyses for RNA-seq: transcript-level estimates improve gene-level inferences. *F1000Research*. 2015;4(1521) (<http://f1000research.com/articles/4-1521/v2>). A PDF of the paper is located in the `~/data/papers/` folder.
 
-In this paper, Soneson and colleagues show that gene-level abundance estimates offer advantages over transcript-level analyses. They are more accurate, more stable, more interpretable, and allow better control on false positives in the presence of differential isoform usage. For this purpose, they introduced the "scaledTPM" values, which are obtained by summing the estimated transcript TPMs from Kallisto within genes, and multiplying with the total library size in millions. ScaledTPM values are artificial values, transforming underlying abundance measures to the scale of read counts. This allows to incorporate the information provided by the sequencing depth, and work with RNA-seq differential expression tools that were developed to use read counts, while being independent on the length of the pool of transcripts expressed for each gene in a given condition.
+In this paper, Soneson and colleagues show that gene-level abundance estimates offer advantages over transcript-level analyses. They are more accurate, more stable, more interpretable, and allow better control on false positives in the presence of differential isoform usage. For this purpose, they introduced the "scaledTPM" values, which are obtained by summing the estimated transcript TPMs from Kallisto within genes, and multiplying with the total library size in millions. ScaledTPM values are artificial values, transforming underlying abundance measures to the scale of read counts. This allows to incorporate the information provided by the sequencing depth, and work with RNA-seq differential expression tools that were developed to use read counts, while controlling for the length of transcripts expressed for each gene in each given condition.
 
 ## Data normalization
 
-We will import the gene expression data into a `edgeR` DGE object and obtain normalization factors for each sample. The default normalization method in `edgeR` is called TMM. It was previously shown to perform quite well, while not too stringent. 
+You will import the gene expression data into a `edgeR` DGE object and obtain normalization factors for each sample. The default normalization method in `edgeR` is called TMM. It was previously shown to perform quite well, while not too stringent. 
 ```R
 library(edgeR)
 library(limma)
@@ -115,42 +120,47 @@ y$samples
 ![Question](round-help-button.png)
 What is the meaning of each column in this data frame?
 
-You will now look at the data distribution in the DGE object. The `cpm` function returns counts per million reads. Because we used scaledTPMs instead of real counts, this corresponds  for each sample to the TPM abundances divided by its TMM normalization factor:
+You will now look at the data distribution in the DGE object. The `cpm` function returns counts per million reads. Because you used scaledTPMs instead of real counts, this corresponds  for each sample to the TPM abundances divided by its TMM normalization factor:
 ```R
 ## Load a nice color palette of 9 + 8 colors to be used for plots
 library(RColorBrewer)
 myPalette <- c(brewer.pal(9, "Set1"), brewer.pal(8, "Set2"))
 ## Plot CPM distribution
 plotDensities(cpm(y), col=myPalette[1:16])
-plotDensities(cpm(y, log=T), col=myPalette[1:16])
+unfilteredExpr <- cpm(y, log=T)
 ?cpm ## note that a small value is added to the counts if log=T
+plotDensities(unfilteredExpr, col=myPalette[1:16])
 ```
 ![Question](round-help-button.png)
 What do you observe? How are the data distributed? Why are there two modes? What would be a good cutoff to discriminate the two modes?
 
-It is a good practice to filter our the genes that are not expressed, or very lowly expressed. This alleviates the multiple testing burden, and anyway there is very little power to detect differential expression for these genes. It is of course better to filter these genes after data normalization, before differential expression testing. The choice of a criterion to filter genes is arbitrary, but it has to make sense given the distribution of the data. *It is a bad practice to filter genes based on their variance!*
+It is a good practice to filter out the genes that are not expressed, or very lowly expressed. This alleviates the multiple testing burden, and anyway there is very little power to detect differential expression for these genes. It is of course better to filter these genes after data normalization, before differential expression testing. The choice of a criterion to filter genes is arbitrary, but it has to make sense given the distribution of the data.
+
+![Warning](warning.png)
+It is a bad practice to filter genes based on their variance!
 ```R
 cutoff <- ... ## put here the cutoff expression thta was chosen in the previous question
-summary(cpm(y, log=T) > cutoff)
-hist(apply(cpm(y, log=T), 1, function(x){ return(sum(x > cutoff)) }))
-## We can for example require that each gene has expression above cutoff in at least half of the samples 
-selectedGenes <- names(which(apply(cpm(y, log=T), 1, function(x){ return(sum(x > cutoff)) }) >= 8))
+summary(unfilteredExpr > cutoff)
+hist(apply(unfilteredExpr, 1, function(x){ return(sum(x > cutoff)) }))
+## You can for example require that each gene has expression above cutoff in at least half of the samples 
+selectedGenes <- names(which(apply(unfilteredExpr, 1, function(x){ return(sum(x > cutoff)) }) >= 8))
 length(selectedGenes)
 ```
 
-We will now rebuild a new DGE object using only selected genes, and renormalize it:
+You will now rebuild a new DGE object using only selected genes, and renormalize it:
 ```R
 y <- DGEList(txi$counts[selectedGenes, ]) 
 y <- calcNormFactors(y)
-plotDensities(cpm(y, log=T), col=myPalette[1:16], legend="topright")
+filteredExpr <- cpm(y, log=T)
+plotDensities(filteredExpr, col=myPalette[1:16], legend="topright")
 ```
 ![Question](round-help-button.png)
 What has changed now? Do you like the distribution of expression levels and their normalization?
 
 Let's look at the distribution of samples depending on the 2 experimental factors:
 ```R
-plotDensities(cpm(y, log=T), group=samples$resistance, col=myPalette[1:2])
-plotDensities(cpm(y, log=T), group=samples$treatment, col=myPalette[3:4])
+plotDensities(filteredExpr, group=samples$resistance, col=myPalette[1:2])
+plotDensities(filteredExpr, group=samples$treatment, col=myPalette[3:4])
 ```
 ![Question](round-help-button.png)
 Are there systematic differences in the distribution of expression levels that are linked to one or the other experimental factor? Can you guess which experimental factor is likely to have the strongest effect on expression levels in this experiment?
@@ -161,7 +171,7 @@ Are there systematic differences in the distribution of expression levels that a
 You will perform a principal component analysis (PCA) on the normalized data using the `prcomp` R command. Input data of the PCA need to be ~normally distributed, so you will use the logged-CPM values previously plotted.
 
 ```R
-pca <- prcomp(t(cpm(y, log=T)), scale = T)
+pca <- prcomp(t(filteredExpr), scale = T)
 plot(pca)
 summary(pca)
 loadings <- pca$rotation
@@ -178,9 +188,9 @@ plot(scores[,1], scores[,2],
      xlab=paste0("PC1: ", round(summary(pca)$importance[2,1],3)*100, "% variance explained"), ## indicate the % variance explained by PC1
      ylab=paste0("PC2: ", round(summary(pca)$importance[2,2],3)*100, "% variance explained"), ## indicate the % variance explained by PC2
      pch=as.numeric(as.factor(samples$treatment))+15, ## points shape according to treatment
-     col=myPalette[as.numeric(as.factor(samples$resistance))], ## points color accoriding to susceptibility
+     col=myPalette[as.numeric(as.factor(samples$resistance))], ## points color according to susceptibility
      xlim=c(min(scores[,1]), max(scores[,1])) ,
-     ylim=c(min(scores[,n+1]), max(scores[,n+1])+(max(scores[,n+1])-min(scores[,n+1]))/4) ## Let a bit of on top of the plot for legend
+     ylim=c(min(scores[,2]), max(scores[,2])+(max(scores[,2])-min(scores[,2]))/4) ## Let a bit of room on top of the plot for legend
 )
 ## Plot legends
 legend("topleft", legend=levels(as.factor(samples$treatment)), pch=16:17)
@@ -196,27 +206,27 @@ When labels get too messy, it can be nice to only label the interesting points. 
 
 Plot the samples projected onto PC2 and PC3, then PC3 and PC4. Do you observe segregation of the points by any experimental factor? Are these observations consistent with your previous prediction of the experimental factor with the strongest effect on expression levels?
 
-### Heatmap (skip this if timing is tight)
+### Heatmap (skip this part if timing is tight)
 Another way to visualize the data is to plot a heatmap of expression levels, along with a dendrogram obtained by hierarchical clustering of the samples. The `heatmap` R function allows you to perform this, but the `heatmap.2` from the `gplots` package offers more possibilities. There a lot more packages and heatmap functions to explore if you have particular needs. You will first plot a heatmap using a random selection of 100 genes:
 ```R
 library(gplots)
 ## create a gradient of 100 colors going from light blue to dark blue
 colors <- colorRampPalette(c(brewer.pal(9, "Blues")[1],brewer.pal(9, "Blues")[9]))(100)
 ## select randomly 100 genes and extract their expression
-selectedExpression <- cpm(y, log=T)[sample(1:length(cpm(y, log=T)[,1]), 100),]
+selectedExpression <- filteredExpr[sample(1:length(filteredExpr[,1]), 100),]
 ## Plot the heatmap
 heatmap.2(selectedExpression, scale="none", col = colors, margins = c(14, 6), trace='none', denscol="white")
 ```
 ![Question](round-help-button.png)
-What are the rows and the left tree representing? What are the columns and the top tree representing? What does the color intensity mean? Try to replot the heatmap with a new random selection of 100 genes. Are the clustering stable? 
+What are the rows and the left tree representing? What are the columns and the top tree representing? What does the color intensity mean? Try to replot the heatmap with a new random selection of 100 genes. Is the clustering stable? 
 
-It is difficult to include the expressionation of all genes to create a readable heatmap. An alternative is to calculate the matrix of pairwise correlation coefficients across all samples and plot a heatmap of this matrix. In addition, the `ColSideColors` and `RowSideColors` arguments allow to better visualize the experimental factors of each sample:
+It is difficult to include the expression of all genes to create a readable heatmap. An alternative is to calculate the matrix of pairwise correlation coefficients across all samples and plot a heatmap of this matrix. In addition, the `ColSideColors` and `RowSideColors` arguments allow to better visualize the experimental factors of each sample:
 ```R
-allCors <- cor(cpm(y, log=T), method="spearman", use="pairwise.complete.obs")
+allCors <- cor(filteredExpr, method="spearman", use="pairwise.complete.obs")
 heatmap.2( allCors, scale="none", col = colors, margins = c(16, 12), trace='none', denscol="white", RowSideColors=myPalette[1:2][as.integer(as.factor(samples$resistance))], ColSideColors=myPalette[3:4][as.integer(as.factor(samples$treatment))])
 ```
 ![Question](round-help-button.png)
-What are the rows and the columns representing now? What does the color intensity mean? Is the clustering pattern consistent with the PCA? Do you see a manifestatio of the DGRP lines effect on the heatmap?
+What are the rows and the columns representing now? What does the color intensity mean? Is the clustering pattern consistent with the PCA? Do you see a manifestation of the DGRP line effect on the heatmap?
 
 ## Differential expression analysis
 
@@ -225,12 +235,12 @@ There are several softwares to test for differential expression. `DESeq2` and `e
 
 Law C, Chen Y, Shi W, Smyth G. voom: precision weights unlock linear model analysis tools for RNA-seq read counts. *Genome Biology*. 2014;15(2):R29 (<http://genomebiology.biomedcentral.com/articles/10.1186/gb-2014-15-2-r29>). A PDF of the paper is located in the `~/data/papers/` folder.
  
-While `DESeq2` and `edgeR` work directly on count distributions, using a negative binomial modeling framework, `limma-voom` works on the log-transformed CPMs, which are normally distributed data. This is very useful because the theory behind of normal distributions is more tractable. Notably, a large range of statistical methods that were developped for microarray analysis can be used on such normally distributed data. For example, the widely used `limma` package uses an empirical Bayes approach, which borrows information across genes to adjust variance estimates when sample sizes are small. `Limma` is also a very comprehensive package, able to deal with experiments with complex designs.
+While `DESeq2` and `edgeR` work directly on count distributions, using a negative binomial modeling framework, `limma-voom` works on the log-transformed CPMs, which are normally distributed data. This is very useful because the theory behind of normal distributions is more tractable. Notably, a large range of statistical methods that were developped for microarray analysis can be used on such normally distributed data. For example, the widely used `limma` package uses an empirical Bayes approach, which borrows information across genes to adjust variance estimates when sample sizes are small. `Limma` is a very comprehensive package, able to deal with experiments with complex designs.
 
 A problem of the log-transformation is that it does not yield stable variances (i.e., there is heteroscedasticity). The variability of genes with lower expression is lower than those with high expression, This is easily observable when plotting one sample versus a biological replicate: 
 ```R
 ## The color argument was set up to plot transparent black points 
-plot(cpm(y, log=T)[,5], cpm(y, log=T)[,6], pch=16, col=rgb(0,0,0,0.2))
+plot(filteredExpr[,5], filteredExpr[,6], pch=16, col=rgb(0,0,0,0.2))
 ```
 To deal with this problem, `limma-voom` models the mean-variance relationship observed in the data. This trend is incorporated into a precision weight for each individual normalized observation, which are proportional to the expression levels (see <https://en.wikipedia.org/wiki/Least_squares#Weighted_least_squares>). These weights can be used in `limma` during its linear modeling step. `Limma-voom` was shown to perform equally well compared to tools based on the negative-binomial distribution modeling, or even better when the sequencing depths are different across samples. 
 
@@ -239,7 +249,7 @@ An additional interesting possibility offered by the `limma` package is the poss
 Liu R, et al. Why weight? Modelling sample and observational level variability improves power in RNA-seq analyses. *Nucleic Acids Res*. 2015;43(15):e97 (<http://nar.oxfordjournals.org/content/43/15/e97.long>). A PDF of the paper is located in the `~/data/papers/` folder.
 
 ![Question](round-help-button.png)
-Following your interpretation on the PCA results, do you think this procedure will be beneficial?
+Following the PCA results, do you think this procedure will be beneficial?
 
 ### Implementation
 ```R
@@ -267,6 +277,7 @@ The next step is to specify the contrasts of interest in a contrast matrix. It i
 * the treatment effect in resistant lines (CvsUinR)
 * the treatment effect in susceptible lines
 * the treatment effect in general
+
 Following the same logic, please complete the command to add the contrasts for:
 * the resistance effect in challenged lines
 * the resistance effect in unchallenged lines
@@ -295,7 +306,7 @@ summary(results)
 ![Question](round-help-button.png)
 What do you observe? Is it consistent with the PCA? What is surprising?
 
-You can see how many genes are differentially expressed in common between 2 contrast using Venn diagram:
+You can see how many genes are differentially expressed in common between 2 contrast using Venn diagrams:
 ```R
 vennDiagram(results[,c(1,2)])
 vennDiagram(results[,c(2,5)])
@@ -310,23 +321,23 @@ To extract the lists of differentially expressed genes, the `coef` argument is n
 ## Treatment:
 treatmentGenes <- topTable(fit2, coef=3, p.value=0.1, number=Inf, sort.by="P")
 ## visualize the top 100 genes
-selectedExpression <- cpm(y, log=T)[rownames(treatmentGenes)[1:100],]
+selectedExpression <- filteredExpr[rownames(treatmentGenes)[1:100],]
 heatmap.2(selectedExpression, scale="none", col = colors, margins = c(14, 6), trace='none', denscol="white", ColSideColors=myPalette[3:4][as.integer(as.factor(samples$treatment))])
 ## Resistance:
 resistanceGenes <- topTable(fit2, coef=6, p.value=0.1, number=Inf, sort.by="P")
 ## visualize all DE genes
-selectedExpression <- cpm(y, log=T)[rownames(resistanceGenes),]
+selectedExpression <- filteredExpr[rownames(resistanceGenes),]
 heatmap.2(selectedExpression, scale="none", col = colors, margins = c(14, 6), trace='none', denscol="white", ColSideColors=myPalette[1:2][as.integer(as.factor(samples$resistance))])
 ```
 ![Question](round-help-button.png)
-How does the clustering looks like when only resistanceGenes are taken into account? What does it tell you?
+How does the clustering looks like when only resistance genes are taken into account? What does it tell you?
 
 ## Bonus: characterization of differentially expressed genes
-### Manually (long, subjective, ...)
-Because there are relatively few genes differentially expressed between resistant and susceptible lines, it is possible to look them up in reference databases (Ensembl, Uniprot, Flybase). 
+### Manually
+Because there are relatively few genes differentially expressed between resistant and susceptible lines, it is possible to look them up in reference databases (Ensembl, Uniprot, Flybase). But this long, subjective, and because there are a lot of uncharacterized genes, it is oftn frustrating...
 
 ### GO enrichment test
-However for long lists of genes, it is difficult to get an objective view of what are these genes, and to characterize their function. Gene Ontology (GO) enrichment analyses are useful wiht that respect. For each GO category (a group of genes sharing the same function, involved in the same process, or located in the same cellular compartment) it is possible to test whether the proportion of DE genes is higher then expected. We can do this with the `topGO` package.
+To get an objective view of what are the genes in a long lists of genes, and to characterize their function, Gene Ontology (GO) enrichment analyses are useful. For each GO category (a group of genes sharing the same function, involved in the same process, or located in the same cellular compartment) it is possible to test whether the proportion of DE genes is higher then expected. You can do this with the `topGO` package.
 
 ![Warning](warning.png)
 A word of caution for the use of such tools: 
@@ -345,7 +356,7 @@ geneList[DEGenes] <- 1
 geneList = as.factor(geneList)
 summary(geneList)
 
-## We then need a mapping of genes to the GO categories. This can be retrieved from Ensembl using biomaRt, or using the Drosophila melanogaster annotation package in Bioconductor
+## You then need a mapping of genes to the GO categories. This can be retrieved from Ensembl using biomaRt, or using the Drosophila melanogaster annotation package in Bioconductor
 ## If the annotation package is not installed: 
 ## source("http://bioconductor.org/biocLite.R")
 ## biocLite("org.Dm.eg.db")
@@ -364,26 +375,24 @@ myTable <- GenTable(BPdata, classic = resultBP, topNodes=length(BPdata@graph@nod
 If you have time you can run the GO enrichment test on the molecular function (`ontology="MF"`) or the cellular component ontologies (`ontology="CC"`).
 
 ![Question](round-help-button.png)
-What are the top categories enriched for genes DE with treatment? Does it make sense?
+What are the top categories enriched for genes DE with treatment? Is it consistent with what is reported in the original paper?
 
 ![Tip](elemental-tip.png)
 `TopGO` includes the possibility to use several decorrelation algorithms, giving less redundant, and more precise categories in the results. Repeat the analysis with the weight algorithm (`algorithm = "weight"`), and observe the difference in results. 
 
 ### topAnat enrichment test
-It is also possible to perform a similar ontology enrichment, but on the fly anatomical ontology instead of Gene Ontology. Genes are mapped to a tissue if some expression was detected in this tissue. With the Bgee database team (<http://bgee.org>), I have developped a tool called `BgeeDB` allowing to do this, based on the `topGO` package algorithm. It is available in the latest Bioconductor release, or on GitHub <https://github.com/BgeeDB/BgeeDB_R>. I encourage you to try in addition to the classical GO enrichment tests, it gives very interesting results! A graphical interface is also available at <http://bgee.org/?page=top_anat#/>.
+It is possible to perform a similar ontology enrichment, but on the fly anatomical ontology instead of Gene Ontology. Genes are mapped to a tissue if some expression was detected in this tissue. With the Bgee database team (<http://bgee.org>), I have developped a tool called `BgeeDB` allowing to do this, based on the `topGO` package algorithm. It is available in Bioconductor (release 3.3), or on GitHub <https://github.com/BgeeDB/BgeeDB_R>. I encourage you to try in addition to the classical GO enrichment tests, it gives very interesting results! A graphical interface is also available at <http://bgee.org/?page=top_anat#/>.
 
 ---------------------------------------
+
 <sub>Icons taken from http://www.flaticon.com/</sub>
 
+<sub>Thanks to Amina Echchiki for proofreading and testing</sub>
+
 <!--
-## TO DO: some questions like: what is on the x / y axis
+* TO DO: add code for topAnat part?
 
-## TO DO: thanks amina
-## TO DO: replace cpm(y, log=T) by a variable
-
-## TO DO: how to implement code folding/hiding?
-          easiest is probably to have 2 versions, one with code, one without
-          or change file names to generic file names
+* TO DO: how to implement code folding/hiding? Easiest is probably to have 2 versions, one with code, one without... Or change file names to generic file names?
 
 * TO DO: prepare short presentation of: 
   * kallisto. Fast + accurate: game changer
@@ -394,6 +403,5 @@ It is also possible to perform a similar ontology enrichment, but on the fly ana
 ![Tip](elemental-tip.png)
 ![To do](wrench-and-hammer.png)
 ![Warning](warning.png)
-
 http://www.emoji-cheat-sheet.com/
 -->
