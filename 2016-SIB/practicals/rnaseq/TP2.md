@@ -83,7 +83,7 @@ transcript2gene <- transcript2gene[order(transcript2gene$ensembl_gene_id), ]
 head(transcript2gene)
 ```
 ![Tip](elemental-tip.png) 
-Tip: specifying the `host` argument in the `biomaRt` query allows to choose which Ensembl release you wish to work with (in this case, `mar2016.archive.ensembl.org` redirects to release 84). This is veryhelpful to make your code reproducible.
+Tip: specifying the `host` argument in the `biomaRt` query allows to choose which Ensembl release you wish to work with (in this case, `mar2016.archive.ensembl.org` redirects to release 84). This is very helpful to make your code reproducible.
 
 You will now import `Kallisto` results:
 ```R
@@ -155,6 +155,7 @@ Are there systematic differences in the distribution of expression levels that a
 
 ## Data clustering
 
+### PCA
 You will perform a principal component analysis (PCA) on the normalized data using the `prcomp` R command. Input data of the PCA need to be ~normally distributed, so you will use the logged-CPM values previously plotted.
 
 ```R
@@ -189,65 +190,76 @@ What experimental factor does correlate with PC1? What is special about PC2? It 
 text(scores[,1], scores[,2] + 5, samples$title)
 ```
 ![Tip](elemental-tip.png)
-When labels get too messy, it can be nice to only label the points of interest. The command `identify(scores[,1], scores[,2], samples$title)` allows you to click on the points to reveal their labels. You can also influence the way the labels are placed by clicking slightly above/below/left/right of a point. Press escape to exit the clicking mode.
+When labels get too messy, it can be nice to only label the interesting points. The command `identify(scores[,1], scores[,2], samples$title)` allows you to click on the points to reveal their labels. You can also influence the way the labels are placed by clicking slightly above/below/left/right of a point. Press escape to exit the clicking mode.
 
-Repeat the plotting for PC2 vs. PC3 and PC3 vs. PC4. What do you observe? Is it consistent with your previous prediction of the experimental factor with the strongest effect on expression levels?
+Plot the samples projected onto PC2 and PC3, then PC3 and PC4. Do you observe segregation of the points by any experimental factor? Are these observations consistent with your previous prediction of the experimental factor with the strongest effect on expression levels?
 
-## TO DO: heatmap
-## Q: does clustering pattern reflect what you were expecting?
+### Heatmap (skip this if timing is tight)
+Another way to visualize the data is to plot a heatmap of expression levels, along with a dendrogram obtained by hierarchical clustering of the samples. The `heatmap` R function allows you to perform this, but the `heatmap.2` from the `gplots` package offers more possibilities. There a lot more packages and heatmap functions to explore if you have particular needs. You will first plot a heatmap using a random selection of 100 genes:
+```R
+library(gplots)
+## create a gradient of 100 colors going from light blue to dark blue
+colors <- colorRampPalette(c(brewer.pal(9, "Blues")[1],brewer.pal(9, "Blues")[9]))(100)
+## select randomly 100 genes and extract their expression
+selectedExpression <- cpm(y, log=T)[sample(1:length(cpm(y, log=T)[,1]), 100),]
+## Plot the heatmap
+heatmap.2(selectedExpression, scale="none", col = colors, margins = c(14, 6), trace='none', denscol="white")
+```
+![Question](round-help-button.png)
+What are the rows and the left tree representing? What are the columns and the top tree representing? What does the color intensity mean? Try to replot the heatmap with a new random selection of 100 genes. Are the clustering stable? 
 
-
-
+It is difficult to include the expressionation of all genes to create a readable heatmap. An alternative is to calculate the matrix of pairwise correlation coefficients across all samples and plot a heatmap of this matrix. In addition, the `ColSideColors` and `RowSideColors` arguments allow to better visualize the experimental factors of each sample:
+```R
+allCors <- cor(cpm(y, log=T), method="spearman", use="pairwise.complete.obs")
+heatmap.2( allCors, scale="none", col = colors, margins = c(16, 12), trace='none', denscol="white", RowSideColors=myPalette[1:2][as.integer(as.factor(samples$resistance))], ColSideColors=myPalette[3:4][as.integer(as.factor(samples$treatment))])
+```
+![Question](round-help-button.png)
+What are the rows and the columns representing now? What does the color intensity mean? Is the clustering pattern consistent with the PCA? Do you see a manifestatio of the DGRP lines effect on the heatmap?
 
 ## Differential expression analysis
 
-
-
-
-
-
-Instead of analyzing the data with `edgeR`, you will use the `limma-voom` method, introduced in this paper:
+### Some background
+There are several softwares to test for differential expression. `DESeq2` and `edgeR` are very good, but here you will use the `limma-voom` method, introduced in this paper:
 
 Law C, Chen Y, Shi W, Smyth G. voom: precision weights unlock linear model analysis tools for RNA-seq read counts. *Genome Biology*. 2014;15(2):R29 (<http://genomebiology.biomedcentral.com/articles/10.1186/gb-2014-15-2-r29>). A PDF of the paper is located in the `~/data/papers/` folder.
  
-## TO DO:make them plot histogram of TPM, logTPM, logsclaedTPMs? Plot 2 samples one versus the other in log scale: variance not stable
+While `DESeq2` and `edgeR` work directly on count distributions, using a negative binomial modeling framework, `limma-voom` works on the log-transformed CPMs, which are normally distributed data. This is very useful because the theory behind of normal distributions is more tractable. Notably, a large range of statistical methods that were developped for microarray analysis can be used on such normally distributed data. For example, the widely used `limma` package uses an empirical Bayes approach, which borrows information across genes to adjust variance estimates when sample sizes are small. `Limma` is also a very comprehensive package, able to deal with experiments with complex designs.
 
-`Limma-voom` applies a log-transformation to the counts to work on ~normally distributed data. This is very useful because a lot of great tools that were developped for microarrays (including the `limma` package) can be used on normally distributed data. The problem is that the log-transformation does not yield stable variance (i.e., there is heteroscedasticity). To deal wiht this, `limma-voom` calculates observational weights, proportional to the expression levels, to be used in the linear model (see <https://en.wikipedia.org/wiki/Least_squares#Weighted_least_squares>).
+A problem of the log-transformation is that it does not yield stable variances (i.e., there is heteroscedasticity). The variability of genes with lower expression is lower than those with high expression, This is easily observable when plotting one sample versus a biological replicate: 
+```R
+## The color argument was set up to plot transparent black points 
+plot(cpm(y, log=T)[,5], cpm(y, log=T)[,6], pch=16, col=rgb(0,0,0,0.2))
+```
+To deal with this problem, `limma-voom` models the mean-variance relationship observed in the data. This trend is incorporated into a precision weight for each individual normalized observation, which are proportional to the expression levels (see <https://en.wikipedia.org/wiki/Least_squares#Weighted_least_squares>). These weights can be used in `limma` during its linear modeling step. `Limma-voom` was shown to perform equally well compared to tools based on the negative-binomial distribution modeling, or even better when the sequencing depths are different across samples. 
 
-## TO DO: add thta it can use interesting feature from limma: model mean-variance trend
-##        check Law et al. abstract
+An additional interesting possibility offered by the `limma` package is the possibility to adjust the `limma-voom` precision weights to deal with variations in sample quality, frequently encountered in RNA-seq experiments. Removal of high variation samples reduces noise but leads to a loss of power. A compromise is to use all samples, but to down-weight the observations from more variable samples. This is implemented in the `voomWithQualityWeights` function, described in the following paper:
 
+Liu R, et al. Why weight? Modelling sample and observational level variability improves power in RNA-seq analyses. *Nucleic Acids Res*. 2015;43(15):e97 (<http://nar.oxfordjournals.org/content/43/15/e97.long>). A PDF of the paper is located in the `~/data/papers/` folder.
+
+![Question](round-help-button.png)
+Following your interpretation on the PCA results, do you think this procedure will be beneficial?
+
+### Implementation
 ```R
 ## Limma-voom requires the specification of a design matrix. It is simpler to create a single factor made of the combination of the 2 factors of interest: susceptibility and treatment
 condition <- factor(paste(samples$treatment, samples$resistance, sep="."))
-## Build the design matrix. The "~ 0 + ..." syntax is optional, but it will later allow an easier specification of the contrasts for differential expression
+## Build the design matrix:
 design <- model.matrix(~ 0 + condition) 
-## Simplify design matrix column names
+## The "~ 0 + ..." syntax is optional, but it will later allow an easier specification of the contrasts for differential expression
+## Simplify design matrix column names:
 colnames(design) <- gsub("condition", "", colnames(design))
-## Apply the limma-voom method
-v <- voom(y, design)
-
-## TO DO: additional layer: modulate weights based on sample quality: better than removing samples
-## use quality weights. Liu et al.: lower weight for sample on PC2
+## Apply the limma-voom method:
 v <- voomWithQualityWeights(y, design, plot=T)
-## Low weight for RAL-502-Unchallenged ## TO DO: check on PCA
+```
+![Question](round-help-button.png)
+What are the generated plots indicating? Which sample(s) are the most down-weighted?
 
-## TO DO: it would be simpler to just use CPM at this point!
-
-## TO DO: what are the plots indicating?
-
-
-## Clustering analysis
-
-
+### Linear modeling and extraction of interesting contrasts
 
 
 
 
 Bart introduced very nicely the motivations of this study during his talk on Tuesday. Briefly, they aimed at studying how genetic variation in *Drosophila melanogaster* impacts the molecular and cellular processes that constitute gut immunocompetence. They performed RNA-seq on 16 gut samples comprising four susceptible and four resistant DGRP lines in the unchallenged condition and 4h after *Pseudomonas entomophila* infection. We are thus faced with an experimental design with three factors: DGRP lines, infection susceptibility and infection status. For simplicity, we will ignore the DGRP line, and consider the four susceptibility and the four resistant lines as biological replicates.
-
-
-
 
 ---------------------------------------
 <sub>Icons taken from http://www.flaticon.com/</sub>
@@ -255,7 +267,8 @@ Bart introduced very nicely the motivations of this study during his talk on Tue
 <!--
 ## TO DO: some questions like: what is on the x / y axis
 
-
+## TO DO: thnaks amina
+## TO DO: replace cpm(y, log=T) by a variable
 
 ## TO DO: how to implement code folding/hiding?
           easiest is probably to have 2 versions, one with code, one without
