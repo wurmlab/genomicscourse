@@ -13,6 +13,8 @@ Julien Roux, version 1, May 2016
 ## Introduction
 Today you will pursue the analysis of Bou Sleiman et al. *Drosophila melanogaster* data. Unless you managed to map all samples yesterday (:clap:), use the pre-processed `Kallisto` results located in the `~/data/rnaseq/kallisto/SRR*` folders. A first step of the practical will be to import the data and sum the transcript-level TPM estimates to gene-level TPM expression estimates. This allows to obtain expression levels that are not affected by differential transcript usage or differential splicing. You will then be able to perform some clustering analyses and study differential expression between strains and experimental conditions. 
 
+In the interest of time, I have written fully most of the R commands, that you can copy-paste. I encourage you to read them fully and try to understand what was done. Feel free to try and modify some parameters, or ask the assistants if sonething is not clear.
+
 ## Read and format the metadata
 
 Launch R in the console or using Rstudio.
@@ -256,10 +258,119 @@ What are the generated plots indicating? Which sample(s) are the most down-weigh
 
 ### Linear modeling and extraction of interesting contrasts
 
+Please refer to the very nice user guide for `limma` for details on the analysis, or to adapt this pipeline to analyze your own data (<http://www.bioconductor.org/packages/release/bioc/vignettes/limma/inst/doc/usersguide.pdf>)
+```R
+fit <- lmFit(v)
+```
 
+The next step is to specify the contrasts of interest in a contrast matrix. It is build by constructing linear combinations of the design matrix column names. I have specified for you 3 contrast:
+* the treatment effect in resistant lines (CvsUinR)
+* the treatment effect in susceptible lines
+* the treatment effect in general
+Following the same logic, please complete the command to add the contrasts for:
+* the resistance effect in challenged lines
+* the resistance effect in unchallenged lines
+* the resistance effect in general
+```R
+cont.matrix <- makeContrasts(
+                             treatmentInR  = Challenged.Resistant - Unchallenged.Resistant,
+                             treatmentInS  = Challenged.Susceptible - Unchallenged.Susceptible,
+                             treatment     = (Challenged.Resistant + Challenged.Susceptible) - (Unchallenged.Resistant + Unchallenged.Susceptible),
+                             resistanceInC = [...],
+                             resistanceInU = [...],
+                             resistance    = [...],
+                             levels=design)
+cont.matrix
+```
+![Question](round-help-button.png)
+Which contrasts do you think are the most biologically interesting?
 
+You can now extract the lists of genes differentially expressed for each contrast, at a 10% FDR.
+```R
+fit2 <- contrasts.fit(fit, cont.matrix)
+fit2 <- eBayes(fit2)
+results <- decideTests(fit2, p.value=0.1) 
+summary(results)
+```
+![Question](round-help-button.png)
+What do you observe? Is it consistent with the PCA? What is surprising?
 
-Bart introduced very nicely the motivations of this study during his talk on Tuesday. Briefly, they aimed at studying how genetic variation in *Drosophila melanogaster* impacts the molecular and cellular processes that constitute gut immunocompetence. They performed RNA-seq on 16 gut samples comprising four susceptible and four resistant DGRP lines in the unchallenged condition and 4h after *Pseudomonas entomophila* infection. We are thus faced with an experimental design with three factors: DGRP lines, infection susceptibility and infection status. For simplicity, we will ignore the DGRP line, and consider the four susceptibility and the four resistant lines as biological replicates.
+You can see how many genes are differentially expressed in common between 2 contrast using Venn diagram:
+```R
+vennDiagram(results[,c(1,2)])
+vennDiagram(results[,c(2,5)])
+vennDiagram(results[,c(2,6)])
+```
+![Question](round-help-button.png)
+What can you conclude about the overlap between lists of DE genes. Do these results make sense?
+
+### Extraction of differentially expressed genes
+To extract the lists of differentially expressed genes, the `coef` argument is needed. It corresponds to the column number of the contrast matrix. 
+```R
+## Treatment:
+treatmentGenes <- topTable(fit2, coef=3, p.value=0.1, number=Inf, sort.by="P")
+## visualize the top 100 genes
+selectedExpression <- cpm(y, log=T)[rownames(treatmentGenes)[1:100],]
+heatmap.2(selectedExpression, scale="none", col = colors, margins = c(14, 6), trace='none', denscol="white", ColSideColors=myPalette[3:4][as.integer(as.factor(samples$treatment))])
+## Resistance:
+resistanceGenes <- topTable(fit2, coef=6, p.value=0.1, number=Inf, sort.by="P")
+## visualize all DE genes
+selectedExpression <- cpm(y, log=T)[rownames(resistanceGenes),]
+heatmap.2(selectedExpression, scale="none", col = colors, margins = c(14, 6), trace='none', denscol="white", ColSideColors=myPalette[1:2][as.integer(as.factor(samples$resistance))])
+```
+![Question](round-help-button.png)
+How does the clustering looks like when only resistanceGenes are taken into account? What does it tell you?
+
+## Bonus: characterization of differentially expressed genes
+### Manually (long, subjective, ...)
+Because there are relatively few genes differentially expressed between resistant and susceptible lines, it is possible to look them up in reference databases (Ensembl, Uniprot, Flybase). 
+
+### GO enrichment test
+However for long lists of genes, it is difficult to get an objective view of what are these genes, and to characterize their function. Gene Ontology (GO) enrichment analyses are useful wiht that respect. For each GO category (a group of genes sharing the same function, involved in the same process, or located in the same cellular compartment) it is possible to test whether the proportion of DE genes is higher then expected. We can do this with the `topGO` package.
+
+![Warning](warning.png)
+A word of caution for the use of such tools: 
+* They can be very sensitive to the set of genes used as background/universe. In this practical, you pre-filtered genes before DE analysis, so the list of genes that were actually tested should be used as universe. 
+* Another problem when applying such tests to a list of DE genes is a potential length bias. There will be more RNA-seq reads for long genes, so more power to detect DE for longer genes. This can confound the ontology enrichment tests which will report functional biases associated to longer genes.
+* Since the GO categories are not independent, it is debated whether a mutiple testing correction (such as FDR) is appropriate. There is a nice paragraph on that topic in the `topGO` package documentation. 
+
+```R
+library(topGO)
+
+## topGO needs a vector with 0 or 1 values depending if a gene is DE or not
+geneList <- (rep(0, times=length(rownames(results))))
+names(geneList) <- rownames(results)
+DEGenes <- row.names(treatmentGenes)
+geneList[DEGenes] <- 1
+geneList = as.factor(geneList)
+summary(geneList)
+
+## We then need a mapping of genes to the GO categories. This can be retrieved from Ensembl using biomaRt, or using the Drosophila melanogaster annotation package in Bioconductor
+## If the annotation package is not installed: 
+## source("http://bioconductor.org/biocLite.R")
+## biocLite("org.Dm.eg.db")
+library(org.Dm.eg.db)
+## Build the topGO object for biological process ontology
+BPdata <- new("topGOdata",
+              ontology="BP",
+              allGenes = geneList,
+              nodeSize = 5,
+              annot = annFUN.org,
+              mapping = "org.Dm.eg.db",
+              ID = "Ensembl")
+resultBP <- runTest(BPdata, algorithm = "classic", statistic = "fisher")
+myTable <- GenTable(BPdata, classic = resultBP, topNodes=length(BPdata@graph@nodes), numChar=100)
+```
+If you have time you can run the GO enrichment test on the molecular function (`ontology="MF"`) or the cellular component ontologies (`ontology="CC"`).
+
+![Question](round-help-button.png)
+What are the top categories enriched for genes DE with treatment? Does it make sense?
+
+![Tip](elemental-tip.png)
+`TopGO` includes the possibility to use several decorrelation algorithms, giving less redundant, and more precise categories in the results. Repeat the analysis with the weight algorithm (`algorithm = "weight"`), and observe the difference in results. 
+
+### topAnat enrichment test
+It is also possible to perform a similar ontology enrichment, but on the fly anatomical ontology instead of Gene Ontology. Genes are mapped to a tissue if some expression was detected in this tissue. With the Bgee database team (<http://bgee.org>), I have developped a tool called `BgeeDB` allowing to do this, based on the `topGO` package algorithm. It is available in the latest Bioconductor release, or on GitHub <https://github.com/BgeeDB/BgeeDB_R>. I encourage you to try in addition to the classical GO enrichment tests, it gives very interesting results! A graphical interface is also available at <http://bgee.org/?page=top_anat#/>.
 
 ---------------------------------------
 <sub>Icons taken from http://www.flaticon.com/</sub>
@@ -267,7 +378,7 @@ Bart introduced very nicely the motivations of this study during his talk on Tue
 <!--
 ## TO DO: some questions like: what is on the x / y axis
 
-## TO DO: thnaks amina
+## TO DO: thanks amina
 ## TO DO: replace cpm(y, log=T) by a variable
 
 ## TO DO: how to implement code folding/hiding?
@@ -282,6 +393,7 @@ Bart introduced very nicely the motivations of this study during his talk on Tue
 ![Question](round-help-button.png)
 ![Tip](elemental-tip.png)
 ![To do](wrench-and-hammer.png)
+![Warning](warning.png)
 
 http://www.emoji-cheat-sheet.com/
 -->
