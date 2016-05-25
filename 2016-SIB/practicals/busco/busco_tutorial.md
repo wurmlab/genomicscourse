@@ -48,7 +48,7 @@ For the purposes of this tutorial we will focus on assessing bacterial gene sets
 
 1.3.	Can you think of a complementary approach?
 
-### 2.	SETUP
+### 2. SETUP
 
 Create new directory in your home directory in which we will run BUSCO analyses and retrieve the required data.
 Unpacking the tarball should give you 4 directories: `bacteria` (BUSCO bacteria data), `GENOS` (5 bacterial genomes [DNA FASTA]), `PROTS` (30 bacterial gene sets [protein FASTA]), and `RESULTS` (empty for now), and a PERL script: `BUSCO_summary_plots.pl`
@@ -57,18 +57,57 @@ Unpacking the tarball should give you 4 directories: `bacteria` (BUSCO bacteria 
 ```sh
 mkdir MyBUSCO
 cd MyBUSCO
-wget cegg.unige.ch/pub/SIBCOURSE/BUSCO-datasets.tar.gz
-cp ../../../BUSCO-datasets.tar.gz .
+# if required: wget cegg.unige.ch/pub/SIBCOURSE/BUSCO-datasets.tar.gz
+cp ~/data/BUSCO/BUSCO-datasets.tar.gz .
 tar -xzf BUSCO-datasets.tar.gz
 ls –lR
 export AUGUSTUS_CONFIG_PATH=~/software/augustus-3.2.1/config/
 printenv
 ```
 
-And in text `commands` like this.
-* And bullt points like this
+2.1.	Is your Augustus config path set correctly?
 
+### 3. TEST
 
-## Aligning reads to a reference assembly
+Test to check that BUSCO and its dependencies have been set up correctly.
 
-The first step in our pipeline is to align the paired end reads to the reference genome. We are using the software `bowtie2`, which was created to align short read sequences to long sequences such as the scaffolds in a reference assembly. `bowtie2`, like most aligners, works in two steps.
+```sh
+python3 ~/software/BUSCO_v1.1b1/BUSCO_v1.1b1.py -o test1 -in ~/software/BUSCO_v1.1b1/sample_data/target.fa -l ~/software/BUSCO_v1.1b1/sample_data/example -m genome --sp fly >& test1_log.txt &
+ls -l run_test1/
+more ~/software/BUSCO_v1.1b1/sample_data/run_TEST/short_summary_TEST
+more run_test1/short_summary_test1
+```
+
+3.1.	Understanding the test:
+•	What is this test doing?
+•	What parameters/options are being selected and why?
+
+### 4. RUN ONE GENE SET
+
+Run a single BUSCO bacterial gene set (OGS) analysis.
+* Choose any protein sequence FASTA file from the directory PROTS.
+
+```sh
+python3 ~/software/BUSCO_v1.1b1/BUSCO_v1.1b1.py -o test2 -in PROTS/Streptomyces_albulus_pd_1.GCA_000504065.2.29.pep.all.fa -l bacteria -m OGS >& test2_log.txt &
+ls -l run_test2/
+more run_test2/short_summary_test2
+```
+
+4.1.	Understanding the OGS analysis:
+* What steps are being executed to carry out this OGS analysis?
+
+### 5. RUN ONE GENOME ASSEMBLY
+
+Run a single BUSCO bacterial genome analysis.
+* Choose any DNA sequence FASTA file from the directory GENOS.
+* 
+```sh
+python3 ~/software/BUSCO_v1.1b1/BUSCO_v1.1b1.py -o test3 -in GENOS/Streptococcus_pneumoniae_1488.ASM38567v1.31.dna.genome.fa -l bacteria -m genome --sp thermoanaerobacter_tengcongensis >& test3_log.txt &
+ls -l run_test3/
+more run_test3/short_summary_test3
+```
+
+5.1.	Understanding the assembly analysis:
+* What steps are being executed to carry out this assembly analysis?
+ 
+
