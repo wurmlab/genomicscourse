@@ -11,9 +11,23 @@ Julien Roux, version 1, May 2016
 - [x] **Thursday 2 June, 13:45 to 15:30: gene-level clustering and differential expression analysis. Practical 4.1+4.2**
 
 ## Introduction
-Today you will pursue the analysis of Bou Sleiman et al. *Drosophila melanogaster* data. Unless you managed to map all samples yesterday (:clap:), use the pre-processed `Kallisto` results located in the `~/data/rnaseq/kallisto/SRR*` folders. A first step of the practical will be to import the data and sum the transcript-level TPM estimates to gene-level TPM expression estimates. This allows to obtain expression levels that are not affected by differential transcript usage or differential splicing. You will then be able to perform some clustering analyses and study differential expression between strains and experimental conditions. 
+Today you will pursue the analysis of Bou Sleiman et al. *Drosophila melanogaster* data. Unless you managed to map all samples yesterday (:clap:), use the pre-processed `Kallisto` results located in the `~/data/rnaseq/kallisto/SRR*` folders. The analysis will be going through the following steps:
 
-In the interest of time, most of the R commands are written fully, so that you can copy-paste. I encourage you to read them fully and try to understand what was done. Feel free to try and modify some parameters, or ask the assistants if something is not clear.
+* Organize the metadata, so that we know precisely the experimental conditions of each sample
+
+* Import `Kallisto` results and sum the transcript-level abundances to gene-level abundances. This allows to obtain expression levels that are not affected by differential transcript usage or differential splicing.
+
+* Normalize the data across samples
+
+* Perform some clustering analyses. This is a good first approach of the data, and allows to detect potential problems with the data.
+
+* Study differential expression between strains and experimental conditions. 
+
+* If time permits, perform some gene ontology and anatomical ontology enrichment analyses
+
+* If time permits, connect the patterns of differential expression to patterns of sequence evolution
+
+In the interest of time, most of the R commands are given fully, and can simply copy-paste them. I encourage you to read the commands fully and try to understand what was done. Try and modify some parameters, or ask the assistants if something is not clear.
 
 ## Read and format the metadata
 Don't forget to create today's working directory:
@@ -62,7 +76,7 @@ head(samples)
 dim(samples)
 ```
 ![Question](round-help-button.png)
-According to the metadata table, how many experimental factors of interest do you identify in this experiment?
+According to the metadata table, how many experimental factors of interest do you identify in this experiment? Draw a simple diagram to represent the experimental design.
 
 For simplicity, we will ignore the strain effect (`dgrp_line`), and consider the four susceptible and the four resistant lines as simple biological replicates.
 
@@ -120,7 +134,7 @@ I suggest to have a look at this interesting paper:
 
 Soneson C, Love M and Robinson M. Differential analyses for RNA-seq: transcript-level estimates improve gene-level inferences. *F1000Research*. 2015;4(1521) (<http://f1000research.com/articles/4-1521/v2>). A PDF of the paper is located in the `~/data/papers/` folder.
 
-In this paper, Soneson and colleagues show that gene-level abundance estimates offer advantages over transcript-level analyses. They are more accurate, more stable, more interpretable, and allow better control on false positives in the presence of differential isoform usage. For this purpose, they introduced the "scaledTPM" values, which are obtained by summing the estimated transcript TPMs from Kallisto within genes, and multiplying with the total library size in millions. ScaledTPM values are artificial values, transforming underlying abundance measures to the scale of read counts. This allows to incorporate the information provided by the sequencing depth, and work with RNA-seq differential expression tools that were developed to use read counts, while controlling for the length of transcripts expressed for each gene in each given condition.
+In this paper, Soneson and colleagues show that gene-level abundance estimates offer advantages over transcript-level analyses. They are more accurate, more stable, more interpretable, and allow better control on false positives in the presence of differential isoform usage. For this purpose, they introduced the "scaledTPM" values, which are obtained by summing the transcript-level TPMs by gene, and multiplying them with the total library size in millions. ScaledTPM values are artificial values, transforming underlying abundance measures to the scale of read counts. This allows to incorporate the information provided by the sequencing depth, and work with RNA-seq differential expression tools that were developed to use read counts, while controlling for the length of transcripts expressed for each gene in each given condition.
 
 ## Data normalization
 
@@ -135,7 +149,7 @@ y$samples
 ![Question](round-help-button.png)
 What is the meaning of each column in this data frame?
 
-You will now look at the data distribution in the DGE object. The `cpm` function returns counts per million reads. Because you used scaledTPMs instead of real counts, this corresponds  for each sample to the TPM abundances divided by its TMM normalization factor:
+You will now look at the data distribution in the DGE object. The `cpm` function returns counts per million reads. Because you used scaledTPMs instead of real counts, this is equivalent to the initial TPMs used to create the scaledTPMs. But these are additionally normalized by dividing each samples values by the TMM normalization factor:
 ```R
 ## Load a nice color palette of 9 + 8 colors to be used for plots
 library(RColorBrewer)
@@ -163,7 +177,7 @@ selectedGenes <- names(which(apply(unfilteredExpr, 1, function(x){ return(sum(x 
 length(selectedGenes)
 ```
 
-You will now rebuild a new DGE object using only selected genes, and renormalize it[:](./y.RDa):
+You will now rebuild a new DGE object using only selected genes, and renormalize it[:](./y.RDa)
 ```R
 y <- DGEList(txi$counts[selectedGenes, ]) 
 y <- calcNormFactors(y)
@@ -363,7 +377,7 @@ How does the clustering looks like when only resistance genes are taken into acc
 
 ## Bonus: characterization of differentially expressed genes
 ### Manually
-Because there are relatively few genes differentially expressed between resistant and susceptible lines, it is possible to look them up in reference databases (Ensembl, Uniprot, Flybase). But this long, subjective, and because there are a lot of uncharacterized genes, it is oftn frustrating...
+Because there are relatively few genes differentially expressed between resistant and susceptible lines, it is possible to look them up in reference databases (Ensembl, Uniprot, Flybase). But this long, subjective, and because there are a lot of uncharacterized genes, it is often frustrating...
 
 ### GO enrichment test
 To get an objective view of what are the genes in a long lists of genes, and to characterize their function, Gene Ontology (GO) enrichment analyses are useful. For each GO category (a group of genes sharing the same function, involved in the same process, or located in the same cellular compartment) it is possible to test whether the proportion of DE genes is higher then expected. You can do this with the `topGO` package.
@@ -421,13 +435,13 @@ library(BgeeDB)
 
 ## Loading calls of expression. This requires an internet connection
 myTopAnatData <- loadTopAnatData(species=7227)
-## Note: a particular data type could be selected. D. melanogaster has affymetrix, RNA-seq, EST and 
-## in situ hybridization data integrated into Bgee
-# Look at the data
+## Note: a particular data type could be selected. For D. melanogaster, Bgee has integarted 
+## Affymetrix, RNA-seq, EST and in situ hybridization data
+## Look at the data:
 lapply(myTopAnatData, head)
 
-## To perform the anatomical ontology enrichment test, you can readily use the same gene list used 
-## previously for topGO test
+## To perform the anatomical ontology enrichment test, you can readily 
+## use the same gene list as used previously for topGO test
 myTopAnatObject <-  topAnat(myTopAnatData, geneList)
 
 ## run the test
@@ -440,10 +454,13 @@ resultsAnatomy <- runTest(myTopAnatObject, algorithm = 'classic', statistic = 'f
 myTableAnatomy <- makeTable(myTopAnatData, myTopAnatObject, resultsAnatomy, 0.1)
 ```
 
+![Question](round-help-button.png)
+What are the anatomical structures enriched for expression of DE genes? How does it relate to the GO enrichment results[?](./myTableAnatomy.txt)
+
 ## Bonus 2: link to patterns of sequence evolution
 In population genomics studies, a major aim is often to demonstrate that a difference across individuals or across populations evolved under the action of positive selection, and is likely involved in some adaption. This is difficult to do with differential expression results because gene expression is a continuous character: it is hard to formulate a neutral model of evolution to use a null hypothesis. Many expression changes are likely to be neutral. Worse, it is difficult to pinpoint the precise genes onw hich selection could have acted since numerous expression changes could occur on genes that are regulated downstream of the causal/affected genes.
 
-Thus it is nice to connect patterns of differential expression to patterns of sequence evolution. The analysis of sequence substitutions is a mature field, and there are numerous measures to detect positive selection on sequences. A significant expression change of a gene whose sequence experienced positive selection is a conspicuous evidence for a biological importance of this gene.
+Thus it is nice to connect patterns of differential expression to patterns of sequence evolution. The analysis of sequence substitutions is a mature field, and there are numerous measures to detect positive selection on sequences. A significant expression change of a gene whose sequence experienced positive selection is a conspicuous evidence for the biological signficance of this gene.
 
 Regarding the dataset you analyzed for this practical, have a look at the popDrowser <http://popdrowser.uab.cat/>, which provides a wide range of diversity/variation/selection measures across the *D. melanogaster* genome, calculated using the same DGRP lines.
 
@@ -464,11 +481,10 @@ If you have some time left, try playing around these measures and link them to y
 ---------------------------------------
 
 <sub>Icons taken from http://www.flaticon.com/</sub>
+
 <sub>Thanks to Amina Echchiki for proofreading and testing</sub>
 
 <!--
-
-* TO DO: test hidden links work fine
 * TO DO: how to implement code folding/hiding? Easiest is probably to have 2 versions, one with code, one without... Or change file names to generic file names?
 
 * TO DO: prepare short presentation of: 
