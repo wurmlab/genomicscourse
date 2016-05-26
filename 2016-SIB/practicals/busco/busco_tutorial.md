@@ -238,5 +238,3 @@ cp galold/run_GALOLD/full_table_* galresults/
 ls -l galresults/
 perl BUSCO_summary_plots.pl galresults
 ```
-
-
