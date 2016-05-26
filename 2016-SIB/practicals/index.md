@@ -9,7 +9,7 @@ These practicals were put together by:
  * Robert Waterhouse
  * Stefan Schiffels
  * Yannick Wurm
- * with some content derived from Oksana Riba-Grognuz' contributions for the 2012 edition of this course.
+ * with some content derived from Oksana Riba-Grognuz' contributions for the 2012 edition of this course, and from Bruno Vieira's contributions to QMUL's Bioinformatics MSc version of this course.
 
 
 ## Prerequisites
