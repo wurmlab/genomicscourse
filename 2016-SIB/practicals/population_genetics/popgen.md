@@ -4,9 +4,9 @@
 
 We have samples with two genotypes: the B genotype (associated with single-queen colony phenotype) and the b genotype (associated with multiple-queen colony phenotype). The aim of the following analysis is to understand how much the genomes of B and b individuals differ.
 
-In the first part of the analysis, we are going to create a heat map of the genotypes of the individuals and we are going to PCA on these genotypes. This will be done using the `adegenet` package in R.
+In the first part of the analysis, we are going to create a heat map of the genotypes of the individuals and we are going to run PCA on these genotypes. This will be done using the `adegenet` package in R.
 
-In the second part, we going to measure genetic differentiation between the two groups, as well as the genetic diversity among each of the groups. This will be done using the `PopGenome` package in R.
+In the second part, we are going to measure genetic differentiation between the two groups, as well as the genetic diversity among each of the groups. This will be done using the `PopGenome` package in R.
 
 ### Input into R
 
@@ -130,7 +130,7 @@ scatter(pca2, posi="bottomright")
 
 ## Using `PopGenome`
 
-We will use PopGenome to the diversity within each of the populations, as well as the FST between the two.
+We will use PopGenome to assess the diversity within each of the populations, as well as the FST between the two.
 
 In theory, the `r PopGenome` can read VCF files directly, using the `readVCF` function. However, because our samples are haploid, we need to use a different the `r readData`, which requires a folder with  a separate VCF for each scaffold.
 
