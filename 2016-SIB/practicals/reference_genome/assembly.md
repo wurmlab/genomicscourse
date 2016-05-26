@@ -59,7 +59,13 @@ Based on the results from FastQC, replace x and y below to appropriately trim fr
 ```bash
 seqtk trimfq -b x -e y input/reads.pe2.fastq.gz | gzip > tmp/reads.pe2.trimmed.fastq.gz
 ```
-This will only take a few seconds (make sure you adjusted *x* and *y*). Please check that the trimmed reads are indeed shorter!
+
+This will only take a few seconds (make sure you adjusted *x* and *y*). Now lets remove reads with low qualities
+```bash
+seqtk seq -q 10 -N -L 80 tmp/reads.pe2.trimmed.fastq.gz | gzip > tmp/reads.pe2.trimmed.nobad.fastq.gz
+```
+
+Which percentage of reads has this removed (hint: `wc -l` can count lines in a non-gz file)
 
 
 ### Digital Normalization
@@ -73,27 +79,31 @@ Say you have sequenced your sample at 100x genome coverage. The real coverage di
 
 It is possible to count and filter "k-mers" using [khmer](https://github.com/ged-lab/khmer) ([documentation](http://khmer.readthedocs.io/en/v2.0/user/index.html).  [kmc](https://github.com/refresh-bio/KMC) can be more appropriate for large datasets).
 
-Here, we will simply use khmer to remove reads containing rare k-mers (present 2x or less).
+
+khmer trims sequences where they contain undesirable k-mers. Here, we will simply use it trim rare k-mers (present less than 3x), and those that are extremely frequent (more than 100x). After all this trimming, we remove sequences that are too short.
 
 ```bash
-khmer normalize-by-median --ksize 20 -M 1e8 -C 100 -s tmp/kmer_counts --gzip -o tmp/reads.pe2.trimmed.max100.fastq tmp/reads.pe2.trimmed.fastq.gz
-khmer filter-abund --cutoff 3 tmp/kmer_counts -o tmp/reads.pe2.trimmed.max100.min3.fastq.gz tmp/reads.pe2.trimmed.fastq.gz
-gzip tmp/reads.pe2.trimmed.max100.min3.fastq
-ln -s tmp/reads.pe2.trimmed.max100.min3.fastq.gz reads.pe2.clean.fastq.gz
+khmer normalize-by-median --ksize 20 -M 1e8 --cutoff 20 -s tmp/kmer_counts --gzip -o tmp/reads.pe2.trimmed.nobad.max50.fastq tmp/reads.pe2.trimmed.nobad.fastq.gz
+khmer filter-abund --cutoff 3 tmp/kmer_counts -o tmp/reads.pe2.trimmed.nobad.max50.min3.fastq tmp/reads.pe2.trimmed.nobad.fastq.gz
+seqtk seq -L 80 tmp/reads.pe2.trimmed.nobad.max50.min3.fastq | gzip > tmp/reads.pe2.trimmed.nobad.max50.min3.noshort.fastq.gz
+ln -s tmp/reads.pe2.trimmed.nobad.max50.min3.noshort.fastq.gz reads.pe2.clean.fastq.gz
 ```
 
 What did each of those commands do?
 
 
+`WTF - KHMER IS MAKING A MESS. ITS FAILING TO REMOVE A BUNCH OF SEQUENCES... ALSO IS THERE AN EASY WAY TO DEDUPLICATE?`
+
+
 ### Inspecting quality of cleaned reads
 
-Now run `fastqc` again on the cleaned reads. Which statistics have changed?
+Now run `fastqc` again on the cleaned reads. Which statistics have changed? Should we be doing something else?
 
 ## Genome assembly
 
 ### Offline exercise
 
-In groups of 4,
+Find (or make) four friends; find a table. In groups of 4 or 5, ask an assistant for an assembly task.
 
 ### Brief assembly example / concepts
 
