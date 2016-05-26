@@ -1,0 +1,189 @@
+organId	organName	annotated	significant	expected	foldEnrichment	pValue	FDR
+FBbt:00003138	adult midgut (Drosophila)	6341	4342	4126.45	1.05	5.20e-33	4.74e-30
+FBbt:00015288	unfertilized egg (Drosophila)	5570	3860	3624.71	1.06	9.35e-32	3.57e-29
+UBERON:0007010	cleaving embryo	5401	3753	3514.74	1.07	1.37e-31	3.57e-29
+CL:0000025	egg cell	5580	3865	3631.22	1.06	1.96e-31	3.57e-29
+CL:0000675	female gamete	5580	3865	3631.22	1.06	1.96e-31	3.57e-29
+CL:0000654	primary oocyte	5727	3949	3726.88	1.06	2.02e-29	2.63e-27
+CL:0000655	secondary oocyte	5727	3949	3726.88	1.06	2.02e-29	2.63e-27
+UBERON:0001045	midgut	6636	4505	4318.42	1.04	1.79e-28	2.04e-26
+FBbt:00005724	adult excretory system (Drosophila)	4055	2871	2638.82	1.09	1.74e-27	1.59e-25
+FBbt:00005725	adult Malpighian tubule (Drosophila)	4055	2871	2638.82	1.09	1.74e-27	1.59e-25
+FBbt:00005718	embryonic/larval excretory system (Drosophila)	6536	4440	4253.34	1.04	2.89e-27	1.88e-25
+UBERON:0001054	Malpighian tubule	6536	4440	4253.34	1.04	2.89e-27	1.88e-25
+UBERON:0006555	excretory tube	6536	4440	4253.34	1.04	2.89e-27	1.88e-25
+UBERON:0009773	renal tubule	6536	4440	4253.34	1.04	2.89e-27	1.88e-25
+UBERON:0001008	renal system	6548	4444	4261.15	1.04	2.20e-26	1.34e-24
+UBERON:0001009	circulatory system	6103	4166	3971.57	1.05	2.93e-25	1.67e-23
+CL:0000023	oocyte	5934	4060	3861.59	1.05	4.75e-25	2.55e-23
+CL:0000021	female germ cell	6018	4110	3916.25	1.05	1.65e-24	7.98e-23
+FBbt:00004875	germline cyst (Drosophila)	6073	4144	3952.04	1.05	1.84e-24	7.98e-23
+FBbt:00007137	female germline cyst (Drosophila)	6073	4144	3952.04	1.05	1.84e-24	7.98e-23
+UBERON:0003199	egg chamber	6073	4144	3952.04	1.05	1.84e-24	7.98e-23
+FBbt:00004893	ovariole (Drosophila)	6075	4145	3953.35	1.05	2.09e-24	8.68e-23
+CL:0000300	gamete	6137	4183	3993.69	1.05	2.72e-24	9.68e-23
+CL:0000413	haploid cell	6137	4183	3993.69	1.05	2.72e-24	9.68e-23
+CL:0000586	germ cell	6137	4183	3993.69	1.05	2.72e-24	9.68e-23
+FBbt:00001682	embryonic/larval hemocoel (Drosophila)	5885	4026	3829.7	1.05	2.87e-24	9.68e-23
+FBbt:00001684	embryonic/larval hemocyte (Drosophila)	5885	4026	3829.7	1.05	2.87e-24	9.68e-23
+CL:0000387	hemocyte (sensu Nematoda and Protostomia)	5888	4026	3831.65	1.05	7.60e-24	2.24e-22
+UBERON:0002323	coelemic cavity lumen	5888	4026	3831.65	1.05	7.60e-24	2.24e-22
+UBERON:0002553	anatomical cavity	5888	4026	3831.65	1.05	7.60e-24	2.24e-22
+UBERON:0004458	body cavity or lining	5888	4026	3831.65	1.05	7.60e-24	2.24e-22
+FBbt:00004860	germline cell (Drosophila)	6165	4197	4011.91	1.05	1.66e-23	4.72e-22
+CL:0000039	germ line cell	6158	4192	4007.36	1.05	2.35e-23	6.50e-22
+FBbt:00001664	embryonic/larval circulatory system (Drosophila)	5926	4047	3856.38	1.05	3.13e-23	8.41e-22
+CL:0000325	stuff accumulating cell	5915	4039	3849.22	1.05	5.57e-23	1.45e-21
+CL:0000234	phagocyte	5909	4035	3845.32	1.05	6.32e-23	1.52e-21
+CL:0000473	defensive cell	5909	4035	3845.32	1.05	6.32e-23	1.52e-21
+CL:0000519	phagocyte (sensu Nematoda and Protostomia)	5909	4035	3845.32	1.05	6.32e-23	1.52e-21
+UBERON:0000992	female gonad	6288	4270	4091.96	1.04	8.87e-23	2.02e-21
+UBERON:0003134	female reproductive organ	6288	4270	4091.96	1.04	8.87e-23	2.02e-21
+CL:0000219	motile cell	6047	4117	3935.12	1.05	5.23e-22	1.16e-20
+FBbt:00100318	somatic cell (Drosophila)	6162	4181	4009.96	1.04	2.38e-20	5.18e-19
+CL:0000255	eukaryotic cell	6362	4303	4140.11	1.04	6.86e-20	1.42e-18
+CL:0000548	animal cell	6362	4303	4140.11	1.04	6.86e-20	1.42e-18
+UBERON:0000323	late embryo	6407	4323	4169.4	1.04	3.39e-18	6.88e-17
+FBbt:00001882	embryonic/larval midgut (Drosophila)	3725	2607	2424.07	1.08	6.62e-18	1.31e-16
+UBERON:0000464	anatomical space	6510	4379	4236.43	1.03	1.41e-16	2.74e-15
+FBbt:00007512	embryonic/larval gut (Drosophila)	3858	2684	2510.62	1.07	3.52e-16	6.55e-15
+FBbt:00100323	embryonic/larval alimentary canal (Drosophila)	3858	2684	2510.62	1.07	3.52e-16	6.55e-15
+FBbt:00001729	larval segment (Drosophila)	5937	4019	3863.54	1.04	3.84e-16	7.01e-15
+FBbt:00001728	larval tagma (Drosophila)	6028	4075	3922.76	1.04	6.42e-16	1.15e-14
+FBbt:00001842	embryonic/larval digestive system (Drosophila)	3959	2748	2576.35	1.07	7.46e-16	1.31e-14
+FBbt:00001744	larval mesothoracic segment (Drosophila)	5906	3995	3843.37	1.04	2.47e-15	4.10e-14
+FBbt:00001776	dorsal thoracic disc (Drosophila)	5906	3995	3843.37	1.04	2.47e-15	4.10e-14
+FBbt:00001778	wing disc (Drosophila)	5906	3995	3843.37	1.04	2.47e-15	4.10e-14
+FBbt:00000018	mesothoracic segment (Drosophila)	5912	3998	3847.27	1.04	3.40e-15	5.54e-14
+FBbt:00001741	larval thorax (Drosophila)	5909	3995	3845.32	1.04	5.33e-15	8.39e-14
+FBbt:00001742	larval thoracic segment (Drosophila)	5909	3995	3845.32	1.04	5.33e-15	8.39e-14
+UBERON:0000994	spermathecum	5951	4021	3872.65	1.04	6.46e-15	9.99e-14
+UBERON:0004909	epithelium of gonad	5953	4021	3873.95	1.04	1.07e-14	1.63e-13
+FBbt:00007002	cell (Drosophila)	6717	4495	4371.13	1.03	3.61e-14	5.39e-13
+FBbt:00001766	eye-antennal disc (Drosophila)	5983	4035	3893.48	1.04	7.54e-14	1.11e-12
+FBbt:00004911	oviduct (Drosophila)	4546	3116	2958.34	1.05	9.50e-14	1.38e-12
+FBbt:00001768	eye disc (Drosophila)	5977	4030	3889.57	1.04	1.21e-13	1.73e-12
+UBERON:0000079	male reproductive system	6914	4612	4499.33	1.03	2.56e-13	3.54e-12
+UBERON:0003101	male organism	6914	4612	4499.33	1.03	2.56e-13	3.54e-12
+UBERON:0000473	testis	6910	4609	4496.73	1.02	3.31e-13	4.44e-12
+UBERON:0003135	male reproductive organ	6910	4609	4496.73	1.02	3.31e-13	4.44e-12
+CL:0000000	cell	6735	4501	4382.85	1.03	3.60e-13	4.56e-12
+CL:0000003	cell	6735	4501	4382.85	1.03	3.60e-13	4.56e-12
+GO:0005575	cellular_component	6735	4501	4382.85	1.03	3.60e-13	4.56e-12
+GO:0005623	cell	6735	4501	4382.85	1.03	3.60e-13	4.56e-12
+FBbt:00005065	adipose system (Drosophila)	6647	4444	4325.58	1.03	1.06e-12	1.22e-11
+UBERON:0001013	adipose tissue	6647	4444	4325.58	1.03	1.06e-12	1.22e-11
+UBERON:0002384	connective tissue	6647	4444	4325.58	1.03	1.06e-12	1.22e-11
+UBERON:0003917	arthropod fat body	6647	4444	4325.58	1.03	1.06e-12	1.22e-11
+UBERON:0011821	irregular connective tissue	6647	4444	4325.58	1.03	1.06e-12	1.22e-11
+UBERON:0011822	dense irregular connective tissue	6647	4444	4325.58	1.03	1.06e-12	1.22e-11
+UBERON:0011823	dense connective tissue	6647	4444	4325.58	1.03	1.06e-12	1.22e-11
+FBbt:00001760	embryonic/larval imaginal precursor (Drosophila)	6305	4227	4103.02	1.03	4.37e-12	4.92e-11
+UBERON:0000939	imaginal disc	6305	4227	4103.02	1.03	4.37e-12	4.92e-11
+FBbt:00005023	imaginal precursor (Drosophila)	6324	4238	4115.38	1.03	6.20e-12	6.90e-11
+UBERON:0012275	meso-epithelium	6282	4205	4088.05	1.03	7.16e-11	7.86e-10
+FBbt:00003023	adult abdomen (Drosophila)	6633	4424	4316.47	1.02	1.00e-10	1.09e-09
+FBbt:00000020	abdomen (Drosophila)	6683	4453	4349.01	1.02	2.30e-10	2.47e-09
+UBERON:0007100	primary circulatory organ	1072	787	697.61	1.13	2.42e-10	2.51e-09
+UBERON:0015228	circulatory organ	1072	787	697.61	1.13	2.42e-10	2.51e-09
+UBERON:0015230	dorsal vessel heart	1072	787	697.61	1.13	2.42e-10	2.51e-09
+FBbt:00003149	adult circulatory system (Drosophila)	1075	789	699.56	1.13	2.49e-10	2.55e-09
+UBERON:0000055	vessel	1073	787	698.26	1.13	3.30e-10	3.31e-09
+UBERON:0015231	circulatory system dorsal vessel	1073	787	698.26	1.13	3.30e-10	3.31e-09
+UBERON:0000991	gonad	7244	4795	4714.08	1.02	1.58e-09	1.55e-08
+UBERON:0003133	reproductive organ	7244	4795	4714.08	1.02	1.58e-09	1.55e-08
+FBbt:00003624	adult brain (Drosophila)	6599	4392	4294.34	1.02	5.00e-09	4.85e-08
+UBERON:0000955	brain	6675	4437	4343.8	1.02	1.23e-08	1.18e-07
+UBERON:0005156	reproductive structure	7284	4814	4740.11	1.02	1.70e-08	1.62e-07
+UBERON:0010371	ecto-epithelium	6446	4291	4194.78	1.02	2.47e-08	2.32e-07
+UBERON:0000481	multi-tissue structure	7161	4734	4660.07	1.02	9.30e-08	8.65e-07
+UBERON:0004120	mesoderm-derived structure	7475	4925	4864.41	1.01	2.03e-07	1.87e-06
+UBERON:0003914	epithelial tube	6977	4617	4540.33	1.02	2.45e-07	2.23e-06
+UBERON:0003714	neural tissue	5015	3368	3263.54	1.03	3.46e-07	3.12e-06
+UBERON:0003103	compound organ	7293	4812	4745.97	1.01	3.57e-07	3.19e-06
+UBERON:0000045	ganglion	5014	3367	3262.89	1.03	3.77e-07	3.31e-06
+UBERON:0003339	ganglion of central nervous system	5014	3367	3262.89	1.03	3.77e-07	3.31e-06
+FBbt:00003559	adult nervous system (Drosophila)	7050	4659	4587.83	1.02	8.06e-07	7.00e-06
+FBbt:00003623	adult central nervous system (Drosophila)	7047	4657	4585.88	1.02	8.42e-07	7.25e-06
+FBbt:00004052	thoracico-abdominal ganglion (Drosophila)	4566	3072	2971.35	1.03	1.36e-06	1.16e-05
+UBERON:0001017	central nervous system	7132	4708	4641.2	1.01	1.63e-06	1.38e-05
+UBERON:0000990	reproductive system	7354	4845	4785.66	1.01	2.06e-06	1.73e-05
+UBERON:0001016	nervous system	7150	4716	4652.91	1.01	4.73e-06	3.92e-05
+FBbt:00005624	embryonic/larval midgut primordium (Drosophila)	1439	1004	936.44	1.07	1.87e-05	1.53e-04
+FBbt:00005246	midgut primordium (Drosophila)	1445	1008	940.34	1.07	1.88e-05	1.53e-04
+UBERON:0000119	cell layer	7088	4671	4612.56	1.01	3.18e-05	2.55e-04
+UBERON:0000483	epithelium	7088	4671	4612.56	1.01	3.18e-05	2.55e-04
+UBERON:0000020	sense organ	7190	4732	4678.94	1.01	7.47e-05	5.93e-04
+FBbt:00007692	sensory system (Drosophila)	7192	4733	4680.24	1.01	8.04e-05	6.32e-04
+UBERON:0003142	prepupa	7040	4637	4581.33	1.01	9.23e-05	7.20e-04
+FBbt:00001134	presumptive embryonic/larval peripheral nervous system (Drosophila)	7198	4736	4684.15	1.01	9.99e-05	7.72e-04
+UBERON:0001032	sensory system	7195	4734	4682.19	1.01	1.03e-04	7.85e-04
+UBERON:0004456	entire sense organ system	7195	4734	4682.19	1.01	1.03e-04	7.85e-04
+UBERON:0015203	non-connected functional system	7200	4737	4685.45	1.01	1.07e-04	8.09e-04
+AEO:0000173	surface sense organ	7175	4721	4669.18	1.01	1.17e-04	8.63e-04
+UBERON:0000972	antenna	7175	4721	4669.18	1.01	1.17e-04	8.63e-04
+UBERON:0015212	lateral structure	7175	4721	4669.18	1.01	1.17e-04	8.63e-04
+FBbt:00000007	procephalic segment (Drosophila)	7188	4729	4677.64	1.01	1.23e-04	8.95e-04
+FBbt:00000009	antennal segment (Drosophila)	7177	4722	4670.48	1.01	1.26e-04	9.11e-04
+FBbt:00003009	adult head segment (Drosophila)	7179	4723	4671.78	1.01	1.35e-04	9.63e-04
+FBbt:00003010	adult procephalic segment (Drosophila)	7179	4723	4671.78	1.01	1.35e-04	9.63e-04
+FBbt:00003012	adult antennal segment (Drosophila)	7176	4721	4669.83	1.01	1.40e-04	9.87e-04
+UBERON:0000026	appendage	7193	4731	4680.89	1.01	1.68e-04	1.18e-03
+FBbt:00000006	head segment (Drosophila)	7190	4729	4678.94	1.01	1.74e-04	1.21e-03
+FBbt:00000015	thorax (Drosophila)	6444	4256	4193.48	1.01	1.99e-04	1.37e-03
+FBbt:00003006	adult segment (Drosophila)	7198	4733	4684.15	1.01	2.29e-04	1.57e-03
+FBbt:00003143	adult hindgut (Drosophila)	6842	4508	4452.48	1.01	2.47e-04	1.68e-03
+FBbt:00000016	thoracic segment (Drosophila)	6433	4247	4186.32	1.01	3.03e-04	2.04e-03
+UBERON:0000474	female reproductive system	6951	4575	4523.41	1.01	3.97e-04	2.65e-03
+UBERON:0003100	female organism	6951	4575	4523.41	1.01	3.97e-04	2.65e-03
+FBbt:00000019	metathoracic segment (Drosophila)	4294	2866	2794.35	1.03	4.58e-04	3.03e-03
+FBbt:00001055	presumptive embryonic/larval nervous system (Drosophila)	7259	4768	4723.84	1.01	5.58e-04	3.66e-03
+FBbt:00007116	presumptive embryonic/larval system (Drosophila)	7430	4875	4835.12	1.01	6.01e-04	3.89e-03
+FBbt:00040003	non-connected developing system (Drosophila)	7430	4875	4835.12	1.01	6.01e-04	3.89e-03
+FBbt:00003022	adult metathoracic segment (Drosophila)	4280	2855	2785.24	1.03	6.26e-04	3.94e-03
+FBbt:00004784	capitellum (Drosophila)	4280	2855	2785.24	1.03	6.26e-04	3.94e-03
+UBERON:0000987	haltere	4280	2855	2785.24	1.03	6.26e-04	3.94e-03
+UBERON:0001046	hindgut	6932	4561	4511.04	1.01	6.26e-04	3.94e-03
+FBbt:00004514	second segment of antenna (Drosophila)	4266	2845	2776.13	1.02	7.25e-04	4.53e-03
+FBbt:00007276	anatomical group (Drosophila)	7436	4878	4839.03	1.01	7.44e-04	4.62e-03
+FBbt:00007149	segment of antenna (Drosophila)	4276	2849	2782.64	1.02	1.08e-03	6.63e-03
+FBbt:00025999	head mesoderm derivative (Drosophila)	369	267	240.13	1.11	1.38e-03	8.44e-03
+UBERON:0000914	organismal segment	7260	4765	4724.49	1.01	1.39e-03	8.46e-03
+FBbt:00004520	mouthpart (Drosophila)	7123	4678	4635.34	1.01	1.54e-03	9.30e-03
+FBbt:00003018	adult thorax (Drosophila)	4325	2878	2814.52	1.02	1.66e-03	9.99e-03
+FBbt:00004551	adult external thorax (Drosophila)	4302	2861	2799.55	1.02	2.26e-03	1.34e-02
+UBERON:0000926	mesoderm	1072	739	697.61	1.06	2.32e-03	1.38e-02
+FBbt:00003019	adult thoracic segment (Drosophila)	4307	2864	2802.81	1.02	2.34e-03	1.38e-02
+FBbt:00025995	posterior endoderm derivative (Drosophila)	1130	776	735.35	1.06	3.30e-03	1.93e-02
+FBbt:10005329	posterior midgut primordium (Drosophila)	1125	772	732.1	1.05	3.79e-03	2.20e-02
+FBbt:00005498	dorsal pharyngeal muscle primordium (Drosophila)	164	123	106.72	1.15	3.81e-03	2.20e-02
+FBbt:00025994	endoderm derivative (Drosophila)	1178	807	766.59	1.05	3.99e-03	2.29e-02
+FBbt:00005628	embryonic midgut chamber (Drosophila)	203	150	132.1	1.14	4.10e-03	2.34e-02
+UBERON:0010758	subdivision of organism along appendicular axis	4711	3122	3065.71	1.02	4.30e-03	2.44e-02
+FBbt:00000489	dorsal pharyngeal muscle (Drosophila)	421	299	273.97	1.09	4.58e-03	2.56e-02
+FBbt:00000496	mouthpart muscle (Drosophila)	421	299	273.97	1.09	4.58e-03	2.56e-02
+FBbt:00000444	anterior midgut primordium (Drosophila)	1090	747	709.32	1.05	5.34e-03	2.97e-02
+UBERON:0000925	endoderm	722	501	469.85	1.07	5.76e-03	3.18e-02
+FBbt:00025996	anterior endoderm derivative (Drosophila)	1115	763	725.59	1.05	6.04e-03	3.32e-02
+FBbt:00000127	head mesoderm (Drosophila)	742	514	482.86	1.06	6.32e-03	3.45e-02
+FBbt:00000128	trunk mesoderm (Drosophila)	921	633	599.35	1.06	7.17e-03	3.89e-02
+UBERON:0004734	gastrula	1559	1056	1014.53	1.04	7.54e-03	4.07e-02
+UBERON:0001048	primordium	2568	1720	1671.14	1.03	7.66e-03	4.11e-02
+FBbt:00005322	stage 8 embryo (Drosophila)	711	492	462.69	1.06	8.42e-03	4.49e-02
+FBbt:00005319	stage 7 embryo (Drosophila)	738	510	480.26	1.06	8.55e-03	4.53e-02
+FBbt:00000486	hypodermal muscle of head (Drosophila)	439	309	285.68	1.08	8.84e-03	4.63e-02
+FBbt:00000487	pharyngeal muscle (Drosophila)	439	309	285.68	1.08	8.84e-03	4.63e-02
+UBERON:0004119	endoderm-derived structure	1230	837	800.43	1.05	9.32e-03	4.86e-02
+FBbt:00000465	embryonic/larval hypodermal muscle (Drosophila)	474	332	308.46	1.08	1.05e-02	5.43e-02
+FBbt:00005559	anterior endoderm (Drosophila)	569	395	370.28	1.07	1.30e-02	6.71e-02
+UBERON:0003153	head capsule	6750	4429	4392.61	1.01	1.33e-02	6.81e-02
+UBERON:0000923	germ layer	1501	1014	976.79	1.04	1.36e-02	6.88e-02
+UBERON:0010316	germ layer / neural crest	1501	1014	976.79	1.04	1.36e-02	6.88e-02
+UBERON:0000922	embryo	7843	5122	5103.88	1.00	1.38e-02	6.89e-02
+UBERON:0004716	conceptus	7843	5122	5103.88	1.00	1.38e-02	6.89e-02
+FBbt:00005334	stage 16 embryo (Drosophila)	241	173	156.83	1.10	1.48e-02	7.32e-02
+FBbt:00007593	fused midgut primordium (Drosophila)	241	173	156.83	1.10	1.48e-02	7.32e-02
+FBbt:00005560	posterior endoderm (Drosophila)	670	462	436.01	1.06	1.50e-02	7.38e-02
+UBERON:0011216	organ system subdivision	7516	4916	4891.09	1.01	1.62e-02	7.96e-02
+FBbt:00001730	larval head (Drosophila)	638	440	415.18	1.06	1.71e-02	8.35e-02
+FBbt:00004481	adult external head (Drosophila)	7316	4788	4760.93	1.01	2.01e-02	9.77e-02
