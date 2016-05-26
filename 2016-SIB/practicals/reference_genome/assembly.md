@@ -62,7 +62,7 @@ seqtk trimfq -b x -e y input/reads.pe2.fastq.gz | gzip > tmp/reads.pe2.trimmed.f
 
 This will only take a few seconds (make sure you adjusted *x* and *y*).
 
-Let's similarly filter the reads.pe1. Just copy-paste the following:
+Let's similarly filter the reads.pe1:
 ```bash
 seqtk trimfq -b 5 -e 5 input/reads.pe1.fastq.gz | gzip > tmp/reads.pe1.trimmed.fq.gz
 ```
@@ -80,30 +80,30 @@ Say you have sequenced your sample at 100x genome coverage. The real coverage di
 It is possible to count and filter "k-mers" using [khmer](https://github.com/ged-lab/khmer) ([documentation](http://khmer.readthedocs.io/en/v2.0/user/index.html).  [kmc](https://github.com/refresh-bio/KMC) can be more appropriate for large datasets).
 
 
-khmer trims sequences where they contain undesirable k-mers. Here, we will simply use it trim rare k-mers (present less than 3x), and those that are extremely frequent (more than 100x). After all this trimming, we remove sequences that are too short.
+Using khmer as with the commands below will remove highly  extremely rare -mers (present less than 3x), and those that are extremely frequent (more than 20x). After all this trimming, we remove sequences that are too short.
+
 ```bash
 # Step 1 - Interleave FastQs (i.e., merge both paired end files into a single file as a requirement of khmer)
 seqtk mergepe tmp/reads.pe1.trimmed.fq.gz tmp/reads.pe2.trimmed.fq.gz > tmp/reads.pe12.trimmed.fq
 
 # Step 2 - normalize everything to a depth coverage of 20x, filter low abundance khmers,
-khmer normalize-by-median.py -p --ksize 20 -C 20 -M 1e9 -s tmp/kmer.counts -o tmp/reads.pe12.trimmed.max20.fq tmp/reads.pe12.trimmed.fq
-khmer filter-abund.py -V tmp/kmer.counts -o tmp/reads.pe12.trimmed.max20.norare.fq tmp/reads.pe12.trimmed.max20.fq
+khmer normalize-by-median.py -p --ksize 20 -C 100 -M 1e9 -s tmp/kmer.counts -o tmp/reads.pe12.trimmed.max100.fq tmp/reads.pe12.trimmed.fq
+khmer filter-abund.py -V tmp/kmer.counts -o tmp/reads.pe12.trimmed.max100.norare.fq tmp/reads.pe12.trimmed.max100.fq
 # remove low quality bases, remove short sequences, and non-paired reads
-seqtk seq -q 10 -N -L 80 tmp/reads.pe12.trimmed.max20.norare.fq | seqtk dropse > tmp/reads.pe12.trimmed.max20.norare.noshort.fq
+seqtk seq -q 10 -N -L 80 tmp/reads.pe12.trimmed.max100.norare.fq | seqtk dropse > tmp/reads.pe12.trimmed.max100.norare.noshort.fq
 
 # Step 3 - De-interleave filtered reads
-khmer split-paired-reads.py tmp/reads.pe12.trimmed.max20.norare.noshort.fq -d tmp/
+khmer split-paired-reads.py tmp/reads.pe12.trimmed.max100.norare.noshort.fq -d tmp/
 
 # Step 4 -  Rename output reads to something more user friendly
-ln -s tmp/reads.pe12.trimmed.max20.norare.noshort.fq.1 reads.pe1.clean.fq
-ln -s tmp/reads.pe12.trimmed.max20.norare.noshort.fq.2 reads.pe2.clean.fq
-
+ln -s tmp/reads.pe12.trimmed.max100.norare.noshort.fq.1 reads.pe1.clean.fq
+ln -s tmp/reads.pe12.trimmed.max100.norare.noshort.fq.2 reads.pe2.clean.fq
 ```
 
 ### Inspecting quality of cleaned reads
 
-Which percentage of reads has this removed overall (hint: `wc -l` can count lines in a non-gzipped file)?
-Run `fastqc` again on the cleaned reads. Which statistics have changed? Should we be doing something else?
+Which percentage of reads have we removed overall? (hint: `wc -l` can count lines in a non-gzipped file)
+Run `fastqc` again, this time on `reads.pe2.clean.fq`. Which statistics have changed? Does the "per tile" sequence quality indicate to you that we should perhaps do more cleaning?
 
 ## Genome assembly
 
@@ -113,10 +113,64 @@ Find (or make) four friends; find a table. In groups of 4 or 5, ask an assistant
 
 ### Brief assembly example / concepts
 
-We'll discuss
+Many different pieces of software exist for genome assembly.
+
+If we wanted to assemble our cleaned reads with SOAPdenovo, we would (in a new `results/02-assembly directory`) create a `soap_config.txt` file containing the following:
+
+```
+max_rd_len=101          # maximal read length
+[LIB]            # One [LIB] section per library
+avg_ins=470             # average insert size
+reverse_seq=0           # if sequence needs to be reversed
+asm_flags=3             # in which part(s) the reads are used
+rank=1                  # in which order the reads are used while scaffolding
+q1=input/reads.pe1.clean.fq   # make sure these paths match!
+q2=input/reads.pe2.clean.fq
+```
+
+Then run the following line. *THIS IS RAM-INTENSE - with only 2G ram, your computer will swap RAM*
+
+```bash
+soapdenovo-63mer all -s soap-config.txt -K 63 -R -o assembly
+```
+
+Soap creates a folder including lots of files, and displays the following statistics onscreen:
+
+```
+Scaffold number                  691
+In-scaffold contig number        4456
+Total scaffold length            3097063
+Average scaffold length          4482
+Filled gap number                3
+Longest scaffold                 48394
+Scaffold and singleton number    1163
+Scaffold and singleton length    3238059
+Average length                   2784
+N50                              6384
+N90                              1673
+Weak points                      0
+```
+
+What do these value mean? Which ones do we want higher and which ones do we want smaller?
+
+
+There are many other genome assembly approaches. While waiting for everyone to make it to this stage, try to understand some of the challenges of de novo genome assembly and the approaches used to overcome them via the following papers:
+
+ * [Genetic variation and the de novo assembly of human genomes - Chaisson  et al 2015 NRG](http://www.nature.com/nrg/journal/v16/n11/full/nrg3933.html)  (to overcome the paywall, login via your university, email the authors, or try [scihub](https://en.wikipedia.org/wiki/Sci-Hub)
+ * The now slightly outdated (2013) [Assemblathon paper](http://gigascience.biomedcentral.com/articles/10.1186/2047-217X-2-10).
+ * [Metassembler: merging and optimizing de novo genome assemblies - Wences & Schatz (2015)](http://genomebiology.biomedcentral.com/articles/10.1186/s13059-015-0764-4)
+ * [A hybrid approach for de novo human genome sequence assembly and phasing. Mostovoy et al (2016)](http://www.nature.com/nmeth/journal/vaop/ncurrent/full/nmeth.3865.html)
 
 
 ### Quality assessment
+
+How do we know if our genome is good?
+
+As eloquently described in [Wences & Schatz (2015)](http://genomebiology.biomedcentral.com/articles/10.1186/s13059-015-0764-4)
+
+> ... the performance of different de novo genome assembly algorithms can vary greatly on the same dataset, although it has been repeatedly demonstrated that no single assembler is optimal in every possible quality metric [6, 7, 8]. The most widely used metrics for evaluating an assembly include 1) contiguity statistics such as scaffold and contig N50 size, 2) accuracy statistics such as the number of structural errors found when compared with an available reference genome (GAGE (Genome Assembly Gold Standard Evaluation) evaluation tool [8]), 3) presence of core eukaryotic genes (CEGMA (Core Eukaryotic Genes Mapping Approach) [9]) or, if available, transcript mapping rates, and 4) the concordance of the sequence with remapped paired-end and mate-pair reads (REAPR (Recognising Errors in Assemblies using Paired Reads) [10], assembly validation [11], or assembly likelihood [12]).
+
+
 
 
 
