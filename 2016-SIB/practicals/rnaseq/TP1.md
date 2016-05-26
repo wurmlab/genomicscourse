@@ -64,10 +64,10 @@ Should we be worried about the warnings (red crosses)?
 
 ### A reference genome and its annotation
 ![To do](wrench-and-hammer.png)
-Download the *D. melanogaster* reference genome from the database Ensembl: <http://www.ensembl.org/index.html>. To be sure to understand which version is needed, it is a good practice to look at the `README.txt` files located in folders of the Ensembl FTP. I usually recommned to use the soft-masked version, which indicates the repeated elements, while retaining the sequence information[.](<file:///home/user/data/rnaseq/Drosophila_melanogaster.BDGP6.dna_sm.toplevel.fa.gz>)
+Download the *D. melanogaster* reference genome from the database Ensembl: <http://www.ensembl.org/index.html>. To be sure to understand which version is needed, it is a good practice to look at the `README.txt` files located in folders of the Ensembl FTP. I usually recommned to use the soft-masked version, which indicates the repeated elements, while retaining the sequence information[.](https://github.com/wurmlab/genomicscourse/blob/master/2016-SIB/data/rnaseq/Drosophila_melanogaster.BDGP6.dna_sm.toplevel.fa.gz)
 
 ![To do](wrench-and-hammer.png)
-Download also the *D. melanogaster* annotation in `GTF` format from Ensembl (do not download the "ab initio" file)[.](<file:///home/user/data/rnaseq/Drosophila_melanogaster.BDGP6.84.gtf.gz>) Open the downloaded file: 
+Download also the *D. melanogaster* annotation in `GTF` format from Ensembl (do not download the "ab initio" file)[.](https://github.com/wurmlab/genomicscourse/blob/master/2016-SIB/data/rnaseq/Drosophila_melanogaster.BDGP6.84.gtf.gz) Open the downloaded file: 
 ```sh
 gunzip ~/data/rnaseq/[.gtf.gz file]
 less ~/data/rnaseq/[.gtf file]
@@ -79,7 +79,7 @@ Identify the lines describing the first multi-exonic gene that you find in the G
 You will assign reads to transcript using the tool `Kallisto` (see below). This requires the transcript sequences to be extracted, and then indexed.
 
 ![To do](wrench-and-hammer.png)
-Using the GTF and genome files, create a fasta file including the sequences of all annotated transcripts. This can be done with the `gffread` utility part of the `Cufflinks` package[:](<file:///home/user/data/rnaseq/Drosophila_melanogaster.BDGP6.transcriptome.fa.gz>)
+Using the GTF and genome files, create a fasta file including the sequences of all annotated transcripts. This can be done with the `gffread` utility part of the `Cufflinks` package[:](https://github.com/wurmlab/genomicscourse/blob/master/2016-SIB/data/rnaseq/Drosophila_melanogaster.BDGP6.transcriptome.fa.gz)
 ```sh
 gunzip ~/data/rnaseq/[genome .fa.gz file]
 gffread ~/data/rnaseq/[.gtf file] -g ~/data/rnaseq/[genome .fa file] -w ~/2016-06-01-rnaseq/results/[output transcripts .fa file]
@@ -120,7 +120,7 @@ What are the rows and columns? What is the "tpm" acronym standing for? How is it
 Import the result file into `R` and sort the transcripts by abundance. 
 
 ![Question](round-help-button.png)
-What are the most highly expressed transcripts in this sample? Does it make sense given that this is a gut samle?
+What are the most highly expressed transcripts in this sample? Does it make sense given that this is a gut sample?
 
 ## Bonus
 If you have time, motivation, enough disk space on your laptop, and want to use your own result files in tomorrow's practicals (:thumbsup:), try to run `Kallisto` on the full dataset of the experiment. This will be a bit long, but it can be left running in your hotel room while you are having fun in the pool tonight. Otherwise, it may be useful some day, after the course.
