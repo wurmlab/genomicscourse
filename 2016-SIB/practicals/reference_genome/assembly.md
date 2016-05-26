@@ -57,15 +57,15 @@ What does the FASTQC report tell you? ([the documentation clarifies what each pl
 Based on the results from FastQC, replace x and y below to appropriately trim from the left and right side of the sequences.
 
 ```bash
-seqtk trimfq -b x -e y input/reads.pe2.fastq.gz | gzip > tmp/reads.pe2.trimmed.fastq.gz
+seqtk trimfq -b x -e y input/reads.pe2.fastq.gz | gzip > tmp/reads.pe2.trimmed.fq.gz
 ```
 
-This will only take a few seconds (make sure you adjusted *x* and *y*). Now lets remove reads with low qualities
+This will only take a few seconds (make sure you adjusted *x* and *y*).
+
+Let's similarly filter the reads.pe1. Just copy-paste the following:
 ```bash
-seqtk seq -q 10 -N -L 80 tmp/reads.pe2.trimmed.fastq.gz | gzip > tmp/reads.pe2.trimmed.nobad.fastq.gz
+seqtk trimfq -b 5 -e 5 input/reads.pe1.fastq.gz | gzip > tmp/reads.pe1.trimmed.fq.gz
 ```
-
-Which percentage of reads has this removed (hint: `wc -l` can count lines in a non-gz file)
 
 
 ### Digital Normalization
@@ -81,23 +81,29 @@ It is possible to count and filter "k-mers" using [khmer](https://github.com/ged
 
 
 khmer trims sequences where they contain undesirable k-mers. Here, we will simply use it trim rare k-mers (present less than 3x), and those that are extremely frequent (more than 100x). After all this trimming, we remove sequences that are too short.
-
 ```bash
-khmer normalize-by-median --ksize 20 -M 1e8 --cutoff 20 -s tmp/kmer_counts --gzip -o tmp/reads.pe2.trimmed.nobad.max50.fastq tmp/reads.pe2.trimmed.nobad.fastq.gz
-khmer filter-abund --cutoff 3 tmp/kmer_counts -o tmp/reads.pe2.trimmed.nobad.max50.min3.fastq tmp/reads.pe2.trimmed.nobad.fastq.gz
-seqtk seq -L 80 tmp/reads.pe2.trimmed.nobad.max50.min3.fastq | gzip > tmp/reads.pe2.trimmed.nobad.max50.min3.noshort.fastq.gz
-ln -s tmp/reads.pe2.trimmed.nobad.max50.min3.noshort.fastq.gz reads.pe2.clean.fastq.gz
+# Step 1 - Interleave FastQs (i.e., merge both paired end files into a single file as a requirement of khmer)
+seqtk mergepe tmp/reads.pe1.trimmed.fq.gz tmp/reads.pe2.trimmed.fq.gz > tmp/reads.pe12.trimmed.fq
+
+# Step 2 - normalize everything to a depth coverage of 20x, filter low abundance khmers,
+khmer normalize-by-median.py -p --ksize 20 -C 20 -M 1e9 -s tmp/kmer.counts -o tmp/reads.pe12.trimmed.max20.fq tmp/reads.pe12.trimmed.fq
+khmer filter-abund.py -V tmp/kmer.counts -o tmp/reads.pe12.trimmed.max20.norare.fq tmp/reads.pe12.trimmed.max20.fq
+# remove low quality bases, remove short sequences, and non-paired reads
+seqtk seq -q 10 -N -L 80 tmp/reads.pe12.trimmed.max20.norare.fq | seqtk dropse > tmp/reads.pe12.trimmed.max20.norare.noshort.fq
+
+# Step 3 - De-interleave filtered reads
+khmer split-paired-reads.py tmp/reads.pe12.trimmed.max20.norare.noshort.fq -d tmp/
+
+# Step 4 -  Rename output reads to something more user friendly
+ln -s tmp/reads.pe12.trimmed.max20.norare.noshort.fq.1 reads.pe1.clean.fq
+ln -s tmp/reads.pe12.trimmed.max20.norare.noshort.fq.2 reads.pe2.clean.fq
+
 ```
-
-What did each of those commands do?
-
-
-`WTF - KHMER IS MAKING A MESS. ITS FAILING TO REMOVE A BUNCH OF SEQUENCES... ALSO IS THERE AN EASY WAY TO DEDUPLICATE?`
-
 
 ### Inspecting quality of cleaned reads
 
-Now run `fastqc` again on the cleaned reads. Which statistics have changed? Should we be doing something else?
+Which percentage of reads has this removed overall (hint: `wc -l` can count lines in a non-gzipped file)?
+Run `fastqc` again on the cleaned reads. Which statistics have changed? Should we be doing something else?
 
 ## Genome assembly
 
@@ -107,7 +113,12 @@ Find (or make) four friends; find a table. In groups of 4 or 5, ask an assistant
 
 ### Brief assembly example / concepts
 
+We'll discuss
+
+
 ### Quality assessment
+
+
 
 #### QUAST
 
