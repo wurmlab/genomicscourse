@@ -41,7 +41,8 @@ gse <- getGEO(filename=file.path(dataFolder, "GSE59411_series_matrix.txt"))
 ## Extract the metadata, and only retain some of the columns
 samples <- pData(phenoData(gse))[,c(1,2, 8:12, 45)]
 ## Extract the SRA ID of samples by parsing the FTP URL
-samples$library_accession <- unlist(lapply(strsplit(as.character(samples$supplementary_file_2), split="/"), tail, n=1))
+samples$library_accession <- unlist(
+  lapply(strsplit(as.character(samples$supplementary_file_2), split="/"), tail, n=1))
 ## Read the ENA metadata, which includes the run ID (SRR...)
 samplesENA <- read.table(file.path(dataFolder, "SRP044339.txt"), h=T, sep="\t")
 ## Merge both data frames
@@ -197,12 +198,17 @@ Plot the samples projected onto the first two principal components.
 plot(scores[,1], scores[,2])
 ## OK, here is a bit nicer plot ;)
 plot(scores[,1], scores[,2], 
-     xlab=paste0("PC1: ", round(summary(pca)$importance[2,1],3)*100, "% variance explained"), ## indicate the % variance explained by PC1
-     ylab=paste0("PC2: ", round(summary(pca)$importance[2,2],3)*100, "% variance explained"), ## indicate the % variance explained by PC2
-     pch=as.numeric(as.factor(samples$treatment))+15, ## points shape according to treatment
-     col=myPalette[as.numeric(as.factor(samples$resistance))], ## points color according to susceptibility
+     xlab=paste0("PC1: ", round(summary(pca)$importance[2,1],3)*100, "% variance explained"), 
+        ## indicate the % variance explained by PC1
+     ylab=paste0("PC2: ", round(summary(pca)$importance[2,2],3)*100, "% variance explained"), 
+        ## indicate the % variance explained by PC2
+     pch=as.numeric(as.factor(samples$treatment))+15,
+        ## points shape according to treatment
+     col=myPalette[as.numeric(as.factor(samples$resistance))], 
+        ## points color according to susceptibility
      xlim=c(min(scores[,1]), max(scores[,1])) ,
-     ylim=c(min(scores[,2]), max(scores[,2])+(max(scores[,2])-min(scores[,2]))/4) ## Let a bit of room on top of the plot for legend
+     ylim=c(min(scores[,2]), max(scores[,2])+(max(scores[,2])-min(scores[,2]))/4) 
+        ## Let a bit of room on top of the plot for legend
 )
 ## Plot legends
 legend("topleft", legend=levels(as.factor(samples$treatment)), pch=16:17)
@@ -235,7 +241,9 @@ What are the rows and the left tree representing? What are the columns and the t
 It is difficult to include the expression of all genes to create a readable heatmap. An alternative is to calculate the matrix of pairwise correlation coefficients across all samples and plot a heatmap of this matrix. In addition, the `ColSideColors` and `RowSideColors` arguments allow to better visualize the experimental factors of each sample:
 ```R
 allCors <- cor(filteredExpr, method="spearman", use="pairwise.complete.obs")
-heatmap.2( allCors, scale="none", col = colors, margins = c(16, 12), trace='none', denscol="white", RowSideColors=myPalette[1:2][as.integer(as.factor(samples$resistance))], ColSideColors=myPalette[3:4][as.integer(as.factor(samples$treatment))])
+heatmap.2( allCors, scale="none", col = colors, margins = c(16, 12), trace='none', denscol="white", 
+           RowSideColors=myPalette[1:2][as.integer(as.factor(samples$resistance))], 
+           ColSideColors=myPalette[3:4][as.integer(as.factor(samples$treatment))])
 ```
 ![Question](round-help-button.png)
 What are the rows and the columns representing now? What does the color intensity mean? Is the clustering pattern consistent with the PCA? Do you see a manifestation of the DGRP line effect on the heatmap?
@@ -265,11 +273,14 @@ Following the PCA results, do you think this procedure will be beneficial?
 
 ### Implementation
 ```R
-## Limma-voom requires the specification of a design matrix. It is simpler to create a single factor made of the combination of the 2 factors of interest: susceptibility and treatment
+## Limma-voom requires the specification of a design matrix. 
+## It is simpler to create a single factor made of the combination of the 2 factors of interest: 
+## susceptibility and treatment
 condition <- factor(paste(samples$treatment, samples$resistance, sep="."))
 ## Build the design matrix:
 design <- model.matrix(~ 0 + condition) 
-## The "~ 0 + ..." syntax is optional, but it will later allow an easier specification of the contrasts for differential expression
+## The "~ 0 + ..." syntax is optional, but it will later allow an easier specification of the 
+## contrasts for differential expression
 ## Simplify design matrix column names:
 colnames(design) <- gsub("condition", "", colnames(design))
 ## Apply the limma-voom method:
@@ -286,7 +297,7 @@ fit <- lmFit(v)
 ```
 
 The next step is to specify the contrasts of interest in a contrast matrix. It is build by constructing linear combinations of the design matrix column names. I have specified for you 3 contrast:
-* the treatment effect in resistant lines (CvsUinR)
+* the treatment effect in resistant lines
 * the treatment effect in susceptible lines
 * the treatment effect in general
 
@@ -298,7 +309,8 @@ Following the same logic, please complete the command to add the contrasts for:
 cont.matrix <- makeContrasts(
                              treatmentInR  = Challenged.Resistant - Unchallenged.Resistant,
                              treatmentInS  = Challenged.Susceptible - Unchallenged.Susceptible,
-                             treatment     = (Challenged.Resistant + Challenged.Susceptible) - (Unchallenged.Resistant + Unchallenged.Susceptible),
+                             treatment     = (Challenged.Resistant + Challenged.Susceptible) 
+                                             - (Unchallenged.Resistant + Unchallenged.Susceptible),
                              resistanceInC = [...],
                              resistanceInU = [...],
                              resistance    = [...],
@@ -334,12 +346,14 @@ To extract the lists of differentially expressed genes, the `coef` argument is n
 treatmentGenes <- topTable(fit2, coef=3, p.value=0.1, number=Inf, sort.by="P")
 ## visualize the top 100 genes
 selectedExpression <- filteredExpr[rownames(treatmentGenes)[1:100],]
-heatmap.2(selectedExpression, scale="none", col = colors, margins = c(14, 6), trace='none', denscol="white", ColSideColors=myPalette[3:4][as.integer(as.factor(samples$treatment))])
+heatmap.2(selectedExpression, scale="none", col = colors, margins = c(14, 6), trace='none', denscol="white", 
+          ColSideColors=myPalette[3:4][as.integer(as.factor(samples$treatment))])
 ## Resistance:
 resistanceGenes <- topTable(fit2, coef=6, p.value=0.1, number=Inf, sort.by="P")
 ## visualize all DE genes
 selectedExpression <- filteredExpr[rownames(resistanceGenes),]
-heatmap.2(selectedExpression, scale="none", col = colors, margins = c(14, 6), trace='none', denscol="white", ColSideColors=myPalette[1:2][as.integer(as.factor(samples$resistance))])
+heatmap.2(selectedExpression, scale="none", col = colors, margins = c(14, 6), trace='none', denscol="white", 
+          ColSideColors=myPalette[1:2][as.integer(as.factor(samples$resistance))])
 ```
 ![Question](round-help-button.png)
 How does the clustering looks like when only resistance genes are taken into account? What does it tell you?
@@ -368,7 +382,8 @@ geneList[DEGenes] <- 1
 geneList = as.factor(geneList)
 summary(geneList)
 
-## You then need a mapping of genes to the GO categories. This can be retrieved from Ensembl using biomaRt, or using the Drosophila melanogaster annotation package in Bioconductor
+## You then need a mapping of genes to the GO categories. This can be retrieved from Ensembl using biomaRt, 
+## or using the Drosophila melanogaster annotation package in Bioconductor
 ## If the annotation package is not installed: 
 ## source("http://bioconductor.org/biocLite.R")
 ## biocLite("org.Dm.eg.db")
@@ -403,16 +418,20 @@ library(BgeeDB)
 
 ## Loading calls of expression. This requires an internet connection
 myTopAnatData <- loadTopAnatData(species=7227)
-## Note: a particular data type could be selected. D. melanogaster has affymetrix, RNA-seq, EST and in situ hybridization data integrated into Bgee
+## Note: a particular data type could be selected. D. melanogaster has affymetrix, RNA-seq, EST and 
+## in situ hybridization data integrated into Bgee
 # Look at the data
 lapply(myTopAnatData, head)
 
-## To perform the anatomical ontology enrichment test, you can readily use the same gene list use for topGO earlier
+## To perform the anatomical ontology enrichment test, you can readily use the same gene list used 
+## previously for topGO test
 myTopAnatObject <-  topAnat(myTopAnatData, geneList)
 
 ## run the test
 resultsAnatomy <- runTest(myTopAnatObject, algorithm = 'classic', statistic = 'fisher')
-## Warning: This can be long especially if decorrelation algorithms are used, because the anatomical ontology is bigger than the Gene Ontology. Consider running a script in batch mode if you have multiple analyses to do.
+## Warning: This can be long especially if decorrelation algorithms are used, because the anatomical 
+## ontology is bigger than the Gene Ontology. Consider running a script in batch mode if you have
+## multiple analyses to do.
 
 ## Format the table of results, only displaying results significant at a 10% FDR threshold
 myTableAnatomy <- makeTable(myTopAnatData, myTopAnatObject, resultsAnatomy, 0.1)
@@ -430,7 +449,7 @@ Look at the different tracks available on this website. Are you familiar with th
 
 If you are interested by a particular gene, you can easily visualize the sequence variation patterns in and around this genes. This could be useful to illustrate a talk or for a paper figure. If you want to download the preprocessed data across the whole genome, this seems possible but the website is not very user friendly :( I have found two main ways:
 
-* Use `Select Tracks` to choose to display the measures of interest. Go back to the visualization page and for the corresponding track, you can click on a small floppy disk downlaod icon, and retrieve a ggf3 with the data. Unfortunately this does not seem to be working for all tracks (probably some bug, I wrote to the authors). Some tracks work fne, for example the McDonald-Kreitman test track. 
+* Use `Select Tracks` to choose to display the measures of interest. Go back to the visualization page and for the corresponding track, you can click on a small floppy disk downlaod icon, and retrieve a ggf3 with the data. Unfortunately this does not seem to be working for all tracks (probably some bug, I wrote to the authors). Some tracks work fine, for example the McDonald-Kreitman test track. 
 
 ![Question](round-help-button.png)
 Since this is a gene-based measure, it could be interesting to compare the neutrality index of DE genes vs. non-DE genes.
