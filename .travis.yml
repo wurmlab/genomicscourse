@@ -1,3 +1,5 @@
+sudo: required
+dist: trusty
 language: generic # don't install any environment
 script: bash ./deploy.sh
 env:
