@@ -88,7 +88,7 @@ To sum up transcript expression levels, `tximport` needs a data.frame with a tra
 
 3) a list of attributes to output. 
 
-It is possible to build the Biomart query from the web interface ([the needed query would be obtain by specifying the following dataset and attributes](<http://www.ensembl.org/biomart/martview/368fdd3310212bc95ef4d904847c1408?VIRTUALSCHEMANAME=default&ATTRIBUTES=dmelanogaster_gene_ensembl.default.feature_page.ensembl_transcript_id|dmelanogaster_gene_ensembl.default.feature_page.ensembl_gene_id&FILTERS=&VISIBLEPANEL=resultspanel>)), but there is a Bioconductor package called `biomaRt` that allows to obtain results directly into R[:](file://transcript2gene.txt)[I'm an inline-style link](https://www.google.com)[.](https://www.google.com)
+It is possible to build the Biomart query from the web interface ([the needed query would be obtain by specifying the following dataset and attributes](<http://www.ensembl.org/biomart/martview/368fdd3310212bc95ef4d904847c1408?VIRTUALSCHEMANAME=default&ATTRIBUTES=dmelanogaster_gene_ensembl.default.feature_page.ensembl_transcript_id|dmelanogaster_gene_ensembl.default.feature_page.ensembl_gene_id&FILTERS=&VISIBLEPANEL=resultspanel>)), but there is a Bioconductor package called `biomaRt` that allows to obtain results directly into R[:](./transcript2gene.txt)
 ```R
 library(biomaRt)
 ## Choose D. melanogaster dataset in Ensembl release 84
