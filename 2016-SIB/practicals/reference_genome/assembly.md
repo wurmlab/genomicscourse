@@ -57,40 +57,37 @@ What does the FASTQC report tell you? ([the documentation clarifies what each pl
 Based on the results from FastQC, replace x and y below to appropriately trim from the left and right side of the sequences.
 
 ```bash
-seqtk trimfq -b x -e y reads.pe2.fastq.gz > reads.pe2.trimmed.fastq
+seqtk trimfq -b x -e y input/reads.pe2.fastq.gz | gzip > tmp/reads.pe2.trimmed.fastq.gz
 ```
+This will only take a few seconds (make sure you adjusted *x* and *y*). Please check that the trimmed reads are indeed shorter!
+
 
 ### Digital Normalization
 
-Say you have sequenced your sample at 100x genome coverage. The real coverage distribution will be  influenced by things like DNA quality, library preparation type, and local GC content, but you would expect most of the genome to be covered around 100x. In practice, the distribution can be very strange. For example, if you chop your sequence reads into chunks ("k-mers") of length 32, and count how often you get each one,
- * Some sequences exist only once (e.g., they may be sequencing errors, or rare somatic mutations). Such sequences can confuse assembly software, and increase memory & CPU requirements downstream.
- * Other sequences may exist at 10,000x coverage (e.g., pathogens, repetitive elements). In some cases there is no benefit to retaining all 10,000 copies; retaining a smaller number, e.g. 200 could  reduce CPU, memory and space requirements.
+Say you have sequenced your sample at 100x genome coverage. The real coverage distribution will be  influenced by things like DNA quality, library preparation type and local GC content, but you might expect most of the genome to be covered between 50 and 150x. In practice, the distribution can be very strange. One way of rapidly examining this before you have a reference genome is to chop your sequence reads into short "k-mers" of 31 nucleotides, and count how often you get each possible k-mer. Surprisingly,  
+ * Some sequences are extremely rare (e.g., once). These could be errors that appeared during library preparation or sequencing, or rare could be rare somatic mutations). Such sequences can confuse assembly software; eliminating them can decrease subsequent memory & CPU requirements.
+ * Other sequences may exist at 10,000x coverage. These could be pathogens or repetitive elements. Often, there is no benefit to retaining all copies; retaining a small proportion could significantly reduce CPU, memory and space requirements. An example plot of a k-mer frequencies:
 
-The [khmer](https://github.com/ged-lab/khmer) ([documentation](http://khmer.readthedocs.io/en/v2.0/user/index.html)) tool allows k-mer counting and filtering ([kmc](https://github.com/refresh-bio/KMC) can be more appropriate for large datasets).
-
-
-load-into-counting.py -
-output_countgraph_filename  - show it here.
-    Decide whether to do single or paired end.
+![kmer distribution graph from UCSC](https://banana-slug.soe.ucsc.edu/_media/bioinformatic_tools:quake_kmer_distribution.jpg)
 
 
-Use khmer to:
- * remove duplicated reads (check if possible)
- * remove reads containing rare k-mers.
-In other situations we might also
+It is possible to count and filter "k-mers" using [khmer](https://github.com/ged-lab/khmer) ([documentation](http://khmer.readthedocs.io/en/v2.0/user/index.html).  [kmc](https://github.com/refresh-bio/KMC) can be more appropriate for large datasets).
+
+Here, we will simply use khmer to remove reads containing rare k-mers (present 2x or less).
 
 ```bash
-# Step 2 - normalize everything to a depth coverage of 20x, filter low abundance khmers, remove orphaned reads
-normalize-by-median.py -p -k 20 -C 20 -N 2 -x 1e9 -s filteringtable.kh  reads.pe12.trimmed.fastq && filter-abund.py -V filteringtable.kh *.keep && extract-paired-reads.py reads.pe12.trimmed.fastq.keep.abundfilt
-# Step 4 (optional) - Rename output reads to something more user friendly
-mv reads.pe12.trimmed.fastq.keep.abundfilt.pe.1 reads.filtered.pe1.fastq
-mv reads.pe12.trimmed.fastq.keep.abundfilt.pe.2 reads.filtered.pe2.fastq
+khmer normalize-by-median --ksize 20 -M 1e8 -C 100 -s tmp/kmer_counts --gzip -o tmp/reads.pe2.trimmed.max100.fastq tmp/reads.pe2.trimmed.fastq.gz
+khmer filter-abund --cutoff 3 tmp/kmer_counts -o tmp/reads.pe2.trimmed.max100.min3.fastq.gz tmp/reads.pe2.trimmed.fastq.gz
+gzip tmp/reads.pe2.trimmed.max100.min3.fastq
+ln -s tmp/reads.pe2.trimmed.max100.min3.fastq.gz reads.pe2.clean.fastq.gz
 ```
+
+What did each of those commands do?
+
 
 ### Inspecting quality of cleaned reads
 
-Run `fastqc` again on the cleaned reads.
-
+Now run `fastqc` again on the cleaned reads. Which statistics have changed?
 
 ## Genome assembly
 
