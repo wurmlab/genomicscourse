@@ -7,8 +7,8 @@ Leukerbad Spring School Bioinformatics and Population Genomics
 Julien Roux, version 1, May 2016
 
 ## Schedule
-- [ ] Wednesday 1 June, 16:45 to 17:45: from raw sequencing data to transcript expression levels.
-- [x] **Thursday 2 June, 13:45 to 15:30: gene-level clustering and differential expression analysis.**
+- [ ] Wednesday 1 June, 16:45 to 17:45: from raw sequencing data to transcript expression levels. Practical 3.1.
+- [x] **Thursday 2 June, 13:45 to 15:30: gene-level clustering and differential expression analysis. Practical 4.1+4.2**
 
 ## Introduction
 Today you will pursue the analysis of Bou Sleiman et al. *Drosophila melanogaster* data. Unless you managed to map all samples yesterday (:clap:), use the pre-processed `Kallisto` results located in the `~/data/rnaseq/kallisto/SRR*` folders. A first step of the practical will be to import the data and sum the transcript-level TPM estimates to gene-level TPM expression estimates. This allows to obtain expression levels that are not affected by differential transcript usage or differential splicing. You will then be able to perform some clustering analyses and study differential expression between strains and experimental conditions. 
@@ -16,11 +16,17 @@ Today you will pursue the analysis of Bou Sleiman et al. *Drosophila melanogaste
 In the interest of time, most of the R commands are written fully, so that you can copy-paste. I encourage you to read them fully and try to understand what was done. Feel free to try and modify some parameters, or ask the assistants if something is not clear.
 
 ## Read and format the metadata
+Don't forget to create today's working directory:
+```sh
+mkdir -p ~/2016-06-02-rnaseq/results/
+```
 
-Launch R in the console or use Rstudio.
+Launch R in the console or use Rstudio. Then:
 ```R
 ## path to the data
 dataFolder <- "~/data/rnaseq/"
+## Set up the working directory
+setwd("~/2016-06-02-rnaseq/results/")
 ```
 
 You will first read and format the experiment metadata using the GEOquery package (<http://www.bioconductor.org/packages/release/bioc/vignettes/GEOquery/inst/doc/GEOquery.html>). The metadata are located in the `GSE59411_series_matrix.txt` file that was pre-downloaded on the GEO page of the experiment. Metadata can also be read from the `GSE59411_family.soft` file, or by passing the experiment name to the GEOquery package (beware, the format of the resulting R object will slightly differ depending on the approach used). The following steps are a bit boring, but try to understand what was done:
@@ -35,7 +41,8 @@ gse <- getGEO(filename=file.path(dataFolder, "GSE59411_series_matrix.txt"))
 ## Extract the metadata, and only retain some of the columns
 samples <- pData(phenoData(gse))[,c(1,2, 8:12, 45)]
 ## Extract the SRA ID of samples by parsing the FTP URL
-samples$library_accession <- unlist(lapply(strsplit(as.character(samples$supplementary_file_2), split="/"), tail, n=1))
+samples$library_accession <- unlist(
+  lapply(strsplit(as.character(samples$supplementary_file_2), split="/"), tail, n=1))
 ## Read the ENA metadata, which includes the run ID (SRR...)
 samplesENA <- read.table(file.path(dataFolder, "SRP044339.txt"), h=T, sep="\t")
 ## Merge both data frames
@@ -78,7 +85,7 @@ To sum up transcript expression levels, `tximport` needs a data.frame with a tra
 2) a list of filters to select specific Ensembl genes (not needed in our case)
 3) a list of attributes to output. 
 
-It is possible to build the Biomart query from the web interface ([the needed query would be obtain by specifying the following dataset and attributes](<http://www.ensembl.org/biomart/martview/368fdd3310212bc95ef4d904847c1408?VIRTUALSCHEMANAME=default&ATTRIBUTES=dmelanogaster_gene_ensembl.default.feature_page.ensembl_transcript_id|dmelanogaster_gene_ensembl.default.feature_page.ensembl_gene_id&FILTERS=&VISIBLEPANEL=resultspanel)), but there is a Bioconductor package called `biomaRt` that allows to obtain results directly into R:
+It is possible to build the Biomart query from the web interface ([the needed query would be obtain by specifying the following dataset and attributes](<http://www.ensembl.org/biomart/martview/368fdd3310212bc95ef4d904847c1408?VIRTUALSCHEMANAME=default&ATTRIBUTES=dmelanogaster_gene_ensembl.default.feature_page.ensembl_transcript_id|dmelanogaster_gene_ensembl.default.feature_page.ensembl_gene_id&FILTERS=&VISIBLEPANEL=resultspanel>)), but there is a Bioconductor package called `biomaRt` that allows to obtain results directly into R[:](<file://transcript2gene.txt>)
 ```R
 library(biomaRt)
 ## Choose D. melanogaster dataset in Ensembl release 84
@@ -91,6 +98,11 @@ head(transcript2gene)
 ```
 ![Tip](elemental-tip.png) 
 Tip: specifying the `host` argument in the `biomaRt` query allows to choose which Ensembl release you wish to work with (in this case, `mar2016.archive.ensembl.org` redirects to release 84). This is very helpful to make your code reproducible.
+
+<!--
+If biomaRt doesn't work, the file was pre-downloaded and you can import it using:
+transcript2gene <- read.table("GenomicsCourse/2016-SIB/practicals/rnaseq/transcript2gene.txt", h=T, sep="\t")
+-->
 
 You will now import `Kallisto` results:
 ```R
@@ -126,10 +138,11 @@ You will now look at the data distribution in the DGE object. The `cpm` function
 library(RColorBrewer)
 myPalette <- c(brewer.pal(9, "Set1"), brewer.pal(8, "Set2"))
 ## Plot CPM distribution
-plotDensities(cpm(y), col=myPalette[1:16])
+plotDensities(cpm(y), col=myPalette[1:16], legend="topright")
+## Try with logged CPM
 unfilteredExpr <- cpm(y, log=T)
 ?cpm ## note that a small value is added to the counts if log=T
-plotDensities(unfilteredExpr, col=myPalette[1:16])
+plotDensities(unfilteredExpr, col=myPalette[1:16], legend="topright")
 ```
 ![Question](round-help-button.png)
 What do you observe? How are the data distributed? Why are there two modes? What would be a good cutoff to discriminate the two modes?
@@ -137,7 +150,7 @@ What do you observe? How are the data distributed? Why are there two modes? What
 It is a good practice to filter out the genes that are not expressed, or very lowly expressed. This alleviates the multiple testing burden, and anyway there is very little power to detect differential expression for these genes. It is of course better to filter these genes after data normalization, before differential expression testing. The choice of a criterion to filter genes is arbitrary, but it has to make sense given the distribution of the data.
 
 ![Warning](warning.png)
-It is a bad practice to filter genes based on their variance!
+Unless you know what you are doing, it is considered a bad practice to filter genes based on their variance prior to differential analysis! This can seriously bias your results.
 ```R
 cutoff <- ... ## put here the cutoff expression thta was chosen in the previous question
 summary(unfilteredExpr > cutoff)
@@ -147,7 +160,7 @@ selectedGenes <- names(which(apply(unfilteredExpr, 1, function(x){ return(sum(x 
 length(selectedGenes)
 ```
 
-You will now rebuild a new DGE object using only selected genes, and renormalize it:
+You will now rebuild a new DGE object using only selected genes, and renormalize it[:](<file://y.RDa>):
 ```R
 y <- DGEList(txi$counts[selectedGenes, ]) 
 y <- calcNormFactors(y)
@@ -185,12 +198,17 @@ Plot the samples projected onto the first two principal components.
 plot(scores[,1], scores[,2])
 ## OK, here is a bit nicer plot ;)
 plot(scores[,1], scores[,2], 
-     xlab=paste0("PC1: ", round(summary(pca)$importance[2,1],3)*100, "% variance explained"), ## indicate the % variance explained by PC1
-     ylab=paste0("PC2: ", round(summary(pca)$importance[2,2],3)*100, "% variance explained"), ## indicate the % variance explained by PC2
-     pch=as.numeric(as.factor(samples$treatment))+15, ## points shape according to treatment
-     col=myPalette[as.numeric(as.factor(samples$resistance))], ## points color according to susceptibility
+     xlab=paste0("PC1: ", round(summary(pca)$importance[2,1],3)*100, "% variance explained"), 
+        ## indicate the % variance explained by PC1
+     ylab=paste0("PC2: ", round(summary(pca)$importance[2,2],3)*100, "% variance explained"), 
+        ## indicate the % variance explained by PC2
+     pch=as.numeric(as.factor(samples$treatment))+15,
+        ## points shape according to treatment
+     col=myPalette[as.numeric(as.factor(samples$resistance))], 
+        ## points color according to susceptibility
      xlim=c(min(scores[,1]), max(scores[,1])) ,
-     ylim=c(min(scores[,2]), max(scores[,2])+(max(scores[,2])-min(scores[,2]))/4) ## Let a bit of room on top of the plot for legend
+     ylim=c(min(scores[,2]), max(scores[,2])+(max(scores[,2])-min(scores[,2]))/4) 
+        ## Let a bit of room on top of the plot for legend
 )
 ## Plot legends
 legend("topleft", legend=levels(as.factor(samples$treatment)), pch=16:17)
@@ -223,7 +241,9 @@ What are the rows and the left tree representing? What are the columns and the t
 It is difficult to include the expression of all genes to create a readable heatmap. An alternative is to calculate the matrix of pairwise correlation coefficients across all samples and plot a heatmap of this matrix. In addition, the `ColSideColors` and `RowSideColors` arguments allow to better visualize the experimental factors of each sample:
 ```R
 allCors <- cor(filteredExpr, method="spearman", use="pairwise.complete.obs")
-heatmap.2( allCors, scale="none", col = colors, margins = c(16, 12), trace='none', denscol="white", RowSideColors=myPalette[1:2][as.integer(as.factor(samples$resistance))], ColSideColors=myPalette[3:4][as.integer(as.factor(samples$treatment))])
+heatmap.2( allCors, scale="none", col = colors, margins = c(16, 12), trace='none', denscol="white", 
+           RowSideColors=myPalette[1:2][as.integer(as.factor(samples$resistance))], 
+           ColSideColors=myPalette[3:4][as.integer(as.factor(samples$treatment))])
 ```
 ![Question](round-help-button.png)
 What are the rows and the columns representing now? What does the color intensity mean? Is the clustering pattern consistent with the PCA? Do you see a manifestation of the DGRP line effect on the heatmap?
@@ -253,11 +273,14 @@ Following the PCA results, do you think this procedure will be beneficial?
 
 ### Implementation
 ```R
-## Limma-voom requires the specification of a design matrix. It is simpler to create a single factor made of the combination of the 2 factors of interest: susceptibility and treatment
+## Limma-voom requires the specification of a design matrix. 
+## It is simpler to create a single factor made of the combination of the 2 factors of interest: 
+## susceptibility and treatment
 condition <- factor(paste(samples$treatment, samples$resistance, sep="."))
 ## Build the design matrix:
 design <- model.matrix(~ 0 + condition) 
-## The "~ 0 + ..." syntax is optional, but it will later allow an easier specification of the contrasts for differential expression
+## The "~ 0 + ..." syntax is optional, but it will later allow an easier specification of the 
+## contrasts for differential expression
 ## Simplify design matrix column names:
 colnames(design) <- gsub("condition", "", colnames(design))
 ## Apply the limma-voom method:
@@ -274,7 +297,7 @@ fit <- lmFit(v)
 ```
 
 The next step is to specify the contrasts of interest in a contrast matrix. It is build by constructing linear combinations of the design matrix column names. I have specified for you 3 contrast:
-* the treatment effect in resistant lines (CvsUinR)
+* the treatment effect in resistant lines
 * the treatment effect in susceptible lines
 * the treatment effect in general
 
@@ -286,7 +309,8 @@ Following the same logic, please complete the command to add the contrasts for:
 cont.matrix <- makeContrasts(
                              treatmentInR  = Challenged.Resistant - Unchallenged.Resistant,
                              treatmentInS  = Challenged.Susceptible - Unchallenged.Susceptible,
-                             treatment     = (Challenged.Resistant + Challenged.Susceptible) - (Unchallenged.Resistant + Unchallenged.Susceptible),
+                             treatment     = (Challenged.Resistant + Challenged.Susceptible) 
+                                             - (Unchallenged.Resistant + Unchallenged.Susceptible),
                              resistanceInC = [...],
                              resistanceInU = [...],
                              resistance    = [...],
@@ -322,12 +346,14 @@ To extract the lists of differentially expressed genes, the `coef` argument is n
 treatmentGenes <- topTable(fit2, coef=3, p.value=0.1, number=Inf, sort.by="P")
 ## visualize the top 100 genes
 selectedExpression <- filteredExpr[rownames(treatmentGenes)[1:100],]
-heatmap.2(selectedExpression, scale="none", col = colors, margins = c(14, 6), trace='none', denscol="white", ColSideColors=myPalette[3:4][as.integer(as.factor(samples$treatment))])
+heatmap.2(selectedExpression, scale="none", col = colors, margins = c(14, 6), trace='none', denscol="white", 
+          ColSideColors=myPalette[3:4][as.integer(as.factor(samples$treatment))])
 ## Resistance:
 resistanceGenes <- topTable(fit2, coef=6, p.value=0.1, number=Inf, sort.by="P")
 ## visualize all DE genes
 selectedExpression <- filteredExpr[rownames(resistanceGenes),]
-heatmap.2(selectedExpression, scale="none", col = colors, margins = c(14, 6), trace='none', denscol="white", ColSideColors=myPalette[1:2][as.integer(as.factor(samples$resistance))])
+heatmap.2(selectedExpression, scale="none", col = colors, margins = c(14, 6), trace='none', denscol="white", 
+          ColSideColors=myPalette[1:2][as.integer(as.factor(samples$resistance))])
 ```
 ![Question](round-help-button.png)
 How does the clustering looks like when only resistance genes are taken into account? What does it tell you?
@@ -356,7 +382,8 @@ geneList[DEGenes] <- 1
 geneList = as.factor(geneList)
 summary(geneList)
 
-## You then need a mapping of genes to the GO categories. This can be retrieved from Ensembl using biomaRt, or using the Drosophila melanogaster annotation package in Bioconductor
+## You then need a mapping of genes to the GO categories. This can be retrieved from Ensembl using biomaRt, 
+## or using the Drosophila melanogaster annotation package in Bioconductor
 ## If the annotation package is not installed: 
 ## source("http://bioconductor.org/biocLite.R")
 ## biocLite("org.Dm.eg.db")
@@ -371,11 +398,12 @@ BPdata <- new("topGOdata",
               ID = "Ensembl")
 resultBP <- runTest(BPdata, algorithm = "classic", statistic = "fisher")
 myTable <- GenTable(BPdata, classic = resultBP, topNodes=length(BPdata@graph@nodes), numChar=100)
+head(myTable)
 ```
 If you have time you can run the GO enrichment test on the molecular function (`ontology="MF"`) or the cellular component ontologies (`ontology="CC"`).
 
 ![Question](round-help-button.png)
-What are the top categories enriched for genes DE with treatment? Is it consistent with what is reported in the original paper?
+What are the top categories enriched for genes DE with treatment? Is it consistent with what is reported in the original paper[?](<file://myTable.txt>)
 
 ![Tip](elemental-tip.png)
 `TopGO` includes the possibility to use several decorrelation algorithms, giving less redundant, and more precise categories in the results. Repeat the analysis with the weight algorithm (`algorithm = "weight"`), and observe the difference in results. 
@@ -383,15 +411,61 @@ What are the top categories enriched for genes DE with treatment? Is it consiste
 ### topAnat enrichment test
 It is possible to perform a similar ontology enrichment, but on the fly anatomical ontology instead of Gene Ontology. Genes are mapped to a tissue if some expression was detected in this tissue. With the Bgee database team (<http://bgee.org>), I have developped a tool called `BgeeDB` allowing to do this, based on the `topGO` package algorithm. It is available in Bioconductor (release 3.3), or on GitHub <https://github.com/BgeeDB/BgeeDB_R>. I encourage you to try in addition to the classical GO enrichment tests, it gives very interesting results! A graphical interface is also available at <http://bgee.org/?page=top_anat#/>.
 
+```R
+## As BgeeDB was not yet available on R/Bioc 3.2, install it from the source code, already in the data folder
+install.packages(file.path(dataFolder, "./BgeeDB-master"), repos = NULL, type="source")
+library(BgeeDB)
+
+## Loading calls of expression. This requires an internet connection
+myTopAnatData <- loadTopAnatData(species=7227)
+## Note: a particular data type could be selected. D. melanogaster has affymetrix, RNA-seq, EST and 
+## in situ hybridization data integrated into Bgee
+# Look at the data
+lapply(myTopAnatData, head)
+
+## To perform the anatomical ontology enrichment test, you can readily use the same gene list used 
+## previously for topGO test
+myTopAnatObject <-  topAnat(myTopAnatData, geneList)
+
+## run the test
+resultsAnatomy <- runTest(myTopAnatObject, algorithm = 'classic', statistic = 'fisher')
+## Warning: This can be long especially if decorrelation algorithms are used, because the anatomical 
+## ontology is bigger than the Gene Ontology. Consider running a script in batch mode if you have
+## multiple analyses to do.
+
+## Format the table of results, only displaying results significant at a 10% FDR threshold
+myTableAnatomy <- makeTable(myTopAnatData, myTopAnatObject, resultsAnatomy, 0.1)
+```
+
+## Bonus 2: link to patterns of sequence evolution
+In population genomics studies, a major aim is often to demonstrate that a difference across individuals or across populations evolved under the action of positive selection, and is likely involved in some adaption. This is difficult to do with differential expression results because gene expression is a continuous character: it is hard to formulate a neutral model of evolution to use a null hypothesis. Many expression changes are likely to be neutral. Worse, it is difficult to pinpoint the precise genes onw hich selection could have acted since numerous expression changes could occur on genes that are regulated downstream of the causal/affected genes.
+
+Thus it is nice to connect patterns of differential expression to patterns of sequence evolution. The analysis of sequence substitutions is a mature field, and there are numerous measures to detect positive selection on sequences. A significant expression change of a gene whose sequence experienced positive selection is a conspicuous evidence for a biological importance of this gene.
+
+Regarding the dataset you analyzed for this practical, have a look at the popDrowser <http://popdrowser.uab.cat/>, which provides a wide range of diversity/variation/selection measures across the *D. melanogaster* genome, calculated using the same DGRP lines.
+
+![Question](round-help-button.png)
+Look at the different tracks available on this website. Are you familiar with them? Which ones would be most appropriate to search for positive selection on coding sequences? What about regulatory sequences nearby genes?
+
+If you are interested by a particular gene, you can easily visualize the sequence variation patterns in and around this genes. This could be useful to illustrate a talk or for a paper figure. If you want to download the preprocessed data across the whole genome, this seems possible but the website is not very user friendly :( I have found two main ways:
+
+* Use `Select Tracks` to choose to display the measures of interest. Go back to the visualization page and for the corresponding track, you can click on a small floppy disk downlaod icon, and retrieve a ggf3 with the data. Unfortunately this does not seem to be working for all tracks (probably some bug, I wrote to the authors). Some tracks work fine, for example the McDonald-Kreitman test track. 
+
+![Question](round-help-button.png)
+Since this is a gene-based measure, it could be interesting to compare the neutrality index of DE genes vs. non-DE genes.
+
+* If you zoom out and visualize a whole chromosome, it is possible to chosse `(DGRP) On-the-fly Variation Estimates Download` from the drop-down menu, click on `Configure` to select the measure of interest and the window size, and then `Go` to get the results for this chromosome.
+
+If you have some time left, try playing around these measures and link them to your DE results. Good luck (and congrats if you went that far)!
+
 ---------------------------------------
 
 <sub>Icons taken from http://www.flaticon.com/</sub>
-
 <sub>Thanks to Amina Echchiki for proofreading and testing</sub>
 
 <!--
-* TO DO: add code for topAnat part?
 
+* TO DO: test hidden links work fine
 * TO DO: how to implement code folding/hiding? Easiest is probably to have 2 versions, one with code, one without... Or change file names to generic file names?
 
 * TO DO: prepare short presentation of: 
