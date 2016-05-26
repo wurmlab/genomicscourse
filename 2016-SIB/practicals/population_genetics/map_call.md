@@ -60,7 +60,7 @@ ls *fq.gz | cut -d '.' -f 1 | sort | uniq > names.txt
 parallel "bowtie2 -x reference_index -1 {}.1.fq.gz -2 {}.2.fq.gz > {}.sam" :::: names.txt
 ```
 
-Because SAM files include a lot of information, they tend to occupy a lot of space (even in our case). Therefore, SAM files are generally compressed into BAM files (Binary sAM). Most tools that use aligned reads requires BAM files that have been sorted and indexed by genomic position. This is done using `samtools`, a set tools create to manipulate SAM/BAM files:
+Because SAM files include a lot of information, they tend to occupy a lot of space (even in our case). Therefore, SAM files are generally compressed into BAM files (Binary sAM). Most tools that use aligned reads require BAM files that have been sorted and indexed by genomic position. This is done using `samtools`, a set of tools created to manipulate SAM/BAM files:
 
 ```bash
 ## SAM to BAM.
@@ -99,12 +99,12 @@ bcftools call --ploidy 1 -v -m raw_calls.bcf > calls.vcf
 
 ```
 
-* Do you understand what does the symbol `*` means here?
-* Do you understand what does why we are using the `-v` option? Is it ever useful to leave it out?
+* Do you understand what the symbol `*` means here?
+* Do you understand why we are using the `-v` option? Is it ever useful to leave it out?
 
 The file produced a VCF (Variant Call Format) format telling the position, nature and quality of the called variants.
 
-Let's take a look at the VCF file produced by typing `less -S calls.vcf`. The file is composed of a header and of and rows for all the variant positions. Have a look at the different columns and check what each is (the header includes labels). Notice that some columns include several fields.
+Let's take a look at the VCF file produced by typing `less -S calls.vcf`. The file is composed of a header and rows for all the variant positions. Have a look at the different columns and check what each is (the header includes labels). Notice that some columns include several fields.
 
 * Where does the Header start and end?
 * How is the genotype of each sample coded?
@@ -148,7 +148,7 @@ In this part of the practical, we are going to use the software IGV to visualise
 
 Open IGV. First, you need to define a genome file, which you have to create from the fasta alignment (Genome > Genomes from file, then choose the assembly fasta file).
 
-You can loads some of the BAMS and the VCF file you produced.
+You can load some of the BAMS and the VCF file you produced.
 
 * Has bcftools/mpileup recovered the same positions as IGV?
 * Do you think our filtering was effective?

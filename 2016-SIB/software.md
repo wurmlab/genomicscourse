@@ -25,6 +25,8 @@ Specify versions if necessary
 * Augustus 3.2.1 http://bioinf.uni-greifswald.de/augustus/binaries/old/augustus-3.2.1.tar.gz (not 3.2.2. as it is only just released and not tested with BUSCO yet)
 * NCBI BLAST http://ftp.ncbi.nlm.nih.gov/blast/executables/blast+/LATEST/
 * MAKER http://yandell.topaz.genetics.utah.edu/cgi-bin/maker_license.cgi  (cannot give direct link which expires)
+* igv  # and launch it once so it downloads hg38
+* parallel
 
 
 # R packages/libraries 
@@ -69,5 +71,5 @@ biocLite()
 
 # python packages/libraries
 
-* khmer (runs on a virtualenv of python2.7 - http://khmer.readthedocs.io/en/v2.0/user/install.html)
+* khmer (runs on a virtualenv of python2.7 - http://khmer.readthedocs.io/en/v2.0/user/install.html)  # but can be apt installed
 * QUAST >4.0
