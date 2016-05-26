@@ -3,7 +3,7 @@
 
 shopt -s extglob # extend bash regex
 
-echo "Copying genomicscourse content to website"
+echo "Copying repo content to out folder"
 mkdir -p out > /dev/null 2>&1
 cp -r !(out|*.sh) out/
 
