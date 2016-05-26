@@ -58,6 +58,7 @@ What are the different sections of the page reporting? Should we be worried abou
 -->
 
 It is essential to verify that the quality of the reads you will analyze is acceptable, and that there was no major issue during the sequencing run. Run the `FastQC` tool on the `.fastq` file and open the report[.](<file:///home/user/data/rnaseq/FASTQC/SRR1515119_fastqc.html>)
+
 ![Question](round-help-button.png)
 Should we be worried about the warnings (red crosses)?
 

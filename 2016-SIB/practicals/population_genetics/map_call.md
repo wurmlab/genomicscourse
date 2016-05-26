@@ -8,23 +8,32 @@ There are several types of variants. Commonly, people look at single nucleotide 
 
 There are several approaches to variant calling from short pair-end reads. We are going to use one of them. First, we are going to map the reads from each individual to a reference assembly similar to the one created in the previous practical. Then we are going to find the positions where at least some of the individuals differ from the reference (and each other).
 
-## The data
+## Pipeline
 
 We will be analysing subsets of whole-genome sequences of several fire ant individuals. The fire ant, *Solenopsis invicta*, is notable for being dimorphic in terms of colony organisation, with some colonies having one queen and other colonies having multiple queens. Interestingly, this trait is genetically determined. In this practical, we are going to try to find the genetic difference between ants from single queen and multiple queen colonies.
 
 We will be using a subset of the reads from whole-genome sequencing of 14 male fire ants. Samples 1B to 7B are from single-queen colonies, samples 1b to 7b are from multiple-queen colonies. Ants are haplodiploid, which means that they have haploid males, so all our samples are haploid.
 
-We will align the reads to a subset of the reference genome assembly of the species (the same regions we tried to assemble earlier) using the aligner `bowtie2`. We will try to find positions that differ between each individual and the reference with the software `samtools` and `bcftools`.
+The aim of this practical is to genotype these 14 individuals. The steps in the practical are:
+1. Align the reads of each individual to a subset of the reference genome assembly of the species using the aligner `bowtie2`.
+2. to find positions that differ between each individual and the reference with the software `samtools` and `bcftools`.
+3. filter the SNP calls to produce a set of good-quality SNPs.
+4. Visualise the alignments and the SNP calls in the genome browser `igv`.
+
+
+## The data
+
+We recommend that you set up a directory for your analysis as you did in the last practical. In this directory, you should have a directory for your input (called `data`), and another for your results.
+
+The data we need in the `~/data/popgen` directory. Copy the file `reference.fa` and the all the `reads/*fq` files to your new directory.
 
 To see how many scaffolds there are in the reference genome, type:
 
 ```sh
-
 grep ">" reference.fa
-
 ```
 
-Now have a look at the `.fq` files. You can use `gunzip` to decompress one of them.
+Now have a look at the `.fq.gz` files. You can use `gunzip` to decompress them.
 * Why does each sample have two sets of reads?
 * What is each line of the `.fq` file?
 * How many reads do we have in individual f1_B?
@@ -39,14 +48,21 @@ The first step in our pipeline is to align the paired end reads to the reference
 In the first step, the scaffold sequence (sometimes known as the database) is indexed, in this case using the Burrows-Wheeler Transform, which allows for memory efficient alignment.
 
 ```bash
-bowtie2-build reference.fa reference_index
+bowtie2-build data/reference.fa data/reference_index
 ```
 
-The second step is the alignment itself.
+The second step is the alignment itself (you may have to change the command if you have decompressed the files, and if your file structure is different).
 
 ```bash
-bowtie2 -x reference_index -1 f1_B.1.fq.gz -2 f1_B.2.fq.gz > f1_B.sam
+mkdir results/alignments
+bowtie2 \
+  -x data/reference_index \
+  -1 data/f1_B.1.fq.gz \
+  -2 data/f1_B.2.fq.gz \
+  > results/alignments/f1_B.sam
 ```
+
+* What is the meaning of the `-1` and `-2` parameters?
 
 The command produced a SAM file (Sequence Alignment/Map file), which is the standard file used to store sequence alignments. Have a quick look at the file by typing `less f1.sam`. The file includes a header (lines starting with the `@` symbol), and a line for every read aligned to the reference assembly. For each read, we are given a mapping quality values, the position of both pairs, the actual sequence and its quality by base pair, and a series of flags with additional measures of mapping quality.
 
@@ -54,15 +70,19 @@ We now need to run bowtie2 for all the other samples. We could do this by typing
 
 ```bash
 ## Create a file with all sample names
+cd data
 ls *fq.gz | cut -d '.' -f 1 | sort | uniq > names.txt
 
 ## Run bowtie with each sample (will take a few minutes)
-parallel "bowtie2 -x reference_index -1 {}.1.fq.gz -2 {}.2.fq.gz > {}.sam" :::: names.txt
+cat names.txt | \
+  parallel "bowtie2 -x reference_index -1 {}.1.fq.gz -2 {}.2.fq.gz > ../results/alignments/{}.sam" 
 ```
 
 Because SAM files include a lot of information, they tend to occupy a lot of space (even in our case). Therefore, SAM files are generally compressed into BAM files (Binary sAM). Most tools that use aligned reads require BAM files that have been sorted and indexed by genomic position. This is done using `samtools`, a set of tools created to manipulate SAM/BAM files:
 
 ```bash
+# In the alignments directory
+
 ## SAM to BAM.
 # samtools view: compresses the SAM to BAM
 # samtools sort: sorts by scaffold position (creates f1_B.sorted.bam)
@@ -76,8 +96,9 @@ samtools index f1_B.bam   # creates f1_B.sorted.bam.bai
 Again, we can use parallel to run this step for all the samples:
 
 ```bash
-parallel "samtools view -Sb {}.sam | samtools sort - > {}.bam" :::: names.txt
-parallel "samtools index {}.bam" :::: names.txt
+ls *sam | cut -d '.' -f 1 | sort | uniq > names.txt
+cat names.txt | parallel "samtools view -Sb {}.sam | samtools sort - > {}.bam"
+cat names.txt | parallel "samtools index {}.bam"
 ```
 
 ## Variant calling
@@ -87,14 +108,21 @@ There are several approaches to call variants. The simplest approach is to look 
 We will use multiallelic caller (option `-m`) of bcftools and set all individuals as haploid. We want 
 
 ```bash
+# back in the analysis folder
+mkdir results/variants
+
 # Step 1: samtools mpileup
 ## Create index of the reference (different from that used by bowtie2)
-samtools faidx reference.fa
+samtools faidx data/reference.fa
 
 # Run samtools mpileup
-samtools mpileup -uf reference.fa *.bam > raw_calls.bcf
+samtools mpileup \
+  -uf data/reference.fa \
+  results/alignments/*.bam \
+  > results/variants/raw_calls.bcf
 
 # Run bcftools call
+cd results/variants/
 bcftools call --ploidy 1 -v -m raw_calls.bcf > calls.vcf
 
 ```
@@ -146,10 +174,10 @@ bcftools view -v snps -m2 -M2 --min-ac 1:minor filtered_calls.vcf > snp.vcf
 
 In this part of the practical, we are going to use the software IGV to visualise the alignments we created and check some of the positions where variants were called.
 
-Open IGV. First, you need to define a genome file, which you have to create from the fasta alignment (Genome > Genomes from file, then choose the assembly fasta file).
+Open IGV by typing `igv` on the command-line. Igv loads the human genome, so you need to define another genome file (Genome > Genomes from file, then choose the assembly `reference.fa` file).
 
 You can load some of the BAMS and the VCF file you produced.
 
-* Has bcftools/mpileup recovered the same positions as IGV?
+* Has bcftools/mpileup recovered the same positions as you would by looking at the alignments with IGV?
 * Do you think our filtering was effective?
 
