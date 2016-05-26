@@ -31,7 +31,7 @@ It may be feasible to do some of this stuff on a your favorite cluster or your l
 
 ## Practicals
 
-* [Reads to genome to gene predictions](./reference_genome):  Short read cleaning, genome assembly, quality control, gene prediction, quality control. (Monday)
+* [Reads to genome to gene predictions](./reference_genome/assembly.md):  Short read cleaning, genome assembly, quality control, gene prediction, quality control. (Monday)
 * Population sequencing to genotypes to population genetics statistics (Tuesday)
    * [Mapping reads, calling variants, visualizing variant calls](./population_genetics/map_call.md)
    * [Analysing variants: PCA, measuring Differntiation & Diversity](./population_genetics/popgen.md)
