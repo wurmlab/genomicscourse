@@ -5,10 +5,14 @@ shopt -s extglob # extend bash regex
 
 echo "Copying repo content to out folder"
 mkdir -p out > /dev/null 2>&1
-cp -r !(out|*.sh) out/
+cp -rf !(out) out/
+
+cd out
+
+echo "Removing submodules git"
+find . -mindepth 2 -type d -name .git | xargs rm -rf
 
 echo "Converting markdown to html"
-cd out
 find . -name "*.md" -type f -print0 | \
   # pv -0 | \
   xargs -0 -I{} \

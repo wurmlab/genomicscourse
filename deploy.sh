@@ -47,7 +47,7 @@ fi
 
 echo 'Commit the "changes", i.e. the new version.'
 echo "The delta will show diffs between new and old versions."
-git add .
+git add --all .
 git commit -m "Deploy to GitHub Pages: ${SHA}"
 
 echo "Get the deploy key by using Travis's stored variables to decrypt deploy_key.enc"
