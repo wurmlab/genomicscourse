@@ -88,7 +88,7 @@ To sum up transcript expression levels, `tximport` needs a data.frame with a tra
 
 3) a list of attributes to output. 
 
-It is possible to build the Biomart query from the web interface ([the needed query would be obtain by specifying the following dataset and attributes](<http://www.ensembl.org/biomart/martview/368fdd3310212bc95ef4d904847c1408?VIRTUALSCHEMANAME=default&ATTRIBUTES=dmelanogaster_gene_ensembl.default.feature_page.ensembl_transcript_id|dmelanogaster_gene_ensembl.default.feature_page.ensembl_gene_id&FILTERS=&VISIBLEPANEL=resultspanel>)), but there is a Bioconductor package called `biomaRt` that allows to obtain results directly into R[:](./transcript2gene.txt)
+It is possible to build the Biomart query from the web interface ([the needed query would be obtain by specifying the following dataset and attributes](http://www.ensembl.org/biomart/martview/368fdd3310212bc95ef4d904847c1408?VIRTUALSCHEMANAME=default&ATTRIBUTES=dmelanogaster_gene_ensembl.default.feature_page.ensembl_transcript_id|dmelanogaster_gene_ensembl.default.feature_page.ensembl_gene_id&FILTERS=&VISIBLEPANEL=resultspanel)), but there is a Bioconductor package called `biomaRt` that allows to obtain results directly into R[:](./transcript2gene.txt)
 ```R
 library(biomaRt)
 ## Choose D. melanogaster dataset in Ensembl release 84
@@ -163,7 +163,7 @@ selectedGenes <- names(which(apply(unfilteredExpr, 1, function(x){ return(sum(x 
 length(selectedGenes)
 ```
 
-You will now rebuild a new DGE object using only selected genes, and renormalize it[:](<file://y.RDa>):
+You will now rebuild a new DGE object using only selected genes, and renormalize it[:](./y.RDa):
 ```R
 y <- DGEList(txi$counts[selectedGenes, ]) 
 y <- calcNormFactors(y)
@@ -406,7 +406,7 @@ head(myTable)
 If you have time you can run the GO enrichment test on the molecular function (`ontology="MF"`) or the cellular component ontologies (`ontology="CC"`).
 
 ![Question](round-help-button.png)
-What are the top categories enriched for genes DE with treatment? Is it consistent with what is reported in the original paper[?](<file://myTable.txt>)
+What are the top categories enriched for genes DE with treatment? Is it consistent with what is reported in the original paper[?](./myTable.txt)
 
 ![Tip](elemental-tip.png)
 `TopGO` includes the possibility to use several decorrelation algorithms, giving less redundant, and more precise categories in the results. Repeat the analysis with the weight algorithm (`algorithm = "weight"`), and observe the difference in results. 
