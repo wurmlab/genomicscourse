@@ -17,15 +17,19 @@ Specifically, we'll:
 
 Once you're logged into the virtual machine, create a directory to work in. Drawing on ideas from [Noble (2009)](http://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1000424 "A Quick Guide to Organizing Computational Biology Projects") and others, we recommend following a [specific convention](https://github.com/wurmlab/templates/blob/master/project_structures.md "Typical multi-day project structure") for all your projects. For example create a main directory for this section of the course (e.g., `~/2016-05-30-reference`), and create relevant subdirectories for each step (e.g., first one might be `~/2016-05-30-reference/results/01-read_cleaning`).
 
+We recommend that you log your commands in a `WHATIDID.txt` file in each directory.
+
 ## Short read cleaning
+
+Sequencers aren't perfect. All kinds of things can and do [go wrong](https://sequencing.qcfail.com/). "Crap in - crap out" means it's probably worth spending some time cleaning the raw data before performing real analysis.
 
 ### Initial inspection
 
-Sequencers aren't perfect. All kinds of things can and do [go wrong](https://sequencing.qcfail.com/). [FastQC](http://www.bioinformatics.babraham.ac.uk/projects/fastqc/) ([documentation](http://www.bioinformatics.babraham.ac.uk/projects/fastqc/Help/)) can help you understand sequence quality and composition, and thus can inform next steps.
+[FastQC](http://www.bioinformatics.babraham.ac.uk/projects/fastqc/) ([documentation](http://www.bioinformatics.babraham.ac.uk/projects/fastqc/Help/)) can help you understand sequence quality and composition, and thus can inform read cleaning strategy.
 
 Move, copy or link the raw sequence files (`~/data/reference_assembly/reads.pe*.fastq.gz`) to a relevant input directory (e.g. `~/2016-05-30-reference/data/01-read_cleaning/`) run FastQC on the second file,  `pe2`. The `--outdir` option will help you clearly separate input and output files.
 
-Your resulting directory structure may look like this:
+If respecting our [project structure convention](https://github.com/wurmlab/templates/blob/master/project_structures.md "Typical multi-day project structure"), your resulting directory structure may look like this:
 
 ```bash
 user@userVM:~/2016-05-30-assembly$ tree -h
@@ -41,13 +45,9 @@ user@userVM:~/2016-05-30-assembly$ tree -h
         ├── [336K]  reads.pe2_fastqc.html
         ├── [405K]  reads.pe2_fastqc.zip
         └── [ 126]  WHATIDID.txt
-
-5 directories, 7 files
 ```
 
-We recommend that you keep a log of your commands in a `WHATIDID.txt` file in each directory.
-
-What does the FASTQC report tell you? ([you can check the documentation to understand what each plot means](http://www.bioinformatics.babraham.ac.uk/projects/fastqc/Help/3%20Analysis%20Modules/)). Based on these results, decide whether and how much to trim from the beginning and end of sequences.
+What does the FASTQC report tell you? ([the documentation clarifies what each plot means](http://www.bioinformatics.babraham.ac.uk/projects/fastqc/Help/3%20Analysis%20Modules/)). Decide whether and how much to trim from the beginning and end of sequences. What else might you want to do?
 
 
 ### Trimming
@@ -62,10 +62,14 @@ seqtk trimfq -b x -e y reads.pe2.fastq.gz > reads.pe2.trimmed.fastq
 
 ### Digital Normalization
 
-[khmer](https://github.com/ged-lab/khmer) ([documentation](http://khmer.readthedocs.io/en/v2.0/user/index.html)) allows k-mer counting and filtering ([kmc](https://github.com/refresh-bio/KMC) can be more appropriate for large datasets).
+Say you have sequenced your sample at 100x genome coverage. The real coverage distribution will be  influenced by things like DNA quality, library preparation type, and local GC content, but you would expect most of the genome to be covered around 100x. In practice, the distribution can be very strange. For example, if you chop your sequence reads into chunks ("k-mers") of length 32, and count how often you get each one,
+ * Some sequences exist only once (e.g., they may be sequencing errors, or rare somatic mutations). Such sequences can confuse assembly software, and increase memory & CPU requirements downstream.
+ * Other sequences may exist at 10,000x coverage (e.g., pathogens, repetitive elements). In some cases there is no benefit to retaining all 10,000 copies; retaining a smaller number, e.g. 200 could  reduce CPU, memory and space requirements.
+
+The [khmer](https://github.com/ged-lab/khmer) ([documentation](http://khmer.readthedocs.io/en/v2.0/user/index.html)) tool allows k-mer counting and filtering ([kmc](https://github.com/refresh-bio/KMC) can be more appropriate for large datasets).
 
 
-    YW IS HERE. next: create kmer distribution graph for this. load-into-counting.py -
+load-into-counting.py -
 output_countgraph_filename  - show it here.
     Decide whether to do single or paired end.
 
