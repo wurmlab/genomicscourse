@@ -12,7 +12,7 @@ Julien Roux, version 1, May 2016
 
 ## Introduction
 
-The aim of this practical is to introduce you to the recent, efficient and accurate tools to perform gene expression analysis for population genomics studies. RNA-seq performed on the Illumina platform is now a mature technology (first papers published in 2008), but there are still hurdles for its analysis. Mapping is long, it generates large BAM files which are incovenient to manipulate, reads mapping to multiple locations are often just discarded, gene coverage is unequal due to biases during library preparation steps, etc. There have been a few recent methodological developments that are real game-changers for the analysis and interpretation of RNA-seq data, and that you will discover in this practical. 
+The aim of this practical is to introduce you to the recent, efficient and accurate tools to perform gene expression analysis for population genomics studies. RNA-seq performed on the Illumina platform is now a mature technology (first papers published in 2008), but there are still hurdles for its analysis. Mapping is long, it generates large BAM files to are incovenient to manipulate, reads mapping to multiple location are often just discarded, gene coverage is inequal due to biases during library preparation steps, etc. There have been a few recent methodological developments that are real game-changers for the analysis and interpretation of RNA-seq data, and that you will discover in this practical. 
 
 For the analyses of this practical, you will make use of data stored in the `~/data/rnaseq/` folder in the virtual machine. When you download or generate data by yourself, it will be convenient to add them to this folder too.
 
@@ -33,10 +33,10 @@ mkdir -p ~/2016-06-01-rnaseq/results/
 ## The data you will need to map the reads
 
 ### RNA-seq reads
-The RNA-seq data are deposited on the GEO database at the following link: <http://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE59411>. If your are not familiar with GEO, please have a look at the experiment and samples webpages. In particular, these include links to the raw sequencing data, the processed sequencing data in form of log2(RPKM) values for each gene in each sample (but this is not compulsory for submission), and some metadata describing what experimental conditions the samples correspond to, the protocols used, etc. The GEO page links to the FTP of the SRA database, where you can download the raw data in the `.sra` format. These can be converted to `.fastq` format using the `SRA toolkit` suite.
+The RNA-seq data are deposited on the GEO database at the following link: <http://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE59411>. If your are not familiar with GEO, please have a look the experiment and samples webpages. In particular, these include links to the raw sequencing data, the processed sequencing data in form of log2(RPKM) values for each gene in each sample (but this is not compulsory for submission), and some metadata allowing to know what experimental conditions the samples correspond to, the protocols used, etc. The GEO page links to the FTP of the SRA database, where you can download the raw data in the `.sra` format. These can be converted to `.fastq` format using the `SRA toolkit` suite.
 
 ![Tip](elemental-tip.png)
-Tip: converting `.sra` files is quite long. All GEO experiments are also mirrored at the European equivalent, the ENA database (see <http://www.ebi.ac.uk/ena/data/view/SRP044339> for our experiment). There, the raw data are available directly in `.fastq` format. This can save you a lot of time!
+Tip: converting `.sra` files is quite long. All GEO experiments are also mirrored in european equivalent, the ENA database (see <http://www.ebi.ac.uk/ena/data/view/SRP044339> for our experiment). There, the raw data are available directly in `.fastq` format. This can save you a lot of time!
 
 Unfortunately, the `.fastq` files for this experiment were too big to be included in the virtual machine image. We will first work on one `.fastq` file that I previously truncated to include only 1 million reads (`~/data/rnaseq/SRR1515119_1M.fastq.gz`). If time allows, you will be able to work on the full dataset at the end of the practical. For now, have a look at the first lines of the truncated file:
 ```sh
@@ -63,10 +63,10 @@ Should we be worried about the warnings (red crosses)?
 
 ### A reference genome and its annotation
 ![To do](wrench-and-hammer.png)
-Download the *D. melanogaster* reference genome from the database Ensembl: <http://www.ensembl.org/index.html>. To be sure to understand which version is needed, it is a good practice to look at the `README.txt` files located in folders of the Ensembl FTP. I usually recommned to use the soft-masked version, which indicates the repeated elements, while retaining the sequence information.
+Download the *D. melanogaster* reference genome from the database Ensembl: <http://www.ensembl.org/index.html>. To be sure to understand which version is needed, it is a good practice to look at the `README.txt` files located in folders of the Ensembl FTP. I usually recommned to use the soft-masked version, which indicates the repeated elements, while retaining the sequence information[.](<file:///home/user/data/rnaseq/Drosophila_melanogaster.BDGP6.dna_sm.toplevel.fa.gz>)
 
 ![To do](wrench-and-hammer.png)
-Download also the *D. melanogaster* annotation in `GTF` format from Ensembl (do not download the "ab initio" file). Open the downloaded file: 
+Download also the *D. melanogaster* annotation in `GTF` format from Ensembl (do not download the "ab initio" file)[.](<file:///home/user/data/rnaseq/Drosophila_melanogaster.BDGP6.84.gtf.gz>) Open the downloaded file: 
 ```sh
 gunzip ~/data/rnaseq/[.gtf.gz file]
 less ~/data/rnaseq/[.gtf file]
@@ -75,7 +75,7 @@ less ~/data/rnaseq/[.gtf file]
 Identify the lines describing the first multi-exonic gene that you find in the GTF file. What are the different features annotated for this gene? Is there any sequence information in this file?
 
 ### A transcriptome index for Kallisto pseudo-mapping
-You will assign reads to transcripts using the tool `Kallisto` (see below). This requires the transcript sequences to be extracted, and then indexed.
+You will assign reads to transcript using the tool `Kallisto` (see below). This requires the transcript sequences to be extracted, and then indexed.
 
 ![To do](wrench-and-hammer.png)
 Using the GTF and genome files, create a fasta file including the sequences of all annotated transcripts. This can be done with the `gffread` utility part of the `Cufflinks` package[:](<file:///home/user/data/rnaseq/Drosophila_melanogaster.BDGP6.transcriptome.fa.gz>)
@@ -103,7 +103,9 @@ For single-end data, the fragment length and standard deviation cannot be estima
 ![To do](wrench-and-hammer.png)
 You will now perform the pseudo-alignement with `Kallisto`:
 ```sh
-kallisto quant -i ~/2016-06-01-rnaseq/results/[index file] [Kallisto options] -o ~/2016-06-01-rnaseq/results/[output directory for Kallisto results] ~/data/rnaseq/SRR1515119_1M.fastq.gz
+kallisto quant -i ~/2016-06-01-rnaseq/results/[index file] [Kallisto options] 
+               -o ~/2016-06-01-rnaseq/results/[output directory for Kallisto results]
+               ~/data/rnaseq/SRR1515119_1M.fastq.gz
 ```
 ![Tip](elemental-tip.png)
 Tip: the `--bias` option allows to correct for some of the (strong) sequence-specific systematic biases of the Illumina protocol. In practice, the correction is not applied to the estimated counts, but to the effective length of the transcripts. This has no biological meaning, but will result in sequence-bias corrected TPM estimates.
@@ -111,7 +113,13 @@ Tip: the `--bias` option allows to correct for some of the (strong) sequence-spe
 This should take a few minutes. Have a look at the result files produced by `Kallisto`, especially the `abundance.tsv` file.
 
 ![Question](round-help-button.png)
-What are the rows and columns? What does the "tpm" acronym stand for? How is it calculated? What is the difference with the widely used RPKM/FPKM? Why is it more consistent to use TPMs instead of FPKMs as expression unit? This blog post can be useful <https://haroldpimentel.wordpress.com/2014/05/08/what-the-fpkm-a-review-rna-seq-expression-units/>.
+What are the rows and columns? What is the "tpm" acronym standing for? How is it calculated? What is the difference with the widely used RPKM/FPKM? Why is it more consistent to use TPMs instead of FPKMs as expression unit? This blog post can be useful <https://haroldpimentel.wordpress.com/2014/05/08/what-the-fpkm-a-review-rna-seq-expression-units/>.
+
+![To do](wrench-and-hammer.png)
+Import the result file into `R` and sort the transcripts by abundance. 
+
+![Question](round-help-button.png)
+What are the most highly expressed transcripts in this sample? Does it make sense given that this is a gut samle?
 
 ## Bonus
 If you have time, motivation, enough disk space on your laptop, and want to use your own result files in tomorrow's practicals (:thumbsup:), try to run `Kallisto` on the full dataset of the experiment. This will be a bit long, but it can be left running in your hotel room while you are having fun in the pool tonight. Otherwise, it may be useful some day, after the course.
@@ -119,11 +127,17 @@ If you have time, motivation, enough disk space on your laptop, and want to use 
 ## First, create a directory for the raw data
 mkdir ~/2016-06-01-rnaseq/data/FASTQ
 cd ~/2016-06-01-rnaseq/data/FASTQ
-## Second (if the wifi connection is good), download the fastq files from ENA. The links to the files are listed as a column in the SRP044339.txt file. 
+## Second (if the wifi connection is good), download the fastq files from ENA. 
+## The links to the files are listed as a column in the SRP044339.txt file. 
 tail -n+2  ~/data/rnaseq/SRP044339.txt | awk -F'\t' '{print "ftp://" $11;}' | xargs -l1 wget
 ## Alternatively, I will have the data available on a hard drive.
 ## Finally, launch Kallisto on each sample
-for i in *.fastq.gz; do echo $i; kallisto quant -i ~/2016-06-01-rnaseq/results/[index file] [Kallisto options] -o ~/2016-06-01-rnaseq/results/kallisto/${i%%.*} $i; done
+for i in *.fastq.gz; do 
+  echo $i; 
+  kallisto quant -i ~/2016-06-01-rnaseq/results/[index file] [Kallisto options] 
+                 -o ~/2016-06-01-rnaseq/results/kallisto/${i%%.*} 
+                 $i; 
+done
 ```
 
 ---------------------------------------

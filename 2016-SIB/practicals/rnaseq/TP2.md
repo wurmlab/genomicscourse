@@ -401,7 +401,7 @@ It is possible to perform a similar ontology enrichment, but on the fly anatomic
 install.packages(file.path(dataFolder, "./BgeeDB-master"), repos = NULL, type="source")
 library(BgeeDB)
 
-## Loading calls of expression
+## Loading calls of expression. This requires an internet connection
 myTopAnatData <- loadTopAnatData(species=7227)
 ## Note: a particular data type could be selected. D. melanogaster has affymetrix, RNA-seq, EST and in situ hybridization data integrated into Bgee
 # Look at the data
