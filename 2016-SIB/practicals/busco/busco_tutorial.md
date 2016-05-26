@@ -198,3 +198,45 @@ perl BUSCO_summary_plots.pl RESULTS
 *	How do the BUSCO results compare with the numbers of contigs/scaffolds for each genome?
 *	How do the two Streptomyces with both assembly and OGS assessments compare?
 
+### 10. EXTRATIME – optional homework for later
+* Bonus extra-time analysis: new versus old chicken genome annotations.
+* First get vertebrate BUSCO set, then get new and old chicken annotations from Ensembl.
+* Galgal4 assembly Nov 2011, Ensembl Genebuild Apr 2013 (patched Dec 2013), 15’508 coding genes.
+* WASHUC2 assembly May 2006, Ensembl Genebuild Dec 2006 (patched May 2010), 16’736 coding genes.
+
+ ```sh
+wget http://busco.ezlab.org/files/vertebrata_buscos.tar.gz
+tar -xzf vertebrata_buscos.tar.gz
+wget ftp://ftp.ensembl.org/pub/release-84/fasta/gallus_gallus/pep/Gallus_gallus.Galgal4.pep.all.fa.gz
+gunzip Gallus_gallus.Galgal4.pep.all.fa.gz
+wget ftp://ftp.ensembl.org/pub/release-67/fasta/gallus_gallus/pep/Gallus_gallus.WASHUC2.67.pep.all.fa.gz
+gunzip Gallus_gallus.WASHUC2.67.pep.all.fa.gz
+mkdir galnew
+mv Gallus_gallus.Galgal4.pep.all.fa galnew/
+mkdir galold
+mv Gallus_gallus.WASHUC2.67.pep.all.fa galold/
+```
+
+* Now launch each analysis in the respective directories (`galnew` and `galold`).
+* Below run with 2 CPUs (`-c 2` option), can increase if you have more available.
+ 
+```sh
+cd galnew
+python3 ~/software/BUSCO_v1.1b1/BUSCO_v1.1b1.py -o GALNEW -in Gallus_gallus.Galgal4.pep.all.fa -l ../vertebrata -m OGS -c 2 >& GALNEW_log.txt &
+cd ../galold
+python3 ~/software/BUSCO_v1.1b1/BUSCO_v1.1b1.py -o GALOLD -in Gallus_gallus.WASHUC2.67.pep.all.fa -l ../vertebrata -m OGS -c 2 >& GALOLD_log.txt &
+```
+
+* Plot old versus new chicken OGS results.
+* Did the chicken annotation improve over the years?
+
+```sh
+cd ../
+mkdir galresults
+cp galnew/run_GALNEW/full_table_* galresults/
+cp galold/run_GALOLD/full_table_* galresults/
+ls -l galresults/
+perl BUSCO_summary_plots.pl galresults
+```
+
+
