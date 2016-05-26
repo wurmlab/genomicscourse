@@ -435,13 +435,13 @@ library(BgeeDB)
 
 ## Loading calls of expression. This requires an internet connection
 myTopAnatData <- loadTopAnatData(species=7227)
-## Note: a particular data type could be selected. D. melanogaster has affymetrix, RNA-seq, EST and 
-## in situ hybridization data integrated into Bgee
-# Look at the data
+## Note: a particular data type could be selected. For D. melanogaster, Bgee has integarted 
+## Affymetrix, RNA-seq, EST and in situ hybridization data
+## Look at the data:
 lapply(myTopAnatData, head)
 
-## To perform the anatomical ontology enrichment test, you can readily use the same gene list used 
-## previously for topGO test
+## To perform the anatomical ontology enrichment test, you can readily 
+## use the same gene list as used previously for topGO test
 myTopAnatObject <-  topAnat(myTopAnatData, geneList)
 
 ## run the test
@@ -455,7 +455,7 @@ myTableAnatomy <- makeTable(myTopAnatData, myTopAnatObject, resultsAnatomy, 0.1)
 ```
 
 ![Question](round-help-button.png)
-What are the anatomical structures enriched for expression of DE genes? How does it relate to the GO enrichment results[?](./myTable.txt)
+What are the anatomical structures enriched for expression of DE genes? How does it relate to the GO enrichment results[?](./myTableAnatomy.txt)
 
 ## Bonus 2: link to patterns of sequence evolution
 In population genomics studies, a major aim is often to demonstrate that a difference across individuals or across populations evolved under the action of positive selection, and is likely involved in some adaption. This is difficult to do with differential expression results because gene expression is a continuous character: it is hard to formulate a neutral model of evolution to use a null hypothesis. Many expression changes are likely to be neutral. Worse, it is difficult to pinpoint the precise genes onw hich selection could have acted since numerous expression changes could occur on genes that are regulated downstream of the causal/affected genes.
