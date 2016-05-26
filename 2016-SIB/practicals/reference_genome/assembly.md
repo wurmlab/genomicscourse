@@ -171,10 +171,23 @@ As eloquently described in [Wences & Schatz (2015)](http://genomebiology.biomedc
 > ... the performance of different de novo genome assembly algorithms can vary greatly on the same dataset, although it has been repeatedly demonstrated that no single assembler is optimal in every possible quality metric [6, 7, 8]. The most widely used metrics for evaluating an assembly include 1) contiguity statistics such as scaffold and contig N50 size, 2) accuracy statistics such as the number of structural errors found when compared with an available reference genome (GAGE (Genome Assembly Gold Standard Evaluation) evaluation tool [8]), 3) presence of core eukaryotic genes (CEGMA (Core Eukaryotic Genes Mapping Approach) [9]) or, if available, transcript mapping rates, and 4) the concordance of the sequence with remapped paired-end and mate-pair reads (REAPR (Recognising Errors in Assemblies using Paired Reads) [10], assembly validation [11], or assembly likelihood [12]).
 
 
-
+We'll use two approaches today:
+ * Quast simply calculates statistics on the assembler's output files.
+ * importantly, we'll use a biologically relevant metric as well.
 
 
 #### QUAST
+
+[Quast](http://bioinf.spbau.ru/quast)
+> Quality Assessment Tool for Genome Assemblies
+
+```
+# Basic statistics (quick), similar to SOAPdenovo log
+./quast-2.3/quast.py assembly.scafSeq
+# Eukaryotic genes finding (slower), similar to CEGMA
+./quast-2.3/quast.py -f -e assembly.scafSeq
+# Results in quast_results/latest/report.html
+```
 
 ## Gene prediction
 
