@@ -19,24 +19,86 @@ Once you're logged into the virtual machine, create a directory to work in. Draw
 
 ## Short read cleaning
 
+### Initial inspection
+
 Sequencers aren't perfect. All kinds of things can and do [go wrong](https://sequencing.qcfail.com/). [FastQC](http://www.bioinformatics.babraham.ac.uk/projects/fastqc/) ([documentation](http://www.bioinformatics.babraham.ac.uk/projects/fastqc/Help/)) can help you understand sequence quality and composition, and thus can inform next steps.
 
-Move, copy or link the raw sequence files (`~/data/reference_assembly/reads.pe*.fastq.gz`) to a relevant input directory (e.g. `~/2016-05-30-reference/data/01-read_cleaning/`) run FastQC on one of them (the `--outdir` option will help you clearly separate input and output files). What does the FASTQC report tell you? ([you can check the documentation to understand what each plot means](http://www.bioinformatics.babraham.ac.uk/projects/fastqc/Help/3%20Analysis%20Modules/)).
+Move, copy or link the raw sequence files (`~/data/reference_assembly/reads.pe*.fastq.gz`) to a relevant input directory (e.g. `~/2016-05-30-reference/data/01-read_cleaning/`) run FastQC on the second file,  `pe2`. The `--outdir` option will help you clearly separate input and output files.
 
 Your resulting directory structure may look like this:
 
+```bash
+user@userVM:~/2016-05-30-assembly$ tree -h
+.
+├── [4.0K]  data
+│   └── [4.0K]  01-read_cleaning
+│       ├── [  53]  reads.pe1.fastq.gz -> /home/user/data/reference_assembly/reads.pe1.fastq.gz
+│       ├── [  53]  reads.pe2.fastq.gz -> /home/user/data/reference_assembly/reads.pe2.fastq.gz
+│       └── [  44]  WHATIDID.txt
+└── [4.0K]  results
+    └── [4.0K]  01-read_cleaning
+        ├── [  28]  input -> ../../data/01-read_cleaning/
+        ├── [336K]  reads.pe2_fastqc.html
+        ├── [405K]  reads.pe2_fastqc.zip
+        └── [ 126]  WHATIDID.txt
+
+5 directories, 7 files
+```
+
+We recommend that you keep a log of your commands in a `WHATIDID.txt` file in each directory.
+
+What does the FASTQC report tell you? ([you can check the documentation to understand what each plot means](http://www.bioinformatics.babraham.ac.uk/projects/fastqc/Help/3%20Analysis%20Modules/)). Based on these results, decide whether and how much to trim from the beginning and end of sequences.
+
+
+### Trimming
+
+[seqtk](https://github.com/lh3/seqtk) ([documentation](http://manpages.ubuntu.com/manpages/vivid/man1/seqtk.1.html)) is a fast and lightweight tool for processing FASTA and FASTQ sequences.
+
+Based on the results from FastQC, replace x and y below to appropriately trim from the left and right side of the sequences.
+
+```bash
+seqtk trimfq -b x -e y reads.pe2.fastq.gz > reads.pe2.trimmed.fastq
+```
+
+### Digital Normalization
+
+[khmer](https://github.com/ged-lab/khmer) ([documentation](http://khmer.readthedocs.io/en/v2.0/user/index.html)) allows k-mer counting and filtering ([kmc](https://github.com/refresh-bio/KMC) can be more appropriate for large datasets).
+
+
+    YW IS HERE. next: create kmer distribution graph for this. load-into-counting.py -
+output_countgraph_filename  - show it here.
+    Decide whether to do single or paired end.
+
+
+Use khmer to:
+ * remove duplicated reads (check if possible)
+ * remove reads containing rare k-mers.
+In other situations we might also
+
+```bash
+# Step 2 - normalize everything to a depth coverage of 20x, filter low abundance khmers, remove orphaned reads
+normalize-by-median.py -p -k 20 -C 20 -N 2 -x 1e9 -s filteringtable.kh  reads.pe12.trimmed.fastq && filter-abund.py -V filteringtable.kh *.keep && extract-paired-reads.py reads.pe12.trimmed.fastq.keep.abundfilt
+# Step 4 (optional) - Rename output reads to something more user friendly
+mv reads.pe12.trimmed.fastq.keep.abundfilt.pe.1 reads.filtered.pe1.fastq
+mv reads.pe12.trimmed.fastq.keep.abundfilt.pe.2 reads.filtered.pe2.fastq
+```
+
+### Inspecting quality of cleaned reads
+
+Run `fastqc` again on the cleaned reads.
 
 
 ## Genome assembly
 
 ### Offline exercise
 
+In groups of 4,
+
 ### Brief assembly example / concepts
 
 ### Quality assessment
 
 #### QUAST
-####
 
 ## Gene prediction
 
