@@ -1,0 +1,9 @@
+language: generic # don't install any environment
+script: bash ./deploy.sh
+env:
+  global:
+  - ENCRYPTION_LABEL: 2395298e4727
+  - COMMIT_AUTHOR_EMAIL: "travis@bmpvieira.com"
+addons:
+  apt_packages:
+    - pandoc
