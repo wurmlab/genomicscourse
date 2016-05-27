@@ -6,7 +6,7 @@ We have samples with two genotypes: the B genotype (associated with single-queen
 
 Our dummy assembly has two scaffolds, each from a different chromosome. The aim of our analysis is to test whether any part of this assembly is associated with the B and b supergene variants.
 
-In the first part of the analysis, we are going to create a heat map of the genotypes of the individuals and we are going to run PCA on these genotypes. This will allow us to test if any of the individuals cluster by group. This will be done using the `adegenet` package in R.
+In the first part of the analysis, we are going to create a heat map of the genotypes of the individuals and we are going to run PCA on these genotypes. This will allow us to test if any of the individuals cluster by their B/b genotype. This will be done using the `adegenet` package in R.
 
 In the second part, we are going to measure genetic differentiation between the two groups (B and b). We will do this analysis over a sliding window, to see if the differentiation between B and b are specific to any portion of the genome. We will also measure the the genetic diversity among each of the groups, which may tell us something about the evolutionary history of the portions genome represented in our assembly. This will be done using the `PopGenome` package in R.
 
@@ -113,7 +113,7 @@ text(pca$scores[,1], pca$scores[,3] + 0.7,
 
 The aim of these analysis is to test whether the B and the b individuals cluster together or separately. The first principal component separates B and b. But if you look in the heat map, the separation is not constant in the whole genome.
 
-Each of the scaffolds has been retrieved from a different chromosome. Below, we can test whether the differentiation between B and b only seen in one of the scaffolds.
+Each of the scaffolds has been retrieved from a different chromosome. Below, we can test whether the differentiation between B and b is only seen in one of the scaffolds.
 
 ```r
 
@@ -161,7 +161,7 @@ bcftools view snp.vcf.gz scaffold_2 > popgenome-vcf/scaffold_2
 
 ```
 
-We can now open a new `R` session and load the data.
+You can now load the data in `R`.
 
 ```r
 
