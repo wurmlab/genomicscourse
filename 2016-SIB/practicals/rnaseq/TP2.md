@@ -14,17 +14,11 @@ Julien Roux, version 1, May 2016
 Today you will pursue the analysis of Bou Sleiman et al. *Drosophila melanogaster* data. Unless you managed to map all samples yesterday (:clap:), use the pre-processed `Kallisto` results located in the `~/data/rnaseq/kallisto/SRR*` folders. The analysis will be going through the following steps:
 
 * Organize the metadata, so that we know precisely the experimental conditions of each sample
-
 * Import `Kallisto` results and sum the transcript-level abundances to gene-level abundances. This allows to obtain expression levels that are not affected by differential transcript usage or differential splicing.
-
 * Normalize the data across samples
-
 * Perform some clustering analyses. This is a good first approach of the data, and allows to detect potential problems with the data.
-
 * Study differential expression between strains and experimental conditions. 
-
 * If time permits, perform some gene ontology and anatomical ontology enrichment analyses
-
 * If time permits, connect the patterns of differential expression to patterns of sequence evolution
 
 In the interest of time, most of the R commands are given fully, and can simply copy-paste them. I encourage you to read the commands fully and try to understand what was done. Try and modify some parameters, or ask the assistants if something is not clear.
@@ -128,7 +122,7 @@ txi <- tximport(files, type = "kallisto", tx2gene = transcript2gene, countsFromA
 lapply(txi, head)
 ```
 ![Question](round-help-button.png)
-What are abundances? What are "counts" in this particular case? Why are length estimates not integers?
+What are abundances? What are "counts" in this particular case? Why are length estimates not integers (remember note about `Kallisto` --bias option yesterday)?
 
 I suggest to have a look at this interesting paper: 
 
@@ -164,16 +158,25 @@ plotDensities(unfilteredExpr, col=myPalette[1:16], legend="topright")
 ![Question](round-help-button.png)
 What do you observe? How are the data distributed? Why are there two modes? What would be a good cutoff to discriminate the two modes?
 
-It is a good practice to filter out the genes that are not expressed, or very lowly expressed. This alleviates the multiple testing burden, and anyway there is very little power to detect differential expression for these genes. It is of course better to filter these genes after data normalization, before differential expression testing. The choice of a criterion to filter genes is arbitrary, but it has to make sense given the distribution of the data.
+It is a good practice to filter out the genes that are not expressed, or very lowly expressed. This alleviates the multiple testing burden, and anyway there is very little power to detect differential expression for these genes. It is of course better to filter these genes after data normalization, before differential expression testing. The choice of a criterion to filter genes is arbitrary, but it has to make sense given the distribution of the data. You can for example put a cutoff on the summed expression of each gene across samples. Another apporach I tend to prefer, is to keep only the genes that pass a cutoff in at least n samples, where n is at least the number of biological replicates in each experimental condition. This ensures that almost all genes are seen expressed in at least one condition.
 
 ![Warning](warning.png)
 Unless you know what you are doing, it is considered a bad practice to filter genes based on their variance prior to differential analysis! This can seriously bias your results.
+
+![To do](wrench-and-hammer.png)
+Indicate below the cutoff expression that was chosen in the previous question
 ```R
-cutoff <- ... ## put here the cutoff expression thta was chosen in the previous question
+cutoff <- ... 
+## How many genes pass this cutoff in each sample:
 summary(unfilteredExpr > cutoff)
-hist(apply(unfilteredExpr, 1, function(x){ return(sum(x > cutoff)) }))
-## You can for example require that each gene has expression above cutoff in at least half of the samples 
-selectedGenes <- names(which(apply(unfilteredExpr, 1, function(x){ return(sum(x > cutoff)) }) >= 8))
+## For each row return the number of expression values above the cutoff
+## This give sthe number of samples in which each gene is expressed above the cutoff 
+numSamplesWithExpression <- apply(unfilteredExpr, 1, function(x){ return(sum(x > cutoff)) })
+## Plot this as a histogram
+hist(numSamplesWithExpression)
+## Most genes are either expressed in all samples, or in no sample!
+## You can for example retain all genes expressed in at least half of the samples:
+selectedGenes <- names(which(numSamplesWithExpression >= 8))
 length(selectedGenes)
 ```
 
@@ -239,6 +242,7 @@ text(scores[,1], scores[,2] + 5, samples$title)
 ![Tip](elemental-tip.png)
 When labels get too messy, it can be nice to only label the interesting points. The command `identify(scores[,1], scores[,2], samples$title)` allows you to click on the points to reveal their labels. You can also influence the way the labels are placed by clicking slightly above/below/left/right of a point. Press escape to exit the clicking mode.
 
+![To do](wrench-and-hammer.png)
 Plot the samples projected onto PC2 and PC3, then PC3 and PC4. Do you observe segregation of the points by any experimental factor? Are these observations consistent with your previous prediction of the experimental factor with the strongest effect on expression levels?
 
 ### Heatmap (skip this part if timing is tight)
@@ -313,15 +317,16 @@ Please refer to the very nice user guide for `limma` for details on the analysis
 fit <- lmFit(v)
 ```
 
-The next step is to specify the contrasts of interest in a contrast matrix. It is build by constructing linear combinations of the design matrix column names. I have specified for you 3 contrast:
-* the treatment effect in resistant lines
-* the treatment effect in susceptible lines
-* the treatment effect in general
+The next step is to specify the contrasts of interest in a contrast matrix. To build it, you can choose the name of the contrast yourself (for example see below `treatmentInS`). To specify what the contrast will be comparing, you need to build a linear combinations of the design matrix column names. This means you need to choose among the following 4 terms: `Challenged.Resistant`, `Unchallenged.Resistant`, `Challenged.Susceptible` and `Unchallenged.Susceptible`. For the example I have specified for you below 3 of the contrasts that are interesting to study:
+* the treatment effect in resistant lines: `treatmentInR`
+* the treatment effect in susceptible lines: `treatmentInS`
+* the treatment effect in general: `treatment`
 
+![To do](wrench-and-hammer.png)
 Following the same logic, please complete the command to add the contrasts for:
-* the resistance effect in challenged lines
-* the resistance effect in unchallenged lines
-* the resistance effect in general
+* the resistance effect in challenged lines: `resistanceInC`
+* the resistance effect in unchallenged lines: `resistanceInU`
+* the resistance effect in general: `resistance`
 ```R
 cont.matrix <- makeContrasts(
                              treatmentInR  = Challenged.Resistant - Unchallenged.Resistant,
@@ -335,7 +340,7 @@ cont.matrix <- makeContrasts(
 cont.matrix
 ```
 ![Question](round-help-button.png)
-Which contrasts do you think are the most biologically interesting?
+Which contrasts do you think are the most interesting with respect to the biological question of the original study?
 
 You can now extract the lists of genes differentially expressed for each contrast, at a 10% FDR.
 ```R
@@ -417,6 +422,7 @@ resultBP <- runTest(BPdata, algorithm = "classic", statistic = "fisher")
 myTable <- GenTable(BPdata, classic = resultBP, topNodes=length(BPdata@graph@nodes), numChar=100)
 head(myTable)
 ```
+![To do](wrench-and-hammer.png)
 If you have time you can run the GO enrichment test on the molecular function (`ontology="MF"`) or the cellular component ontologies (`ontology="CC"`).
 
 ![Question](round-help-button.png)
@@ -476,6 +482,7 @@ Since this is a gene-based measure, it could be interesting to compare the neutr
 
 * If you zoom out and visualize a whole chromosome, it is possible to chosse `(DGRP) On-the-fly Variation Estimates Download` from the drop-down menu, click on `Configure` to select the measure of interest and the window size, and then `Go` to get the results for this chromosome.
 
+![To do](wrench-and-hammer.png)
 If you have some time left, try playing around these measures and link them to your DE results. Good luck (and congrats if you went that far)!
 
 ---------------------------------------
