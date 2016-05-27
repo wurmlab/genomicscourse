@@ -47,8 +47,9 @@ user@userVM:~/2016-05-30-assembly$ tree -h
         └── [ 126]  WHATIDID.txt
 ```
 
-What does the FASTQC report tell you? ([the documentation clarifies what each plot means](http://www.bioinformatics.babraham.ac.uk/projects/fastqc/Help/3%20Analysis%20Modules/)). For comparison, have a look at some plots from other sequencing libraries: e.g, [1](img-qc/per_base_quality.png), [2](img-qc/qc_factq_tile_sequence_quality.png), [3](img-qc/per_base_sequence_content.png)
- Decide whether and how much to trim from the beginning and end of sequences. What else might you want to do?
+What does the FASTQC report tell you? ([the documentation clarifies what each plot means](http://www.bioinformatics.babraham.ac.uk/projects/fastqc/Help/3%20Analysis%20Modules/)). For comparison, have a look at some plots from other sequencing libraries: e.g, [1](img-qc/per_base_quality.png), [2](img-qc/qc_factq_tile_sequence_quality.png), [3](img-qc/per_base_sequence_content.png).
+
+Decide whether and how much to trim from the beginning and end of our sequences. What else might you want to do?
 
 
 ### Trimming
