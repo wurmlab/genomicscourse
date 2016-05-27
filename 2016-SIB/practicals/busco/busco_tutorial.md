@@ -66,7 +66,7 @@ printenv
 
 2.1.	Is your Augustus config path set correctly?
 
-### 3. TEST
+### 3. TEST SETUP
 * Test to check that BUSCO and its dependencies have been set up correctly.
 
 ```sh
