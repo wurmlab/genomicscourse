@@ -1,5 +1,5 @@
 #!/bin/bash
-# From https://gist.github.com/bmpvieira/ae0d9f9e6cff3df831cc5b6511207138
+# From https://gist.github.com/bmpvieira/ae0d9f9e6cff3df831cc5b6511207138 and modified
 set -e # Exit with nonzero exit code if anything fails
 
 SOURCE_BRANCH="master"
@@ -61,4 +61,4 @@ eval `ssh-agent -s`
 ssh-add deploy_key
 
 echo "Now that we're all set up, we can push."
-git push $SSH_REPO $TARGET_BRANCH
+git push $SSH_REPO $TARGET_BRANCH --force
