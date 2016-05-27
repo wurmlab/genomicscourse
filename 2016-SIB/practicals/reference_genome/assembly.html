@@ -153,17 +153,23 @@ q2=input/reads.pe2.clean.fq</code></pre>
 <ul class="incremental">
 <li>genome: <code>min20000.fa</code><br /></li>
 <li>augustus species: <code>honeybee1</code> (yes that's a 1; we're using this HMM statistical model of genes)<br /></li>
-<li>provide uniprot to maker? (or to augustus)<br />then say we'd normally also give rnaseq etc.</li>
+<li>deactivate RepeatMasker by replacing <code>model_org=all</code> to <code>model_org=</code> (i.e., nothing)</li>
 </ul>
+<p>For a real project, we would use RepeatMasker, would provide as much relevant information as possible (e.g. RNAseq read mappings, transcriptome assembly), and iteratively train gene prediction algorithms for our data including Augustus and SNAP.</p>
+<p>Run <code>maker maker_opts.ctl</code>. This may take a few minutes, depending on how much data you gave it.<br />Once its done the results will be hidden in subdirectories of <code>*maker.output/min20k_datastore</code>. Perhaps its easier to find them using <code>find</code> then grep for <code>gff</code> or <code>proteins</code>. You can ignore the (temporary) contents under <code>theVoid</code> directories.</p>
 <h3 id="quality-control-of-individual-genes">Quality control of individual genes</h3>
-<p>Launch a BLAST server to compare a few of your gene predictions to those found in swissprot.</p>
-<pre class="sourceCode bash"><code class="sourceCode bash"><span class="kw">sequenceserver</span> -d ~/data/reference_databases/uniprot/uniprot_sprot.fasta</code></pre>
-<p>Some of your gene predictions will have no hits.</p>
-<p>provide genevalidator output</p>
+<p>Launch a local BLAST server to compare a few of your protein-coding gene predictions to the high quality predictions in swissprot:</p>
+<pre class="sourceCode bash"><code class="sourceCode bash"><span class="kw">sequenceserver</span> -d ~/data/reference_databases</code></pre>
+<p>Do any of these genes have significant similarity to known sequences? For a give gene prediction, do you think it is complete, or does the BLAST include evidence that something is missing?</p>
 <h3 id="comparing-whole-genesets-prioritizing-genes-for-manual-curation">Comparing whole genesets &amp; prioritizing genes for manual curation</h3>
+<p>As you can see, gene prediction software is imperfect - this is even the case when using all available evidence. This is potentially costly for analyses that rely on gene predictions.</p>
+<blockquote>
+<p>“Incorrect annotations [ie. gene identifications] poison every experiment that makes use of them. Worse still the poison spreads.” – <a href="http://www.ncbi.nlm.nih.gov/pubmed/22510764">Yandell &amp; Ence, Nature Reviews Genetics (2012)</a>.</p>
+</blockquote>
+<p><a href="http://bioinformatics.oxfordjournals.org/content/32/10/1559.long">GeneValidator</a> tool can help to evaluate quality of a gene prediction by comparing features of a gene prediction to similar database sequences.</p>
 <h3 id="manual-curation">Manual curation</h3>
 <h2 id="quality-control-of-the-whole-process">Quality control of the whole process</h2>
-<p>Link to Busco []</p>
+<p>Congrats<br />Rob will Link to Busco []</p>
 <hr>
 <small>Copyright 2016 <a href="https://github.com/wurmlab/genomicscourse/graphs/contributors">Authors</a>. All rights reserverd.
 </body>
