@@ -169,16 +169,19 @@ Perhaps we have prior knowledge about the %GC content to expect, the number of c
 
 Unfortunately, with many of the simple metrics, it is difficult to understand if the assembler did things correctly, or just haphazardly stuck lots of reads together!
 
-We probably have other prior information about what to expect in this genome. For example,
- * if we have a reference assembly from a no-too-distant relative, we could expect synteny: large parts of genome to be organised in the same order.
- * Or if we independently created a transcriptome assembly, we can expect consistency between the exons making up each transcript to map sequentially onto the genome (see [TGNET](http://github.com/ksanao/TGNet) for an implementation).
- * Similarly, we can expect different patterns in terms of gene content and structure between eukaryotes and prokaryotes.
- * Pushing this idea further, we can expect  genome to contain a single copy of the "house-keeping" genes found in relatives. We will see how to apply this idea using BUSCO, later today (after we know how to obtain gene predictions). Note that:
+We probably have other prior information about what to expect in this genome. For example:
+ 1. if we have a reference assembly from a no-too-distant relative, we could expect synteny: large parts of genome to be organised in the same order.
+ 2. Or if we independently created a transcriptome assembly, we can expect consistency between the exons making up each transcript to map sequentially onto the genome (see [TGNET](http://github.com/ksanao/TGNet) for an implementation).
+ 3. We can expect the different scaffolds in the genome to have a unimodal distribution in sequence read coverage. Similarly, one can expect GC% to be unimodally distributed among scaffolds. Using this idea, the [Blobology](https://github.com/sujaikumar/assemblage) approach determined that evidence for extensive horziontal gene transfer in Tardigrades was due to extensive contamination in library preparation [Koutsovoulos et al 2016](http://www.pnas.org/content/113/18/5053).
+ 4. We can expect different patterns of gene content and structure between eukaryotes and prokaryotes.
+ 5. Pushing this idea further, we can expect  genome to contain a single copy of the "house-keeping" genes found in relatives. We will see how to apply this idea using BUSCO later today (after we know how to obtain gene predictions). Note that:
     * BUSCO is a refined, modernized implementation of the [CEGMA]("http://korflab.ucdavis.edu/Datasets/cegma/") approach that examines a eukaryotic genome assembly for presence and completeness of 458 "core eukaryotic genes".
     * QUAST also includes a "quick and dirty" method of finding genes.
 
 
 ## Gene prediction
+
+
 
 
 
