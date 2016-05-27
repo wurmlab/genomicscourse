@@ -59,7 +59,7 @@ Decide whether and how much to trim from the beginning and end of our sequences.
 Based on the results from FastQC, replace x and y below to appropriately trim from the left and right side of the sequences.
 
 ```bash
-seqtk trimfq -b x -e y input/reads.pe2.fastq.gz | gzip > tmp/reads.pe2.trimmed.fq.gz
+seqtk trimfq -b REPLACE -e REPLACE input/reads.pe2.fastq.gz | gzip > tmp/reads.pe2.trimmed.fq.gz
 ```
 
 This will only take a few seconds (make sure you adjusted *x* and *y*).
@@ -130,10 +130,10 @@ q1=input/reads.pe1.clean.fq
 q2=input/reads.pe2.clean.fq
 ```
 
-Then run the following line. *THIS IS RAM-INTENSE - with only 2G ram, your computer will swap RAM*
+Then run the following line. *THIS IS RAM-INTENSE - with only 2G ram, your computer will swap  - you don't need to do this!*
 
 ```bash
-soapdenovo-63mer all -s soap-config.txt -K 63 -R -o assembly
+soapdenovo2-63mer all -s soap_config.txt -K 63 -R -o assembly
 ```
 
 Like any other assembler, Soapdenovo creates lots of files, including an `assembly.scafSeq` file that is likely to be used for follow-up analyses. You can [download it here](../../data/reference_assembly/output/assembly.scafSeq.gz). Why does this file contain so many NNNN sequences?

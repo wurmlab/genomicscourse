@@ -67,7 +67,7 @@ code > span.er { color: #ff0000; font-weight: bold; }
 <h3 id="trimming">Trimming</h3>
 <p><a href="http://github.com/lh3/seqtk">seqtk</a> (<a href="http://manpages.ubuntu.com/manpages/vivid/man1/seqtk.1.html">documentation</a>) is a fast and lightweight tool for processing FASTA and FASTQ sequences.</p>
 <p>Based on the results from FastQC, replace x and y below to appropriately trim from the left and right side of the sequences.</p>
-<pre class="sourceCode bash"><code class="sourceCode bash"><span class="kw">seqtk</span> trimfq -b x -e y input/reads.pe2.fastq.gz <span class="kw">|</span> <span class="kw">gzip</span> <span class="kw">&gt;</span> tmp/reads.pe2.trimmed.fq.gz</code></pre>
+<pre class="sourceCode bash"><code class="sourceCode bash"><span class="kw">seqtk</span> trimfq -b REPLACE -e REPLACE input/reads.pe2.fastq.gz <span class="kw">|</span> <span class="kw">gzip</span> <span class="kw">&gt;</span> tmp/reads.pe2.trimmed.fq.gz</code></pre>
 <p>This will only take a few seconds (make sure you adjusted <em>x</em> and <em>y</em>).</p>
 <p>Let's similarly filter the reads.pe1:</p>
 <pre class="sourceCode bash"><code class="sourceCode bash"><span class="kw">seqtk</span> trimfq -b 5 -e 5 input/reads.pe1.fastq.gz <span class="kw">|</span> <span class="kw">gzip</span> <span class="kw">&gt;</span> tmp/reads.pe1.trimmed.fq.gz</code></pre>
@@ -111,8 +111,8 @@ asm_flags=3             # in which part(s) the reads are used
 rank=1                  # in which order the reads are used while scaffolding
 q1=input/reads.pe1.clean.fq
 q2=input/reads.pe2.clean.fq</code></pre>
-<p>Then run the following line. <em>THIS IS RAM-INTENSE - with only 2G ram, your computer will swap RAM</em></p>
-<pre class="sourceCode bash"><code class="sourceCode bash"><span class="kw">soapdenovo-63mer</span> all -s soap-config.txt -K 63 -R -o assembly</code></pre>
+<p>Then run the following line. <em>THIS IS RAM-INTENSE - with only 2G ram, your computer will swap - you don't need to do this!</em></p>
+<pre class="sourceCode bash"><code class="sourceCode bash"><span class="kw">soapdenovo2-63mer</span> all -s soap_config.txt -K 63 -R -o assembly</code></pre>
 <p>Like any other assembler, Soapdenovo creates lots of files, including an <code>assembly.scafSeq</code> file that is likely to be used for follow-up analyses. You can <a href="../../data/reference_assembly/output/assembly.scafSeq.gz">download it here</a>. Why does this file contain so many NNNN sequences?</p>
 <p>There are many other genome assembly approaches. While waiting for everyone to make it to this stage, try to understand some of the challenges of de novo genome assembly and the approaches used to overcome them via the following papers:</p>
 <ul class="incremental">
