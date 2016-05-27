@@ -134,25 +134,7 @@ Then run the following line. *THIS IS RAM-INTENSE - with only 2G ram, your compu
 soapdenovo-63mer all -s soap-config.txt -K 63 -R -o assembly
 ```
 
-Soap creates a folder including lots of files, and displays the following statistics onscreen:
-
-```
-Scaffold number                  691
-In-scaffold contig number        4456
-Total scaffold length            3097063
-Average scaffold length          4482
-Filled gap number                3
-Longest scaffold                 48394
-Scaffold and singleton number    1163
-Scaffold and singleton length    3238059
-Average length                   2784
-N50                              6384
-N90                              1673
-Weak points                      0
-```
-
-What do these value mean? Which ones do we want higher and which ones do we want smaller?
-
+Like any other assembler, Soapdenovo creates lots of files, including an `assembly.scafSeq` file that is likely to be used for follow-up analyses. You can [download it here](../../data/reference_assembly/output/assembly.scafSeq.gz). Why does this file contain so many NNNN sequences?
 
 There are many other genome assembly approaches. While waiting for everyone to make it to this stage, try to understand some of the challenges of de novo genome assembly and the approaches used to overcome them via the following papers:
 
@@ -171,23 +153,25 @@ As eloquently described in [Wences & Schatz (2015)](http://genomebiology.biomedc
 > ... the performance of different de novo genome assembly algorithms can vary greatly on the same dataset, although it has been repeatedly demonstrated that no single assembler is optimal in every possible quality metric [6, 7, 8]. The most widely used metrics for evaluating an assembly include 1) contiguity statistics such as scaffold and contig N50 size, 2) accuracy statistics such as the number of structural errors found when compared with an available reference genome (GAGE (Genome Assembly Gold Standard Evaluation) evaluation tool [8]), 3) presence of core eukaryotic genes (CEGMA (Core Eukaryotic Genes Mapping Approach) [9]) or, if available, transcript mapping rates, and 4) the concordance of the sequence with remapped paired-end and mate-pair reads (REAPR (Recognising Errors in Assemblies using Paired Reads) [10], assembly validation [11], or assembly likelihood [12]).
 
 
-We'll use two approaches today:
- * Quast simply calculates statistics on the assembler's output files.
- * importantly, we'll use a biologically relevant metric as well.
+#### Simple metrics
 
+Assemblers will generally provide some statistics about an assembly. But these are rarely comparable between assemblers. Please run [Quast](http://bioinf.spbau.ru/quast) (which stants for Quality Assessment Tool for Genome Assemblies) on the scafseq file. Access it here: `~/software/quast-4.0/quast.py`. Don't use any special options now - just the simple scenario to get some statistics.
 
-#### QUAST
+Have a look at the generated report (pdf or html).
 
-[Quast](http://bioinf.spbau.ru/quast)
-> Quality Assessment Tool for Genome Assemblies
+What do the value in the table mean? Which ones do we want higher and which ones do we want smaller? Is Quast's use of the word "contig" appropriate?
 
-```
-# Basic statistics (quick), similar to SOAPdenovo log
-./quast-2.3/quast.py assembly.scafSeq
-# Eukaryotic genes finding (slower), similar to CEGMA
-./quast-2.3/quast.py -f -e assembly.scafSeq
-# Results in quast_results/latest/report.html
-```
+Perhaps we have prior knowledge about the %GC content to expect, the number of chromosomes to expect, and the total genome size - these can inform comparisons with output statistics.
+
+#### Biologically meaningful measures
+
+Unfortunately, with many of the simple metrics, it is difficult to understand if the assembler did things correctly, or just haphasardly stuck lots of reads together!
+
+We probably have other prior information about what to expect in this genome. For example, if we have a reference assembly from a no-too-distant relative, we could expect synteny: large parts of genome to be organised in the same order. Similarly, we can expect different patterns in terms of gene content and structure between eukaryotes and prokaryotes. Pushing this idea further, we can expect  genome to contain a single copy of the "house-keeping" genes found in relatives. We will see how to apply this idea using BUSCO, later today (after we know how to obtain gene predictions). Note that:
+ * BUSCO is a refined, modernised implementation of the [CEGMA]("http://korflab.ucdavis.edu/Datasets/cegma/") approach that examines a eukaryotic genome assembly for presence and completeness of 458 "core eukaryotic genes".
+ * QUAST also includes a "quick and dirty" method of finding genes.
+ * Many other approaches exist (e.g. consistency of EST assembly mapping to genome, etc.)
+
 
 ## Gene prediction
 
