@@ -12,12 +12,16 @@ Specifically, we'll:
  * assess quality of gene predictions
  * assess quality of the entire process
 
+---
 
 ## Preparation
 
 Once you're logged into the virtual machine, create a directory to work in. Drawing on ideas from [Noble (2009)](http://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1000424 "A Quick Guide to Organizing Computational Biology Projects") and others, we recommend following a [specific convention](http://github.com/wurmlab/templates/blob/master/project_structures.md "Typical multi-day project structure") for all your projects. For example create a main directory for this section of the course (e.g., `~/2016-05-30-reference`), and create relevant subdirectories for each step (e.g., first one might be `~/2016-05-30-reference/results/01-read_cleaning`).
 
 We recommend that you log your commands in a `WHATIDID.txt` file in each directory.
+
+
+---
 
 ## Short read cleaning
 
@@ -73,8 +77,12 @@ seqtk trimfq -b 5 -e 5 input/reads.pe1.fastq.gz | gzip > tmp/reads.pe1.trimmed.f
 ### Digital Normalization
 
 Say you have sequenced your sample at 100x genome coverage. The real coverage distribution will be  influenced by things like DNA quality, library preparation type and local GC content, but you might expect most of the genome to be covered between 50 and 150x. In practice, the distribution can be very strange. One way of rapidly examining this before you have a reference genome is to chop your sequence reads into short "k-mers" of 31 nucleotides, and count how often you get each possible k-mer. Surprisingly,  
+
  * Some sequences are extremely rare (e.g., once). These could be errors that appeared during library preparation or sequencing, or rare somatic mutations). Such sequences can confuse assembly software; eliminating them can decrease subsequent memory & CPU requirements.
- * Other sequences may exist at 10,000x coverage. These could be pathogens or repetitive elements. Often, there is no benefit to retaining all copies; retaining a small proportion could significantly reduce CPU, memory and space requirements. An example plot of a k-mer frequencies:
+ * Other sequences may exist at 10,000x coverage. These could be pathogens or repetitive elements. Often, there is no benefit to retaining all copies; retaining a small proportion could significantly reduce CPU, memory and space requirements.
+
+
+ An example plot of a k-mer frequencies:
 
 ![kmer distribution graph from UCSC](img-qc/quake_kmer_distribution.jpg)
 
@@ -89,10 +97,14 @@ Using khmer as with the commands below will remove highly  extremely rare -mers 
 seqtk mergepe tmp/reads.pe1.trimmed.fq.gz tmp/reads.pe2.trimmed.fq.gz > tmp/reads.pe12.trimmed.fq
 
 # Step 2 - normalize everything to a depth coverage of 20x, filter low abundance khmers,
-khmer normalize-by-median.py -p --ksize 20 -C 100 -M 1e9 -s tmp/kmer.counts -o tmp/reads.pe12.trimmed.max100.fq tmp/reads.pe12.trimmed.fq
-khmer filter-abund.py -V tmp/kmer.counts -o tmp/reads.pe12.trimmed.max100.norare.fq tmp/reads.pe12.trimmed.max100.fq
+khmer normalize-by-median.py -p --ksize 20 -C 100 -M 1e9 -s tmp/kmer.counts \
+                -o tmp/reads.pe12.trimmed.max100.fq tmp/reads.pe12.trimmed.fq
+khmer filter-abund.py -V tmp/kmer.counts \
+                      -o tmp/reads.pe12.trimmed.max100.norare.fq \
+                      tmp/reads.pe12.trimmed.max100.fq
 # remove low quality bases, remove short sequences, and non-paired reads
-seqtk seq -q 10 -N -L 80 tmp/reads.pe12.trimmed.max100.norare.fq | seqtk dropse > tmp/reads.pe12.trimmed.max100.norare.noshort.fq
+seqtk seq -q 10 -N -L 80 tmp/reads.pe12.trimmed.max100.norare.fq | \
+                 seqtk dropse > tmp/reads.pe12.trimmed.max100.norare.noshort.fq
 
 # Step 3 - De-interleave filtered reads
 khmer split-paired-reads.py tmp/reads.pe12.trimmed.max100.norare.noshort.fq -d tmp/
@@ -106,6 +118,9 @@ ln -s tmp/reads.pe12.trimmed.max100.norare.noshort.fq.2 reads.pe2.clean.fq
 
 Which percentage of reads have we removed overall? (hint: `wc -l` can count lines in a non-gzipped file)
 Run `fastqc` again, this time on `reads.pe2.clean.fq`. Which statistics have changed? Does the "per tile" sequence quality indicate to you that we should perhaps do more cleaning?
+
+
+---
 
 ## Genome assembly
 
@@ -191,7 +206,7 @@ Running `maker -OPTS` will generate an empty `maker_opts.ctl` configuration file
   * augustus species: `honeybee1` (yes that's a 1; we're using this HMM statistical model of genes)
   * deactivate RepeatMasker by replacing `model_org=all` to `model_org= ` (i.e., nothing)
 
-For a real project, we would use RepeatMasker, would provide as much relevant information as possible (e.g. RNAseq read mappings, transcriptome assembly), and iteratively train gene prediction algorithms for our data including Augustus and SNAP.
+For a real project, we would use RepeatMasker, would provide as much relevant information as possible (e.g. RNAseq read mappings, transcriptome assembly - both improve gene prediction performance *tremendously*), and iteratively train gene prediction algorithms for our data including Augustus and SNAP.
 
 Run `maker maker_opts.ctl`. This may take a few minutes, depending on how much data you gave it.
 Once its done the results will be hidden in subdirectories of `*maker.output/min20k_datastore`. Perhaps its easier to find them using `find` then grep for `gff` or `proteins`. You can ignore the (temporary) contents under `theVoid` directories.
@@ -215,12 +230,19 @@ As you can see, gene prediction software is imperfect - this is even the case wh
 
 [GeneValidator](http://bioinformatics.oxfordjournals.org/content/32/10/1559.long) tool can help to evaluate quality of a gene prediction by comparing features of a gene prediction to similar database sequences.
 
-You can simply run `genevalidator proteins.fasta` (on your gene predictions, or [these examples](../../data/reference_databases/gv_examples.fa)), or use the [web service](http://genevalidator.sbcs.qmul.ac.uk/) for small queries. Try to understand why some gene predictions have no reason for concern ([e.g.](img-qc/good.png)), while others do ([e.g.](img-qc/bad.png)).
+You can simply run `genevalidator proteins.fasta` (on your gene predictions, or [these examples](../../data/reference_databases/gv_examples.fa)), or use the [web service](http://genevalidator.sbcs.qmul.ac.uk/) for small queries. Alternatively just check the screenshots linked in the next sentence. Try to understand why some gene predictions have no reason for concern ([e.g.](img-qc/good.png)), while others do ([e.g.](img-qc/bad.png)).
 
+Running genevalidator on a large number of gene predictions can help you identify which gene predictions are likely ok, and which need to be inspected and potentially manual curated.
 
 ### Manual curation
 
-TODO: explain that Apollo exists.
+Because automated gene predictions aren't perfect, manual inspection and fixing are often required. The most commonly used software for this is [Apollo/WebApollo](http://genomearchitect.org/). We have no time for manual curation today, so here's simply a screenshot:
+
+![Screenshot of afra with gene missing an exon](img-qc/missing_exon.png)
+
+The interface shows the genome sequence horizontally (nucleotides only visible when zooming in), each track is like in a genome browser: showing evidence for the presence of a protein-coding gene. Some evidence comes from mapping RNAseq reads; others come from gene prediction algorithms. Here, the consensus sequence was determined before RNAseq data was available; the RNAseq data show clear support the gene has 5 exons, not 4. Using curation software, you can edit the gene prediction:  add or remove exons, merge or split gene models, and adjust exon boundaries.
+
+---
 
 ## Quality control of the whole process
 
