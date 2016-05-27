@@ -71,7 +71,7 @@ seqtk trimfq -b 5 -e 5 input/reads.pe1.fastq.gz | gzip > tmp/reads.pe1.trimmed.f
 ### Digital Normalization
 
 Say you have sequenced your sample at 100x genome coverage. The real coverage distribution will be  influenced by things like DNA quality, library preparation type and local GC content, but you might expect most of the genome to be covered between 50 and 150x. In practice, the distribution can be very strange. One way of rapidly examining this before you have a reference genome is to chop your sequence reads into short "k-mers" of 31 nucleotides, and count how often you get each possible k-mer. Surprisingly,  
- * Some sequences are extremely rare (e.g., once). These could be errors that appeared during library preparation or sequencing, or rare could be rare somatic mutations). Such sequences can confuse assembly software; eliminating them can decrease subsequent memory & CPU requirements.
+ * Some sequences are extremely rare (e.g., once). These could be errors that appeared during library preparation or sequencing, or rare somatic mutations). Such sequences can confuse assembly software; eliminating them can decrease subsequent memory & CPU requirements.
  * Other sequences may exist at 10,000x coverage. These could be pathogens or repetitive elements. Often, there is no benefit to retaining all copies; retaining a small proportion could significantly reduce CPU, memory and space requirements. An example plot of a k-mer frequencies:
 
 ![kmer distribution graph from UCSC](https://banana-slug.soe.ucsc.edu/_media/bioinformatic_tools:quake_kmer_distribution.jpg)
@@ -150,12 +150,12 @@ How do we know if our genome is good?
 
 As eloquently described in [Wences & Schatz (2015)](http://genomebiology.biomedcentral.com/articles/10.1186/s13059-015-0764-4)
 
-> ... the performance of different de novo genome assembly algorithms can vary greatly on the same dataset, although it has been repeatedly demonstrated that no single assembler is optimal in every possible quality metric [6, 7, 8]. The most widely used metrics for evaluating an assembly include 1) contiguity statistics such as scaffold and contig N50 size, 2) accuracy statistics such as the number of structural errors found when compared with an available reference genome (GAGE (Genome Assembly Gold Standard Evaluation) evaluation tool [8]), 3) presence of core eukaryotic genes (CEGMA (Core Eukaryotic Genes Mapping Approach) [9]) or, if available, transcript mapping rates, and 4) the concordance of the sequence with remapped paired-end and mate-pair reads (REAPR (Recognising Errors in Assemblies using Paired Reads) [10], assembly validation [11], or assembly likelihood [12]).
+> ... the performance of different de novo genome assembly algorithms can vary greatly on the same dataset, although it has been repeatedly demonstrated that no single assembler is optimal in every possible quality metric [6, 7, 8]. The most widely used metrics for evaluating an assembly include 1) contiguity statistics such as scaffold and contig N50 size, 2) accuracy statistics such as the number of structural errors found when compared with an available reference genome (GAGE (Genome Assembly Gold Standard Evaluation) evaluation tool [8]), 3) presence of core eukaryotic genes (CEGMA (Core Eukaryotic Genes Mapping Approach) [9]) or, if available, transcript mapping rates, and 4) the concordance of the sequence with remapped paired-end and mate-pair reads (REAPR (Recognizing Errors in Assemblies using Paired Reads) [10], assembly validation [11], or assembly likelihood [12]).
 
 
 #### Simple metrics
 
-Assemblers will generally provide some statistics about an assembly. But these are rarely comparable between assemblers. Please run [Quast](http://bioinf.spbau.ru/quast) (which stants for Quality Assessment Tool for Genome Assemblies) on the scafseq file. Access it here: `~/software/quast-4.0/quast.py`. Don't use any special options now - just the simple scenario to get some statistics.
+Assemblers will generally provide some statistics about an assembly. But these are rarely comparable between assemblers. Please run [Quast](http://bioinf.spbau.ru/quast) (which stands for Quality Assessment Tool for Genome Assemblies) on the scafseq file. Access it here: `~/software/quast-4.0/quast.py`. Don't use any special options now - just the simple scenario to get some statistics.
 
 Have a look at the generated report (pdf or html).
 
@@ -165,12 +165,15 @@ Perhaps we have prior knowledge about the %GC content to expect, the number of c
 
 #### Biologically meaningful measures
 
-Unfortunately, with many of the simple metrics, it is difficult to understand if the assembler did things correctly, or just haphasardly stuck lots of reads together!
+Unfortunately, with many of the simple metrics, it is difficult to understand if the assembler did things correctly, or just haphazardly stuck lots of reads together!
 
-We probably have other prior information about what to expect in this genome. For example, if we have a reference assembly from a no-too-distant relative, we could expect synteny: large parts of genome to be organised in the same order. Similarly, we can expect different patterns in terms of gene content and structure between eukaryotes and prokaryotes. Pushing this idea further, we can expect  genome to contain a single copy of the "house-keeping" genes found in relatives. We will see how to apply this idea using BUSCO, later today (after we know how to obtain gene predictions). Note that:
- * BUSCO is a refined, modernised implementation of the [CEGMA]("http://korflab.ucdavis.edu/Datasets/cegma/") approach that examines a eukaryotic genome assembly for presence and completeness of 458 "core eukaryotic genes".
- * QUAST also includes a "quick and dirty" method of finding genes.
- * Many other approaches exist (e.g. consistency of EST assembly mapping to genome, etc.)
+We probably have other prior information about what to expect in this genome. For example,
+ * if we have a reference assembly from a no-too-distant relative, we could expect synteny: large parts of genome to be organised in the same order.
+ * Or if we independently created a transcriptome assembly, we can expect consistency between the exons making up each transcript to map sequentially onto the genome (see [TGNET](https://github.com/ksanao/TGNet) for an implementation).
+ * Similarly, we can expect different patterns in terms of gene content and structure between eukaryotes and prokaryotes.
+ * Pushing this idea further, we can expect  genome to contain a single copy of the "house-keeping" genes found in relatives. We will see how to apply this idea using BUSCO, later today (after we know how to obtain gene predictions). Note that:
+    * BUSCO is a refined, modernized implementation of the [CEGMA]("http://korflab.ucdavis.edu/Datasets/cegma/") approach that examines a eukaryotic genome assembly for presence and completeness of 458 "core eukaryotic genes".
+    * QUAST also includes a "quick and dirty" method of finding genes.
 
 
 ## Gene prediction
@@ -178,3 +181,5 @@ We probably have other prior information about what to expect in this genome. Fo
 ### Quality control of individual genes
 
 ### Quality control of the whole process
+
+Link to Busco []
