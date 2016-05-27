@@ -189,29 +189,38 @@ Start in a new directory (e.g. `2016-05-30-reference/results/03-gene_prediction`
 Running `maker -OPTS` will generate an empty `maker_opts.ctl` configuration file. Edit that file to specify:
   * genome: `min20000.fa`
   * augustus species: `honeybee1` (yes that's a 1; we're using this HMM statistical model of genes)
-  * 
-provide uniprot to maker? (or to augustus)
-then say we'd normally also give rnaseq etc.
+  * deactivate RepeatMasker by replacing `model_org=all` to `model_org= ` (i.e., nothing)
+
+For a real project, we would use RepeatMasker, would provide as much relevant information as possible (e.g. RNAseq read mappings, transcriptome assembly), and iteratively train gene prediction algorithms for our data including Augustus and SNAP.
+
+Run `maker maker_opts.ctl`. This may take a few minutes, depending on how much data you gave it.
+Once its done the results will be hidden in subdirectories of `*maker.output/min20k_datastore`. Perhaps its easier to find them using `find` then grep for `gff` or `proteins`. You can ignore the (temporary) contents under `theVoid` directories.
 
 
 ### Quality control of individual genes
 
-Launch a BLAST server to compare a few of your gene predictions to those found in swissprot.
+Launch a local BLAST server to compare a few of your protein-coding gene predictions to the high quality predictions in swissprot:
 
 ```bash
-sequenceserver -d ~/data/reference_databases/uniprot/uniprot_sprot.fasta
+sequenceserver -d ~/data/reference_databases
 ```
 
-Some of your gene predictions will have no hits.
-
-provide genevalidator output
-
+Do any of these genes have significant similarity to known sequences? For a give gene prediction, do you think it is complete, or does the BLAST include evidence that something is missing?
 
 ### Comparing whole genesets & prioritizing genes for manual curation
+
+As you can see, gene prediction software is imperfect - this is even the case when using all available evidence. This is potentially costly for analyses that rely on gene predictions.
+
+> “Incorrect annotations [ie. gene identifications] poison every experiment that makes use of them. Worse still the poison spreads.” – [Yandell & Ence, Nature Reviews Genetics (2012)](http://www.ncbi.nlm.nih.gov/pubmed/22510764).
+
+[GeneValidator](http://bioinformatics.oxfordjournals.org/content/32/10/1559.long) tool can help to evaluate quality of a gene prediction by comparing features of a gene prediction to similar database sequences.
+
+
 
 ### Manual curation
 
 
 ## Quality control of the whole process
 
-Link to Busco []
+Congrats
+Rob will Link to Busco []
