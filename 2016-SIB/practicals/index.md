@@ -26,16 +26,16 @@ We suppose that you are able at ease:
 
 Our colleagues at [Vital-IT](http://vital-it.ch/) prepared a [Virtual Machine Image](ftp://ftp.vital-it.ch/edu/VM/ubuntuBPG.ova) that contains software and data. Use this: load it into [Virtual Box](http://virtualbox.org). For detailed explanations and troubleshooting, check [the main course info page](http://edu.isb-sib.ch/course/view.php?id=252).
 
-It may be feasible to do some of this stuff on a your favorite cluster or your local machine. However, it will be complicated. Among other things you'll need to install a bunch of [software](./software.md) and [data](https://github.com/wurmlab/GenomicsCourse/tree/219100ee0b1a42241010ddfc08836fb459560894/2016-SIB/data). Better to just use the Virtual Machine.
+It may be feasible to do some of this stuff on a your favorite cluster or your local machine. However, it will be complicated. Among other things you'll need to install a bunch of [software](./software) and [data](https://github.com/wurmlab/GenomicsCourse/tree/219100ee0b1a42241010ddfc08836fb459560894/2016-SIB/data). Better to just use the Virtual Machine.
 
 
 ## Practicals
 
-* [Reads to genome to gene predictions](./reference_genome/assembly.md):  Short read cleaning, genome assembly, quality control, gene prediction, quality control. (Monday)
+* [Reads to genome to gene predictions](./reference_genome/assembly):  Short read cleaning, genome assembly, quality control, gene prediction, quality control. (Monday)
 * Population sequencing to genotypes to population genetics statistics (Tuesday)
-   * [Mapping reads, calling variants, visualizing variant calls](./population_genetics/map_call.md)
-   * [Analysing variants: PCA, measuring Differntiation & Diversity](./population_genetics/popgen.md)
-* [Inferring population sizes and gene flow](./msmc/msmc-tutorial/guide.md) (1h Wednesday)
+   * [Mapping reads, calling variants, visualizing variant calls](./population_genetics/map_call)
+   * [Analysing variants: PCA, measuring Differntiation & Diversity](./population_genetics/popgen)
+* [Inferring population sizes and gene flow](./msmc/msmc-tutorial/guide) (1h Wednesday)
 * Gene expression
-   * [From raw sequencing data to transcript expression levels](./rnaseq/TP1.md) (Wednesday)
-   * [Gene-level clustering and differential expression analysis](./rnaseq/TP2.md) (Thursday)
+   * [From raw sequencing data to transcript expression levels](./rnaseq/TP1) (Wednesday)
+   * [Gene-level clustering and differential expression analysis](./rnaseq/TP2) (Thursday)
