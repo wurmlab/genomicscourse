@@ -317,13 +317,13 @@ Please refer to the very nice user guide for `limma` for details on the analysis
 fit <- lmFit(v)
 ```
 
-The next step is to specify the contrasts of interest in a contrast matrix. To build it, you can choose the name of the contrast yourself (for example see below `treatmentInS`). To specify what the contrast will be comparing, you need to build a linear combinations of the design matrix column names. This means you need to choose among the following 4 terms: `Challenged.Resistant`, `Unchallenged.Resistant`, `Challenged.Susceptible` and `Unchallenged.Susceptible`. For the example I have specified for you below 3 of the contrasts that are interesting to study:
+The next step is to specify the contrasts of interest in a contrast matrix. You can choose the names of the contrasts yourself (for example see below `treatmentInS`). To specify what the contrast will be comparing, you need to build a linear combinations of the design matrix column names. This means you need to choose among the following 4 terms: `Challenged.Resistant`, `Unchallenged.Resistant`, `Challenged.Susceptible` and `Unchallenged.Susceptible`. I have specified below the 3 following interesting contrasts:
 * the treatment effect in resistant lines: `treatmentInR`
 * the treatment effect in susceptible lines: `treatmentInS`
 * the treatment effect in general: `treatment`
 
 ![To do](wrench-and-hammer.png)
-Following the same logic, please complete the command to add the contrasts for:
+Following the same logic, please complete the R command to add the contrasts for:
 * the resistance effect in challenged lines: `resistanceInC`
 * the resistance effect in unchallenged lines: `resistanceInU`
 * the resistance effect in general: `resistance`
