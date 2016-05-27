@@ -15,13 +15,13 @@ Specifically, we'll:
 
 ## Preparation
 
-Once you're logged into the virtual machine, create a directory to work in. Drawing on ideas from [Noble (2009)](http://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1000424 "A Quick Guide to Organizing Computational Biology Projects") and others, we recommend following a [specific convention](https://github.com/wurmlab/templates/blob/master/project_structures.md "Typical multi-day project structure") for all your projects. For example create a main directory for this section of the course (e.g., `~/2016-05-30-reference`), and create relevant subdirectories for each step (e.g., first one might be `~/2016-05-30-reference/results/01-read_cleaning`).
+Once you're logged into the virtual machine, create a directory to work in. Drawing on ideas from [Noble (2009)](http://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1000424 "A Quick Guide to Organizing Computational Biology Projects") and others, we recommend following a [specific convention](http://github.com/wurmlab/templates/blob/master/project_structures.md "Typical multi-day project structure") for all your projects. For example create a main directory for this section of the course (e.g., `~/2016-05-30-reference`), and create relevant subdirectories for each step (e.g., first one might be `~/2016-05-30-reference/results/01-read_cleaning`).
 
 We recommend that you log your commands in a `WHATIDID.txt` file in each directory.
 
 ## Short read cleaning
 
-Sequencers aren't perfect. All kinds of things can and do [go wrong](https://sequencing.qcfail.com/). "Crap in - crap out" means it's probably worth spending some time cleaning the raw data before performing real analysis.
+Sequencers aren't perfect. All kinds of things can and do [go wrong](http://sequencing.qcfail.com/). "Crap in - crap out" means it's probably worth spending some time cleaning the raw data before performing real analysis.
 
 ### Initial inspection
 
@@ -29,7 +29,7 @@ Sequencers aren't perfect. All kinds of things can and do [go wrong](https://seq
 
 Move, copy or link the raw sequence files (`~/data/reference_assembly/reads.pe*.fastq.gz`) to a relevant input directory (e.g. `~/2016-05-30-reference/data/01-read_cleaning/`) run FastQC on the second file,  `pe2`. The `--outdir` option will help you clearly separate input and output files.
 
-If respecting our [project structure convention](https://github.com/wurmlab/templates/blob/master/project_structures.md "Typical multi-day project structure"), your resulting directory structure may look like this:
+If respecting our [project structure convention](http://github.com/wurmlab/templates/blob/master/project_structures.md "Typical multi-day project structure"), your resulting directory structure may look like this:
 
 ```bash
 user@userVM:~/2016-05-30-assembly$ tree -h
@@ -47,17 +47,19 @@ user@userVM:~/2016-05-30-assembly$ tree -h
         └── [ 126]  WHATIDID.txt
 ```
 
-What does the FASTQC report tell you? ([the documentation clarifies what each plot means](http://www.bioinformatics.babraham.ac.uk/projects/fastqc/Help/3%20Analysis%20Modules/)). Decide whether and how much to trim from the beginning and end of sequences. What else might you want to do?
+What does the FASTQC report tell you? ([the documentation clarifies what each plot means](http://www.bioinformatics.babraham.ac.uk/projects/fastqc/Help/3%20Analysis%20Modules/)). For comparison, have a look at some plots from other sequencing libraries: e.g, [1](img-qc/per_base_quality.png), [2](img-qc/qc_factq_tile_sequence_quality.png), [3](img-qc/per_base_sequence_content.png).
+
+Decide whether and how much to trim from the beginning and end of our sequences. What else might you want to do?
 
 
 ### Trimming
 
-[seqtk](https://github.com/lh3/seqtk) ([documentation](http://manpages.ubuntu.com/manpages/vivid/man1/seqtk.1.html)) is a fast and lightweight tool for processing FASTA and FASTQ sequences.
+[seqtk](http://github.com/lh3/seqtk) ([documentation](http://manpages.ubuntu.com/manpages/vivid/man1/seqtk.1.html)) is a fast and lightweight tool for processing FASTA and FASTQ sequences.
 
 Based on the results from FastQC, replace x and y below to appropriately trim from the left and right side of the sequences.
 
 ```bash
-seqtk trimfq -b x -e y input/reads.pe2.fastq.gz | gzip > tmp/reads.pe2.trimmed.fq.gz
+seqtk trimfq -b REPLACE -e REPLACE input/reads.pe2.fastq.gz | gzip > tmp/reads.pe2.trimmed.fq.gz
 ```
 
 This will only take a few seconds (make sure you adjusted *x* and *y*).
@@ -71,13 +73,13 @@ seqtk trimfq -b 5 -e 5 input/reads.pe1.fastq.gz | gzip > tmp/reads.pe1.trimmed.f
 ### Digital Normalization
 
 Say you have sequenced your sample at 100x genome coverage. The real coverage distribution will be  influenced by things like DNA quality, library preparation type and local GC content, but you might expect most of the genome to be covered between 50 and 150x. In practice, the distribution can be very strange. One way of rapidly examining this before you have a reference genome is to chop your sequence reads into short "k-mers" of 31 nucleotides, and count how often you get each possible k-mer. Surprisingly,  
- * Some sequences are extremely rare (e.g., once). These could be errors that appeared during library preparation or sequencing, or rare could be rare somatic mutations). Such sequences can confuse assembly software; eliminating them can decrease subsequent memory & CPU requirements.
+ * Some sequences are extremely rare (e.g., once). These could be errors that appeared during library preparation or sequencing, or rare somatic mutations). Such sequences can confuse assembly software; eliminating them can decrease subsequent memory & CPU requirements.
  * Other sequences may exist at 10,000x coverage. These could be pathogens or repetitive elements. Often, there is no benefit to retaining all copies; retaining a small proportion could significantly reduce CPU, memory and space requirements. An example plot of a k-mer frequencies:
 
-![kmer distribution graph from UCSC](https://banana-slug.soe.ucsc.edu/_media/bioinformatic_tools:quake_kmer_distribution.jpg)
+![kmer distribution graph from UCSC](img-qc/quake_kmer_distribution.jpg)
 
 
-It is possible to count and filter "k-mers" using [khmer](https://github.com/ged-lab/khmer) ([documentation](http://khmer.readthedocs.io/en/v2.0/user/index.html).  [kmc](https://github.com/refresh-bio/KMC) can be more appropriate for large datasets).
+It is possible to count and filter "k-mers" using [khmer](http://github.com/ged-lab/khmer) ([documentation](http://khmer.readthedocs.io/en/v2.0/user/index.html).  [kmc](http://github.com/refresh-bio/KMC) can be more appropriate for large datasets).
 
 
 Using khmer as with the commands below will remove highly  extremely rare -mers (present less than 3x), and those that are extremely frequent (more than 20x). After all this trimming, we remove sequences that are too short.
@@ -124,39 +126,21 @@ avg_ins=470             # average insert size
 reverse_seq=0           # if sequence needs to be reversed
 asm_flags=3             # in which part(s) the reads are used
 rank=1                  # in which order the reads are used while scaffolding
-q1=input/reads.pe1.clean.fq   # make sure these paths match!
+q1=input/reads.pe1.clean.fq
 q2=input/reads.pe2.clean.fq
 ```
 
-Then run the following line. *THIS IS RAM-INTENSE - with only 2G ram, your computer will swap RAM*
+Then run the following line. *THIS IS RAM-INTENSE - with only 2G ram, your computer will swap  - you don't need to do this!*
 
 ```bash
-soapdenovo-63mer all -s soap-config.txt -K 63 -R -o assembly
+soapdenovo2-63mer all -s soap_config.txt -K 63 -R -o assembly
 ```
 
-Soap creates a folder including lots of files, and displays the following statistics onscreen:
-
-```
-Scaffold number                  691
-In-scaffold contig number        4456
-Total scaffold length            3097063
-Average scaffold length          4482
-Filled gap number                3
-Longest scaffold                 48394
-Scaffold and singleton number    1163
-Scaffold and singleton length    3238059
-Average length                   2784
-N50                              6384
-N90                              1673
-Weak points                      0
-```
-
-What do these value mean? Which ones do we want higher and which ones do we want smaller?
-
+Like any other assembler, Soapdenovo creates lots of files, including an `assembly.scafSeq` file that is likely to be used for follow-up analyses. You can [download it here](../../data/reference_assembly/output/assembly.scafSeq.gz). Why does this file contain so many NNNN sequences?
 
 There are many other genome assembly approaches. While waiting for everyone to make it to this stage, try to understand some of the challenges of de novo genome assembly and the approaches used to overcome them via the following papers:
 
- * [Genetic variation and the de novo assembly of human genomes - Chaisson  et al 2015 NRG](http://www.nature.com/nrg/journal/v16/n11/full/nrg3933.html)  (to overcome the paywall, login via your university, email the authors, or try [scihub](https://en.wikipedia.org/wiki/Sci-Hub)
+ * [Genetic variation and the de novo assembly of human genomes - Chaisson  et al 2015 NRG](http://www.nature.com/nrg/journal/v16/n11/full/nrg3933.html)  (to overcome the paywall, login via your university, email the authors, or try [scihub](http://en.wikipedia.org/wiki/Sci-Hub)
  * The now slightly outdated (2013) [Assemblathon paper](http://gigascience.biomedcentral.com/articles/10.1186/2047-217X-2-10).
  * [Metassembler: merging and optimizing de novo genome assemblies - Wences & Schatz (2015)](http://genomebiology.biomedcentral.com/articles/10.1186/s13059-015-0764-4)
  * [A hybrid approach for de novo human genome sequence assembly and phasing. Mostovoy et al (2016)](http://www.nature.com/nmeth/journal/vaop/ncurrent/full/nmeth.3865.html)
@@ -168,29 +152,41 @@ How do we know if our genome is good?
 
 As eloquently described in [Wences & Schatz (2015)](http://genomebiology.biomedcentral.com/articles/10.1186/s13059-015-0764-4)
 
-> ... the performance of different de novo genome assembly algorithms can vary greatly on the same dataset, although it has been repeatedly demonstrated that no single assembler is optimal in every possible quality metric [6, 7, 8]. The most widely used metrics for evaluating an assembly include 1) contiguity statistics such as scaffold and contig N50 size, 2) accuracy statistics such as the number of structural errors found when compared with an available reference genome (GAGE (Genome Assembly Gold Standard Evaluation) evaluation tool [8]), 3) presence of core eukaryotic genes (CEGMA (Core Eukaryotic Genes Mapping Approach) [9]) or, if available, transcript mapping rates, and 4) the concordance of the sequence with remapped paired-end and mate-pair reads (REAPR (Recognising Errors in Assemblies using Paired Reads) [10], assembly validation [11], or assembly likelihood [12]).
+> ... the performance of different de novo genome assembly algorithms can vary greatly on the same dataset, although it has been repeatedly demonstrated that no single assembler is optimal in every possible quality metric [6, 7, 8]. The most widely used metrics for evaluating an assembly include 1) contiguity statistics such as scaffold and contig N50 size, 2) accuracy statistics such as the number of structural errors found when compared with an available reference genome (GAGE (Genome Assembly Gold Standard Evaluation) evaluation tool [8]), 3) presence of core eukaryotic genes (CEGMA (Core Eukaryotic Genes Mapping Approach) [9]) or, if available, transcript mapping rates, and 4) the concordance of the sequence with remapped paired-end and mate-pair reads (REAPR (Recognizing Errors in Assemblies using Paired Reads) [10], assembly validation [11], or assembly likelihood [12]).
 
 
-We'll use two approaches today:
- * Quast simply calculates statistics on the assembler's output files.
- * importantly, we'll use a biologically relevant metric as well.
+#### Simple metrics
 
+Assemblers will generally provide some statistics about an assembly. But these are rarely comparable between assemblers. Please run [Quast](http://bioinf.spbau.ru/quast) (which stands for Quality Assessment Tool for Genome Assemblies) on the scafseq file. Access it here: `~/software/quast-4.0/quast.py`. Don't use any special options now - just the simple scenario to get some statistics.
 
-#### QUAST
+Have a look at the generated report (pdf or html).
 
-[Quast](http://bioinf.spbau.ru/quast)
-> Quality Assessment Tool for Genome Assemblies
+What do the value in the table mean? Which ones do we want higher and which ones do we want smaller? Is Quast's use of the word "contig" appropriate?
 
-```
-# Basic statistics (quick), similar to SOAPdenovo log
-./quast-2.3/quast.py assembly.scafSeq
-# Eukaryotic genes finding (slower), similar to CEGMA
-./quast-2.3/quast.py -f -e assembly.scafSeq
-# Results in quast_results/latest/report.html
-```
+Perhaps we have prior knowledge about the %GC content to expect, the number of chromosomes to expect, and the total genome size - these can inform comparisons with output statistics.
+
+#### Biologically meaningful measures
+
+Unfortunately, with many of the simple metrics, it is difficult to understand if the assembler did things correctly, or just haphazardly stuck lots of reads together!
+
+We probably have other prior information about what to expect in this genome. For example:
+ 1. if we have a reference assembly from a no-too-distant relative, we could expect synteny: large parts of genome to be organised in the same order.
+ 2. Or if we independently created a transcriptome assembly, we can expect consistency between the exons making up each transcript to map sequentially onto the genome (see [TGNET](http://github.com/ksanao/TGNet) for an implementation).
+ 3. We can expect the different scaffolds in the genome to have a unimodal distribution in sequence read coverage. Similarly, one can expect GC% to be unimodally distributed among scaffolds. Using this idea, the [Blobology](https://github.com/sujaikumar/assemblage) approach determined that evidence for extensive horziontal gene transfer in Tardigrades was due to extensive contamination in library preparation [Koutsovoulos et al 2016](http://www.pnas.org/content/113/18/5053).
+ 4. We can expect different patterns of gene content and structure between eukaryotes and prokaryotes.
+ 5. Pushing this idea further, we can expect  genome to contain a single copy of the "house-keeping" genes found in relatives. We will see how to apply this idea using BUSCO later today (after we know how to obtain gene predictions). Note that:
+    * BUSCO is a refined, modernized implementation of the [CEGMA]("http://korflab.ucdavis.edu/Datasets/cegma/") approach that examines a eukaryotic genome assembly for presence and completeness of 458 "core eukaryotic genes".
+    * QUAST also includes a "quick and dirty" method of finding genes.
+
 
 ## Gene prediction
+
+
+
+
 
 ### Quality control of individual genes
 
 ### Quality control of the whole process
+
+Link to Busco []

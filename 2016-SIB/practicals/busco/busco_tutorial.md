@@ -59,20 +59,22 @@ cd MyBUSCO
 # if required: wget cegg.unige.ch/pub/SIBCOURSE/BUSCO-datasets.tar.gz
 cp ~/data/BUSCO/BUSCO-datasets.tar.gz .
 tar -xzf BUSCO-datasets.tar.gz
-ls –lR
+ls -lR
 export AUGUSTUS_CONFIG_PATH=~/software/augustus-3.2.1/config/
 printenv
 ```
 
 2.1.	Is your Augustus config path set correctly?
 
-### 3. TEST
+### 3. TEST SETUP
 * Test to check that BUSCO and its dependencies have been set up correctly.
 
 ```sh
 python3 ~/software/BUSCO_v1.1b1/BUSCO_v1.1b1.py -o test1 -in ~/software/BUSCO_v1.1b1/sample_data/target.fa -l ~/software/BUSCO_v1.1b1/sample_data/example -m genome --sp fly >& test1_log.txt &
 ls -l run_test1/
+# Expected result from test run
 more ~/software/BUSCO_v1.1b1/sample_data/run_TEST/short_summary_TEST
+# Actual result from the test run
 more run_test1/short_summary_test1
 ```
 
