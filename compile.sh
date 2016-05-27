@@ -11,6 +11,8 @@ cd out
 
 echo "Removing submodules git"
 find . -mindepth 2 -type d -name .git | xargs rm -rf
+rm .gitmodules
+sed -ie '/submodule/,+1d' .git/config
 
 echo "Converting markdown to html"
 find . -name "*.md" -type f -print0 | \
