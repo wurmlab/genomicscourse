@@ -181,12 +181,37 @@ We probably have other prior information about what to expect in this genome. Fo
 
 ## Gene prediction
 
+Many tools exist for gene prediction, some based on *ab intio* statistical models of what a protein-coding gene should look like, others that use similarity with protein-coding genes from other species, and others (such as [Augustus](http://bioinf.uni-greifswald.de/augustus/)), that use both. There is no perfect tool or approach, thus we typically run many gene-finding tools and call a consensus. [MAKER](http://www.yandell-lab.org/software/maker.html) can run many different pieces of gene prediction software and call a consensus. Let's use it on a sandbox example.
+
+Start in a new directory (e.g. `2016-05-30-reference/results/03-gene_prediction`). Pull out the longest few scaffolds from the `assembly.scafSeq` (e.g. using `seqtk seq -L 20000`) into their own fasta, e.g. `min20000.fa`.
 
 
+Running `maker -OPTS` will generate an empty `maker_opts.ctl` configuration file. Edit that file to specify:
+  * genome: `min20000.fa`
+  * augustus species: `honeybee1` (yes that's a 1; we're using this HMM statistical model of genes)
+  * 
+provide uniprot to maker? (or to augustus)
+then say we'd normally also give rnaseq etc.
 
 
 ### Quality control of individual genes
 
-### Quality control of the whole process
+Launch a BLAST server to compare a few of your gene predictions to those found in swissprot.
+
+```bash
+sequenceserver -d ~/data/reference_databases/uniprot/uniprot_sprot.fasta
+```
+
+Some of your gene predictions will have no hits.
+
+provide genevalidator output
+
+
+### Comparing whole genesets & prioritizing genes for manual curation
+
+### Manual curation
+
+
+## Quality control of the whole process
 
 Link to Busco []
