@@ -10,7 +10,7 @@ cp -rf !(out) out/
 cd out
 
 echo "Removing submodules git"
-find . -mindepth 2 -type d -name .git | xargs rm -rf
+find . -mindepth 2 -name .git | xargs rm -rf
 rm .gitmodules
 sed -ie '/submodule/,+1d' .git/config
 
