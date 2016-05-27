@@ -11,6 +11,35 @@
 <body>
 <h1 id="spring-school-in-bioinformatics-population-genomics">Spring-school in Bioinformatics &amp; Population Genomics</h1>
 <p>Practicals for the May/June 2016 <a href="https://www.isb-sib.ch/events/training/joint-spring-school-bioinformatics-and-population-genomics">Spring School in Bioinformatics &amp; Population Genomics</a> organized by the <a href="https://www.isb-sib.ch/training/for-sib-phd-students">SIB PhD Training Network</a> and the <a href="http://biologie.cuso.ch/staromics/welcome/">Staromics</a> and <a href="http://biologie.cuso.ch/ecologie-evolution/welcome/">Ecology-Evolution</a> doctoral programs.</p>
+<h2 id="prerequisites">Prerequisites</h2>
+<p>We suppose that you are able at ease:</p>
+<ul class="incremental">
+<li>in the command line. For a refresher, try the SIB's <a href="http://edu.isb-sib.ch/course/view.php?id=82">UNIX fundamentals online course</a>.<br /></li>
+<li><p>with R. The <a href="http://swirlstats.com">swirl() library/course</a> can help:</p>
+<ul class="incremental">
+<li>follow the <em>R programming</em> self-led course (skip the sections <em>Simulation</em> and <em>Dates and Times</em>)<br /></li>
+<li>follow at least the <em>ggplot</em> section of the <em>Exploratory_Data_Analysis</em> swirl course</li>
+</ul></li>
+</ul>
+<h2 id="virtual-machine-image">Virtual Machine image</h2>
+<p>Our colleagues at <a href="http://vital-it.ch/">Vital-IT</a> prepared a <a href="ftp://ftp.vital-it.ch/edu/VM/ubuntuBPG.ova">Virtual Machine Image</a> that contains software and data. Use it by loading it into <a href="http://virtualbox.org">Virtual Box</a>. For detailed explanations and troubleshooting, check <a href="http://edu.isb-sib.ch/course/view.php?id=252">the main course info page</a>.</p>
+<p>It may be feasible to do some of this stuff on a your favorite cluster or your local machine. However, it will be complicated. Among other things you'll need to install a bunch of <a href="./software">software</a> and <a href="https://github.com/wurmlab/GenomicsCourse/tree/219100ee0b1a42241010ddfc08836fb459560894/2016-SIB/data">data</a>. Better to just use the Virtual Machine.</p>
+<h2 id="practicals">Practicals</h2>
+<ul class="incremental">
+<li><a href="./reference_genome/assembly">Reads to genome to gene predictions</a>: Short read cleaning, genome assembly, quality control, gene prediction, quality control (Monday).<br /></li>
+<li><p>Population sequencing to genotypes to population genetics statistics (Tuesday):</p>
+<ul class="incremental">
+<li><a href="./population_genetics/map_call">Mapping reads, calling variants, visualizing variant calls</a>.<br /></li>
+<li><a href="./population_genetics/popgen">Analysing variants: PCA, measuring Differentiation &amp; Diversity</a>.<br /></li>
+</ul></li>
+<li><a href="./msmc/msmc-tutorial/guide">Inferring population sizes and gene flow</a> (1h Wednesday).<br /></li>
+<li><p>Gene expression:</p>
+<ul class="incremental">
+<li><a href="./rnaseq/TP1">From raw sequencing data to transcript expression levels</a> (Wednesday).<br /></li>
+<li><a href="./rnaseq/TP2">Gene-level clustering and differential expression analysis</a> (Thursday).</li>
+</ul></li>
+</ul>
+<h2 id="authorscredits">Authors/Credits</h2>
 <p>These practicals were put together by:</p>
 <ul class="incremental">
 <li>Rodrigo Pracana<br /></li>
@@ -18,29 +47,11 @@
 <li>Robert Waterhouse<br /></li>
 <li>Stefan Schiffels<br /></li>
 <li>Yannick Wurm<br /></li>
-<li>with some content derived from Oksana Riba-Grognuz' contributions for the 2012 edition of this course, and from Bruno Vieira's contributions to QMUL's Bioinformatics MSc version of this course.</li>
-</ul>
-<h2 id="prerequisites">Prerequisites</h2>
-<p>We suppose that you are able at ease:</p>
+<li><p>with content derived from:</p>
 <ul class="incremental">
-<li>in the command line. For a refresher, try the SIB's <a href="http://edu.isb-sib.ch/course/view.php?id=82">UNIX fundamentals online course</a>.<br /></li>
-<li>with R. The <a href="http://swirlstats.com">swirl() library/course</a> can help:<br /></li>
-<li>follow the &quot;R programming&quot; self-led course (skip the sections &quot;Simulation&quot; and &quot;Dates and Times&quot;)<br /></li>
-<li>follow at least the ggplot section of the &quot;Exploratory_Data_Analysis&quot; swirl course</li>
-</ul>
-<h2 id="virtual-machine-image">Virtual Machine image</h2>
-<p>Our colleagues at <a href="http://vital-it.ch/">Vital-IT</a> prepared a <a href="ftp://ftp.vital-it.ch/edu/VM/ubuntuBPG.ova">Virtual Machine Image</a> that contains software and data. Use this: load it into <a href="http://virtualbox.org">Virtual Box</a>. For detailed explanations and troubleshooting, check <a href="http://edu.isb-sib.ch/course/view.php?id=252">the main course info page</a>.</p>
-<p>It may be feasible to do some of this stuff on a your favorite cluster or your local machine. However, it will be complicated. Among other things you'll need to install a bunch of <a href="./software">software</a> and <a href="https://github.com/wurmlab/GenomicsCourse/tree/219100ee0b1a42241010ddfc08836fb459560894/2016-SIB/data">data</a>. Better to just use the Virtual Machine.</p>
-<h2 id="practicals">Practicals</h2>
-<ul class="incremental">
-<li><a href="./reference_genome/assembly">Reads to genome to gene predictions</a>: Short read cleaning, genome assembly, quality control, gene prediction, quality control. (Monday)<br /></li>
-<li>Population sequencing to genotypes to population genetics statistics (Tuesday)<br /></li>
-<li><a href="./population_genetics/map_call">Mapping reads, calling variants, visualizing variant calls</a><br /></li>
-<li><a href="./population_genetics/popgen">Analysing variants: PCA, measuring Differntiation &amp; Diversity</a><br /></li>
-<li><a href="./msmc/msmc-tutorial/guide">Inferring population sizes and gene flow</a> (1h Wednesday)<br /></li>
-<li>Gene expression<br /></li>
-<li><a href="./rnaseq/TP1">From raw sequencing data to transcript expression levels</a> (Wednesday)<br /></li>
-<li><a href="./rnaseq/TP2">Gene-level clustering and differential expression analysis</a> (Thursday)</li>
+<li>Oksana Riba-Grognuz' contributions for the 2012 edition of this course,<br /></li>
+<li>Bruno Vieira's contributions to <a href="http://www.sbcs.qmul.ac.uk/postgraduate/masters/index.html">QMUL's Bioinformatics MSc</a> version of this course.</li>
+</ul></li>
 </ul>
 <hr>
 <small>Copyright 2016 <a href="https://github.com/wurmlab/genomicscourse/graphs/contributors">Authors</a>. All rights reserverd.
