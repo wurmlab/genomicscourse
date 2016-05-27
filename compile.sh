@@ -18,7 +18,19 @@ echo "Converting markdown to html"
 find . -name "*.md" -type f -print0 | \
   # pv -0 | \
   xargs -0 -I{} \
-  sh -c 'dir=$(dirname $1); base=$(basename $1); name=${base%.*}; ext=${base##*.}; \
-    pandoc -s -f markdown_github+yaml_metadata_block -c css/github-pandoc.css --self-contained \
-      -i "$1" -o "${dir}/${name}.html"' -- {}
+  sh -c '
+    repodir=$(pwd)
+    dir=$(dirname $1)
+    base=$(basename $1)
+    name=${base%.*}
+    ext=${base##*.}
+    cd $dir
+    pandoc -s \
+      -f markdown_github+yaml_metadata_block \
+      -c ${repodir}/css/github-pandoc.css \
+      --self-contained \
+      -i "${base}" \
+      -o "${name}.html"
+    cd $repodir
+  ' -- {}
 cd ..
