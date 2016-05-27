@@ -5,13 +5,32 @@ shopt -s extglob # extend bash regex
 
 echo "Copying repo content to out folder"
 mkdir -p out > /dev/null 2>&1
-cp -r !(out|*.sh) out/
+cp -rf !(out) out/
+
+cd out
+
+echo "Removing submodules git"
+find . -mindepth 2 -name .git | xargs rm -rf
+rm .gitmodules
+sed -ie '/submodule/,+1d' .git/config
 
 echo "Converting markdown to html"
-cd out
 find . -name "*.md" -type f -print0 | \
   # pv -0 | \
   xargs -0 -I{} \
-  sh -c 'dir=$(dirname $1); base=$(basename $1); name=${base%.*}; ext=${base##*.}; \
-    pandoc -i "$1" -o "${dir}/${name}.html" --from markdown-yaml_metadata_block' -- {}
+  sh -c '
+    repodir=$(pwd)
+    dir=$(dirname $1)
+    base=$(basename $1)
+    name=${base%.*}
+    ext=${base##*.}
+    cd $dir
+    pandoc -s \
+      -f markdown_github+yaml_metadata_block \
+      -c ${repodir}/css/github-pandoc.css \
+      --self-contained \
+      -i "${base}" \
+      -o "${name}.html"
+    cd $repodir
+  ' -- {}
 cd ..

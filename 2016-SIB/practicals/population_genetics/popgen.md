@@ -2,13 +2,17 @@
 
 ## Introduction
 
-We have samples with two genotypes: the B genotype (associated with single-queen colony phenotype) and the b genotype (associated with multiple-queen colony phenotype). The aim of the following analysis is to understand how much the genomes of B and b individuals differ.
+We have samples with two genotypes: the B genotype (associated with single-queen colony phenotype) and the b genotype (associated with multiple-queen colony phenotype). B and b actually mark a large supergene, a genomic region with strong linkage disequilibrium ([Wang et al, 2013](http://www.nature.com/nature/journal/v493/n7434/full/nature11832.html)). The B and b variants of this region do not recombine with each other.
 
-In the first part of the analysis, we are going to create a heat map of the genotypes of the individuals and we are going to run PCA on these genotypes. This will be done using the `adegenet` package in R.
+Our dummy assembly has two scaffolds, each from a different chromosome. The aim of our analysis is to test whether any part of this assembly is associated with the B and b supergene variants.
 
-In the second part, we are going to measure genetic differentiation between the two groups, as well as the genetic diversity among each of the groups. This will be done using the `PopGenome` package in R.
+In the first part of the analysis, we are going to create a heat map of the genotypes of the individuals and we are going to run PCA on these genotypes. This will allow us to test if any of the individuals cluster by group. This will be done using the `adegenet` package in R.
+
+In the second part, we are going to measure genetic differentiation between the two groups (B and b). We will do this analysis over a sliding window, to see if the differentiation between B and b are specific to any portion of the genome. We will also measure the the genetic diversity among each of the groups, which may tell us something about the evolutionary history of the portions genome represented in our assembly. This will be done using the `PopGenome` package in R.
 
 ### Input into R
+
+Again, make a directory for this practical. You will only need the `snp.vcf` file we created in the last practical.
 
 The package `adegenet` uses a object called `r genlight`. To create it, we need to input a matrix where each row is an individual and each column is a locus (i.e. a SNP position). We can do this using bcftools:
 
@@ -76,12 +80,17 @@ ploidy(snp)
 
 ```
 
-Now plot a heatmap showing the genotypes. You can also perform PCA and plot the first few axes.
+Now plot a heatmap showing the genotypes.
 
 ```r
 
 ## Heat map of genotype
 glPlot(snp)
+
+```
+You can also perform principal component analysis (PCA) and plot the first few axes.
+
+```r
 
 ## PCA
 pca <- glPca(snp, nf=10) # you can select 10 axes
@@ -102,9 +111,9 @@ text(pca$scores[,1], pca$scores[,3] + 0.7,
 
 ```
 
-What can you tell from this analysis?
+The aim of these analysis is to test whether the B and the b individuals cluster together or separately. The first principal component separates B and b. But if you look in the heat map, the separation is not constant in the whole genome.
 
-We can now repeat the analysis on each of the scaffolds
+Each of the scaffolds has been retrieved from a different chromosome. Below, we can test whether the differentiation between B and b only seen in one of the scaffolds.
 
 ```r
 
@@ -128,11 +137,15 @@ scatter(pca2, posi="bottomright")
 
 ```
 
-## Using `PopGenome`
+## Using `PopGenome` to measure differentiation and diversity
 
-We will use PopGenome to assess the diversity within each of the populations, as well as the FST between the two.
+Another way of measuring differentiation between groups of individuals is using the fixation index, FST, which tests whether there is genetic structure in the population. FST can be used, for example, to test whether there is evidence of low gene flow between populations. In the case of the fire ant, the B and b supergene variants coexist in the population, but do not recombine with each other - so they should show strong differentiation.
 
-In theory, the `r PopGenome` can read VCF files directly, using the `readVCF` function. However, because our samples are haploid, we need to use a different the `r readData`, which requires a folder with  a separate VCF for each scaffold.
+An important population genetics measure is genetic diversity. Patterns of genetic diversity can be informative of a population's evolutionary past - for example, low genetic diversity may be evidence for a recent population bottleneck. Furthermore, the variation of diversity within the genome can be informative of different evolutionary effects, such as the strength of selection in different parts of the genome.
+
+We will measure FST and nucleotide diversity (a measure of genetic diversity) using the R package PopGenome.
+
+In theory, the `r PopGenome` can read VCF files directly, using the `readVCF` function. However, because our samples are haploid, we need to use a different function, `r readData`, which requires a folder with a separate VCF for each scaffold.
 
 ```sh
 
@@ -175,7 +188,7 @@ snp@populations # check if it worked
 
 ```
 
-Let's calculate FST between the two populations and nucleotide diversity in each of the populations. What can you tell from this analysis?
+Let's calculate FST between the two populations and nucleotide diversity in each of the populations.
 
 ```r
 
@@ -219,20 +232,15 @@ lb_div  <- win_snp@nuc.diversity.within[,2] # diversity among B (bb = "little B"
 
 plot(1:length(win_fst), win_fst)
 
+par(mfrow=c(2,1))
 win_fst <- win_snp@nucleotide.F_ST[,1]
 plot(1:length(bb_div), bb_div)
 
 win_fst <- win_snp@nucleotide.F_ST[,1]
 plot(1:length(lb_div), lb_div)
 
-# Extra:
-# To get the position of each window, we would have to do a small hack:
-region_names <- win_snp@region.names
-region_names <- strsplit(region_names, " ")
-scaffold     <- sapply(region_names, function(x) return(x[1]))
-mid_position <- sapply(region_names,
-                       function(x) as.numeric(x[2]) + 5000)
-
 ```
 
+* Knowing that there is no recombination between B and b somewhere in the genome, why do you think there is high FST in one scaffold and not the other?
+* What factors could make b have such low diversity in one of the scaffolds?
 
