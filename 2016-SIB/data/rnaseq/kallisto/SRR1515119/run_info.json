@@ -1,0 +1,9 @@
+{
+	"n_targets": 34740,
+	"n_bootstraps": 0,
+	"n_processed": 20089236,
+	"kallisto_version": "0.42.4",
+	"index_version": 10,
+	"start_time": "Thu Apr 28 13:01:22 2016",
+	"call": "kallisto quant -i Drosophila_melanogaster.BDGP6.transcriptome.idx --bias --single -l 180 -s 30 -o SRR1515119 SRR1515119.fastq.gz"
+}

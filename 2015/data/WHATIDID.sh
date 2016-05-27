@@ -3,6 +3,8 @@
 # Roddy Pracana
 # 2015-09-23
 
+# ---------------------------------------------------------------------------- #
+
 # Subset of two regions of the genome
 # Reference fasta
 # Si_gnH.scaffold00008 is in the non-recombining region
@@ -18,7 +20,7 @@ or_fa=/data/home/btw749/social_chromosome_diversity-scratch/data/reference_fasta
 bedtools getfasta -fi ${or_fa} -bed region.bed -fo reference.fa -name
 
 # ---------------------------------------------------------------------------- #
-# Low coverage reads
+# low coverage (for mapping and variant calling)
 
 # Subset of two regions of the genome
 # Low coverage mapping with 14 individuals (7 Gp-9B + 7 Gp-9b)
@@ -46,7 +48,7 @@ bedtools getfasta -fi ${or_fa} -bed region.bed -fo reference.fa -name
 #done
 
 # ---------------------------------------------------------------------------- #
-# High coverage reads
+# high coverage (for assembly)
 
 # Subset of two regions of the genome
 # High coverage mapping with individual gdo10 (used to make the reference).
