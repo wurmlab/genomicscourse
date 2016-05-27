@@ -1,4 +1,4 @@
-Ensembl Transcript ID	Ensembl Gene ID
+ensembl_transcript_id	ensembl_gene_id
 FBtr0082757	FBgn0041711
 FBtr0080129	FBgn0032283
 FBtr0336850	FBgn0032283
