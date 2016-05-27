@@ -38,12 +38,12 @@ The RNA-seq data are deposited on the GEO database at the following link: <http:
 ![Tip](elemental-tip.png)
 Tip: converting `.sra` files is quite long. All GEO experiments are also mirrored in european equivalent, the ENA database (see <http://www.ebi.ac.uk/ena/data/view/SRP044339> for our experiment). There, the raw data are available directly in `.fastq` format. This can save you a lot of time!
 
-Unfortunately, the `.fastq` files for this experiment were too big to be included in the virtual machine image. We will first work on one `.fastq` file that I previously truncated to include only 1 million reads (`~/data/rnaseq/SRR1515119_1M.fastq.gz`). If time allows, you will be able to work on the full dataset at the end of the practical. For now, have a look at the first lines of the truncated file:
+Unfortunately, the `.fastq` files for this experiment were too big to be included in the virtual machine image. We will first work on one `.fastq` file that was previously truncated to include only 1 million reads (`~/data/rnaseq/SRR1515119_1M.fastq.gz`). If time allows, you will be able to work on the full dataset at the end of the practical. For now, have a look at the first lines of the truncated file:
 ```sh
 zcat ~/data/rnaseq/SRR1515119_1M.fastq.gz | less
 ```
 ![Question](round-help-button.png)
-How many lines correspond to one read? What is the role of each line? This wikipedia article can be useful: <https://en.wikipedia.org/wiki/FASTQ_format>. What is the length of the reads generated during this RNA-seq experiment? Are the reads single-end or paired-end?
+What format was used for quality encoding in this file? This wikipedia article can be useful: <https://en.wikipedia.org/wiki/FASTQ_format>. What is the length of the reads generated during this RNA-seq experiment? Are the reads single-end or paired-end?
 
 <!--
 ## I comment this because fastqc was already used in first TP
@@ -154,8 +154,6 @@ done
 
 <!--
 * TO DO: how to implement code folding/hiding? Easiest is probably to have 2 versions, one with code, one without... Or change file names to generic file names?
-
-* TO DO: simplify question on fastq files: they've seen some already
 
 * TO DO: prepare short presentation of: 
   * kallisto. Fast + accurate: game changer

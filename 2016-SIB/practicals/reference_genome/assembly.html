@@ -147,8 +147,22 @@ q2=input/reads.pe2.clean.fq</code></pre>
 </ul></li>
 </ol>
 <h2 id="gene-prediction">Gene prediction</h2>
+<p>Many tools exist for gene prediction, some based on <em>ab intio</em> statistical models of what a protein-coding gene should look like, others that use similarity with protein-coding genes from other species, and others (such as <a href="http://bioinf.uni-greifswald.de/augustus/">Augustus</a>), that use both. There is no perfect tool or approach, thus we typically run many gene-finding tools and call a consensus. <a href="http://www.yandell-lab.org/software/maker.html">MAKER</a> can run many different pieces of gene prediction software and call a consensus. Let's use it on a sandbox example.</p>
+<p>Start in a new directory (e.g. <code>2016-05-30-reference/results/03-gene_prediction</code>). Pull out the longest few scaffolds from the <code>assembly.scafSeq</code> (e.g. using <code>seqtk seq -L 20000</code>) into their own fasta, e.g. <code>min20000.fa</code>.</p>
+<p>Running <code>maker -OPTS</code> will generate an empty <code>maker_opts.ctl</code> configuration file. Edit that file to specify:</p>
+<ul class="incremental">
+<li>genome: <code>min20000.fa</code><br /></li>
+<li>augustus species: <code>honeybee1</code> (yes that's a 1; we're using this HMM statistical model of genes)<br /></li>
+<li>provide uniprot to maker? (or to augustus)<br />then say we'd normally also give rnaseq etc.</li>
+</ul>
 <h3 id="quality-control-of-individual-genes">Quality control of individual genes</h3>
-<h3 id="quality-control-of-the-whole-process">Quality control of the whole process</h3>
+<p>Launch a BLAST server to compare a few of your gene predictions to those found in swissprot.</p>
+<pre class="sourceCode bash"><code class="sourceCode bash"><span class="kw">sequenceserver</span> -d ~/data/reference_databases/uniprot/uniprot_sprot.fasta</code></pre>
+<p>Some of your gene predictions will have no hits.</p>
+<p>provide genevalidator output</p>
+<h3 id="comparing-whole-genesets-prioritizing-genes-for-manual-curation">Comparing whole genesets &amp; prioritizing genes for manual curation</h3>
+<h3 id="manual-curation">Manual curation</h3>
+<h2 id="quality-control-of-the-whole-process">Quality control of the whole process</h2>
 <p>Link to Busco []</p>
 <hr>
 <small>Copyright 2016 <a href="https://github.com/wurmlab/genomicscourse/graphs/contributors">Authors</a>. All rights reserverd.
