@@ -15,13 +15,13 @@ Specifically, we'll:
 
 ## Preparation
 
-Once you're logged into the virtual machine, create a directory to work in. Drawing on ideas from [Noble (2009)](http://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1000424 "A Quick Guide to Organizing Computational Biology Projects") and others, we recommend following a [specific convention](https://github.com/wurmlab/templates/blob/master/project_structures.md "Typical multi-day project structure") for all your projects. For example create a main directory for this section of the course (e.g., `~/2016-05-30-reference`), and create relevant subdirectories for each step (e.g., first one might be `~/2016-05-30-reference/results/01-read_cleaning`).
+Once you're logged into the virtual machine, create a directory to work in. Drawing on ideas from [Noble (2009)](http://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1000424 "A Quick Guide to Organizing Computational Biology Projects") and others, we recommend following a [specific convention](http://github.com/wurmlab/templates/blob/master/project_structures.md "Typical multi-day project structure") for all your projects. For example create a main directory for this section of the course (e.g., `~/2016-05-30-reference`), and create relevant subdirectories for each step (e.g., first one might be `~/2016-05-30-reference/results/01-read_cleaning`).
 
 We recommend that you log your commands in a `WHATIDID.txt` file in each directory.
 
 ## Short read cleaning
 
-Sequencers aren't perfect. All kinds of things can and do [go wrong](https://sequencing.qcfail.com/). "Crap in - crap out" means it's probably worth spending some time cleaning the raw data before performing real analysis.
+Sequencers aren't perfect. All kinds of things can and do [go wrong](http://sequencing.qcfail.com/). "Crap in - crap out" means it's probably worth spending some time cleaning the raw data before performing real analysis.
 
 ### Initial inspection
 
@@ -29,7 +29,7 @@ Sequencers aren't perfect. All kinds of things can and do [go wrong](https://seq
 
 Move, copy or link the raw sequence files (`~/data/reference_assembly/reads.pe*.fastq.gz`) to a relevant input directory (e.g. `~/2016-05-30-reference/data/01-read_cleaning/`) run FastQC on the second file,  `pe2`. The `--outdir` option will help you clearly separate input and output files.
 
-If respecting our [project structure convention](https://github.com/wurmlab/templates/blob/master/project_structures.md "Typical multi-day project structure"), your resulting directory structure may look like this:
+If respecting our [project structure convention](http://github.com/wurmlab/templates/blob/master/project_structures.md "Typical multi-day project structure"), your resulting directory structure may look like this:
 
 ```bash
 user@userVM:~/2016-05-30-assembly$ tree -h
@@ -78,7 +78,7 @@ Say you have sequenced your sample at 100x genome coverage. The real coverage di
 ![kmer distribution graph from UCSC](img-qc/quake_kmer_distribution.jpg)
 
 
-It is possible to count and filter "k-mers" using [khmer](https://github.com/ged-lab/khmer) ([documentation](http://khmer.readthedocs.io/en/v2.0/user/index.html).  [kmc](https://github.com/refresh-bio/KMC) can be more appropriate for large datasets).
+It is possible to count and filter "k-mers" using [khmer](http://github.com/ged-lab/khmer) ([documentation](http://khmer.readthedocs.io/en/v2.0/user/index.html).  [kmc](http://github.com/refresh-bio/KMC) can be more appropriate for large datasets).
 
 
 Using khmer as with the commands below will remove highly  extremely rare -mers (present less than 3x), and those that are extremely frequent (more than 20x). After all this trimming, we remove sequences that are too short.
@@ -139,7 +139,7 @@ Like any other assembler, Soapdenovo creates lots of files, including an `assemb
 
 There are many other genome assembly approaches. While waiting for everyone to make it to this stage, try to understand some of the challenges of de novo genome assembly and the approaches used to overcome them via the following papers:
 
- * [Genetic variation and the de novo assembly of human genomes - Chaisson  et al 2015 NRG](http://www.nature.com/nrg/journal/v16/n11/full/nrg3933.html)  (to overcome the paywall, login via your university, email the authors, or try [scihub](https://en.wikipedia.org/wiki/Sci-Hub)
+ * [Genetic variation and the de novo assembly of human genomes - Chaisson  et al 2015 NRG](http://www.nature.com/nrg/journal/v16/n11/full/nrg3933.html)  (to overcome the paywall, login via your university, email the authors, or try [scihub](http://en.wikipedia.org/wiki/Sci-Hub)
  * The now slightly outdated (2013) [Assemblathon paper](http://gigascience.biomedcentral.com/articles/10.1186/2047-217X-2-10).
  * [Metassembler: merging and optimizing de novo genome assemblies - Wences & Schatz (2015)](http://genomebiology.biomedcentral.com/articles/10.1186/s13059-015-0764-4)
  * [A hybrid approach for de novo human genome sequence assembly and phasing. Mostovoy et al (2016)](http://www.nature.com/nmeth/journal/vaop/ncurrent/full/nmeth.3865.html)
@@ -170,7 +170,7 @@ Unfortunately, with many of the simple metrics, it is difficult to understand if
 
 We probably have other prior information about what to expect in this genome. For example,
  * if we have a reference assembly from a no-too-distant relative, we could expect synteny: large parts of genome to be organised in the same order.
- * Or if we independently created a transcriptome assembly, we can expect consistency between the exons making up each transcript to map sequentially onto the genome (see [TGNET](https://github.com/ksanao/TGNet) for an implementation).
+ * Or if we independently created a transcriptome assembly, we can expect consistency between the exons making up each transcript to map sequentially onto the genome (see [TGNET](http://github.com/ksanao/TGNet) for an implementation).
  * Similarly, we can expect different patterns in terms of gene content and structure between eukaryotes and prokaryotes.
  * Pushing this idea further, we can expect  genome to contain a single copy of the "house-keeping" genes found in relatives. We will see how to apply this idea using BUSCO, later today (after we know how to obtain gene predictions). Note that:
     * BUSCO is a refined, modernized implementation of the [CEGMA]("http://korflab.ucdavis.edu/Datasets/cegma/") approach that examines a eukaryotic genome assembly for presence and completeness of 458 "core eukaryotic genes".
