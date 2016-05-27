@@ -48,11 +48,11 @@ code > span.er { color: #ff0000; font-weight: bold; }
 <p>The data we need in the <code>~/data/popgen</code> directory. Copy the file <code>reference.fa</code> and the all the <code>reads/*fq</code> files to your new directory.</p>
 <p>To see how many scaffolds there are in the reference genome, type:</p>
 <pre class="sh"><code>grep &quot;&gt;&quot; reference.fa</code></pre>
-<p>Now have a look at the <code>.fq.gz</code> files. You can use <code>gunzip</code> to decompress them.</p>
+<p>Now have a look at the <code>.fq.gz</code> files.</p>
 <ul class="incremental">
 <li>Why does each sample have two sets of reads?<br /></li>
-<li>What is each line of the <code>.fq</code> file?<br /></li>
-<li>How many reads do we have in individual f1_B?<br /></li>
+<li>What is each line of the <code>.fq.gz</code> file? (you can use <code>less</code>)<br /></li>
+<li>How many reads do we have in individual f1_B? (you can use <code>zcat</code> and <code>wc -l</code>)<br /></li>
 <li>What's the size of each read (all reads have equal size)?<br /></li>
 <li>Knowing that each scaffold is 200kb, what is the expected coverage per base pair of individual f1_B?</li>
 </ul>
@@ -114,7 +114,6 @@ code > span.er { color: #ff0000; font-weight: bold; }
 <span class="kw">cd</span> results/variants/
 <span class="kw">bcftools</span> call --ploidy 1 -v -m raw_calls.bcf <span class="kw">&gt;</span> calls.vcf</code></pre>
 <ul class="incremental">
-<li>Do you understand what the symbol <code>*</code> means here?<br /></li>
 <li>Do you understand why we are using the <code>-v</code> option? Is it ever useful to leave it out?</li>
 </ul>
 <p>The file produced a VCF (Variant Call Format) format telling the position, nature and quality of the called variants.</p>
@@ -151,7 +150,7 @@ bcftools view -v snps -m2 -M2 --min-ac 1:minor filtered_calls.vcf &gt; snp.vcf
 <h2 id="viewing-the-results-using-igv-integrative-genome-viewer">Viewing the results using IGV (Integrative Genome Viewer)</h2>
 <p>In this part of the practical, we are going to use the software IGV to visualise the alignments we created and check some of the positions where variants were called.</p>
 <p>Open IGV by typing <code>igv</code> on the command-line. Igv loads the human genome, so you need to define another genome file (Genome &gt; Genomes from file, then choose the assembly <code>reference.fa</code> file).</p>
-<p>You can load some of the BAMS and the VCF file you produced.</p>
+<p>You can load some of the BAMs and the VCF file you produced.</p>
 <ul class="incremental">
 <li>Has bcftools/mpileup recovered the same positions as you would by looking at the alignments with IGV?<br /></li>
 <li>Do you think our filtering was effective?</li>
