@@ -21,7 +21,7 @@ We recommend that you log your commands in a `WHATIDID.txt` file in each directo
 
 ## Short read cleaning
 
-Sequencers aren't perfect. All kinds of things can and do [go wrong](http://sequencing.qcfail.com/). "Crap in - crap out" means it's probably worth spending some time cleaning the raw data before performing real analysis.
+Sequencers aren't perfect. All kinds of things can [and do](http://genomecuration.github.io/genometrain/a-experimental-design/curated-collection/Presentations/Sequencing%20Troubleshooting.pptx) [go wrong](http://sequencing.qcfail.com/). "Crap in - crap out" means it's probably worth spending some time cleaning the raw data before performing real analysis.
 
 ### Initial inspection
 
@@ -157,7 +157,7 @@ As eloquently described in [Wences & Schatz (2015)](http://genomebiology.biomedc
 
 #### Simple metrics
 
-Assemblers will generally provide some statistics about an assembly. But these are rarely comparable between assemblers. Please run [Quast](http://bioinf.spbau.ru/quast) (which stands for Quality Assessment Tool for Genome Assemblies) on the scafseq file. Access it here: `~/software/quast-4.0/quast.py`. Don't use any special options now - just the simple scenario to get some statistics.
+Assemblers will generally provide some statistics about an assembly. But these are rarely comparable between assemblers. Please run [Quast](http://bioinf.spbau.ru/quast) (which stands for Quality Assessment Tool for Genome Assemblies) on the scafseq file. Access it here: `~/software/quast-4.0/quast.py`. Let's not use any special options now - just the simple scenario to get some statistics.
 
 Have a look at the generated report (pdf or html).
 
@@ -167,7 +167,7 @@ Perhaps we have prior knowledge about the %GC content to expect, the number of c
 
 #### Biologically meaningful measures
 
-Unfortunately, with many of the simple metrics, it is difficult to understand if the assembler did things correctly, or just haphazardly stuck lots of reads together!
+Unfortunately, with many of the simple metrics, it is difficult to determine whether the assembler did things correctly, or just haphazardly stuck lots of reads together!
 
 We probably have other prior information about what to expect in this genome. For example:
  1. if we have a reference assembly from a no-too-distant relative, we could expect synteny: large parts of genome to be organised in the same order.
@@ -215,9 +215,8 @@ As you can see, gene prediction software is imperfect - this is even the case wh
 
 [GeneValidator](http://bioinformatics.oxfordjournals.org/content/32/10/1559.long) tool can help to evaluate quality of a gene prediction by comparing features of a gene prediction to similar database sequences.
 
-You can simply run `genevalidator proteins.fasta` - but to save time we provide an example GeneValidator report here:
+You can simply run `genevalidator proteins.fasta` (on your gene predictions, or [these examples](../../data/reference_databases/gv_examples.fa)), or use the [web service](http://genevalidator.sbcs.qmul.ac.uk/) for small queries. Try to understand why some gene predictions have no reason for concern ([e.g.](img-qc/good.png)), while others do ([e.g.](img-qc/bad.png)).
 
-TODO: add example outputs of 1 good and 1 bad gene.
 
 ### Manual curation
 

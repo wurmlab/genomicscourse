@@ -44,7 +44,7 @@ code > span.er { color: #ff0000; font-weight: bold; }
 <p>Once you're logged into the virtual machine, create a directory to work in. Drawing on ideas from <a href="http://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1000424" title="A Quick Guide to Organizing Computational Biology Projects">Noble (2009)</a> and others, we recommend following a <a href="http://github.com/wurmlab/templates/blob/master/project_structures.md" title="Typical multi-day project structure">specific convention</a> for all your projects. For example create a main directory for this section of the course (e.g., <code>~/2016-05-30-reference</code>), and create relevant subdirectories for each step (e.g., first one might be <code>~/2016-05-30-reference/results/01-read_cleaning</code>).</p>
 <p>We recommend that you log your commands in a <code>WHATIDID.txt</code> file in each directory.</p>
 <h2 id="short-read-cleaning">Short read cleaning</h2>
-<p>Sequencers aren't perfect. All kinds of things can and do <a href="http://sequencing.qcfail.com/">go wrong</a>. &quot;Crap in - crap out&quot; means it's probably worth spending some time cleaning the raw data before performing real analysis.</p>
+<p>Sequencers aren't perfect. All kinds of things can <a href="http://genomecuration.github.io/genometrain/a-experimental-design/curated-collection/Presentations/Sequencing%20Troubleshooting.pptx">and do</a> <a href="http://sequencing.qcfail.com/">go wrong</a>. &quot;Crap in - crap out&quot; means it's probably worth spending some time cleaning the raw data before performing real analysis.</p>
 <h3 id="initial-inspection">Initial inspection</h3>
 <p><a href="http://www.bioinformatics.babraham.ac.uk/projects/fastqc/">FastQC</a> (<a href="http://www.bioinformatics.babraham.ac.uk/projects/fastqc/Help/">documentation</a>) can help you understand sequence quality and composition, and thus can inform read cleaning strategy.</p>
 <p>Move, copy or link the raw sequence files (<code>~/data/reference_assembly/reads.pe*.fastq.gz</code>) to a relevant input directory (e.g. <code>~/2016-05-30-reference/data/01-read_cleaning/</code>) run FastQC on the second file, <code>pe2</code>. The <code>--outdir</code> option will help you clearly separate input and output files.</p>
@@ -128,12 +128,12 @@ q2=input/reads.pe2.clean.fq</code></pre>
 <p>... the performance of different de novo genome assembly algorithms can vary greatly on the same dataset, although it has been repeatedly demonstrated that no single assembler is optimal in every possible quality metric [6, 7, 8]. The most widely used metrics for evaluating an assembly include 1) contiguity statistics such as scaffold and contig N50 size, 2) accuracy statistics such as the number of structural errors found when compared with an available reference genome (GAGE (Genome Assembly Gold Standard Evaluation) evaluation tool [8]), 3) presence of core eukaryotic genes (CEGMA (Core Eukaryotic Genes Mapping Approach) [9]) or, if available, transcript mapping rates, and 4) the concordance of the sequence with remapped paired-end and mate-pair reads (REAPR (Recognizing Errors in Assemblies using Paired Reads) [10], assembly validation [11], or assembly likelihood [12]).</p>
 </blockquote>
 <h4 id="simple-metrics">Simple metrics</h4>
-<p>Assemblers will generally provide some statistics about an assembly. But these are rarely comparable between assemblers. Please run <a href="http://bioinf.spbau.ru/quast">Quast</a> (which stands for Quality Assessment Tool for Genome Assemblies) on the scafseq file. Access it here: <code>~/software/quast-4.0/quast.py</code>. Don't use any special options now - just the simple scenario to get some statistics.</p>
+<p>Assemblers will generally provide some statistics about an assembly. But these are rarely comparable between assemblers. Please run <a href="http://bioinf.spbau.ru/quast">Quast</a> (which stands for Quality Assessment Tool for Genome Assemblies) on the scafseq file. Access it here: <code>~/software/quast-4.0/quast.py</code>. Let's not use any special options now - just the simple scenario to get some statistics.</p>
 <p>Have a look at the generated report (pdf or html).</p>
 <p>What do the value in the table mean? Which ones do we want higher and which ones do we want smaller? Is Quast's use of the word &quot;contig&quot; appropriate?</p>
 <p>Perhaps we have prior knowledge about the %GC content to expect, the number of chromosomes to expect, and the total genome size - these can inform comparisons with output statistics.</p>
 <h4 id="biologically-meaningful-measures">Biologically meaningful measures</h4>
-<p>Unfortunately, with many of the simple metrics, it is difficult to understand if the assembler did things correctly, or just haphazardly stuck lots of reads together!</p>
+<p>Unfortunately, with many of the simple metrics, it is difficult to determine whether the assembler did things correctly, or just haphazardly stuck lots of reads together!</p>
 <p>We probably have other prior information about what to expect in this genome. For example:</p>
 <ol class="incremental">
 <li>if we have a reference assembly from a no-too-distant relative, we could expect synteny: large parts of genome to be organised in the same order.<br /></li>
@@ -167,8 +167,7 @@ q2=input/reads.pe2.clean.fq</code></pre>
 <p>“Incorrect annotations [ie. gene identifications] poison every experiment that makes use of them. Worse still the poison spreads.” – <a href="http://www.ncbi.nlm.nih.gov/pubmed/22510764">Yandell &amp; Ence, Nature Reviews Genetics (2012)</a>.</p>
 </blockquote>
 <p><a href="http://bioinformatics.oxfordjournals.org/content/32/10/1559.long">GeneValidator</a> tool can help to evaluate quality of a gene prediction by comparing features of a gene prediction to similar database sequences.</p>
-<p>You can simply run <code>genevalidator proteins.fasta</code> - but to save time we provide an example GeneValidator report here:</p>
-<p>TODO: add example outputs of 1 good and 1 bad gene.</p>
+<p>You can simply run <code>genevalidator proteins.fasta</code> (on your gene predictions, or <a href="../../data/reference_databases/gv_examples.fa">these examples</a>), or use the <a href="http://genevalidator.sbcs.qmul.ac.uk/">web service</a> for small queries. Try to understand why some gene predictions have no reason for concern (<a href="img-qc/good.png">e.g.</a>), while others do (<a href="img-qc/bad.png">e.g.</a>).</p>
 <h3 id="manual-curation">Manual curation</h3>
 <p>TODO: explain that Apollo exists.</p>
 <h2 id="quality-control-of-the-whole-process">Quality control of the whole process</h2>
