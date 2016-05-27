@@ -28,6 +28,7 @@ find . -name "*.md" -type f -print0 | \
     pandoc -s \
       -f markdown_github+yaml_metadata_block \
       -c ${repodir}/css/github-pandoc.css \
+      -A ${repodir}/footer.html \
       --self-contained \
       -i "${base}" \
       -o "${name}.html"
