@@ -215,12 +215,14 @@ As you can see, gene prediction software is imperfect - this is even the case wh
 
 [GeneValidator](http://bioinformatics.oxfordjournals.org/content/32/10/1559.long) tool can help to evaluate quality of a gene prediction by comparing features of a gene prediction to similar database sequences.
 
+You can simply run `genevalidator proteins.fasta` - but to save time we provide an example GeneValidator report here:
 
+TODO: add example outputs of 1 good and 1 bad gene.
 
 ### Manual curation
 
+TODO: explain that Apollo exists.
 
 ## Quality control of the whole process
 
-Congrats
-Rob will Link to Busco []
+Congrats on getting from sequence reads to a genome assembly and gene predictions! We'll now move on to quality-controlling the whole process by testing for the presence of single-copy-orthologs with [BUSCO](../busco/busco_tutorial).
