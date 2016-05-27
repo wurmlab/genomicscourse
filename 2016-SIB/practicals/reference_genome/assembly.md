@@ -47,12 +47,13 @@ user@userVM:~/2016-05-30-assembly$ tree -h
         └── [ 126]  WHATIDID.txt
 ```
 
-What does the FASTQC report tell you? ([the documentation clarifies what each plot means](http://www.bioinformatics.babraham.ac.uk/projects/fastqc/Help/3%20Analysis%20Modules/)). Decide whether and how much to trim from the beginning and end of sequences. What else might you want to do?
+What does the FASTQC report tell you? ([the documentation clarifies what each plot means](http://www.bioinformatics.babraham.ac.uk/projects/fastqc/Help/3%20Analysis%20Modules/)). For comparison, have a look at some plots from other sequencing libraries: e.g, [1](img-qc/per_base_quality.png), [2](img-qc/qc_factq_tile_sequence_quality.png), [3](img-qc/per_base_sequence_content.png)
+ Decide whether and how much to trim from the beginning and end of sequences. What else might you want to do?
 
 
 ### Trimming
 
-[seqtk](https://github.com/lh3/seqtk) ([documentation](http://manpages.ubuntu.com/manpages/vivid/man1/seqtk.1.html)) is a fast and lightweight tool for processing FASTA and FASTQ sequences.
+[seqtk](http://github.com/lh3/seqtk) ([documentation](http://manpages.ubuntu.com/manpages/vivid/man1/seqtk.1.html)) is a fast and lightweight tool for processing FASTA and FASTQ sequences.
 
 Based on the results from FastQC, replace x and y below to appropriately trim from the left and right side of the sequences.
 
@@ -74,7 +75,7 @@ Say you have sequenced your sample at 100x genome coverage. The real coverage di
  * Some sequences are extremely rare (e.g., once). These could be errors that appeared during library preparation or sequencing, or rare somatic mutations). Such sequences can confuse assembly software; eliminating them can decrease subsequent memory & CPU requirements.
  * Other sequences may exist at 10,000x coverage. These could be pathogens or repetitive elements. Often, there is no benefit to retaining all copies; retaining a small proportion could significantly reduce CPU, memory and space requirements. An example plot of a k-mer frequencies:
 
-![kmer distribution graph from UCSC](https://banana-slug.soe.ucsc.edu/_media/bioinformatic_tools:quake_kmer_distribution.jpg)
+![kmer distribution graph from UCSC](img-qc/quake_kmer_distribution.jpg)
 
 
 It is possible to count and filter "k-mers" using [khmer](https://github.com/ged-lab/khmer) ([documentation](http://khmer.readthedocs.io/en/v2.0/user/index.html).  [kmc](https://github.com/refresh-bio/KMC) can be more appropriate for large datasets).
@@ -124,7 +125,7 @@ avg_ins=470             # average insert size
 reverse_seq=0           # if sequence needs to be reversed
 asm_flags=3             # in which part(s) the reads are used
 rank=1                  # in which order the reads are used while scaffolding
-q1=input/reads.pe1.clean.fq   # make sure these paths match!
+q1=input/reads.pe1.clean.fq
 q2=input/reads.pe2.clean.fq
 ```
 
@@ -177,6 +178,8 @@ We probably have other prior information about what to expect in this genome. Fo
 
 
 ## Gene prediction
+
+
 
 ### Quality control of individual genes
 
