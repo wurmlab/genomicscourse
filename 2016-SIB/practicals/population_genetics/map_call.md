@@ -33,10 +33,10 @@ To see how many scaffolds there are in the reference genome, type:
 grep ">" reference.fa
 ```
 
-Now have a look at the `.fq.gz` files. You can use `gunzip` to decompress them.
+Now have a look at the `.fq.gz` files.
 * Why does each sample have two sets of reads?
-* What is each line of the `.fq` file?
-* How many reads do we have in individual f1_B?
+* What is each line of the `.fq.gz` file? (you can use `less`)
+* How many reads do we have in individual f1_B? (you can use `zcat` and `wc -l`)
 * What's the size of each read (all reads have equal size)?
 * Knowing that each scaffold is 200kb, what is the expected coverage per base pair of individual f1_B?
 
@@ -127,7 +127,6 @@ bcftools call --ploidy 1 -v -m raw_calls.bcf > calls.vcf
 
 ```
 
-* Do you understand what the symbol `*` means here?
 * Do you understand why we are using the `-v` option? Is it ever useful to leave it out?
 
 The file produced a VCF (Variant Call Format) format telling the position, nature and quality of the called variants.
@@ -176,7 +175,7 @@ In this part of the practical, we are going to use the software IGV to visualise
 
 Open IGV by typing `igv` on the command-line. Igv loads the human genome, so you need to define another genome file (Genome > Genomes from file, then choose the assembly `reference.fa` file).
 
-You can load some of the BAMS and the VCF file you produced.
+You can load some of the BAMs and the VCF file you produced.
 
 * Has bcftools/mpileup recovered the same positions as you would by looking at the alignments with IGV?
 * Do you think our filtering was effective?
