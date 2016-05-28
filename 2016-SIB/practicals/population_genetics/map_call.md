@@ -149,10 +149,8 @@ Not all variants that we called are necessarily of good quality, so it is essent
 We will filter the VCF using `bcftools filter`. We can remove anything with quality call smaller than 30:
 
 ```bash
-
 bcftools filter --exclude 'QUAL < 30' calls.vcf | \
   bcftools view -g ^miss > filtered_calls.vcf
-
 ```
 
 In more serious analysis, it may be important to filter by other parameters.
@@ -163,9 +161,7 @@ In the downstream analysis, we only want to look at sites that are:
 3. where the minor allele is present in at least one individual (because we do not care for the sites where all individuals are different from the reference, yet equal to each other)
 
 ```sh
-
 bcftools view -v snps -m2 -M2 --min-ac 1:minor filtered_calls.vcf > snp.vcf
-
 ```
 
 * Can you find any other parameters indicating the quality of the site?

@@ -131,8 +131,7 @@ code > span.er { color: #ff0000; font-weight: bold; }
 <li>What does a Phred-scale quality score of 30 mean?</li>
 </ul>
 <p>We will filter the VCF using <code>bcftools filter</code>. We can remove anything with quality call smaller than 30:</p>
-<pre class="sourceCode bash"><code class="sourceCode bash">
-<span class="kw">bcftools</span> filter --exclude <span class="st">'QUAL &lt; 30'</span> calls.vcf <span class="kw">|</span> <span class="kw">\</span>
+<pre class="sourceCode bash"><code class="sourceCode bash"><span class="kw">bcftools</span> filter --exclude <span class="st">'QUAL &lt; 30'</span> calls.vcf <span class="kw">|</span> <span class="kw">\</span>
   <span class="kw">bcftools</span> view -g ^miss <span class="kw">&gt;</span> filtered_calls.vcf</code></pre>
 <p>In more serious analysis, it may be important to filter by other parameters.</p>
 <p>In the downstream analysis, we only want to look at sites that are:</p>
@@ -141,9 +140,7 @@ code > span.er { color: #ff0000; font-weight: bold; }
 <li>biallelic (-m2 -M2)<br /></li>
 <li>where the minor allele is present in at least one individual (because we do not care for the sites where all individuals are different from the reference, yet equal to each other)</li>
 </ol>
-<pre class="sh"><code>
-bcftools view -v snps -m2 -M2 --min-ac 1:minor filtered_calls.vcf &gt; snp.vcf
-</code></pre>
+<pre class="sh"><code>bcftools view -v snps -m2 -M2 --min-ac 1:minor filtered_calls.vcf &gt; snp.vcf</code></pre>
 <ul class="incremental">
 <li>Can you find any other parameters indicating the quality of the site?<br /></li>
 <li>Can you find any other parameters indicating the quality of the call for a given individual on a given site?</li>
