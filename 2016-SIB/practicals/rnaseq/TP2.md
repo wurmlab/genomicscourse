@@ -397,7 +397,7 @@ A word of caution for the use of such tools:
 library(topGO)
 
 ## topGO needs a vector with 0 or 1 values depending if a gene is DE or not
-geneList <- (rep(0, times=length(rownames(results))))
+geneList <- rep(0, times=length(rownames(results)))
 names(geneList) <- rownames(results)
 DEGenes <- row.names(treatmentGenes)
 geneList[DEGenes] <- 1
@@ -429,13 +429,17 @@ If you have time you can run the GO enrichment test on the molecular function (`
 What are the top categories enriched for genes DE with treatment? Is it consistent with what is reported in the original paper[?](./myTable.txt)
 
 ![Tip](elemental-tip.png)
-`TopGO` includes the possibility to use several decorrelation algorithms, giving less redundant, and more precise categories in the results. Repeat the analysis with the weight algorithm (`algorithm = "weight"`), and observe the difference in results. 
+`TopGO` includes the possibility to use the p-values or scores for all genes, in order to perform the enrichment test without having to specify an arbitrary FDR cutoff to call genes differentially expressed or not. Several decorrelation algorithms are also implemented, which give less redundant, and more precise GO categories in the results. Refer to the `topGO` documentation for further info.
+
+![Question](round-help-button.png)
+Repeat the analysis with the weight algorithm (`algorithm = "weight"`), and observe the difference in results. 
 
 ### topAnat enrichment test
 It is possible to perform a similar ontology enrichment, but on the fly anatomical ontology instead of Gene Ontology. Genes are mapped to a tissue if some expression was detected in this tissue. With the Bgee database team (<http://bgee.org>), I have developped a tool called `BgeeDB` allowing to do this, based on the `topGO` package algorithm. It is available in Bioconductor (release 3.3), or on GitHub <https://github.com/BgeeDB/BgeeDB_R>. I encourage you to try in addition to the classical GO enrichment tests, it gives very interesting results! A graphical interface is also available at <http://bgee.org/?page=top_anat#/>.
 
 ```R
 ## As BgeeDB was not yet available on R/Bioc 3.2, install it from the source code, already in the data folder
+install.packages("tidyr")
 install.packages(file.path(dataFolder, "./BgeeDB-master"), repos = NULL, type="source")
 library(BgeeDB)
 
@@ -449,12 +453,12 @@ lapply(myTopAnatData, head)
 ## To perform the anatomical ontology enrichment test, you can readily 
 ## use the same gene list as used previously for topGO test
 myTopAnatObject <-  topAnat(myTopAnatData, geneList)
+## Warning: This step and the following take longer than the equivalent steps in topGO. This is 
+## because the anatomical ontology is bigger than the Gene Ontology. Consider running a script 
+## in batch mode if you have multiple analyses to perform.
 
 ## run the test
 resultsAnatomy <- runTest(myTopAnatObject, algorithm = 'classic', statistic = 'fisher')
-## Warning: This can be long especially if decorrelation algorithms are used, because the anatomical 
-## ontology is bigger than the Gene Ontology. Consider running a script in batch mode if you have
-## multiple analyses to do.
 
 ## Format the table of results, only displaying results significant at a 10% FDR threshold
 myTableAnatomy <- makeTable(myTopAnatData, myTopAnatObject, resultsAnatomy, 0.1)
