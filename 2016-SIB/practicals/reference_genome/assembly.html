@@ -86,7 +86,7 @@ code > span.er { color: #ff0000; font-weight: bold; }
 <p>Other tools including <a href="http://github.com/agordon/fastx_toolkit">fastx_toolkit</a>, <a href="http://arxiv.org/abs/1407.1507">kmc2</a> and <a href="http://www.usadellab.org/cms/index.php?page=trimmomatic">Trimmomatic</a> can also be useful.</p>
 <h3 id="trimming">Trimming</h3>
 <p><a href="http://github.com/lh3/seqtk">seqtk</a> (<a href="http://manpages.ubuntu.com/manpages/vivid/man1/seqtk.1.html">documentation</a>) is a fast and lightweight tool for processing FASTA and FASTQ sequences.</p>
-<p>Based on the results from FastQC, replace <code>REPLACE</code> and <code>REPLACE below to appropriately trim from the beginning (</code>-b<code>) and end (</code>-e`) of the sequences.</p>
+<p>Based on the results from FastQC, replace <code>REPLACE</code> and <code>REPLACE</code> below to appropriately trim from the beginning (<code>-b</code>) and end (<code>-e</code>) of the sequences.</p>
 <pre class="sourceCode bash"><code class="sourceCode bash"><span class="kw">seqtk</span> trimfq -b REPLACE -e REPLACE input/reads.pe2.fastq.gz <span class="kw">|</span> <span class="kw">gzip</span> <span class="kw">&gt;</span> tmp/reads.pe2.trimmed.fq.gz</code></pre>
 <p>This will only take a few seconds (make sure you replaced <code>REPLACE</code>).</p>
 <p>Let's similarly filter the paired set of reads, <code>reads.pe1</code>:</p>
