@@ -32,20 +32,20 @@ code > span.er { color: #ff0000; font-weight: bold; }
 <p>Roddy Pracana and Yannick Wurm</p>
 <h2 id="introduction">Introduction</h2>
 <p>There are several types of variants. Commonly, people look at single nucleotide polymorphisms (SNPs, sometimes also known as single nucleotide variants, SNVs). Other classes include small insertions and deletions (known collectively as indels), as well as larger structural variants, such as large insertions, deletions, inversions and translocations.</p>
-<p>There are several approaches to variant calling from short pair-end reads. We are going to use one of them. First, we are going to map the reads from each individual to a reference assembly similar to the one created in the previous practical. Then we are going to find the positions where at least some of the individuals differ from the reference (and each other).</p>
+<p>There are several approaches to variant calling from short pair-end reads. We are going to use one of them. First, we will map the reads from each individual to a reference assembly similar to the one created in the <a href="../reference_genome/assembly">previous practical</a>. Then we will find the positions where at least some of the individuals differ from the reference (and each other).</p>
 <h2 id="pipeline">Pipeline</h2>
-<p>We will be analysing subsets of whole-genome sequences of several fire ant individuals. The fire ant, <em>Solenopsis invicta</em>, is notable for being dimorphic in terms of colony organisation, with some colonies having one queen and other colonies having multiple queens. Interestingly, this trait is genetically determined. In this practical, we are going to try to find the genetic difference between ants from single queen and multiple queen colonies.</p>
-<p>We will be using a subset of the reads from whole-genome sequencing of 14 male fire ants. Samples 1B to 7B are from single-queen colonies, samples 1b to 7b are from multiple-queen colonies. Ants are haplodiploid, which means that they have haploid males, so all our samples are haploid.</p>
+<p>We will analyse subsets of whole-genome sequences of several fire ant individuals. The fire ant, <em>Solenopsis invicta</em>, is notable for being dimorphic in terms of colony organisation, with some colonies having one queen and other colonies having multiple queens. Interestingly, this trait is genetically determined. In this practical, we will try to find the genetic difference between ants from single queen and multiple queen colonies.</p>
+<p>We will use a subset of the reads from whole-genome sequencing of 14 male fire ants. Samples 1B to 7B are from single-queen colonies, samples 1b to 7b are from multiple-queen colonies. Ants are haplodiploid, which means that they have haploid males, so all our samples are haploid.</p>
 <p>The aim of this practical is to genotype these 14 individuals. The steps in the practical are:</p>
 <ol class="incremental">
-<li>Align the reads of each individual to a subset of the reference genome assembly of the species using the aligner <code>bowtie2</code>.<br /></li>
-<li>to find positions that differ between each individual and the reference with the software <code>samtools</code> and <code>bcftools</code>.<br /></li>
-<li>filter the SNP calls to produce a set of good-quality SNPs.<br /></li>
+<li>Align the reads of each individual to a reference genome assembly using the aligner <code>bowtie2</code>.<br /></li>
+<li>Find positions that differ between each individual and the reference with the software <code>samtools</code> and <code>bcftools</code>.<br /></li>
+<li>Filter the SNP calls to produce a set of good-quality SNPs.<br /></li>
 <li>Visualise the alignments and the SNP calls in the genome browser <code>igv</code>.</li>
 </ol>
 <h2 id="the-data">The data</h2>
-<p>We recommend that you set up a directory for your analysis as you did in the last practical. In this directory, you should have a directory for your input (called <code>data</code>), and another for your results.</p>
-<p>The data we need in the <code>~/data/popgen</code> directory. Copy the file <code>reference.fa</code> and the all the <code>reads/*fq</code> files to your new directory.</p>
+<p>We recommend that you set up a directory for today as <a href="https://github.com/wurmlab/templates/blob/master/project_structures.md">per our convention</a>, as <a href="../reference_genome/assembly#short-read-cleaning">you did in the last practical</a>. You should a subdirectory for your input (called <code>data</code> or <code>input</code>), and another for your results.</p>
+<p>The data we need in the <code>~/data/popgen</code> directory. Copy or link the file <code>reference.fa</code> and the all the <code>reads/*fq</code> files to your new directory.</p>
 <p>To see how many scaffolds there are in the reference genome, type:</p>
 <pre class="sh"><code>grep &quot;&gt;&quot; reference.fa</code></pre>
 <p>Now have a look at the <code>.fq.gz</code> files.</p>
@@ -53,15 +53,15 @@ code > span.er { color: #ff0000; font-weight: bold; }
 <li>Why does each sample have two sets of reads?<br /></li>
 <li>What is each line of the <code>.fq.gz</code> file? (you can use <code>less</code>)<br /></li>
 <li>How many reads do we have in individual f1_B? (you can use <code>zcat</code> and <code>wc -l</code>)<br /></li>
-<li>What's the size of each read (all reads have equal size)?<br /></li>
+<li>How long are the reads (all reads have equal size)?<br /></li>
 <li>Knowing that each scaffold is 200kb, what is the expected coverage per base pair of individual f1_B?</li>
 </ul>
 <h2 id="aligning-reads-to-a-reference-assembly">Aligning reads to a reference assembly</h2>
 <p>The first step in our pipeline is to align the paired end reads to the reference genome. We are using the software <code>bowtie2</code>, which was created to align short read sequences to long sequences such as the scaffolds in a reference assembly. <code>bowtie2</code>, like most aligners, works in two steps.</p>
-<p>In the first step, the scaffold sequence (sometimes known as the database) is indexed, in this case using the Burrows-Wheeler Transform, which allows for memory efficient alignment.</p>
+<p>In the first step, the scaffold sequence (sometimes known as the database) is indexed, in this case using the <a href="https://en.wikipedia.org/wiki/Burrows-Wheeler_transform">Burrows-Wheeler Transform</a>, which can help compress a large text into less memory. It thus allows for memory efficient alignment.</p>
 <pre class="sourceCode bash"><code class="sourceCode bash"><span class="kw">bowtie2-build</span> data/reference.fa data/reference_index</code></pre>
 <p>The second step is the alignment itself (you may have to change the command if you have decompressed the files, and if your file structure is different).</p>
-<pre class="sourceCode bash"><code class="sourceCode bash"><span class="kw">mkdir</span> results/alignments
+<pre class="sourceCode bash"><code class="sourceCode bash"><span class="kw">mkdir</span> -p results/alignments
 <span class="kw">bowtie2</span> \
   <span class="kw">-x</span> data/reference_index \
   <span class="kw">-1</span> data/f1_B.1.fq.gz \
@@ -78,8 +78,8 @@ code > span.er { color: #ff0000; font-weight: bold; }
 
 <span class="co">## Run bowtie with each sample (will take a few minutes)</span>
 <span class="kw">cat</span> names.txt <span class="kw">|</span> <span class="kw">\</span>
-  <span class="kw">parallel</span> <span class="st">&quot;bowtie2 -x reference_index -1 {}.1.fq.gz -2 {}.2.fq.gz &gt; ../results/alignments/{}.sam&quot;</span> </code></pre>
-<p>Because SAM files include a lot of information, they tend to occupy a lot of space (even in our case). Therefore, SAM files are generally compressed into BAM files (Binary sAM). Most tools that use aligned reads require BAM files that have been sorted and indexed by genomic position. This is done using <code>samtools</code>, a set of tools created to manipulate SAM/BAM files:</p>
+  <span class="kw">parallel</span> <span class="st">&quot;bowtie2 -x reference_index -1 {}.1.fq.gz -2 {}.2.fq.gz &gt; ../results/alignments/{}.sam&quot;</span></code></pre>
+<p>Because SAM files include a lot of information, they tend to occupy a lot of space (even with our small example data). Therefore, SAM files are generally compressed into BAM files (Binary sAM). Most tools that use aligned reads require BAM files that have been sorted and indexed by genomic position. This is done using <code>samtools</code>, a set of tools created to manipulate SAM/BAM files:</p>
 <pre class="sourceCode bash"><code class="sourceCode bash"><span class="co"># In the alignments directory</span>
 
 <span class="co">## SAM to BAM.</span>
@@ -94,6 +94,7 @@ code > span.er { color: #ff0000; font-weight: bold; }
 <pre class="sourceCode bash"><code class="sourceCode bash"><span class="kw">ls</span> *sam <span class="kw">|</span> <span class="kw">cut</span> -d <span class="st">'.'</span> -f 1 <span class="kw">|</span> <span class="kw">sort</span> <span class="kw">|</span> <span class="kw">uniq</span> <span class="kw">&gt;</span> names.txt
 <span class="kw">cat</span> names.txt <span class="kw">|</span> <span class="kw">parallel</span> <span class="st">&quot;samtools view -Sb {}.sam | samtools sort - &gt; {}.bam&quot;</span>
 <span class="kw">cat</span> names.txt <span class="kw">|</span> <span class="kw">parallel</span> <span class="st">&quot;samtools index {}.bam&quot;</span></code></pre>
+<p>Now check that a <code>bam</code> and a <code>bai</code> exist for each sample.</p>
 <h2 id="variant-calling">Variant calling</h2>
 <p>There are several approaches to call variants. The simplest approach is to look for positions where the mapped reads consistently have a different base than the reference assembly (the consensus approach). We need to run two steps, <code>samtools mpileup</code>, which looks for inconsistencies between the reference and the aligned reads, and <code>bcftools call</code>, which interprets them as variants.</p>
 <p>We will use multiallelic caller (option <code>-m</code>) of bcftools and set all individuals as haploid. We want</p>
