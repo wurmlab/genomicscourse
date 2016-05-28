@@ -4,9 +4,9 @@
 
 [Cheap sequencing](http://www.genome.gov/sequencingcosts/) has created the opportunity to perform molecular-genetic analyses on just about anything. Conceptually, doing this would be similar to working with traditional genetic model organisms. But a large difference exists: For traditional genetic model organisms, large teams and communities of expert assemblers, predictors, and curators have put years of efforts into the prerequisites for most genomic analyses, including reference genome and a set of gene predictions. In contrast, those of us working on "emerging" model organisms often have limited or no pre-existing resources and are part of much smaller teams.
 
-The steps below are meant to provide some ideas that can help obtain a reference genome and a reference geneset of sufficient quality for ecological and evolutionary analyses.
+The steps below are meant to provide some ideas that can help obtain a reference genome and a reference geneset of sufficient quality for ecological and evolutionary analyses. They are based on (but updated from) work we did for [fire ant genome](http://www.pnas.org/content/108/14/5679.long).
 
-Specifically, we will:
+Specifically, focusing on low coverage of ~0.5% of the fire ant genome, we will:
  1. inspect and clean short (Illumina) reads,
  2. perform genome assembly,
  3. assess the quality of the genome assembly using simple statistics,
@@ -27,9 +27,20 @@ Once you're logged into the [virtual machine](../index), create a directory to w
 
 ---
 
+## Sequencing an appropriate sample
+
+Less diversity and complexity in a sample makes life easier: assembly algorithms *really* struggle when given similar sequences. So less heterozygosity and fewer repeats are easier.  Thus:
+  * A haploid is easier than a diploid  (those of us working on haplo-diploid Hymenoptera have it easy because male ants are haploid).
+  * It goes without saying that a diploid is easier than a tetraploid!
+  * An inbred line or strain is easier than a wild-type.
+  * A more compact genome (with less repetitive DNA) is easier than one full of repeats - sorry, grasshopper & *Fritillaria* researchers!
+
+Many considerations go into the appropriate experimental design and sequencing strategy. We will not formally cover those here & instead jump right into our data.
+
+
 ## Short read cleaning
 
-Sequencers aren't perfect. All kinds of things can [and do](http://genomecuration.github.io/genometrain/a-experimental-design/curated-collection/Presentations/Sequencing%20Troubleshooting.pptx) [go wrong](http://sequencing.qcfail.com/). "Crap in – crap out" means it's probably worth spending some time cleaning the raw data before performing real analysis.
+Sequencers aren't perfect. All kinds of things [can](http://genomecuration.github.io/genometrain/a-experimental-design/curated-collection/Presentations/Sequencing%20Troubleshooting.pptx) and do [go wrong](http://sequencing.qcfail.com/). "Crap in – crap out" means it's probably worth spending some time cleaning the raw data before performing real analysis.
 
 ### Initial inspection
 
