@@ -81,7 +81,7 @@ Other tools including [fastx_toolkit](http://github.com/agordon/fastx_toolkit), 
 
 [seqtk](http://github.com/lh3/seqtk) ([documentation](http://manpages.ubuntu.com/manpages/vivid/man1/seqtk.1.html)) is a fast and lightweight tool for processing FASTA and FASTQ sequences.
 
-Based on the results from FastQC, replace `REPLACE` and `REPLACE below to appropriately trim from the beginning (`-b`) and end (`-e`)  of the sequences.
+Based on the results from FastQC, replace `REPLACE` and `REPLACE` below to appropriately trim from the beginning (`-b`) and end (`-e`)  of the sequences.
 
 ```bash
 seqtk trimfq -b REPLACE -e REPLACE input/reads.pe2.fastq.gz | gzip > tmp/reads.pe2.trimmed.fq.gz
