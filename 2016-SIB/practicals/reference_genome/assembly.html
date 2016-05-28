@@ -31,16 +31,17 @@ code > span.er { color: #ff0000; font-weight: bold; }
 <h1 id="reads-to-reference-genome-gene-predictions">Reads to reference genome &amp; gene predictions</h1>
 <h2 id="introduction">Introduction</h2>
 <p><a href="http://www.genome.gov/sequencingcosts/">Cheap sequencing</a> has created the opportunity to perform molecular-genetic analyses on just about anything. Conceptually, doing this would be similar to working with traditional genetic model organisms. But a large difference exists: For traditional genetic model organisms, large teams and communities of expert assemblers, predictors, and curators have put years of efforts into the prerequisites for most genomic analyses, including reference genome and a set of gene predictions. In contrast, those of us working on &quot;emerging&quot; model organisms often have limited or no pre-existing resources and are part of much smaller teams.</p>
-<p>The steps below are meant to provide some ideas that can help obtain a reference genome and a reference geneset of sufficient quality for ecological and evolutionary analyses. Please note that these are toy/sandbox examples simplified to run on laptops and to fit into the short format of this course. For real projects, much more sophisticated approaches are needed!</p>
+<p>The steps below are meant to provide some ideas that can help obtain a reference genome and a reference geneset of sufficient quality for ecological and evolutionary analyses.</p>
 <p>Specifically, we will:</p>
-<ul class="incremental">
+<ol class="incremental">
 <li>inspect and clean short (Illumina) reads,<br /></li>
 <li>perform genome assembly,<br /></li>
 <li>assess the quality of the genome assembly using simple statistics,<br /></li>
 <li>predict protein-coding genes,<br /></li>
 <li>assess quality of gene predictions,<br /></li>
 <li>assess quality of the entire process using a biologically meaning measure.</li>
-</ul>
+</ol>
+<p>Please note that these are toy/sandbox examples simplified to run on laptops and to fit into the short format of this course. For real projects, much more sophisticated approaches are needed!</p>
 <hr />
 <h2 id="preparation">Preparation</h2>
 <p>Once you're logged into the <a href="../index">virtual machine</a>, create a directory to work in. Drawing on ideas from <a href="http://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1000424" title="A Quick Guide to Organizing Computational Biology Projects">Noble (2009)</a> and others, we recommend following a <a href="http://github.com/wurmlab/templates/blob/master/project_structures.md" title="Typical multi-day project structure">specific convention</a> for all your projects. For example create a main directory for this section of the course (e.g., <code>~/2016-05-30-reference</code>), and create relevant subdirectories for each step (e.g., first one might be <code>~/2016-05-30-reference/results/01-read_cleaning</code>).</p>

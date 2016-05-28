@@ -4,15 +4,17 @@
 
 [Cheap sequencing](http://www.genome.gov/sequencingcosts/) has created the opportunity to perform molecular-genetic analyses on just about anything. Conceptually, doing this would be similar to working with traditional genetic model organisms. But a large difference exists: For traditional genetic model organisms, large teams and communities of expert assemblers, predictors, and curators have put years of efforts into the prerequisites for most genomic analyses, including reference genome and a set of gene predictions. In contrast, those of us working on "emerging" model organisms often have limited or no pre-existing resources and are part of much smaller teams.
 
-The steps below are meant to provide some ideas that can help obtain a reference genome and a reference geneset of sufficient quality for ecological and evolutionary analyses. Please note that these are toy/sandbox examples simplified to run on laptops and to fit into the short format of this course. For real projects, much more sophisticated approaches are needed!
+The steps below are meant to provide some ideas that can help obtain a reference genome and a reference geneset of sufficient quality for ecological and evolutionary analyses.
 
 Specifically, we will:
- * inspect and clean short (Illumina) reads,
- * perform genome assembly,
- * assess the quality of the genome assembly using simple statistics,
- * predict protein-coding genes,
- * assess quality of gene predictions,
- * assess quality of the entire process using a biologically meaning measure.
+ 1. inspect and clean short (Illumina) reads,
+ 2. perform genome assembly,
+ 3. assess the quality of the genome assembly using simple statistics,
+ 4. predict protein-coding genes,
+ 5. assess quality of gene predictions,
+ 6. assess quality of the entire process using a biologically meaning measure.
+
+Please note that these are toy/sandbox examples simplified to run on laptops and to fit into the short format of this course. For real projects, much more sophisticated approaches are needed!
 
 ---
 
