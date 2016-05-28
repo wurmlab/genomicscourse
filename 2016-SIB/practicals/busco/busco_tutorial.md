@@ -98,9 +98,10 @@ more run_test2/short_summary_test2
 ### 5. RUN ONE GENOME ASSEMBLY
 * Run a single BUSCO bacterial genome analysis.
 * Choose any DNA sequence FASTA file from the directory GENOS.
+* Use species “thermoanaerobacter_tengcongensis” as Augustus already has trained parameters for this bacterium so we can use them.
  
 ```sh
-python3 ~/software/BUSCO_v1.1b1/BUSCO_v1.1b1.py -o test3 -in GENOS/Streptococcus_pneumoniae_1488.ASM38567v1.31.dna.genome.fa -l bacteria -m genome --sp thermoanaerobacter_tengcongensis >& test3_log.txt &
+python3 ~/software/BUSCO_v1.1b1/BUSCO_v1.1b1.py -o test3 -in GENOS/choose_a_genome.fa -l bacteria -m genome --sp thermoanaerobacter_tengcongensis >& test3_log.txt &
 ls -l run_test3/
 more run_test3/short_summary_test3
 ```
