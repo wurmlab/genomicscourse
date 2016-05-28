@@ -210,14 +210,14 @@ We probably have other prior information about what to expect in this genome. Fo
  2. If we independently created a transcriptome assembly, we can expect  the exons making up each transcript to map sequentially onto the genome (see [TGNet](http://github.com/ksanao/TGNet) for an implementation).
  3. We can expect the different scaffolds in the genome to have a unimodal distribution in sequence read coverage. Similarly, one can expect GC% to be unimodally distributed among scaffolds. Using this idea, the [Blobology](https://github.com/sujaikumar/assemblage) approach determined that evidence of foreign sequences in Tardigrades is largely due to extensive contamination rather than extensive horizontal gene transfer [Koutsovoulos et al 2016](http://www.pnas.org/content/113/18/5053).
  4. We can expect different patterns of gene content and structure between eukaryotes and prokaryotes.
- 5. Pushing this idea further, we can expect  genome to contain a single copy of the "house-keeping" genes found in related species. We will see how to apply this idea using BUSCO later today (after we know how to obtain gene predictions). Note that:
-    * BUSCO is a refined, modernized implementation of the [CEGMA]("http://korflab.ucdavis.edu/Datasets/cegma/") approach. CEGMA examines a eukaryotic genome assembly for presence and completeness of 458 "core eukaryotic genes".
+ 5. Pushing this idea further, we can expect a genome to contain a single copy of each of the "house-keeping" genes found in related species. We will see how to apply this idea using BUSCO (Benchmarking Universal Single-Copy Orthologs) later today (after we know how to obtain gene predictions). Note that:
+    * BUSCO is a refined, modernized implementation of the [CEGMA]("http://korflab.ucdavis.edu/Datasets/cegma/") (Core Eukaryotic Genes Mapping Approach). CEGMA examines a eukaryotic genome assembly for presence and completeness of 248 "core eukaryotic genes".
     * QUAST also includes a "quick and dirty" method of finding genes.
 
 
 ## Gene prediction
 
-Many tools exist for gene prediction, some based on *ab intio* statistical models of what a protein-coding gene should look like, others that use similarity with protein-coding genes from other species, and others (such as [Augustus](http://bioinf.uni-greifswald.de/augustus/) and SNAP), that use both. There is no perfect tool or approach, thus we typically run many gene-finding tools and call a consensus. [MAKER](http://www.yandell-lab.org/software/maker.html) and [JAMg](https://github.com/genomecuration/JAMg) can do this for us. Let's use MAKER on a sandbox example.
+Many tools exist for gene prediction, some based on *ab initio* statistical models of what a protein-coding gene should look like, others that use similarity with protein-coding genes from other species, and others (such as [Augustus](http://bioinf.uni-greifswald.de/augustus/) and SNAP), that use both. There is no perfect tool or approach, thus we typically run many gene-finding tools and call a consensus. [MAKER](http://www.yandell-lab.org/software/maker.html) and [JAMg](https://github.com/genomecuration/JAMg) can do this for us. Let's use MAKER on a sandbox example.
 
 Start in a new directory (e.g., `~/2016-05-30-reference/results/03-gene_prediction`). Pull out the longest few scaffolds from the `assembly.scafSeq` (e.g., using `seqtk seq -L 20000`) into their own fasta (e.g., `min20000.fa`).
 
