@@ -222,7 +222,7 @@ Many tools exist for gene prediction, some based on *ab initio* statistical mode
 Start in a new directory (e.g., `~/2016-05-30-reference/results/03-gene_prediction`). Pull out the longest few scaffolds from the `assembly.scafSeq` (e.g., using `seqtk seq -L 20000`) into their own fasta (e.g., `min20000.fa`).
 
 
-Running `maker -OPTS` will generate an empty `maker_opts.ctl` configuration file. Edit that file to specify:
+Running `maker -OPTS` will generate an empty `maker_opts.ctl` configuration file (ignore the warning). Edit that file to specify:
   * genome: `min20000.fa`
   * augustus species: `honeybee1` (yes that's a 1; check `~/software/augustus-3.2.1/config/species/` for a full list of Augustus' built-in HMM gene models)
   * deactivate RepeatMasker by replacing `model_org=all` to `model_org= ` (i.e., nothing)
@@ -251,7 +251,7 @@ As you can see, gene prediction software is imperfect – this is even the case 
 
 The [GeneValidator](http://bioinformatics.oxfordjournals.org/content/32/10/1559.long) tool can help to evaluate quality of a gene prediction by comparing features of a gene prediction to similar database sequences. This approach expects that similar sequences should for example be of similar length.
 
-You can simply run `genevalidator proteins.fasta` (on your gene predictions, or [these examples](../../data/reference_databases/gv_examples.fa)), or use the [web service](http://genevalidator.sbcs.qmul.ac.uk/) for queries of few sequences. Alternatively just check the screenshots linked in the next sentence. Try to understand why some gene predictions have no reason for concern [(e.g.)](img-qc/good.png), while others do [(e.g.)](img-qc/bad.png).
+You can simply run `genevalidator  -d ~/data/reference_databases/uniprot/uniprot_sprot.fasta proteins.fasta` (on your gene predictions, or [these examples](../../data/reference_assembly/gv_examples.fa)), or use the [web service](http://genevalidator.sbcs.qmul.ac.uk/) for queries of few sequences. Alternatively just check the screenshots linked in the next sentence. Try to understand why some gene predictions have no reason for concern [(e.g.)](img-qc/good.png), while others do [(e.g.)](img-qc/bad.png).
 
 
 ### Comparing whole genesets & prioritizing genes for manual curation
