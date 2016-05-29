@@ -80,7 +80,7 @@ bowtie2 \
  -x tmp/reference \
  -1 input/reads/f1_B.1.fq.gz \
  -2 input/reads/f1_B.2.fq.gz \
-tmp/alignments/f1_B.sam
+  > tmp/alignments/f1_B.sam
 
 ```
 
@@ -123,9 +123,38 @@ cat tmp/names.txt \
 
 Now check that a `bam` and a `bai` exist for each sample.
 
+To view what's in a BAM file, you have to use `samtools view`
+
+```bash
+samtools view tmp/alignments/f1_B.bam | less
+
+# To view a particular region:
+samtools view tmp/alignments/f1_B.bam scaffold_1:10000-10500 | less
+```
+
+Now that we have alignments, we can copy them to a results file.
+
+```sh
+mkdir results
+mkdir results/alignments
+cp tmp/alignments/*.ba[mi] results/alignments
+ln -rs tmp/alignments results/alignments/original
+
+```
+
+
 ## Variant calling
 
-The following analysis is done in the directory `results/02-genotyping`. Remember to keep your commands in the `WHATIDID.txt` file.
+The following analysis is done in the directory `results/02-genotyping`. Remember to keep your commands in the `WHATIDID.txt` file. We will need the reference fasta file, as well as the alignments we just created, so create a link to those files in the `data/02-genotyping` directory:
+
+```sh
+cd ~/2016-06-01-genotyping/
+
+ln -rs results/01-mapping/results/alignments data/02-genotyping/alignments
+ln -rs data/01-mapping/reference.fa data/02-genotyping/
+
+cd results/02-genotyping
+```
 
 There are several approaches to call variants. The simplest approach is to look for positions where the mapped reads consistently have a different base than the reference assembly (the consensus approach). We need to run two steps, `samtools mpileup`, which looks for inconsistencies between the reference and the aligned reads, and `bcftools call`, which interprets them as variants.
 
@@ -150,7 +179,7 @@ bcftools call --ploidy 1 -v -m tmp/variants/raw_calls.bcf > tmp/variants/calls.v
 
 The file produced a VCF (Variant Call Format) format telling the position, nature and quality of the called variants.
 
-Let's take a look at the VCF file produced by typing `less -S calls.vcf`. The file is composed of a header and rows for all the variant positions. Have a look at the different columns and check what each is (the header includes labels). Notice that some columns include several fields.
+Let's take a look at the VCF file produced by typing `less -S tmp/variants/calls.vcf`. The file is composed of a header and rows for all the variant positions. Have a look at the different columns and check what each is (the header includes labels). Notice that some columns include several fields.
 
 * Where does the Header start and end?
 * How is the genotype of each sample coded?
@@ -187,9 +216,10 @@ bcftools view -v snps -m2 -M2 --min-ac 1:minor tmp/variants/filtered_calls.vcf >
 * Can you find any other parameters indicating the quality of the site?
 * Can you find any other parameters indicating the quality of the call for a given individual on a given site?
 
-Now that we have a SNP set, we can copy it to a results file in 
+Now that we have a SNP set, we can copy it to a results file.
 
 ```sh
+mkdir results
 cp tmp/variants/snp.vcf results/
 ln -rs tmp/variants/ results/original
 
