@@ -23,9 +23,26 @@ The aim of this practical is to genotype these 14 individuals. The steps in the 
 
 ## The data
 
-We recommend that you set up a directory for today as [per our convention](https://github.com/wurmlab/templates/blob/master/project_structures.md), as [you did in the last practical](../reference_genome/assembly#short-read-cleaning). You should a subdirectory for your input (called `data` or `input`), and another for your results.
+We recommend that you set up a directory for today following [our convention](https://github.com/wurmlab/templates/blob/master/project_structures.md), as [you did in the last practical](../reference_genome/assembly#short-read-cleaning). You should have a subdirectory called `data`) and another called `results`. In each, you should have a directory for the read mapping, and another for the variant calling:
 
-The data we need in the `~/data/popgen` directory. Copy or link  the file `reference.fa` and the all the `reads/*fq` files to your new directory.
+```
+2016-06-01-genotyping/
+├── data
+│   ├── 01-mapping
+│   └── 02-genotyping
+└── results
+    ├── 01-mapping
+    │   ├── input -> ../../data/01-mapping/
+    │   ├── tmp
+    │   └── WHATIDID.txt
+    └── 02-genotyping
+        ├── input -> ../../data/02-genotyping/
+        ├── tmp
+        └── WHATIDID.txt
+
+```
+
+The data we need in the `~/data/popgen` directory. Copy or link the file `reference.fa` and the all the `reads/*fq` files to your new directory (under `data/01-mapping/` and `data/01-mapping/reads/`, respectively).
 
 To see how many scaffolds there are in the reference genome, type:
 
@@ -43,23 +60,28 @@ Now have a look at the `.fq.gz` files.
 
 ## Aligning reads to a reference assembly
 
+This part of the analysis is done in the `results/01-mapping` directory. Remember to keep your commands in the `WHATIDID.txt` file.
+
 The first step in our pipeline is to align the paired end reads to the reference genome. We are using the software `bowtie2`, which was created to align short read sequences to long sequences such as the scaffolds in a reference assembly. `bowtie2`, like most aligners, works in two steps.
 
 In the first step, the scaffold sequence (sometimes known as the database) is indexed, in this case using the [Burrows-Wheeler Transform](https://en.wikipedia.org/wiki/Burrows-Wheeler_transform), which can help compress a large text into less memory. It thus allows for memory efficient alignment.
 
 ```bash
-bowtie2-build data/reference.fa data/reference_index
+ln -rs input/reference.fa tmp
+
+bowtie2-build tmp/reference.fa tmp/reference
 ```
 
-The second step is the alignment itself (you may have to change the command if you have decompressed the files, and if your file structure is different).
+The second step is the alignment itself:
 
 ```bash
-mkdir -p results/alignments
+mkdir tmp/alignments
 bowtie2 \
-  -x data/reference_index \
-  -1 data/f1_B.1.fq.gz \
-  -2 data/f1_B.2.fq.gz \
-  > results/alignments/f1_B.sam
+ -x tmp/reference \
+ -1 input/reads/f1_B.1.fq.gz \
+ -2 input/reads/f1_B.2.fq.gz \
+tmp/alignments/f1_B.sam
+
 ```
 
 * What is the meaning of the `-1` and `-2` parameters?
@@ -69,67 +91,62 @@ The command produced a SAM file (Sequence Alignment/Map file), which is the stan
 We now need to run bowtie2 for all the other samples. We could do this by typing the same command another 13 times (changing the sample name), or we can use the `GNU parallel` tool:
 
 ```bash
-## Create a file with all sample names
-cd data
-ls *fq.gz | cut -d '.' -f 1 | sort | uniq > names.txt
+# Create a file with all sample names
+ls input/reads/*fq.gz | cut -d '/' -f 3 | cut -d '.' -f 1 | sort | uniq > tmp/names.txt
 
-## Run bowtie with each sample (will take a few minutes)
-cat names.txt | \
-  parallel "bowtie2 -x reference_index -1 {}.1.fq.gz -2 {}.2.fq.gz > ../results/alignments/{}.sam"
+# Run bowtie with each sample (will take a few minutes)
+cat tmp/names.txt | \
+  parallel "bowtie2 -x tmp/reference -1 input/reads/{}.1.fq.gz -2 input/reads/{}.2.fq.gz > tmp/alignments/{}.sam"
 ```
 
 Because SAM files include a lot of information, they tend to occupy a lot of space (even with our small example data). Therefore, SAM files are generally compressed into BAM files (Binary sAM). Most tools that use aligned reads require BAM files that have been sorted and indexed by genomic position. This is done using `samtools`, a set of tools created to manipulate SAM/BAM files:
 
 ```bash
-# In the alignments directory
-
-## SAM to BAM.
 # samtools view: compresses the SAM to BAM
 # samtools sort: sorts by scaffold position (creates f1_B.sorted.bam)
 # Note that the argument "-" stands for the input that is being piped in
-samtools view -Sb f1_B.sam | samtools sort - > f1_B.bam
+samtools view -Sb tmp/alignments/f1_B.sam | samtools sort - > tmp/alignments/f1_B.bam
 
 ## This creates a file (f1_B.sorted.bam), which we then index
-samtools index f1_B.bam   # creates f1_B.sorted.bam.bai
+samtools index tmp/alignments/f1_B.bam   # creates f1_B.sorted.bam.bai
+
 ```
 
 Again, we can use parallel to run this step for all the samples:
 
 ```bash
-ls *sam | cut -d '.' -f 1 | sort | uniq > names.txt
-cat names.txt | parallel "samtools view -Sb {}.sam | samtools sort - > {}.bam"
-cat names.txt | parallel "samtools index {}.bam"
+cat tmp/names.txt \
+  | parallel "samtools view -Sb tmp/alignments/{}.sam | samtools sort - > tmp/alignments/{}.bam"
+cat tmp/names.txt \
+  | parallel "samtools index tmp/alignments/{}.bam"
 ```
 
 Now check that a `bam` and a `bai` exist for each sample.
 
 ## Variant calling
 
+The following analysis is done in the directory `results/02-genotyping`. Remember to keep your commands in the `WHATIDID.txt` file.
+
 There are several approaches to call variants. The simplest approach is to look for positions where the mapped reads consistently have a different base than the reference assembly (the consensus approach). We need to run two steps, `samtools mpileup`, which looks for inconsistencies between the reference and the aligned reads, and `bcftools call`, which interprets them as variants.
 
 We will use multiallelic caller (option `-m`) of bcftools and set all individuals as haploid. We want
 
 ```bash
-# back in the analysis folder
-mkdir results/variants
-
 # Step 1: samtools mpileup
 ## Create index of the reference (different from that used by bowtie2)
-samtools faidx data/reference.fa
+ln -rs input/reference.fa tmp/reference.fa
+samtools faidx tmp/reference.fa
 
 # Run samtools mpileup
-samtools mpileup \
-  -uf data/reference.fa \
-  results/alignments/*.bam \
-  > results/variants/raw_calls.bcf
+mkdir tmp/variants
+samtools mpileup -uf tmp/reference.fa input/alignments/*.bam > tmp/variants/raw_calls.bcf
 
 # Run bcftools call
-cd results/variants/
-bcftools call --ploidy 1 -v -m raw_calls.bcf > calls.vcf
+bcftools call --ploidy 1 -v -m tmp/variants/raw_calls.bcf > tmp/variants/calls.vcf
 
 ```
 
-* Do you understand why we are using the `-v` option? Is it ever useful to leave it out?
+* Do you understand why we are using the `-v` option in `bcftools call`? Is it ever useful to leave it out?
 
 The file produced a VCF (Variant Call Format) format telling the position, nature and quality of the called variants.
 
@@ -149,8 +166,9 @@ Not all variants that we called are necessarily of good quality, so it is essent
 We will filter the VCF using `bcftools filter`. We can remove anything with quality call smaller than 30:
 
 ```bash
-bcftools filter --exclude 'QUAL < 30' calls.vcf | \
-  bcftools view -g ^miss > filtered_calls.vcf
+bcftools filter --exclude 'QUAL < 30' tmp/variants/calls.vcf | \
+bcftools view -g ^miss > tmp/variants/filtered_calls.vcf
+
 ```
 
 In more serious analysis, it may be important to filter by other parameters.
@@ -161,11 +179,21 @@ In the downstream analysis, we only want to look at sites that are:
 3. where the minor allele is present in at least one individual (because we do not care for the sites where all individuals are different from the reference, yet equal to each other)
 
 ```sh
-bcftools view -v snps -m2 -M2 --min-ac 1:minor filtered_calls.vcf > snp.vcf
+bcftools view -v snps -m2 -M2 --min-ac 1:minor tmp/variants/filtered_calls.vcf > tmp/variants/snp.vcf
+
 ```
 
+* How many SNPs does the resulting VCF file have?
 * Can you find any other parameters indicating the quality of the site?
 * Can you find any other parameters indicating the quality of the call for a given individual on a given site?
+
+Now that we have a SNP set, we can copy it to a results file in 
+
+```sh
+cp tmp/variants/snp.vcf results/
+ln -rs tmp/variants/ results/original
+
+```
 
 ## Viewing the results using IGV (Integrative Genome Viewer)
 
