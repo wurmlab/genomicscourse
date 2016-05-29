@@ -83,7 +83,7 @@ code > span.er { color: #ff0000; font-weight: bold; }
  <span class="kw">-x</span> tmp/reference \
  <span class="kw">-1</span> input/reads/f1_B.1.fq.gz \
  <span class="kw">-2</span> input/reads/f1_B.2.fq.gz \
-<span class="kw">tmp/alignments/f1_B.sam</span></code></pre>
+  <span class="kw">&gt;</span> <span class="kw">tmp/alignments/f1_B.sam</span></code></pre>
 <ul class="incremental">
 <li>What is the meaning of the <code>-1</code> and <code>-2</code> parameters?</li>
 </ul>
@@ -109,8 +109,25 @@ code > span.er { color: #ff0000; font-weight: bold; }
 <span class="kw">cat</span> tmp/names.txt \
   <span class="kw">|</span> <span class="kw">parallel</span> <span class="st">&quot;samtools index tmp/alignments/{}.bam&quot;</span></code></pre>
 <p>Now check that a <code>bam</code> and a <code>bai</code> exist for each sample.</p>
+<p>To view what's in a BAM file, you have to use <code>samtools view</code></p>
+<pre class="sourceCode bash"><code class="sourceCode bash"><span class="kw">samtools</span> view tmp/alignments/f1_B.bam <span class="kw">|</span> <span class="kw">less</span>
+
+<span class="co"># To view a particular region:</span>
+<span class="kw">samtools</span> view tmp/alignments/f1_B.bam scaffold_1:10000-10500 <span class="kw">|</span> <span class="kw">less</span></code></pre>
+<p>Now that we have alignments, we can copy them to a results file.</p>
+<pre class="sh"><code>mkdir results
+mkdir results/alignments
+cp tmp/alignments/*.ba[mi] results/alignments
+ln -rs tmp/alignments results/alignments/original
+</code></pre>
 <h2 id="variant-calling">Variant calling</h2>
-<p>The following analysis is done in the directory <code>results/02-genotyping</code>. Remember to keep your commands in the <code>WHATIDID.txt</code> file.</p>
+<p>The following analysis is done in the directory <code>results/02-genotyping</code>. Remember to keep your commands in the <code>WHATIDID.txt</code> file. We will need the reference fasta file, as well as the alignments we just created, so create a link to those files in the <code>data/02-genotyping</code> directory:</p>
+<pre class="sh"><code>cd ~/2016-06-01-genotyping/
+
+ln -rs results/01-mapping/results/alignments data/02-genotyping/alignments
+ln -rs data/01-mapping/reference.fa data/02-genotyping/
+
+cd results/02-genotyping</code></pre>
 <p>There are several approaches to call variants. The simplest approach is to look for positions where the mapped reads consistently have a different base than the reference assembly (the consensus approach). We need to run two steps, <code>samtools mpileup</code>, which looks for inconsistencies between the reference and the aligned reads, and <code>bcftools call</code>, which interprets them as variants.</p>
 <p>We will use multiallelic caller (option <code>-m</code>) of bcftools and set all individuals as haploid. We want</p>
 <pre class="sourceCode bash"><code class="sourceCode bash"><span class="co"># Step 1: samtools mpileup</span>
@@ -128,7 +145,7 @@ code > span.er { color: #ff0000; font-weight: bold; }
 <li>Do you understand why we are using the <code>-v</code> option in <code>bcftools call</code>? Is it ever useful to leave it out?</li>
 </ul>
 <p>The file produced a VCF (Variant Call Format) format telling the position, nature and quality of the called variants.</p>
-<p>Let's take a look at the VCF file produced by typing <code>less -S calls.vcf</code>. The file is composed of a header and rows for all the variant positions. Have a look at the different columns and check what each is (the header includes labels). Notice that some columns include several fields.</p>
+<p>Let's take a look at the VCF file produced by typing <code>less -S tmp/variants/calls.vcf</code>. The file is composed of a header and rows for all the variant positions. Have a look at the different columns and check what each is (the header includes labels). Notice that some columns include several fields.</p>
 <ul class="incremental">
 <li>Where does the Header start and end?<br /></li>
 <li>How is the genotype of each sample coded?<br /></li>
@@ -157,8 +174,9 @@ code > span.er { color: #ff0000; font-weight: bold; }
 <li>Can you find any other parameters indicating the quality of the site?<br /></li>
 <li>Can you find any other parameters indicating the quality of the call for a given individual on a given site?</li>
 </ul>
-<p>Now that we have a SNP set, we can copy it to a results file in</p>
-<pre class="sh"><code>cp tmp/variants/snp.vcf results/
+<p>Now that we have a SNP set, we can copy it to a results file.</p>
+<pre class="sh"><code>mkdir results
+cp tmp/variants/snp.vcf results/
 ln -rs tmp/variants/ results/original
 </code></pre>
 <h2 id="viewing-the-results-using-igv-integrative-genome-viewer">Viewing the results using IGV (Integrative Genome Viewer)</h2>

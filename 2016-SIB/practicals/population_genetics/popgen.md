@@ -10,9 +10,9 @@ In the first part of the analysis, we are going to create a heat map of the geno
 
 In the second part, we are going to measure genetic differentiation between the two groups (B and b). We will do this analysis over a sliding window, to see if the differentiation between B and b are specific to any portion of the genome. We will also measure the the genetic diversity among each of the groups, which may tell us something about the evolutionary history of the portions genome represented in our assembly. This will be done using the `PopGenome` package in R.
 
-### Input into R
+## Input into R
 
-Again, make a directory for this practical. You will only need the `snp.vcf` file we created in the last practical.
+Again, make a directory for this practical. You should create a directory for the data and one for the results (with a link to the data directory). You will only need the `snp.vcf` file we created in the last practical. It's a good idea to note down the results of your analysis in the the results section, as well saving any graph you make.
 
 The package `adegenet` uses a object called `r genlight`. To create it, we need to input a matrix where each row is an individual and each column is a locus (i.e. a SNP position). We can do this using bcftools:
 
@@ -54,7 +54,7 @@ snp_matrix <- snp_matrix[c(bb,lb),]
 
 ```
 
-### Analysis using `adegenet`
+## Analysis using `adegenet`
 
 Once this is done, we can create a new `genlight` object that contains all the SNP data
 

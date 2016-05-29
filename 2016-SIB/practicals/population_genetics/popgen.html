@@ -34,8 +34,8 @@ code > span.er { color: #ff0000; font-weight: bold; }
 <p>Our dummy assembly has two scaffolds, each from a different chromosome. The aim of our analysis is to test whether any part of this assembly is associated with the B and b supergene variants.</p>
 <p>In the first part of the analysis, we are going to create a heat map of the genotypes of the individuals and we are going to run PCA on these genotypes. This will allow us to test if any of the individuals cluster by their B/b genotype. This will be done using the <code>adegenet</code> package in R.</p>
 <p>In the second part, we are going to measure genetic differentiation between the two groups (B and b). We will do this analysis over a sliding window, to see if the differentiation between B and b are specific to any portion of the genome. We will also measure the the genetic diversity among each of the groups, which may tell us something about the evolutionary history of the portions genome represented in our assembly. This will be done using the <code>PopGenome</code> package in R.</p>
-<h3 id="input-into-r">Input into R</h3>
-<p>Again, make a directory for this practical. You will only need the <code>snp.vcf</code> file we created in the last practical.</p>
+<h2 id="input-into-r">Input into R</h2>
+<p>Again, make a directory for this practical. You should create a directory for the data and one for the results (with a link to the data directory). You will only need the <code>snp.vcf</code> file we created in the last practical. It's a good idea to note down the results of your analysis in the the results section, as well saving any graph you make.</p>
 <p>The package <code>adegenet</code> uses a object called <code>r genlight</code>. To create it, we need to input a matrix where each row is an individual and each column is a locus (i.e. a SNP position). We can do this using bcftools:</p>
 <pre class="sh"><code>bcftools query snp.vcf -f '%CHROM\t%POS[\t%GT]\n' &gt; snp_matrix.txt
 
@@ -67,7 +67,7 @@ bb &lt;-<span class="st"> </span>sample_names[<span class="kw">grep</span>(<span
 lb &lt;-<span class="st"> </span>sample_names[<span class="kw">grep</span>(<span class="st">&quot;b&quot;</span>, sample_names)]
 
 snp_matrix &lt;-<span class="st"> </span>snp_matrix[<span class="kw">c</span>(bb,lb),]</code></pre>
-<h3 id="analysis-using-adegenet">Analysis using <code>adegenet</code></h3>
+<h2 id="analysis-using-adegenet">Analysis using <code>adegenet</code></h2>
 <p>Once this is done, we can create a new <code>genlight</code> object that contains all the SNP data</p>
 <pre class="sourceCode r"><code class="sourceCode r">
 <span class="kw">library</span>(adegenet)
