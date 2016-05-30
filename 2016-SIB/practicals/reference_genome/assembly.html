@@ -44,7 +44,7 @@ code > span.er { color: #ff0000; font-weight: bold; }
 <p>Please note that these are toy/sandbox examples simplified to run on laptops and to fit into the short format of this course. For real projects, much more sophisticated approaches are needed!</p>
 <hr />
 <h2 id="preparation">Preparation</h2>
-<p>Once you're logged into the <a href="../index">virtual machine</a>, create a directory to work in. Drawing on ideas from <a href="http://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1000424" title="A Quick Guide to Organizing Computational Biology Projects">Noble (2009)</a> and others, we recommend following a <a href="http://github.com/wurmlab/templates/blob/master/project_structures.md" title="Typical multi-day project structure">specific convention</a> for all your projects. For example create a main directory for this section of the course (e.g., <code>~/2016-05-30-reference</code>), and create relevant subdirectories for each step (e.g., first one might be <code>~/2016-05-30-reference/results/01-read_cleaning</code>).</p>
+<p>Once you're logged into the <a href="../index">virtual machine</a>, create a directory to work in. Drawing on ideas from <a href="http://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1000424" title="A Quick Guide to Organizing Computational Biology Projects">Noble (2009)</a> and others, we recommend following a <a href="http://github.com/wurmlab/templates/blob/master/project_structures.md" title="Typical multi-day project structure">specific convention</a> for all your projects. For example, create a main directory for this section of the course (e.g., <code>~/2016-05-30-reference</code>), and create relevant subdirectories for each step (e.g., first one might be <code>~/2016-05-30-reference/results/01-read_cleaning</code>).</p>
 <p><a href="http://github.com/wurmlab/templates/blob/master/project_structures.md">We similarly recommend</a> that you log your commands in a <code>WHATIDID.txt</code> file in each directory.</p>
 <hr />
 <h2 id="sequencing-an-appropriate-sample">Sequencing an appropriate sample</h2>
@@ -91,7 +91,7 @@ code > span.er { color: #ff0000; font-weight: bold; }
 <p>This will only take a few seconds (make sure you replaced <code>REPLACE</code>).</p>
 <p>Let's similarly filter the paired set of reads, <code>reads.pe1</code>:</p>
 <pre class="sourceCode bash"><code class="sourceCode bash"><span class="kw">seqtk</span> trimfq -b 5 -e 5 input/reads.pe1.fastq.gz <span class="kw">|</span> <span class="kw">gzip</span> <span class="kw">&gt;</span> tmp/reads.pe1.trimmed.fq.gz</code></pre>
-<h3 id="k-mer-filtering">K-mer filtering</h3>
+<h3 id="k-mer-filtering-removal-of-low-quality-and-short-sequences">K-mer filtering, removal of low quality and short sequences</h3>
 <p>Say you have sequenced your sample at 45x genome coverage. The real coverage distribution will be influenced by factors including DNA quality, library preparation type and local GC content, but you might expect most of the genome to be covered between 20 and 70x. In practice, the distribution can be very strange. One way of rapidly examining the coverage distribution before you have a reference genome is to chop your raw sequence reads into short &quot;k-mers&quot; of 31 nucleotides, and count how often you get each possible k-mer. Surprisingly,</p>
 <ul class="incremental">
 <li>many sequences are extremely rare (e.g., once). These are likely to be errors that appeared during library preparation or sequencing, or could be rare somatic mutations). Such sequences can confuse assembly software; eliminating them can decrease subsequent memory &amp; CPU requirements.<br /></li>
@@ -107,22 +107,22 @@ code > span.er { color: #ff0000; font-weight: bold; }
 <span class="co"># 2. Remove coverage above 100x, save kmer.counts table</span>
 <span class="kw">khmer</span> normalize-by-median.py -p --ksize 20 -C 100 -M 1e9 -s tmp/kmer.counts \
                 <span class="kw">-o</span> tmp/reads.pe12.trimmed.max100.fq tmp/reads.pe12.trimmed.fq
-<span class="co"># Filter low abundance khmers</span>
+<span class="co"># 3. Filter low abundance kmers</span>
 <span class="kw">khmer</span> filter-abund.py -V tmp/kmer.counts \
                       <span class="kw">-o</span> tmp/reads.pe12.trimmed.max100.norare.fq \
                       <span class="kw">tmp/reads.pe12.trimmed.max100.fq</span>
-<span class="co"># Remove low quality bases, short sequences, and non-paired reads</span>
+<span class="co"># 4. Remove low quality bases, short sequences, and non-paired reads</span>
 <span class="kw">seqtk</span> seq -q 10 -N -L 80 tmp/reads.pe12.trimmed.max100.norare.fq <span class="kw">|</span> <span class="kw">\</span>
                  <span class="kw">seqtk</span> dropse <span class="kw">&gt;</span> tmp/reads.pe12.trimmed.max100.norare.noshort.fq
 
-<span class="co"># 3. De-interleave filtered reads</span>
+<span class="co"># 5. De-interleave filtered reads</span>
 <span class="kw">khmer</span> split-paired-reads.py tmp/reads.pe12.trimmed.max100.norare.noshort.fq -d tmp/
 
-<span class="co"># 4. Rename output reads to something more human-friendly</span>
+<span class="co"># 6. Rename output reads to something more human-friendly</span>
 <span class="kw">ln</span> -s tmp/reads.pe12.trimmed.max100.norare.noshort.fq.1 reads.pe1.clean.fq
 <span class="kw">ln</span> -s tmp/reads.pe12.trimmed.max100.norare.noshort.fq.2 reads.pe2.clean.fq</code></pre>
 <h3 id="inspecting-quality-of-cleaned-reads">Inspecting quality of cleaned reads</h3>
-<p>Which percentage of reads have we removed overall? (hint: <code>wc -l</code> can count lines in a non-gzipped file)<br />Run <code>fastqc</code> again, this time on <code>reads.pe2.clean.fq</code>. Which statistics have changed? Does the &quot;per tile&quot; sequence quality indicate to you that we should perhaps do more cleaning?</p>
+<p>Which percentage of reads have we removed overall? (hint: <code>wc -l</code> can count lines in a non-gzipped file). Is there a general rule about how much we should be removing?<br />Run <code>fastqc</code> again, this time on <code>reads.pe2.clean.fq</code>. Which statistics have changed? Does the &quot;per tile&quot; sequence quality indicate to you that we should perhaps do more cleaning?</p>
 <hr />
 <h2 id="genome-assembly">Genome assembly</h2>
 <h3 id="offline-exercise">Offline exercise</h3>
@@ -173,7 +173,7 @@ q2=input/reads.pe2.clean.fq</code></pre>
 </ul></li>
 </ol>
 <h2 id="gene-prediction">Gene prediction</h2>
-<p>Many tools exist for gene prediction, some based on <em>ab initio</em> statistical models of what a protein-coding gene should look like, others that use similarity with protein-coding genes from other species, and others (such as <a href="http://bioinf.uni-greifswald.de/augustus/">Augustus</a> and SNAP), that use both. There is no perfect tool or approach, thus we typically run many gene-finding tools and call a consensus. <a href="http://www.yandell-lab.org/software/maker.html">MAKER</a> and <a href="https://github.com/genomecuration/JAMg">JAMg</a> can do this for us. Let's use MAKER on a sandbox example.</p>
+<p>Many tools exist for gene prediction, some based on <em>ab initio</em> statistical models of what a protein-coding gene should look like, others that use similarity with protein-coding genes from other species, and others (such as <a href="http://bioinf.uni-greifswald.de/augustus/">Augustus</a> and SNAP), that use both. There is no perfect tool or approach, thus we typically run many gene-finding tools and call a consensus between the different predicted gene models. <a href="http://www.yandell-lab.org/software/maker.html">MAKER</a> and <a href="https://github.com/genomecuration/JAMg">JAMg</a> can do this for us. Let's use MAKER on a sandbox example.</p>
 <p>Start in a new directory (e.g., <code>~/2016-05-30-reference/results/03-gene_prediction</code>). Pull out the longest few scaffolds from the <code>assembly.scafSeq</code> (e.g., using <code>seqtk seq -L 20000</code>) into their own fasta (e.g., <code>min20000.fa</code>).</p>
 <p>Running <code>maker -OPTS</code> will generate an empty <code>maker_opts.ctl</code> configuration file (ignore the warning). Edit that file to specify:</p>
 <ul class="incremental">
@@ -181,10 +181,10 @@ q2=input/reads.pe2.clean.fq</code></pre>
 <li>augustus species: <code>honeybee1</code> (yes that's a 1; check <code>~/software/augustus-3.2.1/config/species/</code> for a full list of Augustus' built-in HMM gene models)<br /></li>
 <li>deactivate RepeatMasker by replacing <code>model_org=all</code> to <code>model_org=</code> (i.e., nothing)</li>
 </ul>
-<p>For a real project, we would use RepeatMasker (perhaps after creating a new repeat library), would provide as much relevant information as possible (e.g., RNAseq read mappings, transcriptome assembly – both improve gene prediction performance <em>tremendously</em>), and iteratively train gene prediction algorithms for our data including Augustus and SNAP.</p>
+<p>For a real project, we <em>would</em> use include RepeatMasker (perhaps after creating a new repeat library), would provide as much relevant information as possible (e.g., RNAseq read mappings, transcriptome assembly – both improve gene prediction performance <em>tremendously</em>), and iteratively train gene prediction algorithms for our data including Augustus and SNAP.</p>
 <p>Run <code>maker maker_opts.ctl</code>. This may take a few minutes, depending on how much data you gave it.<br />Once its done the results will be hidden in subdirectories of <code>*maker.output/min20k_datastore</code>. Perhaps its easier to find the gene predictions using <code>find</code> then grep for <code>gff</code> or <code>proteins</code>. You can ignore the (temporary) contents under <code>theVoid</code> directories.</p>
 <h3 id="quality-control-of-individual-genes">Quality control of individual genes</h3>
-<p>So now we have some gene predictions... how can we know if they are any good? The easiest way to get a feel for this is by comparing a few of <a href="predictons.fa" title="backup MAKER gene predictions just in case">them</a> to known sequences from other species. For this, launch a <a href="http://sequenceserver.com" title="BLAST graphical interface">local BLAST server</a> to compare a few of your protein-coding gene predictions to the high quality predictions in swissprot:</p>
+<p>So now we have some gene predictions... how can we know if they are any good? The easiest way to get a feel for this is by comparing a few of them (<a href="predictons.fa" title="backup MAKER gene predictions just in case">backup examples)</a>) to known sequences from other species. For this, launch a <a href="http://sequenceserver.com" title="BLAST graphical interface">local BLAST server</a> to compare a few of your protein-coding gene predictions to the high quality predictions in swissprot:</p>
 <pre class="sourceCode bash"><code class="sourceCode bash"><span class="kw">sequenceserver</span> -d ~/data/reference_databases</code></pre>
 <p>Do any of these genes have significant similarity to known sequences? For a give gene prediction, do you think it is complete, or can you infer from the BLAST alignments that something may be wrong?</p>
 <hr />
