@@ -23,22 +23,26 @@ It may be feasible to do some of this stuff on a your favorite cluster or your l
 
 * [Reads to genome to gene predictions](./reference_genome/assembly):  Short read cleaning, genome assembly, quality control, gene prediction, quality control (Monday).
 * Population sequencing to genotypes to population genetics statistics (Tuesday):
-     * [Mapping reads, calling variants, visualizing variant calls](./population_genetics/map_call).
-     * [Analysing variants: PCA, measuring Differentiation & Diversity](./population_genetics/popgen).
-* [Inferring population sizes and gene flow](./msmc/msmc-tutorial/guide) (1h Wednesday).
+     * Mapping reads, calling variants, visualizing variant calls[.](./population_genetics/map_call)
+     * Analysing variants: PCA, measuring Differentiation & Diversity[.](./population_genetics/popgen)
+* Inferring population sizes and gene flow[.](./msmc/msmc-tutorial/guide) (1h Wednesday)
 * Gene expression:
-     * [From raw sequencing data to transcript expression levels](./rnaseq/TP1) (Wednesday).
-     * [Gene-level clustering and differential expression analysis](./rnaseq/TP2) (Thursday).
+     * From raw sequencing data to transcript expression levels[.](./rnaseq/TP1) (Wednesday)
+     * Gene-level clustering and differential expression analysis[.](./rnaseq/TP2) (Thursday)
 
 ## Authors/Credits
 
 These practicals were put together by:
 
  * Rodrigo Pracana
- * Julien Roux
- * Robert Waterhouse
- * Stefan Schiffels
- * Yannick Wurm
+ * Julien Roux [www](http://www.unil.ch/dee/home/menuinst/people/post-docs--associates/dr-julien-roux.html) [@_julien_roux](http://twitter.com/_julien_roux)
+
+ * Robert Waterhouse [www](http://www.rmwaterhouse.org/) [@rmwaterhouse](http://twitter.com/rmwaterhouse)
+ * Stefan Schiffels [@stschiff
+](http://twitter.com/stschiff)
+ * Yannick Wurm - [www](http://wurmlab.github.io) [@yannick__](http://twitter.com/yannick__)
  * with content derived from:
-     * Oksana Riba-Grognuz' contributions for the 2012 edition of this course,
-     * Bruno Vieira's contributions to [QMUL's Bioinformatics MSc](http://www.sbcs.qmul.ac.uk/postgraduate/masters/index.html) version of this course.
+     * [Oksana Riba-Grognuz](https://www.linkedin.com/in/oksana80)' contributions for the 2012 edition of this course,
+     * [Bruno Vieira](http://wurmlab.github.io/team/bmpvieira)'s contributions to [QMUL's Bioinformatics MSc](http://www.sbcs.qmul.ac.uk/postgraduate/masters/index.html) version of this course.
+
+Thanks to Robin Engler, Ivan Topolsky and Vassilios Ioannidis & [Vital-IT](http://www.vital-it.ch) for putting together the Virtual Machine image for this course. And big credit to Gregoire Rossier for handling all the logistics of everything.
