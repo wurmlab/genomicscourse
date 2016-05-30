@@ -45,7 +45,7 @@ code > span.er { color: #ff0000; font-weight: bold; }
 </ol>
 <h2 id="the-data">The data</h2>
 <p>We recommend that you set up a directory for today following <a href="https://github.com/wurmlab/templates/blob/master/project_structures.md">our convention</a>, as <a href="../reference_genome/assembly#short-read-cleaning">you did in the last practical</a>. You should have a subdirectory called <code>data</code>) and another called <code>results</code>. In each, you should have a directory for the read mapping, and another for the variant calling:</p>
-<pre><code>2016-06-01-genotyping/
+<pre><code>2016-05-31-genotyping/
 ├── data
 │   ├── 01-mapping
 │   └── 02-genotyping
@@ -122,7 +122,7 @@ ln -rs tmp/alignments results/alignments/original
 </code></pre>
 <h2 id="variant-calling">Variant calling</h2>
 <p>The following analysis is done in the directory <code>results/02-genotyping</code>. Remember to keep your commands in the <code>WHATIDID.txt</code> file. We will need the reference fasta file, as well as the alignments we just created, so create a link to those files in the <code>data/02-genotyping</code> directory:</p>
-<pre class="sh"><code>cd ~/2016-06-01-genotyping/
+<pre class="sh"><code>cd ~/2016-05-31-genotyping/
 
 ln -rs results/01-mapping/results/alignments data/02-genotyping/alignments
 ln -rs data/01-mapping/reference.fa data/02-genotyping/
