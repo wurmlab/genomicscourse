@@ -20,7 +20,7 @@ Please note that these are toy/sandbox examples simplified to run on laptops and
 
 ## Preparation
 
-Once you're logged into the [virtual machine](../index), create a directory to work in. Drawing on ideas from [Noble (2009)](http://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1000424 "A Quick Guide to Organizing Computational Biology Projects") and others, we recommend following a [specific convention](http://github.com/wurmlab/templates/blob/master/project_structures.md "Typical multi-day project structure") for all your projects. For example create a main directory for this section of the course (e.g., `~/2016-05-30-reference`), and create relevant subdirectories for each step (e.g., first one might be `~/2016-05-30-reference/results/01-read_cleaning`).
+Once you're logged into the [virtual machine](../index), create a directory to work in. Drawing on ideas from [Noble (2009)](http://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1000424 "A Quick Guide to Organizing Computational Biology Projects") and others, we recommend following a [specific convention](http://github.com/wurmlab/templates/blob/master/project_structures.md "Typical multi-day project structure") for all your projects. For example, create a main directory for this section of the course (e.g., `~/2016-05-30-reference`), and create relevant subdirectories for each step (e.g., first one might be `~/2016-05-30-reference/results/01-read_cleaning`).
 
 [We similarly recommend](http://github.com/wurmlab/templates/blob/master/project_structures.md) that you log your commands in a `WHATIDID.txt` file in each directory.
 
@@ -94,7 +94,7 @@ seqtk trimfq -b 5 -e 5 input/reads.pe1.fastq.gz | gzip > tmp/reads.pe1.trimmed.f
 ```
 
 
-### K-mer filtering
+### K-mer filtering, removal of low quality and short sequences
 
 Say you have sequenced your sample at 45x genome coverage. The real coverage distribution will be influenced by factors including DNA quality, library preparation type and local GC content, but you might expect most of the genome to be covered between 20 and 70x. In practice, the distribution can be very strange. One way of rapidly examining the coverage distribution before you have a reference genome is to chop your raw sequence reads into short "k-mers" of 31 nucleotides, and count how often you get each possible k-mer. Surprisingly,
 
@@ -119,25 +119,25 @@ seqtk mergepe tmp/reads.pe1.trimmed.fq.gz tmp/reads.pe2.trimmed.fq.gz > tmp/read
 # 2. Remove coverage above 100x, save kmer.counts table
 khmer normalize-by-median.py -p --ksize 20 -C 100 -M 1e9 -s tmp/kmer.counts \
                 -o tmp/reads.pe12.trimmed.max100.fq tmp/reads.pe12.trimmed.fq
-# Filter low abundance khmers
+# 3. Filter low abundance kmers
 khmer filter-abund.py -V tmp/kmer.counts \
                       -o tmp/reads.pe12.trimmed.max100.norare.fq \
                       tmp/reads.pe12.trimmed.max100.fq
-# Remove low quality bases, short sequences, and non-paired reads
+# 4. Remove low quality bases, short sequences, and non-paired reads
 seqtk seq -q 10 -N -L 80 tmp/reads.pe12.trimmed.max100.norare.fq | \
                  seqtk dropse > tmp/reads.pe12.trimmed.max100.norare.noshort.fq
 
-# 3. De-interleave filtered reads
+# 5. De-interleave filtered reads
 khmer split-paired-reads.py tmp/reads.pe12.trimmed.max100.norare.noshort.fq -d tmp/
 
-# 4. Rename output reads to something more human-friendly
+# 6. Rename output reads to something more human-friendly
 ln -s tmp/reads.pe12.trimmed.max100.norare.noshort.fq.1 reads.pe1.clean.fq
 ln -s tmp/reads.pe12.trimmed.max100.norare.noshort.fq.2 reads.pe2.clean.fq
 ```
 
 ### Inspecting quality of cleaned reads
 
-Which percentage of reads have we removed overall? (hint: `wc -l` can count lines in a non-gzipped file)
+Which percentage of reads have we removed overall? (hint: `wc -l` can count lines in a non-gzipped file). Is there a general rule about how much we should be removing?
 Run `fastqc` again, this time on `reads.pe2.clean.fq`. Which statistics have changed? Does the "per tile" sequence quality indicate to you that we should perhaps do more cleaning?
 
 
@@ -217,7 +217,7 @@ We probably have other prior information about what to expect in this genome. Fo
 
 ## Gene prediction
 
-Many tools exist for gene prediction, some based on *ab initio* statistical models of what a protein-coding gene should look like, others that use similarity with protein-coding genes from other species, and others (such as [Augustus](http://bioinf.uni-greifswald.de/augustus/) and SNAP), that use both. There is no perfect tool or approach, thus we typically run many gene-finding tools and call a consensus. [MAKER](http://www.yandell-lab.org/software/maker.html) and [JAMg](https://github.com/genomecuration/JAMg) can do this for us. Let's use MAKER on a sandbox example.
+Many tools exist for gene prediction, some based on *ab initio* statistical models of what a protein-coding gene should look like, others that use similarity with protein-coding genes from other species, and others (such as [Augustus](http://bioinf.uni-greifswald.de/augustus/) and SNAP), that use both. There is no perfect tool or approach, thus we typically run many gene-finding tools and call a consensus between the different predicted gene models.  [MAKER](http://www.yandell-lab.org/software/maker.html) and [JAMg](https://github.com/genomecuration/JAMg) can do this for us. Let's use MAKER on a sandbox example.
 
 Start in a new directory (e.g., `~/2016-05-30-reference/results/03-gene_prediction`). Pull out the longest few scaffolds from the `assembly.scafSeq` (e.g., using `seqtk seq -L 20000`) into their own fasta (e.g., `min20000.fa`).
 
@@ -227,7 +227,7 @@ Running `maker -OPTS` will generate an empty `maker_opts.ctl` configuration file
   * augustus species: `honeybee1` (yes that's a 1; check `~/software/augustus-3.2.1/config/species/` for a full list of Augustus' built-in HMM gene models)
   * deactivate RepeatMasker by replacing `model_org=all` to `model_org= ` (i.e., nothing)
 
-For a real project, we would use RepeatMasker (perhaps after creating a new repeat library), would provide as much relevant information as possible (e.g., RNAseq read mappings, transcriptome assembly – both improve gene prediction performance *tremendously*), and iteratively train gene prediction algorithms for our data including Augustus and SNAP.
+For a real project, we *would* use include RepeatMasker (perhaps after creating a new repeat library), would provide as much relevant information as possible (e.g., RNAseq read mappings, transcriptome assembly – both improve gene prediction performance *tremendously*), and iteratively train gene prediction algorithms for our data including Augustus and SNAP.
 
 Run `maker maker_opts.ctl`. This may take a few minutes, depending on how much data you gave it.
 Once its done the results will be hidden in subdirectories of `*maker.output/min20k_datastore`. Perhaps its easier to find the gene predictions using `find` then grep for `gff` or `proteins`. You can ignore the (temporary) contents under `theVoid` directories.
@@ -235,7 +235,7 @@ Once its done the results will be hidden in subdirectories of `*maker.output/min
 
 ### Quality control of individual genes
 
-So now we have some gene predictions... how can we know if they are any good? The easiest way to get a feel for this is by comparing a few of [them](predictons.fa "backup MAKER gene predictions just in case") to known sequences from other species. For this, launch a [local BLAST server](http://sequenceserver.com "BLAST graphical interface") to compare a few of your protein-coding gene predictions to the high quality predictions in swissprot:
+So now we have some gene predictions... how can we know if they are any good? The easiest way to get a feel for this is by comparing a few of them ([backup examples)](predictons.fa "backup MAKER gene predictions just in case")) to known sequences from other species. For this, launch a [local BLAST server](http://sequenceserver.com "BLAST graphical interface") to compare a few of your protein-coding gene predictions to the high quality predictions in swissprot:
 
 ```bash
 sequenceserver -d ~/data/reference_databases
