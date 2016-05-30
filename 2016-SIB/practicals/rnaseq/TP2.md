@@ -477,8 +477,7 @@ Regarding the dataset you analyzed for this practical, have a look at the popDro
 ![Question](round-help-button.png)
 Look at the different tracks available on this website. Are you familiar with these measures? Which ones would be most appropriate to search for positive selection on coding sequences across DGRP lines? What about regulatory sequences nearby genes?
 
-If you are interested by a particular gene, you can easily visualize the sequence variation patterns in and around this genes. This could be useful to illustrate a talk or for a paper figure. If you want to download the preprocessed data across the whole genome, this seems possible, but the website is not very user friendly :( I have found two main ways:
-
+If you are interested by a particular gene, you can easily visualize the sequence variation patterns in and around this genes. This could be useful to illustrate a talk or for a paper figure. If you want to download the preprocessed data across the whole genome, this seems possible, but the website is not very user friendly (after writing to the authors, they told me that an improved website, including more individuals from different populations and new population genetics estimates is in preparation and should be released this summer). I have found two main ways:
 * Use `Select Tracks` to choose to display the measures of interest. Go back to the visualization page and for the corresponding track, you can click on a small floppy disk downlaod icon, and retrieve a ggf3 with the data. Unfortunately this does not seem to be working for all tracks (probably some bug, I wrote to the authors). Some tracks work fine, for example the McDonald-Kreitman test track. 
 
 ![Question](round-help-button.png)
