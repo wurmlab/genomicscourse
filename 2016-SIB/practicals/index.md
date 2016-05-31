@@ -23,8 +23,8 @@ It may be feasible to do some of this stuff on a your favorite cluster or your l
 
 * [Reads to genome to gene predictions](./reference_genome/assembly):  Short read cleaning, genome assembly, quality control, gene prediction, quality control (Monday).
 * Population sequencing to genotypes to population genetics statistics (Tuesday):
-     * Mapping reads, calling variants, visualizing variant calls[.](./population_genetics/map_call)
-     * Analysing variants: PCA, measuring Differentiation & Diversity[.](./population_genetics/popgen)
+     * [Mapping reads, calling variants, visualizing variant calls.](./population_genetics/map_call)
+     * [Analysing variants: PCA, measuring Differentiation & Diversity.](./population_genetics/popgen)
 * Inferring population sizes and gene flow[.](./msmc/msmc-tutorial/guide) (1h Wednesday)
 * Gene expression:
      * From raw sequencing data to transcript expression levels[.](./rnaseq/TP1) (Wednesday)
