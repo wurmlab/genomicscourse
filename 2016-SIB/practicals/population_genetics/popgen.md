@@ -227,7 +227,7 @@ win_snp@nuc.diversity.within
 # A simple plot
 win_fst <- win_snp@nucleotide.F_ST[,1]
 bb_div  <- win_snp@nuc.diversity.within[,1] # diversity among B (bb = "big B")
-lb_div  <- win_snp@nuc.diversity.within[,2] # diversity among B (bb = "little B")
+lb_div  <- win_snp@nuc.diversity.within[,2] # diversity among B (lb = "little b")
 
 
 plot(1:length(win_fst), win_fst)
