@@ -25,9 +25,10 @@ It may be feasible to do some of this stuff on a your favorite cluster or your l
 * Population sequencing to genotypes to population genetics statistics (Tuesday):
      * [Mapping reads, calling variants, visualizing variant calls.](./population_genetics/map_call)
      * [Analysing variants: PCA, measuring Differentiation & Diversity.](./population_genetics/popgen)
-* Gene expression: [From raw sequencing data to transcript expression levels.](./rnaseq/TP1) (Wednesday)
 * [Inferring population sizes and gene flow.](./msmc/msmc-tutorial/guide) (1h Wednesday)
-* Gene expression: Gene-level clustering and differential expression analysis[.](./rnaseq/TP2) (Thursday)
+* Gene expression:
+     * [From raw sequencing data to transcript expression levels.](./rnaseq/TP1) (Wednesday)
+     * [Gene-level clustering and differential expression analysis.](./rnaseq/TP2) (Thursday)
 
 ## Authors/Credits
 
