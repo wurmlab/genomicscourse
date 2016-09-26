@@ -45,12 +45,24 @@ Sequencers aren't perfect. All kinds of things [can](http://genomecuration.githu
 
 [FastQC](http://www.bioinformatics.babraham.ac.uk/projects/fastqc/) ([documentation](http://www.bioinformatics.babraham.ac.uk/projects/fastqc/Help/)) can help you understand sequence quality and composition, and thus can inform read cleaning strategy.
 
+To check whether FastQC is installed on the cluster, type:
+
+```sh
+module avail fastqc
+```
+
+The output lets you know that FastQC is installed, and which version. In these practicals, it is important that you load the correct versions of the tools we are using (in this case the cluster only has one version). To load FastQC, type:
+
+```sh
+module load fastqc/0.11.5
+```
+
 Move, copy or link the raw sequence files (`~/data/reference_assembly/reads.pe*.fastq.gz`) to a relevant input directory (e.g. `~/2016-05-30-reference/data/01-read_cleaning/`). Now run FastQC on the `reads.pe2` file. The `--outdir` option will help you clearly separate input and output files.
 
 If respecting our [project structure convention](http://github.com/wurmlab/templates/blob/master/project_structures.md "Typical multi-day project structure"), your resulting directory structure may look like this:
 
 ```bash
-user@userVM:~/2016-05-30-assembly$ tree -h
+tree -h
 .
 ├── [4.0K]  data
 │   └── [4.0K]  01-read_cleaning
@@ -64,6 +76,8 @@ user@userVM:~/2016-05-30-assembly$ tree -h
         ├── [405K]  reads.pe2_fastqc.zip
         └── [ 126]  WHATIDID.txt
 ```
+
+Now download the resulting file to your Desktop computer, and have a look at the file.
 
 What does the FastQC report tell you? ([the documentation clarifies what each plot means](http://www.bioinformatics.babraham.ac.uk/projects/fastqc/Help/3%20Analysis%20Modules/)). For comparison, have a look at some plots from other sequencing libraries: e.g, [[1]](img-qc/per_base_quality.png), [[2]](img-qc/qc_factq_tile_sequence_quality.png), [[3]](img-qc/per_base_sequence_content.png).
 
@@ -83,6 +97,8 @@ Other tools including [fastx_toolkit](http://github.com/agordon/fastx_toolkit), 
 Based on the results from FastQC, replace `REPLACE` and `REPLACE` below to appropriately trim from the beginning (`-b`) and end (`-e`)  of the sequences.
 
 ```bash
+module load seqtk/1.0-r82-dirty
+
 seqtk trimfq -b REPLACE -e REPLACE input/reads.pe2.fastq.gz | gzip > tmp/reads.pe2.trimmed.fq.gz
 ```
 
@@ -90,7 +106,7 @@ This will only take a few seconds (make sure you replaced `REPLACE`).
 
 Let's similarly filter the paired set of reads, `reads.pe1`:
 ```bash
-seqtk trimfq -b 5 -e 5 input/reads.pe1.fastq.gz | gzip > tmp/reads.pe1.trimmed.fq.gz
+seqtk trimfq -b REPLACE -e REPLACE input/reads.pe1.fastq.gz | gzip > tmp/reads.pe1.trimmed.fq.gz
 ```
 
 
@@ -109,10 +125,19 @@ Say you have sequenced your sample at 45x genome coverage. The real coverage dis
 
 It is possible to count and filter "k-mers" using [khmer](http://github.com/ged-lab/khmer) ([documentation](http://khmer.readthedocs.io/en/v2.0/user/index.html); the [kmc2](http://github.com/refresh-bio/KMC) tool is faster and thus can be more appropriate for large datasets.
 
-
 Below, we use khmer to remove extremely frequent k-mers (more than 100x), remove extremely rare k-mers, and we use seqtk to truncate sequences containing unresolved "N"s and nucleotides of particularly low quality. After all this truncation and removal, seqtk remove reads that have become too short, or no longer have a paired read. Understanding the exact commands – which are a bit convoluted – is unnecessary. It is important to understand the concept of k-mer filtering.
 
+khmer is a python-based tool (and python is a programming language). Python has been developed to be ran in a "virtual environment" using virtualenv. Before using khmer, we need to load a virtual environment that includes all the dependencies necessary for khmer, including the right version of python.
+
 ```bash
+
+```
+
+```bash
+# Activate the khmer virtual environment
+module load virtualenv
+. /data/SBCS-MSc-BioInf/2016/khmer/bin/activate
+
 # 1. Interleave Fastqs (khmer needs both paired end files merged into one file
 seqtk mergepe tmp/reads.pe1.trimmed.fq.gz tmp/reads.pe2.trimmed.fq.gz > tmp/reads.pe12.trimmed.fq
 
@@ -133,6 +158,10 @@ khmer split-paired-reads.py tmp/reads.pe12.trimmed.max100.norare.noshort.fq -d t
 # 6. Rename output reads to something more human-friendly
 ln -s tmp/reads.pe12.trimmed.max100.norare.noshort.fq.1 reads.pe1.clean.fq
 ln -s tmp/reads.pe12.trimmed.max100.norare.noshort.fq.2 reads.pe2.clean.fq
+
+# Deactivate the virtual environment
+deactivate
+
 ```
 
 ### Inspecting quality of cleaned reads
