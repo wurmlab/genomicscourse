@@ -20,10 +20,9 @@ Please note that these are toy/sandbox examples simplified to run on laptops and
 
 ## Preparation
 
-Once you're logged into the [virtual machine](../index), create a directory to work in. Drawing on ideas from [Noble (2009)](http://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1000424 "A Quick Guide to Organizing Computational Biology Projects") and others, we recommend following a [specific convention](http://github.com/wurmlab/templates/blob/master/project_structures.md "Typical multi-day project structure") for all your projects. For example, create a main directory for this section of the course (e.g., `~/2016-05-30-reference`), and create relevant subdirectories for each step (e.g., first one might be `~/2016-05-30-reference/results/01-read_cleaning`).
+Once you're logged into the [virtual machine](../index), create a directory to work in. Drawing on ideas from [Noble (2009)](http://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1000424 "A Quick Guide to Organizing Computational Biology Projects") and others, we recommend following a [specific convention](http://github.com/wurmlab/templates/blob/master/project_structures.md "Typical multi-day project structure") for all your projects. For example, create a main directory for this section of the course (e.g., `~/2016-10-03-reference`), and create relevant subdirectories for each step (e.g., first one might be `~/2016-10-03-reference/results/01-read_cleaning`).
 
 [We similarly recommend](http://github.com/wurmlab/templates/blob/master/project_structures.md) that you log your commands in a `WHATIDID.txt` file in each directory.
-
 
 ---
 
@@ -45,19 +44,7 @@ Sequencers aren't perfect. All kinds of things [can](http://genomecuration.githu
 
 [FastQC](http://www.bioinformatics.babraham.ac.uk/projects/fastqc/) ([documentation](http://www.bioinformatics.babraham.ac.uk/projects/fastqc/Help/)) can help you understand sequence quality and composition, and thus can inform read cleaning strategy.
 
-To check whether FastQC is installed on the cluster, type:
-
-```sh
-module avail fastqc
-```
-
-The output lets you know that FastQC is installed, and which version. In these practicals, it is important that you load the correct versions of the tools we are using (in this case the cluster only has one version). To load FastQC, type:
-
-```sh
-module load fastqc/0.11.5
-```
-
-Move, copy or link the raw sequence files (`~/data/reference_assembly/reads.pe*.fastq.gz`) to a relevant input directory (e.g. `~/2016-05-30-reference/data/01-read_cleaning/`). Now run FastQC on the `reads.pe2` file. The `--outdir` option will help you clearly separate input and output files.
+Move, copy or link the raw sequence files (`~/data/reference_assembly/reads.pe*.fastq.gz`) to a relevant input directory (e.g. `~/2016-10-03-reference/data/01-read_cleaning/`). Now run FastQC on the `reads.pe2` file. The `--outdir` option will help you clearly separate input and output files.
 
 If respecting our [project structure convention](http://github.com/wurmlab/templates/blob/master/project_structures.md "Typical multi-day project structure"), your resulting directory structure may look like this:
 
@@ -127,17 +114,7 @@ It is possible to count and filter "k-mers" using [khmer](http://github.com/ged-
 
 Below, we use khmer to remove extremely frequent k-mers (more than 100x), remove extremely rare k-mers, and we use seqtk to truncate sequences containing unresolved "N"s and nucleotides of particularly low quality. After all this truncation and removal, seqtk remove reads that have become too short, or no longer have a paired read. Understanding the exact commands – which are a bit convoluted – is unnecessary. It is important to understand the concept of k-mer filtering.
 
-khmer is a python-based tool (and python is a programming language). Python has been developed to be ran in a "virtual environment" using virtualenv. Before using khmer, we need to load a virtual environment that includes all the dependencies necessary for khmer, including the right version of python.
-
 ```bash
-
-```
-
-```bash
-# Activate the khmer virtual environment
-module load virtualenv
-. /data/SBCS-MSc-BioInf/2016/khmer/bin/activate
-
 # 1. Interleave Fastqs (khmer needs both paired end files merged into one file
 seqtk mergepe tmp/reads.pe1.trimmed.fq.gz tmp/reads.pe2.trimmed.fq.gz > tmp/reads.pe12.trimmed.fq
 
@@ -159,16 +136,12 @@ khmer split-paired-reads.py tmp/reads.pe12.trimmed.max100.norare.noshort.fq -d t
 ln -s tmp/reads.pe12.trimmed.max100.norare.noshort.fq.1 reads.pe1.clean.fq
 ln -s tmp/reads.pe12.trimmed.max100.norare.noshort.fq.2 reads.pe2.clean.fq
 
-# Deactivate the virtual environment
-deactivate
-
 ```
 
 ### Inspecting quality of cleaned reads
 
 Which percentage of reads have we removed overall? (hint: `wc -l` can count lines in a non-gzipped file). Is there a general rule about how much we should be removing?
 Run `fastqc` again, this time on `reads.pe2.clean.fq`. Which statistics have changed? Does the "per tile" sequence quality indicate to you that we should perhaps do more cleaning?
-
 
 ---
 
@@ -198,7 +171,7 @@ q2=input/reads.pe2.clean.fq
 Then run the following line. *THIS IS RAM-INTENSE – with only 2Gb ram, your computer may struggle - you don't need to do this and can just download the result!*
 
 ```bash
-SOAPdenovo-63mer all -s soap_config.txt -K 63 -R -o assembly
+soapdenovo2-63mer all -s soap_config.txt -K 63 -R -o assembly
 ```
 
 Like any other assembler, SOAPdenovo creates many files, including an `assembly.scafSeq` file that is likely to be used for follow-up analyses. You can [download it here](../../data/reference_assembly/output/assembly.scafSeq.gz). Why does this file contain so many NNNN sequences?
@@ -214,7 +187,6 @@ There are many other genome assembly approaches. While waiting for everyone to m
 ### Quality assessment
 
 How do we know if our genome is good?
-
 
 > *"... the performance of different *de novo* genome assembly algorithms can vary greatly on the same dataset, although it has been repeatedly demonstrated that no single assembler is optimal in every possible quality metric [6, 7, 8]. The most widely used metrics for evaluating an assembly include 1) contiguity statistics such as scaffold and contig N50 size, 2) accuracy statistics such as the number of structural errors found when compared with an available reference genome (GAGE (Genome Assembly Gold Standard Evaluation) evaluation tool [8]), 3) presence of core eukaryotic genes (CEGMA (Core Eukaryotic Genes Mapping Approach) [9]) or, if available, transcript mapping rates, and 4) the concordance of the sequence with remapped paired-end and mate-pair reads (REAPR (Recognizing Errors in Assemblies using Paired Reads) [10], assembly validation [11], or assembly likelihood [12])."* -  [Wences & Schatz (2015)](http://genomebiology.biomedcentral.com/articles/10.1186/s13059-015-0764-4)
 
@@ -239,8 +211,8 @@ We probably have other prior information about what to expect in this genome. Fo
  2. If we independently created a transcriptome assembly, we can expect  the exons making up each transcript to map sequentially onto the genome (see [TGNet](http://github.com/ksanao/TGNet) for an implementation).
  3. We can expect the different scaffolds in the genome to have a unimodal distribution in sequence read coverage. Similarly, one can expect GC% to be unimodally distributed among scaffolds. Using this idea, the [Blobology](https://github.com/sujaikumar/assemblage) approach determined that evidence of foreign sequences in Tardigrades is largely due to extensive contamination rather than extensive horizontal gene transfer [Koutsovoulos et al 2016](http://www.pnas.org/content/113/18/5053).
  4. We can expect different patterns of gene content and structure between eukaryotes and prokaryotes.
- 5. Pushing this idea further, we can expect a genome to contain a single copy of each of the "house-keeping" genes found in related species. We will see how to apply this idea using BUSCO (Benchmarking Universal Single-Copy Orthologs) later today (after we know how to obtain gene predictions). Note that:
-    * BUSCO is a refined, modernized implementation of the [CEGMA]("http://korflab.ucdavis.edu/Datasets/cegma/") (Core Eukaryotic Genes Mapping Approach). CEGMA examines a eukaryotic genome assembly for presence and completeness of 248 "core eukaryotic genes".
+ 5. Pushing this idea further, we can expect a genome to contain a single copy of each of the "house-keeping" genes found in related species. This is applied in BUSCO (Benchmarking Universal Single-Copy Orthologs). Note that:
+    * BUSCO is a refined, modernized implementation of [CEGMA]("http://korflab.ucdavis.edu/Datasets/cegma/") (Core Eukaryotic Genes Mapping Approach). CEGMA examines a eukaryotic genome assembly for presence and completeness of 248 "core eukaryotic genes".
     * QUAST also includes a "quick and dirty" method of finding genes.
 
 
@@ -248,12 +220,11 @@ We probably have other prior information about what to expect in this genome. Fo
 
 Many tools exist for gene prediction, some based on *ab initio* statistical models of what a protein-coding gene should look like, others that use similarity with protein-coding genes from other species, and others (such as [Augustus](http://bioinf.uni-greifswald.de/augustus/) and SNAP), that use both. There is no perfect tool or approach, thus we typically run many gene-finding tools and call a consensus between the different predicted gene models.  [MAKER](http://www.yandell-lab.org/software/maker.html) and [JAMg](https://github.com/genomecuration/JAMg) can do this for us. Let's use MAKER on a sandbox example.
 
-Start in a new directory (e.g., `~/2016-05-30-reference/results/03-gene_prediction`). Pull out the longest few scaffolds from the `assembly.scafSeq` (e.g., using `seqtk seq -L 20000`) into their own fasta (e.g., `min20000.fa`).
-
+Start in a new directory (e.g., `~/2016-10-03-reference/results/03-gene_prediction`). Pull out the longest few scaffolds from the `assembly.scafSeq` (e.g., using `seqtk seq -L 20000`) into their own fasta (e.g., `min20000.fa`).
 
 Running `maker -OPTS` will generate an empty `maker_opts.ctl` configuration file (ignore the warning). Edit that file to specify:
   * genome: `min20000.fa`
-  * augustus species: `honeybee1` (yes that's a 1; check `~/software/augustus-3.2.1/config/species/` for a full list of Augustus' built-in HMM gene models)
+  * augustus species: `honeybee1` (yes that's a 1)
   * deactivate RepeatMasker by replacing `model_org=all` to `model_org= ` (i.e., nothing)
 
 For a real project, we *would* include RepeatMasker (perhaps after creating a new repeat library), we would provide as much relevant information as possible (e.g., RNAseq read mappings, transcriptome assembly – both improve gene prediction performance *tremendously*), and iteratively train gene prediction algorithms for our data including Augustus and SNAP.
@@ -274,7 +245,7 @@ Do any of these genes have significant similarity to known sequences? For a give
 
 ---
 
-As you can see, gene prediction software is imperfect – this is even the case when using all available evidence. This is potentially costly for analyses that rely on gene predictions - i.e. many of the anlyses we might want to do!
+As you can see, gene prediction software is imperfect – this is even the case when using all available evidence. This is potentially costly for analyses that rely on gene predictions - i.e. many of the analyses we might want to do!
 
 > *“Incorrect annotations [ie. gene identifications] poison every experiment that makes use of them. Worse still the poison spreads.”* – [Yandell & Ence (2012)](http://www.ncbi.nlm.nih.gov/pubmed/22510764).
 
@@ -303,7 +274,3 @@ The interface shows the genome sequence horizontally (nucleotides only visible w
  Using curation software, you can edit the gene prediction: add or remove exons, merge or split gene models, and adjust exon boundaries.
 
 ---
-
-## Quality control of the whole process
-
-Congrats on getting from sequence reads to a genome assembly and gene predictions! We can now move on to quality-controlling our whole process by testing for the presence of single-copy-orthologs with [BUSCO](../busco/busco_tutorial).
