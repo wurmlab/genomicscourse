@@ -9,10 +9,11 @@ cp -rf !(out) out/
 
 cd out
 
-echo "Removing submodules git"
-find . -mindepth 2 -name .git | xargs rm -rf
-rm .gitmodules
-sed -ie '/submodule/,+1d' .git/config
+# Add this when practical has submodules (e.g. MSMC 2016-SIB)
+# echo "Removing submodules git"
+# find . -mindepth 2 -name .git | xargs rm -rf
+# rm .gitmodules
+# sed -ie '/submodule/,+1d' .git/config
 
 echo "Converting markdown to html"
 find . -name "*.md" -type f -print0 | \
