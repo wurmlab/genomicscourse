@@ -20,7 +20,7 @@ Please note that these are toy/sandbox examples simplified to run on laptops and
 
 ## Preparation
 
-Once you're logged into the [virtual machine](../index), create a directory to work in. Drawing on ideas from [Noble (2009)](http://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1000424 "A Quick Guide to Organizing Computational Biology Projects") and others, we recommend following a [specific convention](http://github.com/wurmlab/templates/blob/master/project_structures.md "Typical multi-day project structure") for all your projects. For example, create a main directory for this section of the course (e.g., `~/2016-10-03-reference`), and create relevant subdirectories for each step (e.g., first one might be `~/2016-10-03-reference/results/01-read_cleaning`).
+Start by creating a directory to work in. Drawing on ideas from [Noble (2009)](http://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1000424 "A Quick Guide to Organizing Computational Biology Projects") and others, we recommend following a [specific convention](http://github.com/wurmlab/templates/blob/master/project_structures.md "Typical multi-day project structure") for all your projects. For example, create a main directory for this section of the course (e.g., `~/2016-10-03-reference`), and create relevant subdirectories for each step (e.g., first one might be `~/2016-10-03-reference/results/01-read_cleaning`).
 
 [We similarly recommend](http://github.com/wurmlab/templates/blob/master/project_structures.md) that you log your commands in a `WHATIDID.txt` file in each directory.
 
@@ -194,7 +194,7 @@ How do we know if our genome is good?
 
 #### Simple metrics
 
-An assembly software will generally provide some statistics about what it did. But the output formats differ between assemblers. [Quast](http://bioinf.spbau.ru/quast), the *Quality Assessment Tool for Genome Assemblies* creates a standardized report. Run Quast (available at `~/software/quast-4.0/quast.py`) on the `assembly.scafSeq` file. No special options - just the simple scenario to get some statistics.
+An assembly software will generally provide some statistics about what it did. But the output formats differ between assemblers. [Quast](http://bioinf.spbau.ru/quast), the *Quality Assessment Tool for Genome Assemblies* creates a standardized report. Run Quast (`quast.py`) on the `assembly.scafSeq` file. No special options - just the simple scenario to get some statistics.
 
 Have a look at the report (pdf or html) Quast generated.
 
@@ -241,7 +241,7 @@ So now we have some gene predictions... how can we know if they are any good? Th
 sequenceserver -d ~/data/reference_databases
 ```
 
-Do any of these genes have significant similarity to known sequences? For a give gene prediction, do you think it is complete, or can you infer from the BLAST alignments that something may be wrong?
+Do any of these genes have significant similarity to known sequences? For a given gene prediction, do you think it is complete, or can you infer from the BLAST alignments that something may be wrong?
 
 ---
 
@@ -262,15 +262,6 @@ Genevalidator's visual output can be handy when looking at few genes. But the to
 
 ### Manual curation
 
-Because automated gene predictions aren't perfect, manual inspection and fixing are often required. The most commonly used software for this is [Apollo/WebApollo](http://genomearchitect.org/). We have no time for manual curation today, so here's simply a screenshot:
-
-![Screenshot of afra with gene missing an exon](img-qc/missing_exon.png)
-
-The interface shows the genome sequence horizontally (nucleotides only visible when zooming in), similarly to a genome browser.
- * the top line shows the MAKER consensus gene model which includes 4 exons.
- * some of the evidence tracks show 5 exons; while e.g. SNAP shows two models (with 2 and 3 exons on-screen) and suggests that the gene has additional exons beyond the limits of the screenshot.
- * RNAseq reads provide extensive support that the gene has 5 exons, not 4.
-
- Using curation software, you can edit the gene prediction: add or remove exons, merge or split gene models, and adjust exon boundaries.
+Because automated gene predictions aren't perfect, manual inspection and fixing are often required. The most commonly used software for this is [Apollo/WebApollo](http://genomearchitect.org/). In the following practical, we will be using another curation software (Afra) to edit the gene prediction, e.g. adding or removing exons, merging or splitting gene models, and adjusting exon boundaries.
 
 ---
