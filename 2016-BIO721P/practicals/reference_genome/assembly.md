@@ -64,8 +64,6 @@ tree -h
         └── [ 126]  WHATIDID.txt
 ```
 
-Now download the resulting file to your Desktop computer, and have a look at the file.
-
 What does the FastQC report tell you? ([the documentation clarifies what each plot means](http://www.bioinformatics.babraham.ac.uk/projects/fastqc/Help/3%20Analysis%20Modules/)). For comparison, have a look at some plots from other sequencing libraries: e.g, [[1]](img-qc/per_base_quality.png), [[2]](img-qc/qc_factq_tile_sequence_quality.png), [[3]](img-qc/per_base_sequence_content.png).
 
 Decide whether and how much to trim from the beginning and end of our sequences. What else might you want to do?
@@ -84,8 +82,6 @@ Other tools including [fastx_toolkit](http://github.com/agordon/fastx_toolkit), 
 Based on the results from FastQC, replace `REPLACE` and `REPLACE` below to appropriately trim from the beginning (`-b`) and end (`-e`)  of the sequences.
 
 ```bash
-module load seqtk/1.0-r82-dirty
-
 seqtk trimfq -b REPLACE -e REPLACE input/reads.pe2.fastq.gz | gzip > tmp/reads.pe2.trimmed.fq.gz
 ```
 
