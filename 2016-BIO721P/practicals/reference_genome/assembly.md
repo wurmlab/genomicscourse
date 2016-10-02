@@ -145,7 +145,7 @@ Run `fastqc` again, this time on `reads.pe2.clean.fq`. Which statistics have cha
 
 ### Offline exercise
 
-Find (or make) four friends; find a table. In groups of 4 or 5, ask an assistant for an assembly task.
+Find (or make) some friends; find a table. In groups of 4 or 5, ask an assistant for an assembly task.
 
 ### Brief assembly example / concepts
 
