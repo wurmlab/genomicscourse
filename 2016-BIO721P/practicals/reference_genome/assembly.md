@@ -53,8 +53,8 @@ tree -h
 .
 ├── [4.0K]  data
 │   └── [4.0K]  01-read_cleaning
-│       ├── [  53]  reads.pe1.fastq.gz -> /home/user/data/reference_assembly/reads.pe1.fastq.gz
-│       ├── [  53]  reads.pe2.fastq.gz -> /home/user/data/reference_assembly/reads.pe2.fastq.gz
+│       ├── [  53]  reads.pe1.fastq.gz
+│       ├── [  53]  reads.pe2.fastq.gz
 │       └── [  44]  WHATIDID.txt
 └── [4.0K]  results
     └── [4.0K]  01-read_cleaning
