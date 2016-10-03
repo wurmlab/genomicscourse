@@ -36,6 +36,10 @@ Less diversity and complexity in a sample makes life easier: assembly algorithms
 
 Many considerations go into the appropriate experimental design and sequencing strategy. We will not formally cover those here & instead jump right into our data.
 
+## Get the data
+
+Use `scp` to copy the data from `/data/SBCS-MSc-BioInf/data` in Apocrita to your PC.
+
 ## Short read cleaning
 
 Sequencers aren't perfect. All kinds of things [can](http://genomecuration.github.io/genometrain/a-experimental-design/curated-collection/Presentations/Sequencing%20Troubleshooting.pptx) and do [go wrong](http://sequencing.qcfail.com/). "Crap in – crap out" means it's probably worth spending some time cleaning the raw data before performing real analysis.
