@@ -187,7 +187,16 @@ q2=input/reads.pe2.clean.fq</code></pre>
 <p>Run <code>maker maker_opts.ctl</code>. This may take a few minutes, depending on how much data you gave it.<br />Once its done the results will be hidden in subdirectories of <code>*maker.output/min20k_datastore</code>. Perhaps its easier to find the gene predictions using <code>find</code> then grep for <code>gff</code> or <code>proteins</code>. You can ignore the (temporary) contents under <code>theVoid</code> directories.</p>
 <h3 id="quality-control-of-individual-genes">Quality control of individual genes</h3>
 <p>So now we have some gene predictions... how can we know if they are any good? The easiest way to get a feel for this is by comparing a few of them (<a href="predictons.fa" title="backup MAKER gene predictions just in case">backup examples)</a>) to known sequences from other species. For this, launch a <a href="http://sequenceserver.com" title="BLAST graphical interface">local BLAST server</a> to compare a few of your protein-coding gene predictions to the high quality predictions in swissprot:</p>
-<pre class="sourceCode bash"><code class="sourceCode bash"><span class="kw">sequenceserver</span> -d ~/data/reference_databases</code></pre>
+<pre class="sourceCode bash"><code class="sourceCode bash">
+<span class="co"># First download the SwissProt database:</span>
+<span class="kw">cd</span> ~/data/reference_databases
+<span class="kw">sh</span> ./DO_WHILE_BUILDING_IMAGE
+
+<span class="co"># Install sequenceserver:</span>
+<span class="kw">sudo</span> gem install sequenceserver
+
+<span class="co"># To run sequenceserver type:</span>
+<span class="kw">sequenceserver</span> -d ~/data/reference_databases</code></pre>
 <p>Do any of these genes have significant similarity to known sequences? For a given gene prediction, do you think it is complete, or can you infer from the BLAST alignments that something may be wrong?</p>
 <hr />
 <p>As you can see, gene prediction software is imperfect – this is even the case when using all available evidence. This is potentially costly for analyses that rely on gene predictions - i.e. many of the analyses we might want to do!</p>
