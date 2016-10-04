@@ -238,7 +238,17 @@ Once its done the results will be hidden in subdirectories of `*maker.output/min
 So now we have some gene predictions... how can we know if they are any good? The easiest way to get a feel for this is by comparing a few of them ([backup examples)](predictons.fa "backup MAKER gene predictions just in case")) to known sequences from other species. For this, launch a [local BLAST server](http://sequenceserver.com "BLAST graphical interface") to compare a few of your protein-coding gene predictions to the high quality predictions in swissprot:
 
 ```bash
+
+# First download the SwissProt database:
+cd ~/data/reference_databases
+sh ./DO_WHILE_BUILDING_IMAGE
+
+# Install sequenceserver:
+sudo gem install sequenceserver
+
+# To run sequenceserver type:
 sequenceserver -d ~/data/reference_databases
+
 ```
 
 Do any of these genes have significant similarity to known sequences? For a given gene prediction, do you think it is complete, or can you infer from the BLAST alignments that something may be wrong?
