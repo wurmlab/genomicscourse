@@ -26,7 +26,7 @@ The aim of this practical is to genotype these 14 individuals. The steps in the 
 We recommend that you set up a directory for today following [our convention](https://github.com/wurmlab/templates/blob/master/project_structures.md), as [you did in the last practical](../reference_genome/assembly#short-read-cleaning). You should have a subdirectory called `data`) and another called `results`. In each, you should have a directory for the read mapping, and another for the variant calling:
 
 ```
-2016-05-31-genotyping/
+2016-10-05-genotyping/
 ├── data
 │   ├── 01-mapping
 │   └── 02-genotyping
@@ -148,7 +148,7 @@ ln -rs tmp/alignments results/alignments/original
 The following analysis is done in the directory `results/02-genotyping`. Remember to keep your commands in the `WHATIDID.txt` file. We will need the reference fasta file, as well as the alignments we just created, so create a link to those files in the `data/02-genotyping` directory:
 
 ```sh
-cd ~/2016-05-31-genotyping/
+cd ~/2016-10-05-genotyping/
 
 ln -rs results/01-mapping/results/alignments data/02-genotyping/alignments
 ln -rs data/01-mapping/reference.fa data/02-genotyping/
