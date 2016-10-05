@@ -26,7 +26,7 @@ The aim of this practical is to genotype these 14 individuals. The steps in the 
 We recommend that you set up a directory for today following [our convention](https://github.com/wurmlab/templates/blob/master/project_structures.md), as [you did in the last practical](../reference_genome/assembly#short-read-cleaning). You should have a subdirectory called `data`) and another called `results`. In each, you should have a directory for the read mapping, and another for the variant calling:
 
 ```
-2016-05-31-genotyping/
+2016-10-05-genotyping/
 ├── data
 │   ├── 01-mapping
 │   └── 02-genotyping
