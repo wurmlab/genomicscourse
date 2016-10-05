@@ -148,7 +148,7 @@ ln -rs tmp/alignments results/alignments/original
 The following analysis is done in the directory `results/02-genotyping`. Remember to keep your commands in the `WHATIDID.txt` file. We will need the reference fasta file, as well as the alignments we just created, so create a link to those files in the `data/02-genotyping` directory:
 
 ```sh
-cd ~/2016-05-31-genotyping/
+cd ~/2016-10-05-genotyping/
 
 ln -rs results/01-mapping/results/alignments data/02-genotyping/alignments
 ln -rs data/01-mapping/reference.fa data/02-genotyping/
