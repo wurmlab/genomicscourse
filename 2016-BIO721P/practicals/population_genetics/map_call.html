@@ -94,7 +94,7 @@ code > span.er { color: #ff0000; font-weight: bold; }
 
 <span class="co"># Run bowtie with each sample (will take a few minutes)</span>
 <span class="kw">cat</span> tmp/names.txt <span class="kw">|</span> <span class="kw">\</span>
-  <span class="kw">parallel</span> <span class="st">&quot;bowtie2 -x tmp/reference -1 input/reads/{}.1.fq.gz -2 input/reads/{}.2.fq.gz &gt; tmp/alignments/{}.sam&quot;</span></code></pre>
+  <span class="kw">parallel</span> -t <span class="st">&quot;bowtie2 -x tmp/reference -1 input/reads/{}.1.fq.gz -2 input/reads/{}.2.fq.gz &gt; tmp/alignments/{}.sam&quot;</span></code></pre>
 <p>Because SAM files include a lot of information, they tend to occupy a lot of space (even with our small example data). Therefore, SAM files are generally compressed into BAM files (Binary sAM). Most tools that use aligned reads require BAM files that have been sorted and indexed by genomic position. This is done using <code>samtools</code>, a set of tools created to manipulate SAM/BAM files:</p>
 <pre class="sourceCode bash"><code class="sourceCode bash"><span class="co"># samtools view: compresses the SAM to BAM</span>
 <span class="co"># samtools sort: sorts by scaffold position (creates f1_B.sorted.bam)</span>
@@ -105,9 +105,10 @@ code > span.er { color: #ff0000; font-weight: bold; }
 <span class="kw">samtools</span> index tmp/alignments/f1_B.bam   <span class="co"># creates f1_B.sorted.bam.bai</span></code></pre>
 <p>Again, we can use parallel to run this step for all the samples:</p>
 <pre class="sourceCode bash"><code class="sourceCode bash"><span class="kw">cat</span> tmp/names.txt \
-  <span class="kw">|</span> <span class="kw">parallel</span> <span class="st">&quot;samtools view -Sb tmp/alignments/{}.sam | samtools sort - &gt; tmp/alignments/{}.bam&quot;</span>
+  <span class="kw">|</span> <span class="kw">parallel</span> -t <span class="st">&quot;samtools view -Sb tmp/alignments/{}.sam | samtools sort - &gt; tmp/alignments/{}.bam&quot;</span>
+  
 <span class="kw">cat</span> tmp/names.txt \
-  <span class="kw">|</span> <span class="kw">parallel</span> <span class="st">&quot;samtools index tmp/alignments/{}.bam&quot;</span></code></pre>
+  <span class="kw">|</span> <span class="kw">parallel</span> -t <span class="st">&quot;samtools index tmp/alignments/{}.bam&quot;</span></code></pre>
 <p>Now check that a <code>bam</code> and a <code>bai</code> exist for each sample.</p>
 <p>To view what's in a BAM file, you have to use <code>samtools view</code></p>
 <pre class="sourceCode bash"><code class="sourceCode bash"><span class="kw">samtools</span> view tmp/alignments/f1_B.bam <span class="kw">|</span> <span class="kw">less</span>
