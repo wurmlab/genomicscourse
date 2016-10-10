@@ -12,7 +12,7 @@ In the second part, we are going to measure genetic differentiation between the 
 
 ## Input into R
 
-Again, make a directory for this practical. You should create a directory for the data and one for the results (with a link to the data directory). You will only need the `snp.vcf` file we created in the last practical (if you don't have this file, you can download it from [here])(https://github.com/wurmlab/genomicscourse/blob/master/2016-BIO721P/data/popgen/vcf/snp.vcf.gz "Download vcf")).
+Again, make a directory for this practical. You should create a directory for the data and one for the results (with a link to the data directory). You will only need the `snp.vcf` file we created in the last practical (if you don't have this file, you can download it from [here](https://github.com/wurmlab/genomicscourse/blob/master/2016-BIO721P/data/popgen/vcf/snp.vcf.gz "Download vcf")).
 
 It's a good idea to note down the results of your analysis in the the results section, as well saving any graph you make.
 
