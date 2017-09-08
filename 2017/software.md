@@ -1,4 +1,6 @@
-# Software
+# Software 
+
+(if newer versions are available, those are likely preferered but not yet tested)
 
 ### Apocrita
 * fastqc
