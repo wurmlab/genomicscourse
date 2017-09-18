@@ -4,6 +4,7 @@
 
 ### Apocrita
 * fastqc
+* kmc2
 * seqtk
 * khmer    # Needs to be installed
 * soapdenovo2
@@ -18,6 +19,7 @@
 
 ### Local PC
 * sequenceserver
+* kmc2
 * Chrome, Firefox
 * standard text editors including emacs, vi and Atom
 * git, htop, tree
