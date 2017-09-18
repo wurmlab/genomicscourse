@@ -31,6 +31,8 @@ For each step that we will perform, you should:
 And each directory in which you have done something [should include a `WHATIDID.txt` or `WHATIDID.md` file](http://github.com/wurmlab/templates/blob/master/project_structures.md) in which you log your commands. 
 
 Being disciplined about this is *extremely important*. It is similar to having a laboratory notebook. It will prevent you from becoming overwhelmed by having too many files, or not remembering what you did where. 
+
+
 ---
 
 ## Sequencing an appropriate sample
@@ -55,7 +57,11 @@ Sequencers aren't perfect. All kinds of things [can](http://genomecuration.githu
 
 [FastQC](http://www.bioinformatics.babraham.ac.uk/projects/fastqc/) ([documentation](http://www.bioinformatics.babraham.ac.uk/projects/fastqc/Help/)) can help you understand sequence quality and composition, and thus can inform read cleaning strategy.
 
-Link the raw sequence files (`~/data/reference_assembly/reads.pe*.fastq.gz`) to a relevant input directory (e.g., `~/2016-10-03-reference/input/01-read_cleaning/`). Now move to a relevant results directory (e.g., `~/2016-10-03-reference/results/01-read_cleaning/). Here, run FastQC on the `reads.pe2` file. The `--outdir` option will help you clearly separate input and output files (and remember to log the commands you used in a `WHATIDID` file.
+Link the raw sequence files (`~/data/reference_assembly/reads.pe*.fastq.gz`) to a relevant input directory (e.g., `~/2016-10-03-reference/input/01-read_cleaning/`). 
+
+Now move to a relevant results directory (e.g., `~/2016-10-03-reference/results/01-read_cleaning/). 
+
+Here, run FastQC on the `reads.pe2` file. The `--outdir` option will help you clearly separate input and output files (and remember to log the commands you used in a `WHATIDID` file.
 
 Your [resulting directory structure](http://github.com/wurmlab/templates/blob/master/project_structures.md "Typical multi-day project structure"), should look like this:
 
