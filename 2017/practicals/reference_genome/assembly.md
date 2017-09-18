@@ -18,12 +18,19 @@ Please note that these are toy/sandbox examples simplified to run on laptops and
 
 ---
 
-## Preparation
+## Set up directory hierarchy to work in
 
-Start by creating a directory to work in. Drawing on ideas from [Noble (2009)](http://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1000424 "A Quick Guide to Organizing Computational Biology Projects") and others, we recommend following a [specific convention](http://github.com/wurmlab/templates/blob/master/project_structures.md "Typical multi-day project structure") for all your projects. For example, create a main directory for this section of the course (e.g., `~/2016-10-03-reference`), and create relevant subdirectories for each step (e.g., first one might be `~/2016-10-03-reference/results/01-read_cleaning`).
+Start by creating a directory to work in. Drawing on ideas from [Noble (2009)](http://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1000424 "A Quick Guide to Organizing Computational Biology Projects") and others, we recommend following a [specific convention](http://github.com/wurmlab/templates/blob/master/project_structures.md "Typical multi-day project structure") for all your projects. 
 
-[We similarly recommend](http://github.com/wurmlab/templates/blob/master/project_structures.md) that you log your commands in a `WHATIDID.txt` file in each directory.
+For this, create a main directory for this section of the course (`~/2016-10-03-reference_genome`), and create relevant `input` and `results` subdirectories.
 
+For each step that we will perform, you should: 
+ * have input data in a relevant subdirectory
+ * work in a relevant subdirectory
+
+And each directory in which you have done something [should include a `WHATIDID.txt` or `WHATIDID.md` file](http://github.com/wurmlab/templates/blob/master/project_structures.md) in which you log your commands. 
+
+Being disciplined about this is *extremely important*. It is similar to having a laboratory notebook. It will prevent you from becoming overwhelmed by having too many files, or not remembering what you did where. 
 ---
 
 ## Sequencing an appropriate sample
@@ -38,7 +45,7 @@ Many considerations go into the appropriate experimental design and sequencing s
 
 ## Get the data
 
-Use `scp` to copy the data from `/data/SBCS-MSc-BioInf/data` in Apocrita to your PC.
+Ensure you have a directory called `~/2017-09-BIO721_genome_bioinformatics_input`. If not, you can find it on Apocriate at `/data/SBCS-MSc-BioInf/data`(you can use scp for this). 
 
 ## Short read cleaning
 
@@ -48,21 +55,21 @@ Sequencers aren't perfect. All kinds of things [can](http://genomecuration.githu
 
 [FastQC](http://www.bioinformatics.babraham.ac.uk/projects/fastqc/) ([documentation](http://www.bioinformatics.babraham.ac.uk/projects/fastqc/Help/)) can help you understand sequence quality and composition, and thus can inform read cleaning strategy.
 
-Move, copy or link the raw sequence files (`~/data/reference_assembly/reads.pe*.fastq.gz`) to a relevant input directory (e.g. `~/2016-10-03-reference/data/01-read_cleaning/`). Now run FastQC on the `reads.pe2` file. The `--outdir` option will help you clearly separate input and output files.
+Link the raw sequence files (`~/data/reference_assembly/reads.pe*.fastq.gz`) to a relevant input directory (e.g., `~/2016-10-03-reference/input/01-read_cleaning/`). Now move to a relevant results directory (e.g., `~/2016-10-03-reference/results/01-read_cleaning/). Here, run FastQC on the `reads.pe2` file. The `--outdir` option will help you clearly separate input and output files (and remember to log the commands you used in a `WHATIDID` file.
 
-If respecting our [project structure convention](http://github.com/wurmlab/templates/blob/master/project_structures.md "Typical multi-day project structure"), your resulting directory structure may look like this:
+Your [resulting directory structure](http://github.com/wurmlab/templates/blob/master/project_structures.md "Typical multi-day project structure"), should look like this:
 
 ```bash
 tree -h
 .
-├── [4.0K]  data
+├── [4.0K]  input
 │   └── [4.0K]  01-read_cleaning
 │       ├── [  53]  reads.pe1.fastq.gz
 │       ├── [  53]  reads.pe2.fastq.gz
 │       └── [  44]  WHATIDID.txt
 └── [4.0K]  results
     └── [4.0K]  01-read_cleaning
-        ├── [  28]  input -> ../../data/01-read_cleaning/
+        ├── [  28]  input -> ../../input/01-read_cleaning/
         ├── [336K]  reads.pe2_fastqc.html
         ├── [405K]  reads.pe2_fastqc.zip
         └── [ 126]  WHATIDID.txt
@@ -91,7 +98,7 @@ seqtk trimfq -b REPLACE -e REPLACE input/reads.pe2.fastq.gz | gzip > tmp/reads.p
 
 This will only take a few seconds (make sure you replaced `REPLACE`).
 
-Let's similarly filter the paired set of reads, `reads.pe1`:
+Let's similarly filter do FASTQC to inspect the paired set of reads, `reads.pe1`, and appropriately filter them.
 ```bash
 seqtk trimfq -b REPLACE -e REPLACE input/reads.pe1.fastq.gz | gzip > tmp/reads.pe1.trimmed.fq.gz
 ```
@@ -182,6 +189,8 @@ There are many other genome assembly approaches. While waiting for everyone to m
  * The now slightly outdated (2013) [Assemblathon paper](http://gigascience.biomedcentral.com/articles/10.1186/2047-217X-2-10).
  * [Metassembler: merging and optimizing *de novo* genome assemblies. Wences & Schatz (2015)](http://genomebiology.biomedcentral.com/articles/10.1186/s13059-015-0764-4).
  * [A hybrid approach for *de novo* human genome sequence assembly and phasing. Mostovoy et al (2016)](http://www.nature.com/nmeth/journal/vaop/ncurrent/full/nmeth.3865.html).
+ 
+At home: what are the tradeoffs between a `de bruijn` graph assembly approach and an `overlap-layout-consensus` assembly approach?
 
 
 ### Quality assessment
@@ -201,6 +210,7 @@ Have a look at the report (pdf or html) Quast generated.
 What do the values in the table mean? For which ones is higher better, and for which ones is smaller better? Is Quast's use of the word "contig" appropriate?
 
 Perhaps we have prior knowledge about the %GC content to expect, the number of chromosomes to expect, and the total genome size – these can inform comparisons with output statistics present in Quast's report.
+
 
 #### Biologically meaningful measures
 
@@ -272,6 +282,6 @@ Genevalidator's visual output can be handy when looking at few genes. But the to
 
 ### Manual curation
 
-Because automated gene predictions aren't perfect, manual inspection and fixing are often required. The most commonly used software for this is [Apollo/WebApollo](http://genomearchitect.org/). In the following practical, we will be using another curation software (Afra) to edit the gene prediction, e.g. adding or removing exons, merging or splitting gene models, and adjusting exon boundaries.
+Because automated gene predictions aren't perfect, manual inspection and fixing are often required. The most commonly used software for this is [Apollo/WebApollo](http://genomearchitect.org/). In the following practical, we will be using a different, Apollo-like curation software (Afra) to edit the gene prediction, e.g. adding or removing exons, merging or splitting gene models, and adjusting exon boundaries.
 
 ---
