@@ -28,7 +28,7 @@ For each step that we will perform, you should:
  * have input data in a relevant subdirectory
  * work in a relevant subdirectory
 
-And each directory in which you have done something [should include a `WHATIDID.txt` or `WHATIDID.md` file](http://github.com/wurmlab/templates/blob/master/project_structures.md) in which you log your commands. 
+And each directory in which you have done something [should include a `WHATIDID.txt` file](http://github.com/wurmlab/templates/blob/master/project_structures.md) in which you log your commands. 
 
 Being disciplined about this is *extremely important*. It is similar to having a laboratory notebook. It will prevent you from becoming overwhelmed by having too many files, or not remembering what you did where. 
 
@@ -61,7 +61,7 @@ Link the raw sequence files (`~/data/reference_assembly/reads.pe*.fastq.gz`) to 
 
 Now move to a relevant results directory (e.g., `~/2016-10-03-reference/results/01-read_cleaning/). 
 
-Here, run FastQC on the `reads.pe2` file. The `--outdir` option will help you clearly separate input and output files (and remember to log the commands you used in a `WHATIDID` file).
+Here, run FastQC on the `reads.pe2` file. The `--outdir` option will help you clearly separate input and output files (and remember to log the commands you used in the `WHATIDID.txt` file).
 
 Your [resulting directory structure](http://github.com/wurmlab/templates/blob/master/project_structures.md "Typical multi-day project structure"), should look like this:
 
