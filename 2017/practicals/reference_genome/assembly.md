@@ -99,14 +99,14 @@ Other tools including [fastx_toolkit](http://github.com/agordon/fastx_toolkit), 
 Based on the results from FastQC, replace `REPLACE` and `REPLACE` below to appropriately trim from the beginning (`-b`) and end (`-e`)  of the sequences.
 
 ```bash
-seqtk trimfq -b REPLACE -e REPLACE input/reads.pe2.fastq.gz | gzip > tmp/reads.pe2.trimmed.fq.gz
+seqtk trimfq -b REPLACE -e REPLACE input/reads.pe2.fastq.gz > tmp/reads.pe2.trimmed.fq
 ```
 
 This will only take a few seconds (make sure you replaced `REPLACE`).
 
-Let's similarly filter do FASTQC to inspect the paired set of reads, `reads.pe1`, and appropriately filter them.
+Let's similarly inspect the paired set of reads, `reads.pe1`, and appropriately trim them.
 ```bash
-seqtk trimfq -b REPLACE -e REPLACE input/reads.pe1.fastq.gz | gzip > tmp/reads.pe1.trimmed.fq.gz
+seqtk trimfq -b REPLACE -e REPLACE input/reads.pe1.fastq.gz > tmp/reads.pe1.trimmed.fq
 ```
 
 
@@ -129,7 +129,7 @@ Below, we use khmer to remove extremely frequent k-mers (more than 100x), remove
 
 ```bash
 # 1. Interleave Fastqs (khmer needs both paired end files merged into one file)
-seqtk mergepe tmp/reads.pe1.trimmed.fq.gz tmp/reads.pe2.trimmed.fq.gz > tmp/reads.pe12.trimmed.fq
+seqtk mergepe tmp/reads.pe1.trimmed.fq tmp/reads.pe2.trimmed.fq > tmp/reads.pe12.trimmed.fq
 
 # 2. Remove coverage above 100x, save kmer.counts table
 khmer normalize-by-median.py -p --ksize 20 -C 100 -M 1e9 -s tmp/kmer.counts \
