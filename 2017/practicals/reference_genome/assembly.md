@@ -22,7 +22,7 @@ Please note that these are toy/sandbox examples simplified to run on laptops and
 
 Start by creating a directory to work in. Drawing on ideas from [Noble (2009)](http://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1000424 "A Quick Guide to Organizing Computational Biology Projects") and others, we recommend following a [specific convention](http://github.com/wurmlab/templates/blob/master/project_structures.md "Typical multi-day project structure") for all your projects. 
 
-For this, create a main directory for this section of the course (`~/2016-10-03-reference_genome`), and create relevant `input` and `results` subdirectories.
+For this, create a main directory for this section of the course (`~/2017-09-29-reference_genome`), and create relevant `input` and `results` subdirectories.
 
 For each step that we will perform, you should: 
  * have input data in a relevant subdirectory
@@ -57,9 +57,9 @@ Sequencers aren't perfect. All kinds of things [can](http://genomecuration.githu
 
 [FastQC](http://www.bioinformatics.babraham.ac.uk/projects/fastqc/) ([documentation](http://www.bioinformatics.babraham.ac.uk/projects/fastqc/Help/)) can help you understand sequence quality and composition, and thus can inform read cleaning strategy.
 
-Link the raw sequence files (`~/data/reference_assembly/reads.pe*.fastq.gz`) to a relevant input directory (e.g., `~/2016-10-03-reference/input/01-read_cleaning/`). 
+Link the raw sequence files (`~/data/reference_assembly/reads.pe*.fastq.gz`) to a relevant input directory (e.g., `~/2017-09-29-reference_genome/input/01-read_cleaning/`). 
 
-Now move to a relevant results directory (e.g., `~/2016-10-03-reference/results/01-read_cleaning/). 
+Now move to a relevant results directory (e.g., `~/2017-09-29-reference_genome/results/01-read_cleaning/). 
 
 Here, run FastQC on the `reads.pe2` file. The `--outdir` option will help you clearly separate input and output files (and remember to log the commands you used in a `WHATIDID` file).
 
@@ -236,7 +236,7 @@ We probably have other prior information about what to expect in this genome. Fo
 
 Many tools exist for gene prediction, some based on *ab initio* statistical models of what a protein-coding gene should look like, others that use similarity with protein-coding genes from other species, and others (such as [Augustus](http://bioinf.uni-greifswald.de/augustus/) and SNAP), that use both. There is no perfect tool or approach, thus we typically run many gene-finding tools and call a consensus between the different predicted gene models.  [MAKER](http://www.yandell-lab.org/software/maker.html) and [JAMg](https://github.com/genomecuration/JAMg) can do this for us. Let's use MAKER on a sandbox example.
 
-Start in a new directory (e.g., `~/2016-10-03-reference/results/03-gene_prediction`). Pull out the longest few scaffolds from the `assembly.scafSeq` (e.g., using `seqtk seq -L 20000`) into their own fasta (e.g., `min20000.fa`).
+Start in a new directory (e.g., `~/2017-09-29-reference_genome/results/03-gene_prediction`). Pull out the longest few scaffolds from the `assembly.scafSeq` (e.g., using `seqtk seq -L 20000`) into their own fasta (e.g., `min20000.fa`).
 
 Running `maker -OPTS` will generate an empty `maker_opts.ctl` configuration file (ignore the warning). Edit that file to specify:
   * genome: `min20000.fa`
