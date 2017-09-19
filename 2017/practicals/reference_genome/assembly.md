@@ -259,10 +259,7 @@ So now we have some gene predictions... how can we know if they are any good? Th
 cd ~/data/reference_databases
 sh ./DO_WHILE_BUILDING_IMAGE
 
-# Install sequenceserver:
-sudo gem install sequenceserver
-
-# To run sequenceserver type:
+# Run BLAST server:
 sequenceserver -d ~/data/reference_databases
 
 ```
