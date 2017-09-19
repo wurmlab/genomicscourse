@@ -6,13 +6,13 @@ Roddy Pracana and Yannick Wurm
 
 There are several types of variants. Commonly, people look at single nucleotide polymorphisms (SNPs, sometimes also known as single nucleotide variants, SNVs). Other classes include small insertions and deletions (known collectively as indels), as well as larger structural variants, such as large insertions, deletions, inversions and translocations.
 
-There are several approaches to variant calling from short pair-end reads. We are going to use one of them. First, we will map the reads from each individual to a reference assembly similar to the one created in the [previous practical](../reference_genome/assembly). Then we will find the positions where at least some of the individuals differ from the reference (and each other).
+There are several approaches to variant calling from short pair-end reads. We are going to use one of them. First, we will map the reads from each individual to a reference assembly similar to the one created in the [previous practical](../reference_genome/assembly.md). Then we will find the positions where at least some of the individuals differ from the reference (and each other).
 
 ## Pipeline
 
 We will analyse subsets of whole-genome sequences of several fire ant individuals. The fire ant, *Solenopsis invicta*, is notable for being dimorphic in terms of colony organisation, with some colonies having one queen and other colonies having multiple queens. Interestingly, this trait is genetically determined. In this practical, we will try to find the genetic difference between ants from single queen and multiple queen colonies.
 
-We will use a subset of the reads from whole-genome sequencing of 14 male fire ants. Samples 1B to 7B are from single-queen colonies, samples 1b to 7b are from multiple-queen colonies. Ants are haplodiploid, which means that they have haploid males, so all our samples are haploid.
+We will use a subset of the reads from whole-genome sequencing of 14 male fire ants. Samples 1B to 7B are from single-queen colonies, samples 1b to 7b are from multiple-queen colonies. Ants are haplodiploid, which means that females are haploid and males, haploid. Here we will use onlymales, so all our samples are haploid, which makes variant calling easier.
 
 The aim of this practical is to genotype these 14 individuals. The steps in the practical are:
 1. Align the reads of each individual to a reference genome assembly using the aligner `bowtie2`.
@@ -23,7 +23,7 @@ The aim of this practical is to genotype these 14 individuals. The steps in the 
 
 ## The data
 
-We recommend that you set up a directory for today following [our convention](https://github.com/wurmlab/templates/blob/master/project_structures.md), as [you did in the last practical](../reference_genome/assembly#short-read-cleaning). You should have a subdirectory called `data`) and another called `results`. In each, you should have a directory for the read mapping, and another for the variant calling:
+We recommend that you set up a directory for today following [our convention](https://github.com/wurmlab/templates/blob/master/project_structures.md), as [you did in the last practical](../reference_genome//assembly.md#short-read-cleaning). You should have a subdirectory called `data` and another called `results`. In each, you should have a directory for the read mapping, and another for the variant calling:
 
 ```
 2016-10-05-genotyping/
@@ -42,7 +42,7 @@ We recommend that you set up a directory for today following [our convention](ht
 
 ```
 
-The data we need in the `~/data/popgen` directory. Copy or link the file `reference.fa` and the all the `reads/*fq` files to your new directory (under `data/01-mapping/` and `data/01-mapping/reads/`, respectively).
+The data we need is in the `~/data/popgen` directory. Copy (with `cp`) or link (with `ln -rs`) the file `reference.fa` (under `data/01-mapping/`) and the all the `reads/*fq` files (under `data/01-mapping/reads/`) to your respective `results` directories.
 
 To see how many scaffolds there are in the reference genome, type:
 
@@ -52,9 +52,9 @@ grep ">" reference.fa
 
 Now have a look at the `.fq.gz` files.
 * Why does each sample have two sets of reads?
-* What is each line of the `.fq.gz` file? (you can use `less`)
+* What is each line of the `.fq.gz` file? (you can use `zless`)
 * How many reads do we have in individual f1_B? (you can use `zcat` and `wc -l`)
-* How long are the reads (all reads have equal size)?
+* How long are the reads (do all reads have equal size)?
 * Knowing that each scaffold is 200kb, what is the expected coverage per base pair of individual f1_B?
 
 
@@ -88,7 +88,7 @@ bowtie2 \
 
 The command produced a SAM file (Sequence Alignment/Map file), which is the standard file used to store sequence alignments. Have a quick look at the file by typing `less f1.sam`. The file includes a header (lines starting with the `@` symbol), and a line for every read aligned to the reference assembly. For each read, we are given a mapping quality values, the position of both pairs, the actual sequence and its quality by base pair, and a series of flags with additional measures of mapping quality.
 
-We now need to run bowtie2 for all the other samples. We could do this by typing the same command another 13 times (changing the sample name), or we can use the `GNU parallel` tool:
+We now need to run bowtie2 for all the other samples. We could do this by typing the same command another 13 times (changing the sample name), or we can use the `GNU parallel` tool, which allows to run the same command on several samples at once:
 
 ```bash
 # Create a file with all sample names
@@ -112,12 +112,12 @@ samtools index tmp/alignments/f1_B.bam   # creates f1_B.sorted.bam.bai
 
 ```
 
-Again, we can use parallel to run this step for all the samples:
+Again, we can use `parallel` to run this step for all the samples:
 
 ```bash
 cat tmp/names.txt \
   | parallel -t "samtools view -Sb tmp/alignments/{}.sam | samtools sort - > tmp/alignments/{}.bam"
-  
+
 cat tmp/names.txt \
   | parallel -t "samtools index tmp/alignments/{}.bam"
 ```
@@ -182,14 +182,14 @@ The file produced a VCF (Variant Call Format) format telling the position, natur
 
 Let's take a look at the VCF file produced by typing `less -S tmp/variants/calls.vcf`. The file is composed of a header and rows for all the variant positions. Have a look at the different columns and check what each is (the header includes labels). Notice that some columns include several fields.
 
-* Where does the Header start and end?
+* Where does the header start and end?
 * How is the genotype of each sample coded?
 * How many variants were identified?
 * Can you tell the difference between SNPs and indels? How many of each have been identified?
 
 ## Quality filtering of variant calls
 
-Not all variants that we called are necessarily of good quality, so it is essential to have a quality filter step. The VCF includes several fields with quality information. The most obvious is the column QUAL, which gives us a Phred-scale quality score.
+Not all variants that we called are necessarily of good quality, so it is essential to have a quality filter step. The VCF includes several fields with quality information. The most obvious is the column QUAL, which gives us a [Phred-scale quality score](https://en.wikipedia.org/wiki/Phred_quality_score).
 
 * What does a Phred-scale quality score of 30 mean?
 
@@ -201,7 +201,7 @@ bcftools view -g ^miss > tmp/variants/filtered_calls.vcf
 
 ```
 
-In more serious analysis, it may be important to filter by other parameters.
+In more serious analyses, it may be important to filter by other parameters.
 
 In the downstream analysis, we only want to look at sites that are:
 1. snps (-v snps)
@@ -215,7 +215,7 @@ bcftools view -v snps -m2 -M2 --min-ac 1:minor tmp/variants/filtered_calls.vcf >
 
 * How many SNPs does the resulting VCF file have?
 * Can you find any other parameters indicating the quality of the site?
-* Can you find any other parameters indicating the quality of the call for a given individual on a given site?
+* Can you find any other parameters indicating the quality of the variant call for a given individual on a given site?
 
 Now that we have a SNP set, we can copy it to a results file.
 
@@ -230,7 +230,7 @@ ln -rs tmp/variants/ results/original
 
 In this part of the practical, we are going to use the software IGV to visualise the alignments we created and check some of the positions where variants were called.
 
-Open IGV by typing `igv` on the command-line. Igv loads the human genome, so you need to define another genome file (Genome > Genomes from file, then choose the assembly `reference.fa` file).
+Open IGV by typing `igv` on the command-line. IGV loads the human genome, so you need to define another genome file (`Genome` > `Genomes from file`, then choose the assembly `reference.fa` file).
 
 You can load some of the BAMs and the VCF file you produced.
 

@@ -6,19 +6,20 @@ We have samples with two genotypes: the B genotype (associated with single-queen
 
 Our dummy assembly has two scaffolds, each from a different chromosome. The aim of our analysis is to test whether any part of this assembly is associated with the B and b supergene variants.
 
-In the first part of the analysis, we are going to create a heat map of the genotypes of the individuals and we are going to run PCA on these genotypes. This will allow us to test if any of the individuals cluster by their B/b genotype. This will be done using the `adegenet` package in R.
+In the first part of the analysis, we are going to create a heat map of the genotypes of the individuals and we are going to run Principal Component Analysis (PCA) on these genotypes. This will allow us to test if any of the individuals cluster together by their B/b genotype. This will be done using the `adegenet` package in R.
 
-In the second part, we are going to measure genetic differentiation between the two groups (B and b). We will do this analysis over a sliding window, to see if the differentiation between B and b are specific to any portion of the genome. We will also measure the the genetic diversity among each of the groups, which may tell us something about the evolutionary history of the portions genome represented in our assembly. This will be done using the `PopGenome` package in R.
+In the second part, we are going to measure genetic differentiation between the two groups (B and b). We will do this analysis over a sliding window, to see if the differentiation between B and b are specific to any portion of the genome. We will also measure the the genetic diversity among each of the groups, which may tell us something about the evolutionary history of the portions of genome represented in our assembly. This will be done using the `PopGenome` package in R.
 
 ## Input into R
 
-Again, make a directory for this practical. You should create a directory for the data and one for the results (with a link to the data directory). You will only need the `snp.vcf` file we created in the last practical (if you don't have this file, you can download it from [here](https://github.com/wurmlab/genomicscourse/blob/master/2016-BIO721P/data/popgen/vcf/snp.vcf.gz "Download vcf")).
+Again, make a directory for this practical. You should create a directory for the data and one for the results (with a link -using `ln -rs`- to the data directory). You will only need the `snp.vcf` file we created in the last practical (if you don't have this file, you can download it from [here](https://github.com/wurmlab/genomicscourse/blob/master/2016-BIO721P/data/popgen/vcf/snp.vcf.gz "Download vcf")).
 
-It's a good idea to note down the results of your analysis in the the results section, as well saving any graph you make.
+It's a good idea to note down the results of your analysis in the the results directory, as well saving any graph you make.
 
 The package `adegenet` uses a object called `r genlight`. To create it, we need to input a matrix where each row is an individual and each column is a locus (i.e. a SNP position). We can do this using bcftools:
 
 ```sh
+#Select the information in the vcf file without the header
 bcftools query snp.vcf -f '%CHROM\t%POS[\t%GT]\n' > snp_matrix.txt
 
 # get sample names
@@ -90,7 +91,7 @@ Now plot a heatmap showing the genotypes.
 glPlot(snp)
 
 ```
-You can also perform principal component analysis (PCA) and plot the first few axes.
+You can also perform a PCA and plot the first few axes.
 
 ```r
 
@@ -138,6 +139,8 @@ pca2 <- glPca(scaffold_2, nf=10)
 scatter(pca2, posi="bottomright")
 
 ```
+* Is differentiation coming mainly from one of the scaffolds?
+* If so, which one?
 
 ## Using `PopGenome` to measure differentiation and diversity
 
@@ -145,9 +148,9 @@ Another way of measuring differentiation between groups of individuals is using 
 
 An important population genetics measure is genetic diversity. Patterns of genetic diversity can be informative of a population's evolutionary past - for example, low genetic diversity may be evidence for a recent population bottleneck. Furthermore, the variation of diversity within the genome can be informative of different evolutionary effects, such as the strength of selection in different parts of the genome.
 
-We will measure FST and nucleotide diversity (a measure of genetic diversity) using the R package PopGenome.
+We will measure FST and nucleotide diversity (a measure of genetic diversity) using the R package `PopGenome`.
 
-In theory, the `r PopGenome` can read VCF files directly, using the `readVCF` function. However, because our samples are haploid, we need to use a different function, `r readData`, which requires a folder with a separate VCF for each scaffold.
+In theory, the `r PopGenome` can read VCF files directly, using the `readVCF` function. However, because our samples are haploid, we need to use a different function, `readData`, which requires a folder with a separate VCF for each scaffold.
 
 ```sh
 
@@ -195,7 +198,7 @@ Let's calculate FST between the two populations and nucleotide diversity in each
 ```r
 
 # Diversities and FST (by scaffold)
-snp <- F_ST.stats(snp) # this does the calculations and 
+snp <- F_ST.stats(snp) # this does the calculations and
                        # adds the results to the appropriate slots
 
 # Print FST
@@ -215,8 +218,8 @@ Another useful tool is to do the calculations along a sliding window.
 ```r
 
 # Transform object into object divided by sliding window
-win_snp <- sliding.window.transform(snp, 
-    width=10000, jump=10000, 
+win_snp <- sliding.window.transform(snp,
+    width=10000, jump=10000,
     type=2,
     whole.data=FALSE)
 
@@ -245,4 +248,3 @@ plot(1:length(lb_div), lb_div)
 
 * Knowing that there is no recombination between B and b somewhere in the genome, why do you think there is high FST in one scaffold and not the other?
 * What factors could make b have such low diversity in one of the scaffolds?
-
