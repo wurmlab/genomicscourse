@@ -47,7 +47,7 @@ Many considerations go into the appropriate experimental design and sequencing s
 
 ## Get the data
 
-Ensure you have a directory called `~/2017-09-BIO721_genome_bioinformatics_input`. If not, you can find it on Apocriate at `/data/SBCS-MSc-BioInf/data`(you can use scp for this). 
+Ensure you have a directory called `~/2017-09-BIO721_genome_bioinformatics_input`. If not, you can find it on Apocrita at `/data/SBCS-MSc-BioInf/data`(you can use scp for this). 
 
 ## Short read cleaning
 
