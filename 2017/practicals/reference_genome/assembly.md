@@ -257,7 +257,7 @@ So now we have some gene predictions... how can we know if they are any good? Th
 
 # First download the SwissProt database:
 cd ~/data/reference_databases
-sh ./DO_WHILE_BUILDING_IMAGE
+sh ./download_reference_databases
 
 # Run BLAST server:
 sequenceserver -d ~/data/reference_databases
