@@ -61,7 +61,7 @@ Link the raw sequence files (`~/data/reference_assembly/reads.pe*.fastq.gz`) to 
 
 Now move to a relevant results directory (e.g., `~/2016-10-03-reference/results/01-read_cleaning/). 
 
-Here, run FastQC on the `reads.pe2` file. The `--outdir` option will help you clearly separate input and output files (and remember to log the commands you used in a `WHATIDID` file.
+Here, run FastQC on the `reads.pe2` file. The `--outdir` option will help you clearly separate input and output files (and remember to log the commands you used in a `WHATIDID` file).
 
 Your [resulting directory structure](http://github.com/wurmlab/templates/blob/master/project_structures.md "Typical multi-day project structure"), should look like this:
 
@@ -123,12 +123,12 @@ Say you have sequenced your sample at 45x genome coverage. The real coverage dis
 ![kmer distribution graph from UCSC](img-qc/quake_kmer_distribution.jpg)
 
 
-It is possible to count and filter "k-mers" using [khmer](http://github.com/ged-lab/khmer) ([documentation](http://khmer.readthedocs.io/en/v2.0/user/index.html); the [kmc2](http://github.com/refresh-bio/KMC) tool is faster and thus can be more appropriate for large datasets.
+It is possible to count and filter "k-mers" using [khmer](http://github.com/ged-lab/khmer) ([documentation](http://khmer.readthedocs.io/en/v2.0/user/index.html); the [kmc2](http://github.com/refresh-bio/KMC) tool is faster and thus can be more appropriate for large datasets).
 
 Below, we use khmer to remove extremely frequent k-mers (more than 100x), remove extremely rare k-mers, and we use seqtk to truncate sequences containing unresolved "N"s and nucleotides of particularly low quality. After all this truncation and removal, seqtk remove reads that have become too short, or no longer have a paired read. Understanding the exact commands – which are a bit convoluted – is unnecessary. It is important to understand the concept of k-mer filtering.
 
 ```bash
-# 1. Interleave Fastqs (khmer needs both paired end files merged into one file
+# 1. Interleave Fastqs (khmer needs both paired end files merged into one file)
 seqtk mergepe tmp/reads.pe1.trimmed.fq.gz tmp/reads.pe2.trimmed.fq.gz > tmp/reads.pe12.trimmed.fq
 
 # 2. Remove coverage above 100x, save kmer.counts table
