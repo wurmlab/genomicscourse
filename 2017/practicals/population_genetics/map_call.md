@@ -6,7 +6,7 @@ Roddy Pracana and Yannick Wurm
 
 There are several types of variants. Commonly, people look at single nucleotide polymorphisms (SNPs, sometimes also known as single nucleotide variants, SNVs). Other classes include small insertions and deletions (known collectively as indels), as well as larger structural variants, such as large insertions, deletions, inversions and translocations.
 
-There are several approaches to variant calling from short pair-end reads. We are going to use one of them. First, we will map the reads from each individual to a reference assembly similar to the one created in the [previous practical](../reference_genome/assembly.md). Then we will find the positions where at least some of the individuals differ from the reference (and each other).
+There are several approaches to variant calling from short pair-end reads. We are going to use one of them. First, we will map the reads from each individual to a reference assembly similar to the one created in the [previous practical](../reference_genome/assembly). Then we will find the positions where at least some of the individuals differ from the reference (and each other).
 
 ## Pipeline
 
@@ -23,10 +23,10 @@ The aim of this practical is to genotype these 14 individuals. The steps in the 
 
 ## The data
 
-We recommend that you set up a directory for today following [our convention](https://github.com/wurmlab/templates/blob/master/project_structures.md), as [you did in the last practical](../reference_genome//assembly.md#short-read-cleaning). You should have a subdirectory called `data` and another called `results`. In each, you should have a directory for the read mapping, and another for the variant calling:
+We recommend that you set up a directory for today following [our convention](https://github.com/wurmlab/templates/blob/master/project_structures), as [you did in the last practical](../reference_genome//assembly#short-read-cleaning). You should have a subdirectory called `data` and another called `results`. In each, you should have a directory for the read mapping, and another for the variant calling:
 
 ```
-2016-10-05-genotyping/
+2017-10-04-genotyping/
 ├── data
 │   ├── 01-mapping
 │   └── 02-genotyping
@@ -42,7 +42,7 @@ We recommend that you set up a directory for today following [our convention](ht
 
 ```
 
-The data we need is in the `~/data/popgen` directory. Copy (with `cp`) or link (with `ln -rs`) the file `reference.fa` (under `data/01-mapping/`) and the all the `reads/*fq` files (under `data/01-mapping/reads/`) to your respective `results` directories.
+The data we need is in the `~/data/popgen` directory. Copy (with `cp`) or link (with `ln -rs`) the file `reference.fa`  and the `reads` directory to `~/2017-10-04-genotyping/data/01-mapping`.
 
 To see how many scaffolds there are in the reference genome, type:
 
@@ -149,7 +149,7 @@ ln -rs tmp/alignments results/alignments/original
 The following analysis is done in the directory `results/02-genotyping`. Remember to keep your commands in the `WHATIDID.txt` file. We will need the reference fasta file, as well as the alignments we just created, so create a link to those files in the `data/02-genotyping` directory:
 
 ```sh
-cd ~/2016-10-05-genotyping/
+cd ~/2017-10-04-genotyping/
 
 ln -rs results/01-mapping/results/alignments data/02-genotyping/alignments
 ln -rs data/01-mapping/reference.fa data/02-genotyping/

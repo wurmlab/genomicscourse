@@ -20,10 +20,10 @@ The package `adegenet` uses a object called `r genlight`. To create it, we need 
 
 ```sh
 #Select the information in the vcf file without the header
-bcftools query snp.vcf -f '%CHROM\t%POS[\t%GT]\n' > snp_matrix.txt
+bcftools query input/snp.vcf -f '%CHROM\t%POS[\t%GT]\n' > snp_matrix.txt
 
 # get sample names
-bcftools query -l snp.vcf > sample_names.txt
+bcftools query -l input/snp.vcf > sample_names.txt
 
 ```
 
