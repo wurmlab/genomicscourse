@@ -20,9 +20,13 @@ Please note that these are toy/sandbox examples simplified to run on laptops and
 
 ## Set up directory hierarchy to work in
 
+All work must be done in `~/hpc`, which should be setup to mirror home directory of your HPC user. Run the following command to setup `~/hpc` correctly. Do note that this command must be run at the start of each practical session.
+
+    curl https://wurmlab.github.io/genomicscourse/2017/scripts/setup.sh | bash
+
 Start by creating a directory to work in. Drawing on ideas from [Noble (2009)](http://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1000424 "A Quick Guide to Organizing Computational Biology Projects") and others, we recommend following a [specific convention](http://github.com/wurmlab/templates/blob/master/project_structures.md "Typical multi-day project structure") for all your projects. 
 
-For this, create a main directory for this section of the course (`~/2017-09-29-reference_genome`), and create relevant `input` and `results` subdirectories.
+For this, create a main directory for this section of the course (`~/hpc/2017-09-29-reference_genome`), and create relevant `input` and `results` subdirectories.
 
 For each step that we will perform, you should: 
  * have input data in a relevant subdirectory
@@ -47,7 +51,7 @@ Many considerations go into the appropriate experimental design and sequencing s
 
 ## Get the data
 
-Ensure you have a directory called `~/2017-09-BIO721_genome_bioinformatics_input`. If not, you can find it on Apocrita at `/data/SBCS-MSc-BioInf/data` (you can use scp for this). 
+Ensure you have a directory called `~/hpc/2017-09-BIO721_genome_bioinformatics_input`. If not, you can find it on Apocrita at `/data/SBCS-MSc-BioInf/data` (you can use scp for this). 
 
 ## Short read cleaning
 
@@ -57,9 +61,9 @@ Sequencers aren't perfect. All kinds of things [can](http://genomecuration.githu
 
 [FastQC](http://www.bioinformatics.babraham.ac.uk/projects/fastqc/) ([documentation](http://www.bioinformatics.babraham.ac.uk/projects/fastqc/Help/)) can help you understand sequence quality and composition, and thus can inform read cleaning strategy.
 
-Link the raw sequence files (`~/data/reference_assembly/reads.pe*.fastq.gz`) to a relevant input directory (e.g., `~/2017-09-29-reference_genome/input/01-read_cleaning/`). 
+Link the raw sequence files (`~/hpc/2017-09-BIO721_genome_bioinformatics_input/reference_assembly/reads.pe*.fastq.gz`) to a relevant input directory (e.g., `~/hpc/2017-09-29-reference_genome/input/01-read_cleaning/`).
 
-Now move to a relevant results directory (e.g., `~/2017-09-29-reference_genome/results/01-read_cleaning/). 
+Now move to a relevant results directory (e.g., `~/hpc/2017-09-29-reference_genome/results/01-read_cleaning/). 
 
 Here, run FastQC on the `reads.pe2` file. The `--outdir` option will help you clearly separate input and output files (and remember to log the commands you used in the `WHATIDID.txt` file).
 
@@ -236,7 +240,7 @@ We probably have other prior information about what to expect in this genome. Fo
 
 Many tools exist for gene prediction, some based on *ab initio* statistical models of what a protein-coding gene should look like, others that use similarity with protein-coding genes from other species, and others (such as [Augustus](http://bioinf.uni-greifswald.de/augustus/) and SNAP), that use both. There is no perfect tool or approach, thus we typically run many gene-finding tools and call a consensus between the different predicted gene models.  [MAKER](http://www.yandell-lab.org/software/maker.html) and [JAMg](https://github.com/genomecuration/JAMg) can do this for us. Let's use MAKER on a sandbox example.
 
-Start in a new directory (e.g., `~/2017-09-29-reference_genome/results/03-gene_prediction`). Pull out the longest few scaffolds from the `assembly.scafSeq` (e.g., using `seqtk seq -L 20000`) into their own fasta (e.g., `min20000.fa`).
+Start in a new directory (e.g., `~/hpc/2017-09-29-reference_genome/results/03-gene_prediction`). Pull out the longest few scaffolds from the `assembly.scafSeq` (e.g., using `seqtk seq -L 20000`) into their own fasta (e.g., `min20000.fa`).
 
 Running `maker -OPTS` will generate an empty `maker_opts.ctl` configuration file (ignore the warning). Edit that file to specify:
   * genome: `min20000.fa`
@@ -256,11 +260,11 @@ So now we have some gene predictions... how can we know if they are any good? Th
 ```bash
 
 # First download the SwissProt database:
-cd ~/data/reference_databases
+cd ~/hpc/2017-09-BIO721_genome_bioinformatics_input/reference_databases
 sh ./download_reference_databases
 
 # Run BLAST server:
-sequenceserver -d ~/data/reference_databases
+sequenceserver -d ~/hpc/2017-09-BIO721_genome_bioinformatics_input/reference_databases
 
 ```
 
@@ -274,7 +278,7 @@ As you can see, gene prediction software is imperfect – this is even the case 
 
 The [GeneValidator](http://bioinformatics.oxfordjournals.org/content/32/10/1559.long) tool can help to evaluate quality of a gene prediction by comparing features of a gene prediction to similar database sequences. This approach expects that similar sequences should for example be of similar length.
 
-You can simply run `genevalidator  -d ~/data/reference_databases/uniprot/uniprot_sprot.fasta proteins.fasta` (on your gene predictions, or [these examples](../../data/reference_assembly/gv_examples.fa)), or use the [web service](http://genevalidator.sbcs.qmul.ac.uk/) for queries of few sequences. Alternatively just check the screenshots linked in the next sentence. Try to understand why some gene predictions have no reason for concern [(e.g.)](img-qc/good.png), while others do [(e.g.)](img-qc/bad.png).
+You can simply run `genevalidator  -d ~/hpc/2017-09-BIO721_genome_bioinformatics_input/reference_databases/uniprot/uniprot_sprot.fasta proteins.fasta` (on your gene predictions, or [these examples](../../data/reference_assembly/gv_examples.fa)), or use the [web service](http://genevalidator.sbcs.qmul.ac.uk/) for queries of few sequences. Alternatively just check the screenshots linked in the next sentence. Try to understand why some gene predictions have no reason for concern [(e.g.)](img-qc/good.png), while others do [(e.g.)](img-qc/bad.png).
 
 
 ### Comparing whole genesets & prioritizing genes for manual curation
