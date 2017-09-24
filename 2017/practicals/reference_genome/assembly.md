@@ -20,6 +20,10 @@ Please note that these are toy/sandbox examples simplified to run on laptops and
 
 ## Set up directory hierarchy to work in
 
+All work must be done in `~/hpc`, which should be setup to mirror home directory of your HPC user. Run the following command to setup `~/hpc` correctly. Do note that this command must be run at the start of each practical session.
+
+    curl https://wurmlab.github.io/genomicscourse/2017/scripts/setup.sh | bash
+
 Start by creating a directory to work in. Drawing on ideas from [Noble (2009)](http://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1000424 "A Quick Guide to Organizing Computational Biology Projects") and others, we recommend following a [specific convention](http://github.com/wurmlab/templates/blob/master/project_structures.md "Typical multi-day project structure") for all your projects. 
 
 For this, create a main directory for this section of the course (`~/2017-09-29-reference_genome`), and create relevant `input` and `results` subdirectories.
