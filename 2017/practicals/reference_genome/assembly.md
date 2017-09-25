@@ -20,15 +20,19 @@ Please note that these are toy/sandbox examples simplified to run on laptops and
 
 ## Set up directory hierarchy to work in
 
+All work must be done in `~/hpc`, which should be setup to mirror home directory of your HPC user. Run the following command to setup `~/hpc` correctly. Do note that this command must be run at the start of each practical session.
+
+    curl https://wurmlab.github.io/genomicscourse/2017/scripts/setup.sh | bash
+
 Start by creating a directory to work in. Drawing on ideas from [Noble (2009)](http://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1000424 "A Quick Guide to Organizing Computational Biology Projects") and others, we recommend following a [specific convention](http://github.com/wurmlab/templates/blob/master/project_structures.md "Typical multi-day project structure") for all your projects. 
 
-For this, create a main directory for this section of the course (`~/2016-10-03-reference_genome`), and create relevant `input` and `results` subdirectories.
+For this, create a main directory for this section of the course (`~/hpc/2017-09-29-reference_genome`), and create relevant `input` and `results` subdirectories.
 
 For each step that we will perform, you should: 
  * have input data in a relevant subdirectory
  * work in a relevant subdirectory
 
-And each directory in which you have done something [should include a `WHATIDID.txt` or `WHATIDID.md` file](http://github.com/wurmlab/templates/blob/master/project_structures.md) in which you log your commands. 
+And each directory in which you have done something [should include a `WHATIDID.txt` file](http://github.com/wurmlab/templates/blob/master/project_structures.md) in which you log your commands. 
 
 Being disciplined about this is *extremely important*. It is similar to having a laboratory notebook. It will prevent you from becoming overwhelmed by having too many files, or not remembering what you did where. 
 
@@ -47,7 +51,7 @@ Many considerations go into the appropriate experimental design and sequencing s
 
 ## Get the data
 
-Ensure you have a directory called `~/2017-09-BIO721_genome_bioinformatics_input`. If not, you can find it on Apocriate at `/data/SBCS-MSc-BioInf/data`(you can use scp for this). 
+Ensure you have a directory called `~/hpc/2017-09-BIO721_genome_bioinformatics_input`. If not, you can find it on Apocrita at `/data/SBCS-MSc-BioInf/data` (you can use scp for this). 
 
 ## Short read cleaning
 
@@ -57,11 +61,11 @@ Sequencers aren't perfect. All kinds of things [can](http://genomecuration.githu
 
 [FastQC](http://www.bioinformatics.babraham.ac.uk/projects/fastqc/) ([documentation](http://www.bioinformatics.babraham.ac.uk/projects/fastqc/Help/)) can help you understand sequence quality and composition, and thus can inform read cleaning strategy.
 
-Link the raw sequence files (`~/data/reference_assembly/reads.pe*.fastq.gz`) to a relevant input directory (e.g., `~/2016-10-03-reference/input/01-read_cleaning/`). 
+Link the raw sequence files (`~/hpc/2017-09-BIO721_genome_bioinformatics_input/reference_assembly/reads.pe*.fastq.gz`) to a relevant input directory (e.g., `~/hpc/2017-09-29-reference_genome/input/01-read_cleaning/`).
 
-Now move to a relevant results directory (e.g., `~/2016-10-03-reference/results/01-read_cleaning/). 
+Now move to a relevant results directory (e.g., `~/hpc/2017-09-29-reference_genome/results/01-read_cleaning/). 
 
-Here, run FastQC on the `reads.pe2` file. The `--outdir` option will help you clearly separate input and output files (and remember to log the commands you used in a `WHATIDID` file.
+Here, run FastQC on the `reads.pe2` file. The `--outdir` option will help you clearly separate input and output files (and remember to log the commands you used in the `WHATIDID.txt` file).
 
 Your [resulting directory structure](http://github.com/wurmlab/templates/blob/master/project_structures.md "Typical multi-day project structure"), should look like this:
 
@@ -99,14 +103,14 @@ Other tools including [fastx_toolkit](http://github.com/agordon/fastx_toolkit), 
 Based on the results from FastQC, replace `REPLACE` and `REPLACE` below to appropriately trim from the beginning (`-b`) and end (`-e`)  of the sequences.
 
 ```bash
-seqtk trimfq -b REPLACE -e REPLACE input/reads.pe2.fastq.gz | gzip > tmp/reads.pe2.trimmed.fq.gz
+seqtk trimfq -b REPLACE -e REPLACE input/reads.pe2.fastq.gz > tmp/reads.pe2.trimmed.fq
 ```
 
 This will only take a few seconds (make sure you replaced `REPLACE`).
 
-Let's similarly filter do FASTQC to inspect the paired set of reads, `reads.pe1`, and appropriately filter them.
+Let's similarly inspect the paired set of reads, `reads.pe1`, and appropriately trim them.
 ```bash
-seqtk trimfq -b REPLACE -e REPLACE input/reads.pe1.fastq.gz | gzip > tmp/reads.pe1.trimmed.fq.gz
+seqtk trimfq -b REPLACE -e REPLACE input/reads.pe1.fastq.gz > tmp/reads.pe1.trimmed.fq
 ```
 
 
@@ -123,13 +127,13 @@ Say you have sequenced your sample at 45x genome coverage. The real coverage dis
 ![kmer distribution graph from UCSC](img-qc/quake_kmer_distribution.jpg)
 
 
-It is possible to count and filter "k-mers" using [khmer](http://github.com/ged-lab/khmer) ([documentation](http://khmer.readthedocs.io/en/v2.0/user/index.html); the [kmc2](http://github.com/refresh-bio/KMC) tool is faster and thus can be more appropriate for large datasets.
+It is possible to count and filter "k-mers" using [khmer](http://github.com/ged-lab/khmer) ([documentation](http://khmer.readthedocs.io/en/v2.0/user/index.html); the [kmc2](http://github.com/refresh-bio/KMC) tool is faster and thus can be more appropriate for large datasets).
 
 Below, we use khmer to remove extremely frequent k-mers (more than 100x), remove extremely rare k-mers, and we use seqtk to truncate sequences containing unresolved "N"s and nucleotides of particularly low quality. After all this truncation and removal, seqtk remove reads that have become too short, or no longer have a paired read. Understanding the exact commands – which are a bit convoluted – is unnecessary. It is important to understand the concept of k-mer filtering.
 
 ```bash
-# 1. Interleave Fastqs (khmer needs both paired end files merged into one file
-seqtk mergepe tmp/reads.pe1.trimmed.fq.gz tmp/reads.pe2.trimmed.fq.gz > tmp/reads.pe12.trimmed.fq
+# 1. Interleave Fastqs (khmer needs both paired end files merged into one file)
+seqtk mergepe tmp/reads.pe1.trimmed.fq tmp/reads.pe2.trimmed.fq > tmp/reads.pe12.trimmed.fq
 
 # 2. Remove coverage above 100x, save kmer.counts table
 khmer normalize-by-median.py -p --ksize 20 -C 100 -M 1e9 -s tmp/kmer.counts \
@@ -236,7 +240,7 @@ We probably have other prior information about what to expect in this genome. Fo
 
 Many tools exist for gene prediction, some based on *ab initio* statistical models of what a protein-coding gene should look like, others that use similarity with protein-coding genes from other species, and others (such as [Augustus](http://bioinf.uni-greifswald.de/augustus/) and SNAP), that use both. There is no perfect tool or approach, thus we typically run many gene-finding tools and call a consensus between the different predicted gene models.  [MAKER](http://www.yandell-lab.org/software/maker.html) and [JAMg](https://github.com/genomecuration/JAMg) can do this for us. Let's use MAKER on a sandbox example.
 
-Start in a new directory (e.g., `~/2016-10-03-reference/results/03-gene_prediction`). Pull out the longest few scaffolds from the `assembly.scafSeq` (e.g., using `seqtk seq -L 20000`) into their own fasta (e.g., `min20000.fa`).
+Start in a new directory (e.g., `~/hpc/2017-09-29-reference_genome/results/03-gene_prediction`). Pull out the longest few scaffolds from the `assembly.scafSeq` (e.g., using `seqtk seq -L 20000`) into their own fasta (e.g., `min20000.fa`).
 
 Running `maker -OPTS` will generate an empty `maker_opts.ctl` configuration file (ignore the warning). Edit that file to specify:
   * genome: `min20000.fa`
@@ -251,19 +255,16 @@ Once its done the results will be hidden in subdirectories of `*maker.output/min
 
 ### Quality control of individual genes
 
-So now we have some gene predictions... how can we know if they are any good? The easiest way to get a feel for this is by comparing a few of them ([backup examples)](predictons.fa "backup MAKER gene predictions just in case")) to known sequences from other species. For this, launch a [local BLAST server](http://sequenceserver.com "BLAST graphical interface") to compare a few of your protein-coding gene predictions to the high quality predictions in swissprot:
+So now we have some gene predictions... how can we know if they are any good? The easiest way to get a feel for this is by comparing a few of them ([backup examples](predictions.fa "backup MAKER gene predictions just in case")) to known sequences from other species. For this, launch a [local BLAST server](http://sequenceserver.com "BLAST graphical interface") to compare a few of your protein-coding gene predictions to the high quality predictions in swissprot:
 
 ```bash
 
 # First download the SwissProt database:
-cd ~/data/reference_databases
-sh ./DO_WHILE_BUILDING_IMAGE
+cd ~/hpc/2017-09-BIO721_genome_bioinformatics_input/reference_databases
+sh ./download_reference_databases
 
-# Install sequenceserver:
-sudo gem install sequenceserver
-
-# To run sequenceserver type:
-sequenceserver -d ~/data/reference_databases
+# Run BLAST server:
+sequenceserver -d ~/hpc/2017-09-BIO721_genome_bioinformatics_input/reference_databases
 
 ```
 
@@ -277,7 +278,7 @@ As you can see, gene prediction software is imperfect – this is even the case 
 
 The [GeneValidator](http://bioinformatics.oxfordjournals.org/content/32/10/1559.long) tool can help to evaluate quality of a gene prediction by comparing features of a gene prediction to similar database sequences. This approach expects that similar sequences should for example be of similar length.
 
-You can simply run `genevalidator  -d ~/data/reference_databases/uniprot/uniprot_sprot.fasta proteins.fasta` (on your gene predictions, or [these examples](../../data/reference_assembly/gv_examples.fa)), or use the [web service](http://genevalidator.sbcs.qmul.ac.uk/) for queries of few sequences. Alternatively just check the screenshots linked in the next sentence. Try to understand why some gene predictions have no reason for concern [(e.g.)](img-qc/good.png), while others do [(e.g.)](img-qc/bad.png).
+You can simply run `genevalidator  -d ~/hpc/2017-09-BIO721_genome_bioinformatics_input/reference_databases/uniprot/uniprot_sprot.fasta proteins.fasta` (on your gene predictions, or [these examples](../../data/reference_assembly/gv_examples.fa)), or use the [web service](http://genevalidator.sbcs.qmul.ac.uk/) for queries of few sequences. Alternatively just check the screenshots linked in the next sentence. Try to understand why some gene predictions have no reason for concern [(e.g.)](img-qc/good.png), while others do [(e.g.)](img-qc/bad.png).
 
 
 ### Comparing whole genesets & prioritizing genes for manual curation
