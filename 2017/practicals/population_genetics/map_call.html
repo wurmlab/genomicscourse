@@ -33,7 +33,7 @@ code > span.er { color: #ff0000; font-weight: bold; }
 <p>Roddy Pracana and Yannick Wurm</p>
 <h2 id="introduction">Introduction</h2>
 <p>There are several types of variants. Commonly, people look at single nucleotide polymorphisms (SNPs, sometimes also known as single nucleotide variants, SNVs). Other classes include small insertions and deletions (known collectively as indels), as well as larger structural variants, such as large insertions, deletions, inversions and translocations.</p>
-<p>There are several approaches to variant calling from short pair-end reads. We are going to use one of them. First, we will map the reads from each individual to a reference assembly similar to the one created in the <a href="../reference_genome/assembly.md">previous practical</a>. Then we will find the positions where at least some of the individuals differ from the reference (and each other).</p>
+<p>There are several approaches to variant calling from short pair-end reads. We are going to use one of them. First, we will map the reads from each individual to a reference assembly similar to the one created in the <a href="../reference_genome/assembly">previous practical</a>. Then we will find the positions where at least some of the individuals differ from the reference (and each other).</p>
 <h2 id="pipeline">Pipeline</h2>
 <p>We will analyse subsets of whole-genome sequences of several fire ant individuals. The fire ant, <em>Solenopsis invicta</em>, is notable for being dimorphic in terms of colony organisation, with some colonies having one queen and other colonies having multiple queens. Interestingly, this trait is genetically determined. In this practical, we will try to find the genetic difference between ants from single queen and multiple queen colonies.</p>
 <p>We will use a subset of the reads from whole-genome sequencing of 14 male fire ants. Samples 1B to 7B are from single-queen colonies, samples 1b to 7b are from multiple-queen colonies. Ants are haplodiploid, which means that females are haploid and males, haploid. Here we will use onlymales, so all our samples are haploid, which makes variant calling easier.</p>
@@ -45,8 +45,8 @@ code > span.er { color: #ff0000; font-weight: bold; }
 <li>Visualise the alignments and the SNP calls in the genome browser <code>igv</code>.</li>
 </ol>
 <h2 id="the-data">The data</h2>
-<p>We recommend that you set up a directory for today following <a href="https://github.com/wurmlab/templates/blob/master/project_structures.md">our convention</a>, as <a href="../reference_genome//assembly.md#short-read-cleaning">you did in the last practical</a>. You should have a subdirectory called <code>data</code> and another called <code>results</code>. In each, you should have a directory for the read mapping, and another for the variant calling:</p>
-<pre><code>2016-10-05-genotyping/
+<p>We recommend that you set up a directory for today following <a href="https://github.com/wurmlab/templates/blob/master/project_structures">our convention</a>, as <a href="../reference_genome//assembly#short-read-cleaning">you did in the last practical</a>. You should have a subdirectory called <code>data</code> and another called <code>results</code>. In each, you should have a directory for the read mapping, and another for the variant calling:</p>
+<pre><code>2017-10-04-genotyping/
 ├── data
 │   ├── 01-mapping
 │   └── 02-genotyping
@@ -60,7 +60,7 @@ code > span.er { color: #ff0000; font-weight: bold; }
         ├── tmp
         └── WHATIDID.txt
 </code></pre>
-<p>The data we need is in the <code>~/data/popgen</code> directory. Copy (with <code>cp</code>) or link (with <code>ln -rs</code>) the file <code>reference.fa</code> (under <code>data/01-mapping/</code>) and the all the <code>reads/*fq</code> files (under <code>data/01-mapping/reads/</code>) to your respective <code>results</code> directories.</p>
+<p>The data we need is in the <code>~/data/popgen</code> directory. Copy (with <code>cp</code>) or link (with <code>ln -rs</code>) the file <code>reference.fa</code> and the <code>reads</code> directory to <code>~/2017-10-04-genotyping/data/01-mapping</code>.</p>
 <p>To see how many scaffolds there are in the reference genome, type:</p>
 <pre class="sh"><code>grep &quot;&gt;&quot; reference.fa</code></pre>
 <p>Now have a look at the <code>.fq.gz</code> files.</p>
@@ -124,7 +124,7 @@ ln -rs tmp/alignments results/alignments/original
 </code></pre>
 <h2 id="variant-calling">Variant calling</h2>
 <p>The following analysis is done in the directory <code>results/02-genotyping</code>. Remember to keep your commands in the <code>WHATIDID.txt</code> file. We will need the reference fasta file, as well as the alignments we just created, so create a link to those files in the <code>data/02-genotyping</code> directory:</p>
-<pre class="sh"><code>cd ~/2016-10-05-genotyping/
+<pre class="sh"><code>cd ~/2017-10-04-genotyping/
 
 ln -rs results/01-mapping/results/alignments data/02-genotyping/alignments
 ln -rs data/01-mapping/reference.fa data/02-genotyping/
