@@ -24,6 +24,8 @@ All work must be done in `~/hpc`, which should be setup to mirror home directory
 
     curl https://wurmlab.github.io/genomicscourse/2017/scripts/setup.sh | bash
 
+Check that you have a directory called `~/hpc/2017-09-BIO721_genome_bioinformatics_input`. If not, ask for help.
+
 Start by creating a directory to work in. Drawing on ideas from [Noble (2009)](http://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1000424 "A Quick Guide to Organizing Computational Biology Projects") and others, we recommend following a [specific convention](http://github.com/wurmlab/templates/blob/master/project_structures.md "Typical multi-day project structure") for all your projects. 
 
 For this, create a main directory for this section of the course (`~/hpc/2017-09-29-reference_genome`), and create relevant `input` and `results` subdirectories.
@@ -48,10 +50,6 @@ Less diversity and complexity in a sample makes life easier: assembly algorithms
   * A more compact genome (with less repetitive DNA) is easier than one full of repeats - sorry, grasshopper & *Fritillaria* researchers!
 
 Many considerations go into the appropriate experimental design and sequencing strategy. We will not formally cover those here & instead jump right into our data.
-
-## Get the data
-
-Ensure you have a directory called `~/hpc/2017-09-BIO721_genome_bioinformatics_input`. If not, you can find it on Apocrita at `/data/SBCS-MSc-BioInf/data` (you can use scp for this). 
 
 ## Short read cleaning
 
