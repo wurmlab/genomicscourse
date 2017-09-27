@@ -20,7 +20,7 @@ Please note that these are toy/sandbox examples simplified to run on laptops and
 
 ## Set up directory hierarchy to work in
 
-All work must be done in `~/hpc`, which should be setup to mirror home directory of your HPC user. Run the following command to setup `~/hpc` correctly. Do note that this command must be run at the start of each practical session.
+All work must be done in `~/hpc`, which should be setup to mirror home directory of your HPC user. Run the following command to setup `~/hpc` correctly. Do note that this command must be run at the start of each practical session. If the command prompts you about authenticity of HPC login node, simply answer 'yes'.
 
     curl https://wurmlab.github.io/genomicscourse/2017/scripts/setup.sh | bash
 
