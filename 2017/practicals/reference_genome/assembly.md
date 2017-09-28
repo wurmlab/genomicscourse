@@ -185,5 +185,3 @@ Genevalidator's visual output can be handy when looking at few genes. But the to
 ### Manual curation
 
 Because automated gene predictions aren't perfect, manual inspection and fixing are often required. The most commonly used software for this is [Apollo/WebApollo](http://genomearchitect.org/). In the following practical, we will be using a different, Apollo-like curation software (Afra) to edit the gene prediction, e.g. adding or removing exons, merging or splitting gene models, and adjusting exon boundaries.
-
----
