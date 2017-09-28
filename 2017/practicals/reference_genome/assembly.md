@@ -61,7 +61,7 @@ Sequencers aren't perfect. All kinds of things [can](http://genomecuration.githu
 
 Link the raw sequence files (`~/hpc/2017-09-BIO721_genome_bioinformatics_input/reference_assembly/reads.pe*.fastq.gz`) to a relevant input directory (e.g., `~/hpc/2017-09-29-reference_genome/input/01-read_cleaning/`).
 
-Now move to a relevant results directory (e.g., `~/hpc/2017-09-29-reference_genome/results/01-read_cleaning/). 
+Now move to a relevant results directory (e.g., `~/hpc/2017-09-29-reference_genome/results/01-read_cleaning/`). 
 
 Here, run FastQC on the `reads.pe2` file. The `--outdir` option will help you clearly separate input and output files (and remember to log the commands you used in the `WHATIDID.txt` file).
 
