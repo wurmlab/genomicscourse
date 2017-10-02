@@ -45,11 +45,9 @@ code > span.er { color: #ff0000; font-weight: bold; }
 <p>Please note that these are toy/sandbox examples simplified to run on laptops and to fit into the short format of this course. For real projects, much more sophisticated approaches are needed!</p>
 <hr />
 <h2 id="set-up-directory-hierarchy-to-work-in">Set up directory hierarchy to work in</h2>
-<p>Fix the previous issue:</p>
-<pre><code># quit and open terminal, then run this:
-curl https://wurmlab.github.io/genomicscourse/2017/scripts/setup.sh | bash</code></pre>
 <p>All work must be done in home directory. First, copy over the input files from HPC to your local PC:</p>
-<pre><code>scp -r login2.hpc.qmul.ac.uk:/data/SBCS-MSc-BioInf/data ~/2017-09-BIO721_genome_bioinformatics_input
+<pre><code>rmdir hpc # remove previous directory
+scp -r login2.hpc.qmul.ac.uk:/data/SBCS-MSc-BioInf/data ~/2017-09-BIO721_genome_bioinformatics_input
 chmod a-w -R ~/2017-09-BIO721_genome_bioinformatics_input</code></pre>
 <p>Check that you have a directory called <code>2017-09-BIO721_genome_bioinformatics_input</code>. If not, ask for help.</p>
 <p>Start by creating a directory to work in. Drawing on ideas from <a href="http://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1000424" title="A Quick Guide to Organizing Computational Biology Projects">Noble (2009)</a> and others, we recommend following a <a href="http://github.com/wurmlab/templates/blob/master/project_structures.md" title="Typical multi-day project structure">specific convention</a> for all your projects.</p>
