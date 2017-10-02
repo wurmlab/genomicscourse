@@ -20,14 +20,9 @@ Please note that these are toy/sandbox examples simplified to run on laptops and
 
 ## Set up directory hierarchy to work in
 
-Fix the previous issue:
-
-    # quit and open terminal, then run this:
-    curl https://wurmlab.github.io/genomicscourse/2017/scripts/setup.sh | bash
-
-
 All work must be done in home directory. First, copy over the input files from HPC to your local PC:
 
+    rmdir hpc # remove previous directory
     scp -r login2.hpc.qmul.ac.uk:/data/SBCS-MSc-BioInf/data ~/2017-09-BIO721_genome_bioinformatics_input
     chmod a-w -R ~/2017-09-BIO721_genome_bioinformatics_input
 
