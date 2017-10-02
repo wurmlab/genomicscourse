@@ -81,7 +81,7 @@ q2=input/reads.pe2.clean.fq</code></pre>
 </ol>
 <h2 id="gene-prediction">Gene prediction</h2>
 <p>Many tools exist for gene prediction, some based on <em>ab initio</em> statistical models of what a protein-coding gene should look like, others that use similarity with protein-coding genes from other species, and others (such as <a href="http://bioinf.uni-greifswald.de/augustus/">Augustus</a> and SNAP), that use both. There is no perfect tool or approach, thus we typically run many gene-finding tools and call a consensus between the different predicted gene models. <a href="http://www.yandell-lab.org/software/maker.html">MAKER</a> and <a href="https://github.com/genomecuration/JAMg">JAMg</a> can do this for us. Let's use MAKER on a sandbox example.</p>
-<p>Start in a new directory (e.g., <code>~/hpc/2017-09-29-reference_genome/results/03-gene_prediction</code>). Pull out the longest few scaffolds from the <code>assembly.scafSeq</code> (e.g., using <code>seqtk seq -L 20000</code>) into their own fasta (e.g., <code>min20000.fa</code>).</p>
+<p>Start in a new directory (e.g., <code>~/2017-09-29-reference_genome/results/03-gene_prediction</code>). Pull out the longest few scaffolds from the <code>assembly.scafSeq</code> (e.g., using <code>seqtk seq -L 20000</code>) into their own fasta (e.g., <code>min20000.fa</code>).</p>
 <p>Running <code>maker -OPTS</code> will generate an empty <code>maker_opts.ctl</code> configuration file (ignore the warning). Edit that file to specify:</p>
 <ul class="incremental">
 <li>genome: <code>min20000.fa</code><br /></li>
@@ -93,7 +93,7 @@ q2=input/reads.pe2.clean.fq</code></pre>
 <h3 id="quality-control-of-individual-genes">Quality control of individual genes</h3>
 <p>So now we have some gene predictions... how can we know if they are any good? The easiest way to get a feel for this is by comparing a few of them (<a href="predictions.fa" title="backup MAKER gene predictions just in case">backup examples</a>) to known sequences from other species. For this, launch a <a href="http://sequenceserver.com" title="BLAST graphical interface">local BLAST server</a> to compare a few of your protein-coding gene predictions to the high quality predictions in swissprot:</p>
 <pre class="sourceCode bash"><code class="sourceCode bash"><span class="co"># Run BLAST server:</span>
-<span class="kw">sequenceserver</span> -d ~/hpc/2017-09-BIO721_genome_bioinformatics_input/reference_databases</code></pre>
+<span class="kw">sequenceserver</span> -d ~/2017-09-BIO721_genome_bioinformatics_input/reference_databases</code></pre>
 <p>Do any of these genes have significant similarity to known sequences? For a given gene prediction, do you think it is complete, or can you infer from the BLAST alignments that something may be wrong?</p>
 <hr />
 <p>As you can see, gene prediction software is imperfect – this is even the case when using all available evidence. This is potentially costly for analyses that rely on gene predictions - i.e. many of the analyses we might want to do!</p>
@@ -101,7 +101,7 @@ q2=input/reads.pe2.clean.fq</code></pre>
 <p><em>“Incorrect annotations [ie. gene identifications] poison every experiment that makes use of them. Worse still the poison spreads.”</em> – <a href="http://www.ncbi.nlm.nih.gov/pubmed/22510764">Yandell &amp; Ence (2012)</a>.</p>
 </blockquote>
 <p>The <a href="http://bioinformatics.oxfordjournals.org/content/32/10/1559.long">GeneValidator</a> tool can help to evaluate quality of a gene prediction by comparing features of a gene prediction to similar database sequences. This approach expects that similar sequences should for example be of similar length.</p>
-<p>You can simply run <code>genevalidator  -d ~/hpc/2017-09-BIO721_genome_bioinformatics_input/reference_databases/uniprot/uniprot_sprot.fasta proteins.fasta</code> (on your gene predictions, or <a href="../../data/reference_assembly/gv_examples.fa">these examples</a>), or use the <a href="http://genevalidator.sbcs.qmul.ac.uk/">web service</a> for queries of few sequences. Alternatively just check the screenshots linked in the next sentence. Try to understand why some gene predictions have no reason for concern <a href="img-qc/good.png">(e.g.)</a>, while others do <a href="img-qc/bad.png">(e.g.)</a>.</p>
+<p>You can simply run <code>genevalidator  -d ~/2017-09-BIO721_genome_bioinformatics_input/reference_databases/uniprot/uniprot_sprot.fasta proteins.fasta</code> (on your gene predictions, or <a href="../../data/reference_assembly/gv_examples.fa">these examples</a>), or use the <a href="http://genevalidator.sbcs.qmul.ac.uk/">web service</a> for queries of few sequences. Alternatively just check the screenshots linked in the next sentence. Try to understand why some gene predictions have no reason for concern <a href="img-qc/good.png">(e.g.)</a>, while others do <a href="img-qc/bad.png">(e.g.)</a>.</p>
 <h3 id="comparing-whole-genesets-prioritizing-genes-for-manual-curation">Comparing whole genesets &amp; prioritizing genes for manual curation</h3>
 <p>Genevalidator's visual output can be handy when looking at few genes. But the tool also provides tab-delimited output, handy when working in the command-line or when running the software on whole proteomes. For example, this can help analysis:</p>
 <ul class="incremental">

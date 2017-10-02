@@ -49,9 +49,9 @@ code > span.er { color: #ff0000; font-weight: bold; }
 <pre><code>rmdir hpc # remove previous directory
 scp -r login2.hpc.qmul.ac.uk:/data/SBCS-MSc-BioInf/data ~/2017-09-BIO721_genome_bioinformatics_input
 chmod a-w -R ~/2017-09-BIO721_genome_bioinformatics_input</code></pre>
-<p>Check that you have a directory called <code>2017-09-BIO721_genome_bioinformatics_input</code>. If not, ask for help.</p>
+<p>Check that you have a directory called <code>~/2017-09-BIO721_genome_bioinformatics_input</code>. If not, ask for help.</p>
 <p>Start by creating a directory to work in. Drawing on ideas from <a href="http://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1000424" title="A Quick Guide to Organizing Computational Biology Projects">Noble (2009)</a> and others, we recommend following a <a href="http://github.com/wurmlab/templates/blob/master/project_structures.md" title="Typical multi-day project structure">specific convention</a> for all your projects.</p>
-<p>For this, create a main directory for this section of the course (<code>2017-09-29-reference_genome</code>), and create relevant <code>input</code> and <code>results</code> subdirectories.</p>
+<p>For this, create a main directory for this section of the course (<code>~/2017-09-29-reference_genome</code>), and create relevant <code>input</code> and <code>results</code> subdirectories.</p>
 <p>For each step that we will perform, you should:</p>
 <ul class="incremental">
 <li>have input data in a relevant subdirectory<br /></li>
@@ -75,8 +75,8 @@ chmod a-w -R ~/2017-09-BIO721_genome_bioinformatics_input</code></pre>
 <p>Sequencers aren't perfect. All kinds of things <a href="http://genomecuration.github.io/genometrain/a-experimental-design/curated-collection/Presentations/Sequencing%20Troubleshooting.pptx">can</a> and do <a href="http://sequencing.qcfail.com/">go wrong</a>. &quot;Crap in – crap out&quot; means it's probably worth spending some time cleaning the raw data before performing real analysis.</p>
 <h3 id="initial-inspection">Initial inspection</h3>
 <p><a href="http://www.bioinformatics.babraham.ac.uk/projects/fastqc/">FastQC</a> (<a href="http://www.bioinformatics.babraham.ac.uk/projects/fastqc/Help/">documentation</a>) can help you understand sequence quality and composition, and thus can inform read cleaning strategy.</p>
-<p>Link the raw sequence files (<code>2017-09-BIO721_genome_bioinformatics_input/reference_assembly/reads.pe*.fastq.gz</code>) to a relevant input directory (e.g., <code>2017-09-29-reference_genome/input/01-read_cleaning/</code>).</p>
-<p>Now move to a relevant results directory (e.g., <code>2017-09-29-reference_genome/results/01-read_cleaning/</code>).</p>
+<p>Link the raw sequence files (<code>~/2017-09-BIO721_genome_bioinformatics_input/reads.pe*.fastq.gz</code>) to a relevant input directory (e.g., <code>~/2017-09-29-reference_genome/input/01-read_cleaning/</code>).</p>
+<p>Now move to a relevant results directory (e.g., <code>~/2017-09-29-reference_genome/results/01-read_cleaning/</code>).</p>
 <p>Here, run FastQC on the <code>reads.pe2</code> file. The <code>--outdir</code> option will help you clearly separate input and output files (and remember to log the commands you used in the <code>WHATIDID.txt</code> file).</p>
 <p>Your <a href="http://github.com/wurmlab/templates/blob/master/project_structures.md" title="Typical multi-day project structure">resulting directory structure</a>, should look like this:</p>
 <pre class="sourceCode bash"><code class="sourceCode bash"><span class="kw">tree</span> -h
