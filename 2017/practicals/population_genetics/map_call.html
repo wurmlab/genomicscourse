@@ -45,6 +45,10 @@ code > span.er { color: #ff0000; font-weight: bold; }
 <li>Visualise the alignments and the SNP calls in the genome browser <code>igv</code>.</li>
 </ol>
 <h2 id="the-data">The data</h2>
+<p>All work must be done in <code>~/hpc</code>, which should be setup to mirror home directory of your HPC user. Run the following command to setup <code>~/hpc</code> correctly. Do note that this command must be run at the start of each practical session.</p>
+<pre><code>```bash
+curl https://wurmlab.github.io/genomicscourse/2017/scripts/setup.sh | bash
+```</code></pre>
 <p>We recommend that you set up a directory for today following <a href="https://github.com/wurmlab/templates/blob/master/project_structures">our convention</a>, as <a href="../reference_genome//assembly#short-read-cleaning">you did in the last practical</a>. You should have a subdirectory called <code>data</code> and another called <code>results</code>. In each, you should have a directory for the read mapping, and another for the variant calling:</p>
 <pre><code>2017-10-04-genotyping/
 ├── data
@@ -60,9 +64,9 @@ code > span.er { color: #ff0000; font-weight: bold; }
         ├── tmp
         └── WHATIDID.txt
 </code></pre>
-<p>The data we need is in the <code>~/data/popgen</code> directory. Copy (with <code>cp</code>) or link (with <code>ln -rs</code>) the file <code>reference.fa</code> and the <code>reads</code> directory to <code>~/2017-10-04-genotyping/data/01-mapping</code>.</p>
+<p>The data we need is in the <code>~/hpc/data/popgen</code> directory. Copy (with <code>cp</code>) or link (with <code>ln -rs</code>) the file <code>reference.fa</code> and the <code>reads</code> directory to <code>~/hpc/2017-10-04-genotyping/data/01-mapping</code>.</p>
 <p>To see how many scaffolds there are in the reference genome, type:</p>
-<pre class="sh"><code>grep &quot;&gt;&quot; reference.fa</code></pre>
+<pre class="sh"><code>grep &quot;&gt;&quot; ~/hpc/2017-10-04-genotyping/data/01-mapping/reference.fa</code></pre>
 <p>Now have a look at the <code>.fq.gz</code> files.</p>
 <ul class="incremental">
 <li>Why does each sample have two sets of reads?<br /></li>
@@ -112,10 +116,10 @@ code > span.er { color: #ff0000; font-weight: bold; }
   <span class="kw">|</span> <span class="kw">parallel</span> -t <span class="st">&quot;samtools index tmp/alignments/{}.bam&quot;</span></code></pre>
 <p>Now check that a <code>bam</code> and a <code>bai</code> exist for each sample.</p>
 <p>To view what's in a BAM file, you have to use <code>samtools view</code></p>
-<pre class="sourceCode bash"><code class="sourceCode bash"><span class="kw">samtools</span> view tmp/alignments/f1_B.bam <span class="kw">|</span> <span class="kw">less</span>
+<pre class="sourceCode bash"><code class="sourceCode bash"><span class="kw">samtools</span> view tmp/alignments/f1_B.bam <span class="kw">|</span> <span class="kw">less</span> -S
 
 <span class="co"># To view a particular region:</span>
-<span class="kw">samtools</span> view tmp/alignments/f1_B.bam scaffold_1:10000-10500 <span class="kw">|</span> <span class="kw">less</span></code></pre>
+<span class="kw">samtools</span> view tmp/alignments/f1_B.bam scaffold_1:10000-10500 <span class="kw">|</span> <span class="kw">less</span> -S</code></pre>
 <p>Now that we have alignments, we can copy them to a results file.</p>
 <pre class="sh"><code>mkdir results
 mkdir results/alignments
@@ -124,7 +128,7 @@ ln -rs tmp/alignments results/alignments/original
 </code></pre>
 <h2 id="variant-calling">Variant calling</h2>
 <p>The following analysis is done in the directory <code>results/02-genotyping</code>. Remember to keep your commands in the <code>WHATIDID.txt</code> file. We will need the reference fasta file, as well as the alignments we just created, so create a link to those files in the <code>data/02-genotyping</code> directory:</p>
-<pre class="sh"><code>cd ~/2017-10-04-genotyping/
+<pre class="sh"><code>cd ~/hpc/2017-10-04-genotyping/
 
 ln -rs results/01-mapping/results/alignments data/02-genotyping/alignments
 ln -rs data/01-mapping/reference.fa data/02-genotyping/

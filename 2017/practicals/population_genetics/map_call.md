@@ -23,6 +23,12 @@ The aim of this practical is to genotype these 14 individuals. The steps in the 
 
 ## The data
 
+All work must be done in `~/hpc`, which should be setup to mirror home directory of your HPC user. Run the following command to setup `~/hpc` correctly. Do note that this command must be run at the start of each practical session.
+
+    ```bash
+    curl https://wurmlab.github.io/genomicscourse/2017/scripts/setup.sh | bash
+    ```
+
 We recommend that you set up a directory for today following [our convention](https://github.com/wurmlab/templates/blob/master/project_structures), as [you did in the last practical](../reference_genome//assembly#short-read-cleaning). You should have a subdirectory called `data` and another called `results`. In each, you should have a directory for the read mapping, and another for the variant calling:
 
 ```
@@ -42,12 +48,12 @@ We recommend that you set up a directory for today following [our convention](ht
 
 ```
 
-The data we need is in the `~/data/popgen` directory. Copy (with `cp`) or link (with `ln -rs`) the file `reference.fa`  and the `reads` directory to `~/2017-10-04-genotyping/data/01-mapping`.
+The data we need is in the `~/hpc/data/popgen` directory. Copy (with `cp`) or link (with `ln -rs`) the file `reference.fa`  and the `reads` directory to `~/hpc/2017-10-04-genotyping/data/01-mapping`.
 
 To see how many scaffolds there are in the reference genome, type:
 
 ```sh
-grep ">" reference.fa
+grep ">" ~/hpc/2017-10-04-genotyping/data/01-mapping/reference.fa
 ```
 
 Now have a look at the `.fq.gz` files.
@@ -127,10 +133,10 @@ Now check that a `bam` and a `bai` exist for each sample.
 To view what's in a BAM file, you have to use `samtools view`
 
 ```bash
-samtools view tmp/alignments/f1_B.bam | less
+samtools view tmp/alignments/f1_B.bam | less -S
 
 # To view a particular region:
-samtools view tmp/alignments/f1_B.bam scaffold_1:10000-10500 | less
+samtools view tmp/alignments/f1_B.bam scaffold_1:10000-10500 | less -S
 ```
 
 Now that we have alignments, we can copy them to a results file.
@@ -149,7 +155,7 @@ ln -rs tmp/alignments results/alignments/original
 The following analysis is done in the directory `results/02-genotyping`. Remember to keep your commands in the `WHATIDID.txt` file. We will need the reference fasta file, as well as the alignments we just created, so create a link to those files in the `data/02-genotyping` directory:
 
 ```sh
-cd ~/2017-10-04-genotyping/
+cd ~/hpc/2017-10-04-genotyping/
 
 ln -rs results/01-mapping/results/alignments data/02-genotyping/alignments
 ln -rs data/01-mapping/reference.fa data/02-genotyping/
