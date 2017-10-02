@@ -2,5 +2,6 @@
 
 Pdfs for manual assembly exercise [here](assembly-practical-part1)
 
-Main document: [assembly.md](assembly)
-
+Main documents:
+[Part 1: Read cleaning](read-cleaning)
+[Part 2: Genome assembly](assembly)

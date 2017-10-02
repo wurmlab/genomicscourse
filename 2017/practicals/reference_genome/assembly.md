@@ -1,63 +1,6 @@
-# Reads to reference genome & gene predictions
+# Part 2: Genome assembly
 
-## Introduction
-
-[Cheap sequencing](http://www.genome.gov/sequencingcosts/) has created the opportunity to perform molecular-genetic analyses on just about anything. Conceptually, doing this would be similar to working with traditional genetic model organisms. But a large difference exists: For traditional genetic model organisms, large teams and communities of expert assemblers, predictors, and curators have put years of efforts into the prerequisites for most genomic analyses, including a reference genome and a set of gene predictions. In contrast, those of us working on "emerging" model organisms often have limited or no pre-existing resources and are part of much smaller teams.
-
-The steps below are meant to provide some ideas that can help obtain a reference genome and a reference geneset of sufficient quality for ecological and evolutionary analyses. They are based on (but updated from) work we did for the [fire ant genome](http://www.pnas.org/content/108/14/5679.long).
-
-Specifically, focusing on low coverage of ~0.5% of the fire ant genome, we will:
- 1. inspect and clean short (Illumina) reads,
- 2. perform genome assembly,
- 3. assess the quality of the genome assembly using simple statistics,
- 4. predict protein-coding genes,
- 5. assess quality of gene predictions,
- 6. assess quality of the entire process using a biologically meaning measure.
-
-Please note that these are toy/sandbox examples simplified to run on laptops and to fit into the short format of this course. For real projects, much more sophisticated approaches are needed!
-
----
-
-## Set up directory hierarchy to work in
-
-All work must be done in `~/hpc`, which should be setup to mirror home directory of your HPC user. Run the following command to setup `~/hpc` correctly. Do note that this command must be run at the start of each practical session. If the command prompts you about authenticity of HPC login node, simply answer 'yes'.
-
-    curl https://wurmlab.github.io/genomicscourse/2017/scripts/setup.sh | bash
-
-Check that you have a directory called `~/hpc/2017-09-BIO721_genome_bioinformatics_input`. If not, ask for help.
-
-Start by creating a directory to work in. Drawing on ideas from [Noble (2009)](http://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1000424 "A Quick Guide to Organizing Computational Biology Projects") and others, we recommend following a [specific convention](http://github.com/wurmlab/templates/blob/master/project_structures.md "Typical multi-day project structure") for all your projects. 
-
-For this, create a main directory for this section of the course (`~/hpc/2017-09-29-reference_genome`), and create relevant `input` and `results` subdirectories.
-
-For each step that we will perform, you should: 
- * have input data in a relevant subdirectory
- * work in a relevant subdirectory
-
-And each directory in which you have done something [should include a `WHATIDID.txt` file](http://github.com/wurmlab/templates/blob/master/project_structures.md) in which you log your commands. 
-
-Being disciplined about this is *extremely important*. It is similar to having a laboratory notebook. It will prevent you from becoming overwhelmed by having too many files, or not remembering what you did where. 
-
-
----
-
-## Sequencing an appropriate sample
-
-Less diversity and complexity in a sample makes life easier: assembly algorithms *really* struggle when given similar sequences. So less heterozygosity and fewer repeats are easier.  Thus:
-  * A haploid is easier than a diploid  (those of us working on haplo-diploid Hymenoptera have it easy because male ants are haploid).
-  * It goes without saying that a diploid is easier than a tetraploid!
-  * An inbred line or strain is easier than a wild-type.
-  * A more compact genome (with less repetitive DNA) is easier than one full of repeats - sorry, grasshopper & *Fritillaria* researchers!
-
-Many considerations go into the appropriate experimental design and sequencing strategy. We will not formally cover those here & instead jump right into our data.
-
-## Short read cleaning
-
-Sequencers aren't perfect. All kinds of things [can](http://genomecuration.github.io/genometrain/a-experimental-design/curated-collection/Presentations/Sequencing%20Troubleshooting.pptx) and do [go wrong](http://sequencing.qcfail.com/). "Crap in – crap out" means it's probably worth spending some time cleaning the raw data before performing real analysis.
-
-### [Read cleaning exercise](read-cleaning)
-
-## Genome assembly
+You need to have gone through [Part 1: Read cleaning](read-cleaning) before starting this practical.
 
 ### Offline exercise
 
@@ -94,7 +37,7 @@ There are many other genome assembly approaches. While waiting for everyone to m
  * The now slightly outdated (2013) [Assemblathon paper](http://gigascience.biomedcentral.com/articles/10.1186/2047-217X-2-10).
  * [Metassembler: merging and optimizing *de novo* genome assemblies. Wences & Schatz (2015)](http://genomebiology.biomedcentral.com/articles/10.1186/s13059-015-0764-4).
  * [A hybrid approach for *de novo* human genome sequence assembly and phasing. Mostovoy et al (2016)](http://www.nature.com/nmeth/journal/vaop/ncurrent/full/nmeth.3865.html).
- 
+
 At home: what are the tradeoffs between a `de bruijn` graph assembly approach and an `overlap-layout-consensus` assembly approach?
 
 
