@@ -20,9 +20,11 @@ Please note that these are toy/sandbox examples simplified to run on laptops and
 
 ## Set up directory hierarchy to work in
 
-All work must be done in `~/hpc`, which should be setup to mirror home directory of your HPC user. Run the following command to setup `~/hpc` correctly. Do note that this command must be run at the start of each practical session.
+All work must be done in `~/hpc`, which should be setup to mirror home directory of your HPC user. Run the following command to setup `~/hpc` correctly. Do note that this command must be run at the start of each practical session. If the command prompts you about authenticity of HPC login node, simply answer 'yes'.
 
     curl https://wurmlab.github.io/genomicscourse/2017/scripts/setup.sh | bash
+
+Check that you have a directory called `~/hpc/2017-09-BIO721_genome_bioinformatics_input`. If not, ask for help.
 
 Start by creating a directory to work in. Drawing on ideas from [Noble (2009)](http://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1000424 "A Quick Guide to Organizing Computational Biology Projects") and others, we recommend following a [specific convention](http://github.com/wurmlab/templates/blob/master/project_structures.md "Typical multi-day project structure") for all your projects. 
 
@@ -49,118 +51,11 @@ Less diversity and complexity in a sample makes life easier: assembly algorithms
 
 Many considerations go into the appropriate experimental design and sequencing strategy. We will not formally cover those here & instead jump right into our data.
 
-## Get the data
-
-Ensure you have a directory called `~/hpc/2017-09-BIO721_genome_bioinformatics_input`. If not, you can find it on Apocrita at `/data/SBCS-MSc-BioInf/data` (you can use scp for this). 
-
 ## Short read cleaning
 
 Sequencers aren't perfect. All kinds of things [can](http://genomecuration.github.io/genometrain/a-experimental-design/curated-collection/Presentations/Sequencing%20Troubleshooting.pptx) and do [go wrong](http://sequencing.qcfail.com/). "Crap in – crap out" means it's probably worth spending some time cleaning the raw data before performing real analysis.
 
-### Initial inspection
-
-[FastQC](http://www.bioinformatics.babraham.ac.uk/projects/fastqc/) ([documentation](http://www.bioinformatics.babraham.ac.uk/projects/fastqc/Help/)) can help you understand sequence quality and composition, and thus can inform read cleaning strategy.
-
-Link the raw sequence files (`~/hpc/2017-09-BIO721_genome_bioinformatics_input/reference_assembly/reads.pe*.fastq.gz`) to a relevant input directory (e.g., `~/hpc/2017-09-29-reference_genome/input/01-read_cleaning/`).
-
-Now move to a relevant results directory (e.g., `~/hpc/2017-09-29-reference_genome/results/01-read_cleaning/). 
-
-Here, run FastQC on the `reads.pe2` file. The `--outdir` option will help you clearly separate input and output files (and remember to log the commands you used in the `WHATIDID.txt` file).
-
-Your [resulting directory structure](http://github.com/wurmlab/templates/blob/master/project_structures.md "Typical multi-day project structure"), should look like this:
-
-```bash
-tree -h
-.
-├── [4.0K]  input
-│   └── [4.0K]  01-read_cleaning
-│       ├── [  53]  reads.pe1.fastq.gz
-│       ├── [  53]  reads.pe2.fastq.gz
-│       └── [  44]  WHATIDID.txt
-└── [4.0K]  results
-    └── [4.0K]  01-read_cleaning
-        ├── [  28]  input -> ../../input/01-read_cleaning/
-        ├── [336K]  reads.pe2_fastqc.html
-        ├── [405K]  reads.pe2_fastqc.zip
-        └── [ 126]  WHATIDID.txt
-```
-
-What does the FastQC report tell you? ([the documentation clarifies what each plot means](http://www.bioinformatics.babraham.ac.uk/projects/fastqc/Help/3%20Analysis%20Modules/)). For comparison, have a look at some plots from other sequencing libraries: e.g, [[1]](img-qc/per_base_quality.png), [[2]](img-qc/qc_factq_tile_sequence_quality.png), [[3]](img-qc/per_base_sequence_content.png).
-
-Decide whether and how much to trim from the beginning and end of our sequences. What else might you want to do?
-
-Below, we will perform three cleaning steps:
-  * Trimming the ends of sequence reads using seqtk.  
-  * K-mer filtering using khmer.
-  * Removing sequences that are of low quality or too short using seqtk.
-
-Other tools including [fastx_toolkit](http://github.com/agordon/fastx_toolkit), [kmc2](http://arxiv.org/abs/1407.1507) and [Trimmomatic](http://www.usadellab.org/cms/index.php?page=trimmomatic) can also be useful.
-
-### Trimming
-
-[seqtk](http://github.com/lh3/seqtk) ([documentation](http://manpages.ubuntu.com/manpages/vivid/man1/seqtk.1.html)) is a fast and lightweight tool for processing FASTA and FASTQ sequences.
-
-Based on the results from FastQC, replace `REPLACE` and `REPLACE` below to appropriately trim from the beginning (`-b`) and end (`-e`)  of the sequences.
-
-```bash
-seqtk trimfq -b REPLACE -e REPLACE input/reads.pe2.fastq.gz > tmp/reads.pe2.trimmed.fq
-```
-
-This will only take a few seconds (make sure you replaced `REPLACE`).
-
-Let's similarly inspect the paired set of reads, `reads.pe1`, and appropriately trim them.
-```bash
-seqtk trimfq -b REPLACE -e REPLACE input/reads.pe1.fastq.gz > tmp/reads.pe1.trimmed.fq
-```
-
-
-### K-mer filtering, removal of low quality and short sequences
-
-Say you have sequenced your sample at 45x genome coverage. The real coverage distribution will be influenced by factors including DNA quality, library preparation type and local GC content, but you might expect most of the genome to be covered between 20 and 70x. In practice, the distribution can be very strange. One way of rapidly examining the coverage distribution before you have a reference genome is to chop your raw sequence reads into short "k-mers" of 31 nucleotides, and count how often you get each possible k-mer. Surprisingly,
-
- * many sequences are extremely rare (e.g., once). These are likely to be errors that appeared during library preparation or sequencing, or could be rare somatic mutations). Such sequences can confuse assembly software; eliminating them can decrease subsequent memory & CPU requirements.
- * Other sequences may exist at 10,000x coverage. These could be pathogens or repetitive elements. Often, there is no benefit to retaining all copies of such sequences because the assembly software will be confused by them; while retaining a small proportion could of such reads could  significantly reduce CPU, memory and space requirements.
-
-
- An example plot of a k-mer frequencies from a haploid sample sequenced at ~45x coverage:
-
-![kmer distribution graph from UCSC](img-qc/quake_kmer_distribution.jpg)
-
-
-It is possible to count and filter "k-mers" using [khmer](http://github.com/ged-lab/khmer) ([documentation](http://khmer.readthedocs.io/en/v2.0/user/index.html); the [kmc2](http://github.com/refresh-bio/KMC) tool is faster and thus can be more appropriate for large datasets).
-
-Below, we use khmer to remove extremely frequent k-mers (more than 100x), remove extremely rare k-mers, and we use seqtk to truncate sequences containing unresolved "N"s and nucleotides of particularly low quality. After all this truncation and removal, seqtk remove reads that have become too short, or no longer have a paired read. Understanding the exact commands – which are a bit convoluted – is unnecessary. It is important to understand the concept of k-mer filtering.
-
-```bash
-# 1. Interleave Fastqs (khmer needs both paired end files merged into one file)
-seqtk mergepe tmp/reads.pe1.trimmed.fq tmp/reads.pe2.trimmed.fq > tmp/reads.pe12.trimmed.fq
-
-# 2. Remove coverage above 100x, save kmer.counts table
-khmer normalize-by-median.py -p --ksize 20 -C 100 -M 1e9 -s tmp/kmer.counts \
-                -o tmp/reads.pe12.trimmed.max100.fq tmp/reads.pe12.trimmed.fq
-# 3. Filter low abundance kmers
-khmer filter-abund.py -V tmp/kmer.counts \
-                      -o tmp/reads.pe12.trimmed.max100.norare.fq \
-                      tmp/reads.pe12.trimmed.max100.fq
-# 4. Remove low quality bases, short sequences, and non-paired reads
-seqtk seq -q 10 -N -L 80 tmp/reads.pe12.trimmed.max100.norare.fq | \
-                 seqtk dropse > tmp/reads.pe12.trimmed.max100.norare.noshort.fq
-
-# 5. De-interleave filtered reads
-khmer split-paired-reads.py tmp/reads.pe12.trimmed.max100.norare.noshort.fq -d tmp/
-
-# 6. Rename output reads to something more human-friendly
-ln -s tmp/reads.pe12.trimmed.max100.norare.noshort.fq.1 reads.pe1.clean.fq
-ln -s tmp/reads.pe12.trimmed.max100.norare.noshort.fq.2 reads.pe2.clean.fq
-
-```
-
-### Inspecting quality of cleaned reads
-
-Which percentage of reads have we removed overall? (hint: `wc -l` can count lines in a non-gzipped file). Is there a general rule about how much we should be removing?
-Run `fastqc` again, this time on `reads.pe2.clean.fq`. Which statistics have changed? Does the "per tile" sequence quality indicate to you that we should perhaps do more cleaning?
-
----
+### [Read cleaning exercise](read-cleaning)
 
 ## Genome assembly
 
@@ -195,7 +90,7 @@ Like any other assembler, SOAPdenovo creates many files, including an `assembly.
 
 There are many other genome assembly approaches. While waiting for everyone to make it to this stage, try to understand some of the challenges of *de novo* genome assembly and the approaches used to overcome them via the following papers:
 
- * [Genetic variation and the *de novo* assembly of human genomes. Chaisson  et al 2015 NRG](http://www.nature.com/nrg/journal/v16/n11/full/nrg3933.html)  (to overcome the paywall, login via your university, email the authors, or try [scihub](http://en.wikipedia.org/wiki/Sci-Hub).
+ * [Genetic variation and the *de novo* assembly of human genomes. Chaisson  et al 2015 NRG](http://www.nature.com/nrg/journal/v16/n11/full/nrg3933.html)  (to overcome the paywall, login via your university, email the authors, or try [scihub](http://en.wikipedia.org/wiki/Sci-Hub)).
  * The now slightly outdated (2013) [Assemblathon paper](http://gigascience.biomedcentral.com/articles/10.1186/2047-217X-2-10).
  * [Metassembler: merging and optimizing *de novo* genome assemblies. Wences & Schatz (2015)](http://genomebiology.biomedcentral.com/articles/10.1186/s13059-015-0764-4).
  * [A hybrid approach for *de novo* human genome sequence assembly and phasing. Mostovoy et al (2016)](http://www.nature.com/nmeth/journal/vaop/ncurrent/full/nmeth.3865.html).
@@ -227,7 +122,7 @@ Perhaps we have prior knowledge about the %GC content to expect, the number of c
 Unfortunately, with many of the simple metrics, it is difficult to determine whether the assembler did things correctly, or just haphazardly stuck lots of reads together!
 
 We probably have other prior information about what to expect in this genome. For example:
- 1. If we have a reference assembly from a no-too-distant relative, we could expect large parts of genome to be organised in the same order, i.e., synteny.
+ 1. If we have a reference assembly from a not-too-distant relative, we could expect large parts of genome to be organised in the same order, i.e., synteny.
  2. If we independently created a transcriptome assembly, we can expect  the exons making up each transcript to map sequentially onto the genome (see [TGNet](http://github.com/ksanao/TGNet) for an implementation).
  3. We can expect the different scaffolds in the genome to have a unimodal distribution in sequence read coverage. Similarly, one can expect GC% to be unimodally distributed among scaffolds. Using this idea, the [Blobology](https://github.com/sujaikumar/assemblage) approach determined that evidence of foreign sequences in Tardigrades is largely due to extensive contamination rather than extensive horizontal gene transfer [Koutsovoulos et al 2016](http://www.pnas.org/content/113/18/5053).
  4. We can expect different patterns of gene content and structure between eukaryotes and prokaryotes.
@@ -258,14 +153,8 @@ Once its done the results will be hidden in subdirectories of `*maker.output/min
 So now we have some gene predictions... how can we know if they are any good? The easiest way to get a feel for this is by comparing a few of them ([backup examples](predictions.fa "backup MAKER gene predictions just in case")) to known sequences from other species. For this, launch a [local BLAST server](http://sequenceserver.com "BLAST graphical interface") to compare a few of your protein-coding gene predictions to the high quality predictions in swissprot:
 
 ```bash
-
-# First download the SwissProt database:
-cd ~/hpc/2017-09-BIO721_genome_bioinformatics_input/reference_databases
-sh ./download_reference_databases
-
 # Run BLAST server:
 sequenceserver -d ~/hpc/2017-09-BIO721_genome_bioinformatics_input/reference_databases
-
 ```
 
 Do any of these genes have significant similarity to known sequences? For a given gene prediction, do you think it is complete, or can you infer from the BLAST alignments that something may be wrong?
@@ -290,5 +179,3 @@ Genevalidator's visual output can be handy when looking at few genes. But the to
 ### Manual curation
 
 Because automated gene predictions aren't perfect, manual inspection and fixing are often required. The most commonly used software for this is [Apollo/WebApollo](http://genomearchitect.org/). In the following practical, we will be using a different, Apollo-like curation software (Afra) to edit the gene prediction, e.g. adding or removing exons, merging or splitting gene models, and adjusting exon boundaries.
-
----
