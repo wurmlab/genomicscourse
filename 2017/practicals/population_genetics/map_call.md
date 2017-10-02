@@ -6,7 +6,7 @@ Roddy Pracana and Yannick Wurm
 
 There are several types of variants. Commonly, people look at single nucleotide polymorphisms (SNPs, sometimes also known as single nucleotide variants, SNVs). Other classes include small insertions and deletions (known collectively as indels), as well as larger structural variants, such as large insertions, deletions, inversions and translocations.
 
-There are several approaches to variant calling from short pair-end reads. We are going to use one of them. First, we will map the reads from each individual to a reference assembly similar to the one created in the [previous practical](../reference_genome/assembly). Then we will find the positions where at least some of the individuals differ from the reference (and each other).
+There are several approaches to variant calling from short pair-end reads. We are going to use one of them. First, we will map the reads from each individual to a reference assembly similar to the one created in the [previous practical](../reference_genome/read-cleaning). Then we will find the positions where at least some of the individuals differ from the reference (and each other).
 
 ## Pipeline
 
@@ -29,7 +29,7 @@ All work must be done in `~/hpc`, which should be setup to mirror home directory
     curl https://wurmlab.github.io/genomicscourse/2017/scripts/setup.sh | bash
     ```
 
-We recommend that you set up a directory for today following [our convention](https://github.com/wurmlab/templates/blob/master/project_structures), as [you did in the last practical](../reference_genome//assembly#short-read-cleaning). You should have a subdirectory called `data` and another called `results`. In each, you should have a directory for the read mapping, and another for the variant calling:
+We recommend that you set up a directory for today following [our convention](https://github.com/wurmlab/templates/blob/master/project_structures), as [you did in the last practical](../reference_genome/read-cleaning#set-up-directory-hierarchy-to-work-in). You should have a subdirectory called `data` and another called `results`. In each, you should have a directory for the read mapping, and another for the variant calling:
 
 ```
 2017-10-04-genotyping/
@@ -53,7 +53,7 @@ The data we need is in the `~/hpc/data/popgen` directory. Copy (with `cp`) or li
 To see how many scaffolds there are in the reference genome, type:
 
 ```sh
-grep ">" ~/hpc/2017-10-04-genotyping/data/01-mapping/reference.fa
+grep "^>" ~/hpc/2017-10-04-genotyping/data/01-mapping/reference.fa
 ```
 
 Now have a look at the `.fq.gz` files.
