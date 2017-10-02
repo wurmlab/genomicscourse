@@ -73,6 +73,8 @@ We probably have other prior information about what to expect in this genome. Fo
     * BUSCO is a refined, modernized implementation of [CEGMA]("http://korflab.ucdavis.edu/Datasets/cegma/") (Core Eukaryotic Genes Mapping Approach). CEGMA examines a eukaryotic genome assembly for presence and completeness of 248 "core eukaryotic genes".
     * QUAST also includes a "quick and dirty" method of finding genes.
 
+It is *very important* to understand the concepts undelrying these different approaches.
+
 
 ## Gene prediction
 
