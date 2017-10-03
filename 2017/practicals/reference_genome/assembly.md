@@ -8,9 +8,11 @@ Find (or make) some friends; find a table. In groups of 4 or 5, ask an assistant
 
 ### Brief assembly example / concepts
 
-Many different pieces of software exist for genome assembly.
+Many different pieces of software exist for genome assembly. We will be using SOAPdenovo.
 
-To assemble our cleaned reads with SOAPdenovo, we create a `soap_config.txt` file (in a new `results/02-assembly directory`) containing the following:
+Create a new `input/02-assembly` directory and link the output from yesterday's practical into it. Make a new `results/02-assembly` directory. Create a link between `input/02-assembly` and `results/02-assembly/input`.
+
+To assemble our cleaned reads with SOAPdenovo, we create a `soap_config.txt` file containing the following:
 
 ```
 max_rd_len=101          # maximal read length
@@ -23,13 +25,13 @@ q1=input/reads.pe1.clean.fq
 q2=input/reads.pe2.clean.fq
 ```
 
-Then run the following line. *THIS IS RAM-INTENSE – with only 2Gb ram, your computer may struggle*
+Then run the following line. *THIS IS RAM-INTENSE, your computer may struggle*
 
 ```bash
 soapdenovo2-63mer all -s soap_config.txt -K 63 -R -o assembly
 ```
 
-Like any other assembler, SOAPdenovo creates many files, including an `assembly.scafSeq` file that is likely to be used for follow-up analyses. You can [download it here](../../data/reference_assembly/output/assembly.scafSeq.gz). Why does this file contain so many NNNN sequences?
+Like any other assembler, SOAPdenovo creates many files, including an `assembly.scafSeq` file that is likely to be used for follow-up analyses[.](../../data/reference_assembly/output/assembly.scafSeq.gz) Why does this file contain so many NNNN sequences?
 
 There are many other genome assembly approaches. While waiting for everyone to make it to this stage, try to understand some of the challenges of *de novo* genome assembly and the approaches used to overcome them via the following papers:
 

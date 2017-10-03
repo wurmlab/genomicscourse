@@ -34,8 +34,9 @@ code > span.er { color: #ff0000; font-weight: bold; }
 <h3 id="offline-exercise">Offline exercise</h3>
 <p>Find (or make) some friends; find a table. In groups of 4 or 5, ask an assistant for an assembly task.</p>
 <h3 id="brief-assembly-example-concepts">Brief assembly example / concepts</h3>
-<p>Many different pieces of software exist for genome assembly.</p>
-<p>To assemble our cleaned reads with SOAPdenovo, we create a <code>soap_config.txt</code> file (in a new <code>results/02-assembly directory</code>) containing the following:</p>
+<p>Many different pieces of software exist for genome assembly. We will be using SOAPdenovo.</p>
+<p>Create a new <code>input/02-assembly</code> directory and link the output from yesterday's practical into it. Make a new <code>results/02-assembly</code> directory. Create a link between <code>input/02-assembly</code> and <code>results/02-assembly/input</code>.</p>
+<p>To assemble our cleaned reads with SOAPdenovo, we create a <code>soap_config.txt</code> file containing the following:</p>
 <pre><code>max_rd_len=101          # maximal read length
 [LIB]            # One [LIB] section per library
 avg_ins=470             # average insert size
@@ -44,9 +45,9 @@ asm_flags=3             # use for contig building and subsequent scaffolding
 rank=1                  # in which order the reads are used while scaffolding
 q1=input/reads.pe1.clean.fq
 q2=input/reads.pe2.clean.fq</code></pre>
-<p>Then run the following line. <em>THIS IS RAM-INTENSE – with only 2Gb ram, your computer may struggle</em></p>
+<p>Then run the following line. <em>THIS IS RAM-INTENSE, your computer may struggle</em></p>
 <pre class="sourceCode bash"><code class="sourceCode bash"><span class="kw">soapdenovo2-63mer</span> all -s soap_config.txt -K 63 -R -o assembly</code></pre>
-<p>Like any other assembler, SOAPdenovo creates many files, including an <code>assembly.scafSeq</code> file that is likely to be used for follow-up analyses. You can <a href="../../data/reference_assembly/output/assembly.scafSeq.gz">download it here</a>. Why does this file contain so many NNNN sequences?</p>
+<p>Like any other assembler, SOAPdenovo creates many files, including an <code>assembly.scafSeq</code> file that is likely to be used for follow-up analyses<a href="../../data/reference_assembly/output/assembly.scafSeq.gz">.</a> Why does this file contain so many NNNN sequences?</p>
 <p>There are many other genome assembly approaches. While waiting for everyone to make it to this stage, try to understand some of the challenges of <em>de novo</em> genome assembly and the approaches used to overcome them via the following papers:</p>
 <ul class="incremental">
 <li><a href="http://www.nature.com/nrg/journal/v16/n11/full/nrg3933.html">Genetic variation and the <em>de novo</em> assembly of human genomes. Chaisson et al 2015 NRG</a> (to overcome the paywall, login via your university, email the authors, or try <a href="http://en.wikipedia.org/wiki/Sci-Hub">scihub</a>).<br /></li>
