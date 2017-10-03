@@ -29,6 +29,8 @@ Run the following command to copy the data used in this practical to your local 
 scp -r login2.hpc.qmul.ac.uk:/data/SBCS-MSc-BioInf/2017/popgen ~/2017-09-BIO721_popgen_input
 ```
 
+Then type:
+
 ```bash
 chmod a-w -R ~/2017-09-BIO721_popgen_input
 ```
