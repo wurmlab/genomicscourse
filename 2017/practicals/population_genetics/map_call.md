@@ -77,7 +77,7 @@ The first step in our pipeline is to align the paired end reads to the reference
 In the first step, the scaffold sequence (sometimes known as the database) is indexed, in this case using the [Burrows-Wheeler Transform](https://en.wikipedia.org/wiki/Burrows-Wheeler_transform), which can help compress a large text into less memory. It thus allows for memory efficient alignment.
 
 ```bash
-ln -rs input/reference.fa tmp
+ln -s input/reference.fa tmp
 
 bowtie2-build tmp/reference.fa tmp/reference
 ```
@@ -149,23 +149,14 @@ Now that we have alignments, we can copy them to a results file.
 mkdir results
 mkdir results/alignments
 cp tmp/alignments/*.ba[mi] results/alignments
-ln -rs tmp/alignments results/alignments/original
+ln -s tmp/alignments results/alignments/original
 
 ```
 
 
 ## Variant calling
 
-The following analysis is done in the directory `results/02-genotyping`. Remember to keep your commands in the `WHATIDID.txt` file. We will need the reference fasta file, as well as the alignments we just created, so create a link to those files in the `data/02-genotyping` directory:
-
-```sh
-cd ~/hpc/2017-10-04-genotyping/
-
-ln -rs results/01-mapping/results/alignments data/02-genotyping/alignments
-ln -rs data/01-mapping/reference.fa data/02-genotyping/
-
-cd results/02-genotyping
-```
+The following analysis is done in the directory `results/02-genotyping`. Remember to keep your commands in the `WHATIDID.txt` file. We will need the reference fasta file, as well as the alignments we just created, so create a link to those files in the `input/02-genotyping` directory.
 
 There are several approaches to call variants. The simplest approach is to look for positions where the mapped reads consistently have a different base than the reference assembly (the consensus approach). We need to run two steps, `samtools mpileup`, which looks for inconsistencies between the reference and the aligned reads, and `bcftools call`, which interprets them as variants.
 
@@ -174,7 +165,7 @@ We will use multiallelic caller (option `-m`) of bcftools and set all individual
 ```bash
 # Step 1: samtools mpileup
 ## Create index of the reference (different from that used by bowtie2)
-ln -rs input/reference.fa tmp/reference.fa
+ln -s input/reference.fa tmp/reference.fa
 samtools faidx tmp/reference.fa
 
 # Run samtools mpileup
@@ -207,7 +198,7 @@ We will filter the VCF using `bcftools filter`. We can remove anything with qual
 
 ```bash
 bcftools filter --exclude 'QUAL < 30' tmp/variants/calls.vcf | \
-bcftools view -g ^miss > tmp/variants/filtered_calls.vcf
+    bcftools view -g ^miss > tmp/variants/filtered_calls.vcf
 
 ```
 
@@ -232,7 +223,7 @@ Now that we have a SNP set, we can copy it to a results file.
 ```sh
 mkdir results
 cp tmp/variants/snp.vcf results/
-ln -rs tmp/variants/ results/original
+ln -s tmp/variants/ results/original
 
 ```
 
