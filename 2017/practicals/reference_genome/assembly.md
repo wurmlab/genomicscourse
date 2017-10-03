@@ -31,7 +31,7 @@ Then run the following line. *THIS IS RAM-INTENSE, your computer may struggle*
 soapdenovo2-63mer all -s soap_config.txt -K 63 -R -o assembly
 ```
 
-Like any other assembler, SOAPdenovo creates many files, including an `assembly.scafSeq` file that is likely to be used for follow-up analyses. You can [download it here](../../data/reference_assembly/output/assembly.scafSeq.gz). Why does this file contain so many NNNN sequences?
+Like any other assembler, SOAPdenovo creates many files, including an `assembly.scafSeq` file that is likely to be used for follow-up analyses[.](../../data/reference_assembly/output/assembly.scafSeq.gz) Why does this file contain so many NNNN sequences?
 
 There are many other genome assembly approaches. While waiting for everyone to make it to this stage, try to understand some of the challenges of *de novo* genome assembly and the approaches used to overcome them via the following papers:
 
