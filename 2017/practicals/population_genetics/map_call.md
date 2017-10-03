@@ -42,11 +42,11 @@ We recommend that you set up a directory for today following [our convention](ht
 │   └── 02-genotyping
 └── results
     ├── 01-mapping
-    │   ├── input -> ../../data/01-mapping/
+    │   ├── input -> ../../input/01-mapping/
     │   ├── tmp
     │   └── WHATIDID.txt
     └── 02-genotyping
-        ├── input -> ../../data/02-genotyping/
+        ├── input -> ../../input/02-genotyping/
         ├── tmp
         └── WHATIDID.txt
 
