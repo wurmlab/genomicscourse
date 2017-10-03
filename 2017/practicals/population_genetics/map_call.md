@@ -26,7 +26,7 @@ The aim of this practical is to genotype these 14 individuals. The steps in the 
 Run the following command to copy the data used in this practical to your local computer:
 
 ```bash
-scp -r login2.hpc.qmul.ac.uk:/data/SBCS-MSc-BioInf/2017/popgen ~/2017-10-BIO721_popgen_input
+scp -r btxxxxx@login2.hpc.qmul.ac.uk:/data/SBCS-MSc-BioInf/2017/popgen ~/2017-10-BIO721_popgen_input
 ```
 
 Then type:
