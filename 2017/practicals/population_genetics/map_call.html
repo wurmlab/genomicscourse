@@ -45,13 +45,12 @@ code > span.er { color: #ff0000; font-weight: bold; }
 <li>Visualise the alignments and the SNP calls in the genome browser <code>igv</code>.</li>
 </ol>
 <h2 id="the-data">The data</h2>
-<p>All work must be done in <code>~/hpc</code>, which should be setup to mirror home directory of your HPC user. Run the following command to setup <code>~/hpc</code> correctly. Do note that this command must be run at the start of each practical session.</p>
-<pre><code>```bash
-curl https://wurmlab.github.io/genomicscourse/2017/scripts/setup.sh | bash
-```</code></pre>
-<p>We recommend that you set up a directory for today following <a href="https://github.com/wurmlab/templates/blob/master/project_structures">our convention</a>, as <a href="../reference_genome/read-cleaning#set-up-directory-hierarchy-to-work-in">you did in the last practical</a>. You should have a subdirectory called <code>data</code> and another called <code>results</code>. In each, you should have a directory for the read mapping, and another for the variant calling:</p>
+<p>Run the following command to copy the data used in this practical to your local computer:</p>
+<pre class="sourceCode bash"><code class="sourceCode bash"><span class="kw">scp</span> -r login2.hpc.qmul.ac.uk:/data/SBCS-MSc-BioInf/2017/popgen ~/2017-09-BIO721_popgen_input</code></pre>
+<pre class="sourceCode bash"><code class="sourceCode bash"><span class="kw">chmod</span> a-w -R ~/2017-09-BIO721_popgen_input</code></pre>
+<p>We recommend that you set up a directory for today following <a href="https://github.com/wurmlab/templates/blob/master/project_structures">our convention</a>, as <a href="../reference_genome/read-cleaning#set-up-directory-hierarchy-to-work-in">you did in the last practical</a>. You should have a subdirectory called <code>input</code> and another called <code>results</code>. In each, you should have a directory for the read mapping, and another for the variant calling:</p>
 <pre><code>2017-10-04-genotyping/
-├── data
+├── input
 │   ├── 01-mapping
 │   └── 02-genotyping
 └── results
@@ -64,9 +63,9 @@ curl https://wurmlab.github.io/genomicscourse/2017/scripts/setup.sh | bash
         ├── tmp
         └── WHATIDID.txt
 </code></pre>
-<p>The data we need is in the <code>~/hpc/data/popgen</code> directory. Copy (with <code>cp</code>) or link (with <code>ln -rs</code>) the file <code>reference.fa</code> and the <code>reads</code> directory to <code>~/hpc/2017-10-04-genotyping/data/01-mapping</code>.</p>
+<p>The data we need is in the <code>~/2017-09-BIO721_popgen_input</code> directory. Copy (with <code>cp</code>) or link (with <code>ln -rs</code>) the file <code>reference.fa</code> and the <code>reads</code> directory to <code>2017-10-04-genotyping/data/01-mapping</code>.</p>
 <p>To see how many scaffolds there are in the reference genome, type:</p>
-<pre class="sh"><code>grep &quot;^&gt;&quot; ~/hpc/2017-10-04-genotyping/data/01-mapping/reference.fa</code></pre>
+<pre class="sh"><code>grep &quot;^&gt;&quot; reference.fa</code></pre>
 <p>Now have a look at the <code>.fq.gz</code> files.</p>
 <ul class="incremental">
 <li>Why does each sample have two sets of reads?<br /></li>
