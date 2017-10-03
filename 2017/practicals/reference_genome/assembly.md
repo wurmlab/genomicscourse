@@ -10,7 +10,7 @@ Find (or make) some friends; find a table. In groups of 4 or 5, ask an assistant
 
 Many different pieces of software exist for genome assembly.
 
-If we wanted to assemble our cleaned reads with SOAPdenovo, we would (in a new `results/02-assembly directory`) create a `soap_config.txt` file containing the following:
+To assemble our cleaned reads with SOAPdenovo, we create a `soap_config.txt` file (in a new `results/02-assembly directory`) containing the following:
 
 ```
 max_rd_len=101          # maximal read length
@@ -23,7 +23,7 @@ q1=input/reads.pe1.clean.fq
 q2=input/reads.pe2.clean.fq
 ```
 
-Then run the following line. *THIS IS RAM-INTENSE – with only 2Gb ram, your computer may struggle - you don't need to do this and can just download the result!*
+Then run the following line. *THIS IS RAM-INTENSE – with only 2Gb ram, your computer may struggle*
 
 ```bash
 soapdenovo2-63mer all -s soap_config.txt -K 63 -R -o assembly
