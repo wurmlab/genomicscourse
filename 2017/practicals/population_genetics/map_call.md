@@ -26,13 +26,13 @@ The aim of this practical is to genotype these 14 individuals. The steps in the 
 Run the following command to copy the data used in this practical to your local computer:
 
 ```bash
-scp -r login2.hpc.qmul.ac.uk:/data/SBCS-MSc-BioInf/2017/popgen ~/2017-09-BIO721_popgen_input
+scp -r login2.hpc.qmul.ac.uk:/data/SBCS-MSc-BioInf/2017/popgen ~/2017-10-BIO721_popgen_input
 ```
 
 Then type:
 
 ```bash
-chmod a-w -R ~/2017-09-BIO721_popgen_input
+chmod a-w -R ~/2017-10-BIO721_popgen_input
 ```
 
 We recommend that you set up a directory for today following [our convention](https://github.com/wurmlab/templates/blob/master/project_structures), as [you did in the last practical](../reference_genome/read-cleaning#set-up-directory-hierarchy-to-work-in). You should have a subdirectory called `input` and another called `results`. In each, you should have a directory for the read mapping, and another for the variant calling:
@@ -54,7 +54,7 @@ We recommend that you set up a directory for today following [our convention](ht
 
 ```
 
-The data we need is in the `~/2017-09-BIO721_popgen_input` directory. Link (with `ln -s`) the file `reference.fa`  and the `reads` directory to `2017-10-04-genotyping/data/01-mapping`.
+The data we need is in the `~/2017-10-BIO721_popgen_input` directory. Link (with `ln -s`) the file `reference.fa`  and the `reads` directory to `2017-10-04-genotyping/data/01-mapping`.
 
 To see how many scaffolds there are in the reference genome, type:
 
