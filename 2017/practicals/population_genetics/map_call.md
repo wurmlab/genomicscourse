@@ -23,17 +23,21 @@ The aim of this practical is to genotype these 14 individuals. The steps in the 
 
 ## The data
 
-All work must be done in `~/hpc`, which should be setup to mirror home directory of your HPC user. Run the following command to setup `~/hpc` correctly. Do note that this command must be run at the start of each practical session.
+Run the following command to copy the data used in this practical to your local computer:
 
-    ```bash
-    curl https://wurmlab.github.io/genomicscourse/2017/scripts/setup.sh | bash
-    ```
+```bash
+scp -r login2.hpc.qmul.ac.uk:/data/SBCS-MSc-BioInf/2017/popgen ~/2017-09-BIO721_popgen_input
+```
 
-We recommend that you set up a directory for today following [our convention](https://github.com/wurmlab/templates/blob/master/project_structures), as [you did in the last practical](../reference_genome/read-cleaning#set-up-directory-hierarchy-to-work-in). You should have a subdirectory called `data` and another called `results`. In each, you should have a directory for the read mapping, and another for the variant calling:
+```bash
+chmod a-w -R ~/2017-09-BIO721_popgen_input
+```
+
+We recommend that you set up a directory for today following [our convention](https://github.com/wurmlab/templates/blob/master/project_structures), as [you did in the last practical](../reference_genome/read-cleaning#set-up-directory-hierarchy-to-work-in). You should have a subdirectory called `input` and another called `results`. In each, you should have a directory for the read mapping, and another for the variant calling:
 
 ```
 2017-10-04-genotyping/
-├── data
+├── input
 │   ├── 01-mapping
 │   └── 02-genotyping
 └── results
@@ -48,12 +52,12 @@ We recommend that you set up a directory for today following [our convention](ht
 
 ```
 
-The data we need is in the `~/hpc/data/popgen` directory. Copy (with `cp`) or link (with `ln -rs`) the file `reference.fa`  and the `reads` directory to `~/hpc/2017-10-04-genotyping/data/01-mapping`.
+The data we need is in the `~/2017-09-BIO721_popgen_input` directory. Copy (with `cp`) or link (with `ln -rs`) the file `reference.fa`  and the `reads` directory to `2017-10-04-genotyping/data/01-mapping`.
 
 To see how many scaffolds there are in the reference genome, type:
 
 ```sh
-grep "^>" ~/hpc/2017-10-04-genotyping/data/01-mapping/reference.fa
+grep "^>" reference.fa
 ```
 
 Now have a look at the `.fq.gz` files.
