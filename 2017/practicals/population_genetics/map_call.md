@@ -26,11 +26,13 @@ The aim of this practical is to genotype these 14 individuals. The steps in the 
 Run the following command to copy the data used in this practical to your local computer:
 
 ```bash
-scp -r login2.hpc.qmul.ac.uk:/data/SBCS-MSc-BioInf/2017/popgen ~/2017-09-BIO721_popgen_input
+scp -r login2.hpc.qmul.ac.uk:/data/SBCS-MSc-BioInf/2017/popgen ~/2017-10-BIO721_popgen_input
 ```
 
+Then type:
+
 ```bash
-chmod a-w -R ~/2017-09-BIO721_popgen_input
+chmod a-w -R ~/2017-10-BIO721_popgen_input
 ```
 
 We recommend that you set up a directory for today following [our convention](https://github.com/wurmlab/templates/blob/master/project_structures), as [you did in the last practical](../reference_genome/read-cleaning#set-up-directory-hierarchy-to-work-in). You should have a subdirectory called `input` and another called `results`. In each, you should have a directory for the read mapping, and another for the variant calling:
@@ -42,17 +44,17 @@ We recommend that you set up a directory for today following [our convention](ht
 │   └── 02-genotyping
 └── results
     ├── 01-mapping
-    │   ├── input -> ../../data/01-mapping/
+    │   ├── input -> ../../input/01-mapping/
     │   ├── tmp
     │   └── WHATIDID.txt
     └── 02-genotyping
-        ├── input -> ../../data/02-genotyping/
+        ├── input -> ../../input/02-genotyping/
         ├── tmp
         └── WHATIDID.txt
 
 ```
 
-The data we need is in the `~/2017-09-BIO721_popgen_input` directory. Copy (with `cp`) or link (with `ln -rs`) the file `reference.fa`  and the `reads` directory to `2017-10-04-genotyping/data/01-mapping`.
+The data we need is in the `~/2017-10-BIO721_popgen_input` directory. Link (with `ln -s`) the file `reference.fa`  and the `reads` directory to `2017-10-04-genotyping/data/01-mapping`.
 
 To see how many scaffolds there are in the reference genome, type:
 
@@ -77,7 +79,7 @@ The first step in our pipeline is to align the paired end reads to the reference
 In the first step, the scaffold sequence (sometimes known as the database) is indexed, in this case using the [Burrows-Wheeler Transform](https://en.wikipedia.org/wiki/Burrows-Wheeler_transform), which can help compress a large text into less memory. It thus allows for memory efficient alignment.
 
 ```bash
-ln -rs input/reference.fa tmp
+ln -s input/reference.fa tmp
 
 bowtie2-build tmp/reference.fa tmp/reference
 ```
@@ -149,23 +151,14 @@ Now that we have alignments, we can copy them to a results file.
 mkdir results
 mkdir results/alignments
 cp tmp/alignments/*.ba[mi] results/alignments
-ln -rs tmp/alignments results/alignments/original
+ln -s tmp/alignments results/alignments/original
 
 ```
 
 
 ## Variant calling
 
-The following analysis is done in the directory `results/02-genotyping`. Remember to keep your commands in the `WHATIDID.txt` file. We will need the reference fasta file, as well as the alignments we just created, so create a link to those files in the `data/02-genotyping` directory:
-
-```sh
-cd ~/hpc/2017-10-04-genotyping/
-
-ln -rs results/01-mapping/results/alignments data/02-genotyping/alignments
-ln -rs data/01-mapping/reference.fa data/02-genotyping/
-
-cd results/02-genotyping
-```
+The following analysis is done in the directory `results/02-genotyping`. Remember to keep your commands in the `WHATIDID.txt` file. We will need the reference fasta file, as well as the alignments we just created, so create a link to those files in the `input/02-genotyping` directory.
 
 There are several approaches to call variants. The simplest approach is to look for positions where the mapped reads consistently have a different base than the reference assembly (the consensus approach). We need to run two steps, `samtools mpileup`, which looks for inconsistencies between the reference and the aligned reads, and `bcftools call`, which interprets them as variants.
 
@@ -174,7 +167,7 @@ We will use multiallelic caller (option `-m`) of bcftools and set all individual
 ```bash
 # Step 1: samtools mpileup
 ## Create index of the reference (different from that used by bowtie2)
-ln -rs input/reference.fa tmp/reference.fa
+ln -s input/reference.fa tmp/reference.fa
 samtools faidx tmp/reference.fa
 
 # Run samtools mpileup
@@ -207,7 +200,7 @@ We will filter the VCF using `bcftools filter`. We can remove anything with qual
 
 ```bash
 bcftools filter --exclude 'QUAL < 30' tmp/variants/calls.vcf | \
-bcftools view -g ^miss > tmp/variants/filtered_calls.vcf
+    bcftools view -g ^miss > tmp/variants/filtered_calls.vcf
 
 ```
 
@@ -232,7 +225,7 @@ Now that we have a SNP set, we can copy it to a results file.
 ```sh
 mkdir results
 cp tmp/variants/snp.vcf results/
-ln -rs tmp/variants/ results/original
+ln -s tmp/variants/ results/original
 
 ```
 

@@ -46,8 +46,9 @@ code > span.er { color: #ff0000; font-weight: bold; }
 </ol>
 <h2 id="the-data">The data</h2>
 <p>Run the following command to copy the data used in this practical to your local computer:</p>
-<pre class="sourceCode bash"><code class="sourceCode bash"><span class="kw">scp</span> -r login2.hpc.qmul.ac.uk:/data/SBCS-MSc-BioInf/2017/popgen ~/2017-09-BIO721_popgen_input</code></pre>
-<pre class="sourceCode bash"><code class="sourceCode bash"><span class="kw">chmod</span> a-w -R ~/2017-09-BIO721_popgen_input</code></pre>
+<pre class="sourceCode bash"><code class="sourceCode bash"><span class="kw">scp</span> -r login2.hpc.qmul.ac.uk:/data/SBCS-MSc-BioInf/2017/popgen ~/2017-10-BIO721_popgen_input</code></pre>
+<p>Then type:</p>
+<pre class="sourceCode bash"><code class="sourceCode bash"><span class="kw">chmod</span> a-w -R ~/2017-10-BIO721_popgen_input</code></pre>
 <p>We recommend that you set up a directory for today following <a href="https://github.com/wurmlab/templates/blob/master/project_structures">our convention</a>, as <a href="../reference_genome/read-cleaning#set-up-directory-hierarchy-to-work-in">you did in the last practical</a>. You should have a subdirectory called <code>input</code> and another called <code>results</code>. In each, you should have a directory for the read mapping, and another for the variant calling:</p>
 <pre><code>2017-10-04-genotyping/
 ├── input
@@ -55,15 +56,15 @@ code > span.er { color: #ff0000; font-weight: bold; }
 │   └── 02-genotyping
 └── results
     ├── 01-mapping
-    │   ├── input -&gt; ../../data/01-mapping/
+    │   ├── input -&gt; ../../input/01-mapping/
     │   ├── tmp
     │   └── WHATIDID.txt
     └── 02-genotyping
-        ├── input -&gt; ../../data/02-genotyping/
+        ├── input -&gt; ../../input/02-genotyping/
         ├── tmp
         └── WHATIDID.txt
 </code></pre>
-<p>The data we need is in the <code>~/2017-09-BIO721_popgen_input</code> directory. Copy (with <code>cp</code>) or link (with <code>ln -rs</code>) the file <code>reference.fa</code> and the <code>reads</code> directory to <code>2017-10-04-genotyping/data/01-mapping</code>.</p>
+<p>The data we need is in the <code>~/2017-10-BIO721_popgen_input</code> directory. Link (with <code>ln -s</code>) the file <code>reference.fa</code> and the <code>reads</code> directory to <code>2017-10-04-genotyping/data/01-mapping</code>.</p>
 <p>To see how many scaffolds there are in the reference genome, type:</p>
 <pre class="sh"><code>grep &quot;^&gt;&quot; reference.fa</code></pre>
 <p>Now have a look at the <code>.fq.gz</code> files.</p>
@@ -78,7 +79,7 @@ code > span.er { color: #ff0000; font-weight: bold; }
 <p>This part of the analysis is done in the <code>results/01-mapping</code> directory. Remember to keep your commands in the <code>WHATIDID.txt</code> file.</p>
 <p>The first step in our pipeline is to align the paired end reads to the reference genome. We are using the software <code>bowtie2</code>, which was created to align short read sequences to long sequences such as the scaffolds in a reference assembly. <code>bowtie2</code>, like most aligners, works in two steps.</p>
 <p>In the first step, the scaffold sequence (sometimes known as the database) is indexed, in this case using the <a href="https://en.wikipedia.org/wiki/Burrows-Wheeler_transform">Burrows-Wheeler Transform</a>, which can help compress a large text into less memory. It thus allows for memory efficient alignment.</p>
-<pre class="sourceCode bash"><code class="sourceCode bash"><span class="kw">ln</span> -rs input/reference.fa tmp
+<pre class="sourceCode bash"><code class="sourceCode bash"><span class="kw">ln</span> -s input/reference.fa tmp
 
 <span class="kw">bowtie2-build</span> tmp/reference.fa tmp/reference</code></pre>
 <p>The second step is the alignment itself:</p>
@@ -123,21 +124,15 @@ code > span.er { color: #ff0000; font-weight: bold; }
 <pre class="sh"><code>mkdir results
 mkdir results/alignments
 cp tmp/alignments/*.ba[mi] results/alignments
-ln -rs tmp/alignments results/alignments/original
+ln -s tmp/alignments results/alignments/original
 </code></pre>
 <h2 id="variant-calling">Variant calling</h2>
-<p>The following analysis is done in the directory <code>results/02-genotyping</code>. Remember to keep your commands in the <code>WHATIDID.txt</code> file. We will need the reference fasta file, as well as the alignments we just created, so create a link to those files in the <code>data/02-genotyping</code> directory:</p>
-<pre class="sh"><code>cd ~/hpc/2017-10-04-genotyping/
-
-ln -rs results/01-mapping/results/alignments data/02-genotyping/alignments
-ln -rs data/01-mapping/reference.fa data/02-genotyping/
-
-cd results/02-genotyping</code></pre>
+<p>The following analysis is done in the directory <code>results/02-genotyping</code>. Remember to keep your commands in the <code>WHATIDID.txt</code> file. We will need the reference fasta file, as well as the alignments we just created, so create a link to those files in the <code>input/02-genotyping</code> directory.</p>
 <p>There are several approaches to call variants. The simplest approach is to look for positions where the mapped reads consistently have a different base than the reference assembly (the consensus approach). We need to run two steps, <code>samtools mpileup</code>, which looks for inconsistencies between the reference and the aligned reads, and <code>bcftools call</code>, which interprets them as variants.</p>
 <p>We will use multiallelic caller (option <code>-m</code>) of bcftools and set all individuals as haploid. We want</p>
 <pre class="sourceCode bash"><code class="sourceCode bash"><span class="co"># Step 1: samtools mpileup</span>
 <span class="co">## Create index of the reference (different from that used by bowtie2)</span>
-<span class="kw">ln</span> -rs input/reference.fa tmp/reference.fa
+<span class="kw">ln</span> -s input/reference.fa tmp/reference.fa
 <span class="kw">samtools</span> faidx tmp/reference.fa
 
 <span class="co"># Run samtools mpileup</span>
@@ -164,7 +159,7 @@ cd results/02-genotyping</code></pre>
 </ul>
 <p>We will filter the VCF using <code>bcftools filter</code>. We can remove anything with quality call smaller than 30:</p>
 <pre class="sourceCode bash"><code class="sourceCode bash"><span class="kw">bcftools</span> filter --exclude <span class="st">'QUAL &lt; 30'</span> tmp/variants/calls.vcf <span class="kw">|</span> <span class="kw">\</span>
-<span class="kw">bcftools</span> view -g ^miss <span class="kw">&gt;</span> tmp/variants/filtered_calls.vcf</code></pre>
+    <span class="kw">bcftools</span> view -g ^miss <span class="kw">&gt;</span> tmp/variants/filtered_calls.vcf</code></pre>
 <p>In more serious analyses, it may be important to filter by other parameters.</p>
 <p>In the downstream analysis, we only want to look at sites that are:</p>
 <ol class="incremental">
@@ -182,7 +177,7 @@ cd results/02-genotyping</code></pre>
 <p>Now that we have a SNP set, we can copy it to a results file.</p>
 <pre class="sh"><code>mkdir results
 cp tmp/variants/snp.vcf results/
-ln -rs tmp/variants/ results/original
+ln -s tmp/variants/ results/original
 </code></pre>
 <h2 id="viewing-the-results-using-igv-integrative-genome-viewer">Viewing the results using IGV (Integrative Genome Viewer)</h2>
 <p>In this part of the practical, we are going to use the software IGV to visualise the alignments we created and check some of the positions where variants were called.</p>
