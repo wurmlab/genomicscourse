@@ -86,7 +86,7 @@ Start in a new directory (e.g., `~/2017-09-29-reference_genome/results/03-gene_p
 
 Running `maker -OPTS` will generate an empty `maker_opts.ctl` configuration file (ignore the warning). Edit that file to specify:
   * genome: `min20000.fa`
-  * augustus species: `honeybee1` (yes that's a 1)
+  * augustus species: a known gene set from a related species, in this case we choose `honeybee1` (yes that's a 1)
   * deactivate RepeatMasker by replacing `model_org=all` to `model_org= ` (i.e., nothing)
 
 For a real project, we *would* include RepeatMasker (perhaps after creating a new repeat library), we would provide as much relevant information as possible (e.g., RNAseq read mappings, transcriptome assembly – both improve gene prediction performance *tremendously*), and iteratively train gene prediction algorithms for our data including Augustus and SNAP.

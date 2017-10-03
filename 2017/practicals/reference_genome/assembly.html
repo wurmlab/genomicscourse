@@ -87,7 +87,7 @@ q2=input/reads.pe2.clean.fq</code></pre>
 <p>Running <code>maker -OPTS</code> will generate an empty <code>maker_opts.ctl</code> configuration file (ignore the warning). Edit that file to specify:</p>
 <ul class="incremental">
 <li>genome: <code>min20000.fa</code><br /></li>
-<li>augustus species: <code>honeybee1</code> (yes that's a 1)<br /></li>
+<li>augustus species: a known gene set from a related species, in this case we choose <code>honeybee1</code> (yes that's a 1)<br /></li>
 <li>deactivate RepeatMasker by replacing <code>model_org=all</code> to <code>model_org=</code> (i.e., nothing)</li>
 </ul>
 <p>For a real project, we <em>would</em> include RepeatMasker (perhaps after creating a new repeat library), we would provide as much relevant information as possible (e.g., RNAseq read mappings, transcriptome assembly – both improve gene prediction performance <em>tremendously</em>), and iteratively train gene prediction algorithms for our data including Augustus and SNAP.</p>
