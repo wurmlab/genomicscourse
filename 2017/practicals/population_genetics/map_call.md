@@ -54,7 +54,7 @@ We recommend that you set up a directory for today following [our convention](ht
 
 ```
 
-The data we need is in the `~/2017-10-BIO721_popgen_input` directory. Link (with `ln -s`) the file `reference.fa`  and the `reads` directory to `2017-10-04-genotyping/data/01-mapping`.
+The data we need is in the `~/2017-10-BIO721_popgen_input` directory. Link (with `ln -s`) the file `reference.fa`  and the `reads` directory to `2017-10-04-genotyping/input/01-mapping`.
 
 To see how many scaffolds there are in the reference genome, type:
 
