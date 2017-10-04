@@ -79,7 +79,7 @@ The first step in our pipeline is to align the paired end reads to the reference
 In the first step, the scaffold sequence (sometimes known as the database) is indexed, in this case using the [Burrows-Wheeler Transform](https://en.wikipedia.org/wiki/Burrows-Wheeler_transform), which can help compress a large text into less memory. It thus allows for memory efficient alignment.
 
 ```bash
-ln -s input/reference.fa tmp
+ln -rs input/reference.fa tmp
 
 bowtie2-build tmp/reference.fa tmp/reference
 ```
@@ -151,7 +151,7 @@ Now that we have alignments, we can copy them to a results file.
 mkdir results
 mkdir results/alignments
 cp tmp/alignments/*.ba[mi] results/alignments
-ln -s tmp/alignments results/alignments/original
+ln -rs tmp/alignments results/alignments/original
 
 ```
 
@@ -167,7 +167,7 @@ We will use multiallelic caller (option `-m`) of bcftools and set all individual
 ```bash
 # Step 1: samtools mpileup
 ## Create index of the reference (different from that used by bowtie2)
-ln -s input/reference.fa tmp/reference.fa
+ln -rs input/reference.fa tmp/reference.fa
 samtools faidx tmp/reference.fa
 
 # Run samtools mpileup
@@ -225,7 +225,7 @@ Now that we have a SNP set, we can copy it to a results file.
 ```sh
 mkdir results
 cp tmp/variants/snp.vcf results/
-ln -s tmp/variants/ results/original
+ln -rs tmp/variants/ results/original
 
 ```
 
@@ -233,7 +233,9 @@ ln -s tmp/variants/ results/original
 
 In this part of the practical, we are going to use the software IGV to visualise the alignments we created and check some of the positions where variants were called.
 
-Open IGV by typing `igv` on the command-line. IGV loads the human genome, so you need to define another genome file (`Genome` > `Genomes from file`, then choose the assembly `reference.fa` file).
+Some machines will ahve IGV already installed, if that is the case, open IGV by typing `igv` on the command-line. Otherwise, download the binaries from [here](http://software.broadinstitute.org/software/igv/download) (option 4: 'Binary distribution'). Once this is done, cd into the directory containing the file 'IGV_2.4.1' that you just downloaded. Then, use `unzip` to extract the IGV files. This will generate a new directory, IGV_2.4.1. cd into that directory and run `./igv.sh` to install and open IGV.
+
+IGV loads the human genome, so you need to define another genome file (`Genome` > `Genomes from file`, then choose the assembly `reference.fa` file).
 
 You can load some of the BAMs and the VCF file you produced.
 

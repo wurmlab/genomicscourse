@@ -79,7 +79,7 @@ code > span.er { color: #ff0000; font-weight: bold; }
 <p>This part of the analysis is done in the <code>results/01-mapping</code> directory. Remember to keep your commands in the <code>WHATIDID.txt</code> file.</p>
 <p>The first step in our pipeline is to align the paired end reads to the reference genome. We are using the software <code>bowtie2</code>, which was created to align short read sequences to long sequences such as the scaffolds in a reference assembly. <code>bowtie2</code>, like most aligners, works in two steps.</p>
 <p>In the first step, the scaffold sequence (sometimes known as the database) is indexed, in this case using the <a href="https://en.wikipedia.org/wiki/Burrows-Wheeler_transform">Burrows-Wheeler Transform</a>, which can help compress a large text into less memory. It thus allows for memory efficient alignment.</p>
-<pre class="sourceCode bash"><code class="sourceCode bash"><span class="kw">ln</span> -s input/reference.fa tmp
+<pre class="sourceCode bash"><code class="sourceCode bash"><span class="kw">ln</span> -rs input/reference.fa tmp
 
 <span class="kw">bowtie2-build</span> tmp/reference.fa tmp/reference</code></pre>
 <p>The second step is the alignment itself:</p>
@@ -124,7 +124,7 @@ code > span.er { color: #ff0000; font-weight: bold; }
 <pre class="sh"><code>mkdir results
 mkdir results/alignments
 cp tmp/alignments/*.ba[mi] results/alignments
-ln -s tmp/alignments results/alignments/original
+ln -rs tmp/alignments results/alignments/original
 </code></pre>
 <h2 id="variant-calling">Variant calling</h2>
 <p>The following analysis is done in the directory <code>results/02-genotyping</code>. Remember to keep your commands in the <code>WHATIDID.txt</code> file. We will need the reference fasta file, as well as the alignments we just created, so create a link to those files in the <code>input/02-genotyping</code> directory.</p>
@@ -132,7 +132,7 @@ ln -s tmp/alignments results/alignments/original
 <p>We will use multiallelic caller (option <code>-m</code>) of bcftools and set all individuals as haploid. We want</p>
 <pre class="sourceCode bash"><code class="sourceCode bash"><span class="co"># Step 1: samtools mpileup</span>
 <span class="co">## Create index of the reference (different from that used by bowtie2)</span>
-<span class="kw">ln</span> -s input/reference.fa tmp/reference.fa
+<span class="kw">ln</span> -rs input/reference.fa tmp/reference.fa
 <span class="kw">samtools</span> faidx tmp/reference.fa
 
 <span class="co"># Run samtools mpileup</span>
@@ -177,11 +177,12 @@ ln -s tmp/alignments results/alignments/original
 <p>Now that we have a SNP set, we can copy it to a results file.</p>
 <pre class="sh"><code>mkdir results
 cp tmp/variants/snp.vcf results/
-ln -s tmp/variants/ results/original
+ln -rs tmp/variants/ results/original
 </code></pre>
 <h2 id="viewing-the-results-using-igv-integrative-genome-viewer">Viewing the results using IGV (Integrative Genome Viewer)</h2>
 <p>In this part of the practical, we are going to use the software IGV to visualise the alignments we created and check some of the positions where variants were called.</p>
-<p>Open IGV by typing <code>igv</code> on the command-line. IGV loads the human genome, so you need to define another genome file (<code>Genome</code> &gt; <code>Genomes from file</code>, then choose the assembly <code>reference.fa</code> file).</p>
+<p>Some machines will ahve IGV already installed, if that is the case, open IGV by typing <code>igv</code> on the command-line. Otherwise, download the binaries from <a href="http://software.broadinstitute.org/software/igv/download">here</a> (option 4: 'Binary distribution'). Once this is done, cd into the directory containing the file 'IGV_2.4.1' that you just downloaded. Then, use <code>unzip</code> to extract the IGV files. This will generate a new directory, IGV_2.4.1. cd into that directory and run <code>./igv.sh</code> to install and open IGV.</p>
+<p>IGV loads the human genome, so you need to define another genome file (<code>Genome</code> &gt; <code>Genomes from file</code>, then choose the assembly <code>reference.fa</code> file).</p>
 <p>You can load some of the BAMs and the VCF file you produced.</p>
 <ul class="incremental">
 <li>Has bcftools/mpileup recovered the same positions as you would by looking at the alignments with IGV?<br /></li>
