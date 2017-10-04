@@ -115,12 +115,12 @@ Because SAM files include a lot of information, they tend to occupy a lot of spa
 
 ```bash
 # samtools view: compresses the SAM to BAM
-# samtools sort: sorts by scaffold position (creates f1_B.sorted.bam)
+# samtools sort: sorts by scaffold position (creates f1_B.bam)
 # Note that the argument "-" stands for the input that is being piped in
 samtools view -Sb tmp/alignments/f1_B.sam | samtools sort - > tmp/alignments/f1_B.bam
 
-## This creates a file (f1_B.sorted.bam), which we then index
-samtools index tmp/alignments/f1_B.bam   # creates f1_B.sorted.bam.bai
+## This creates a file (f1_B.bam), which we then index
+samtools index tmp/alignments/f1_B.bam   # creates f1_B.bam.bai
 
 ```
 
