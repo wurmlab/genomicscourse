@@ -233,7 +233,7 @@ ln -rs tmp/variants/ results/original
 
 In this part of the practical, we are going to use the software IGV to visualise the alignments we created and check some of the positions where variants were called.
 
-Some machines will have IGV already installed. If that is the case, open IGV by typing `igv` on the command-line. Otherwise, download the binaries from [here](http://software.broadinstitute.org/software/igv/download) (option 4: 'Binary distribution'). Once this is done, cd into the directory containing the file 'IGV_2.4.1' that you just downloaded. Then, type `unzip` on the command line to extract the IGV files. This will generate a new directory, IGV_2.4.1. cd into that directory and run `./igv.sh` to install and open IGV.
+Open IGV. It should be installed on the applications menu (`Applications > Other > IGV`) on the top left of the screen[.](http://software.broadinstitute.org/software/igv/download)
 
 IGV loads the human genome, so you need to define another genome file (`Genome` > `Genomes from file`, then choose the assembly `reference.fa` file).
 
