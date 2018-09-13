@@ -12,7 +12,7 @@ In the second part, we are going to measure genetic differentiation between the 
 
 ## Input into R
 
-Again, make a directory for this practical. You should create a directory for the data and one for the results (with a link, using `ln -s`, to the data directory). You will only need the `snp.vcf` file we created in the last practical (if you don't have this file, you can download it from [here](https://github.com/wurmlab/genomicscourse/blob/master/2016-BIO721P/data/popgen/vcf/snp.vcf.gz "Download vcf")).
+Again, make a directory for this practical. You should create a directory for the data and one for the results (with a link, using `ln -s`, to the data directory). You will only need the `snp.vcf` file we created in the last practical and place it into the appropriate input (if you don't have this file, you can download it from [here](https://github.com/wurmlab/genomicscourse/blob/master/2016-BIO721P/data/popgen/vcf/snp.vcf.gz "Download vcf")).
 
 It's a good idea to note down the results of your analysis in the the results directory, as well saving any graph you make.
 
@@ -153,7 +153,7 @@ We will measure FST and nucleotide diversity (a measure of genetic diversity) us
 In theory, the `r PopGenome` can read VCF files directly, using the `readVCF` function. However, because our samples are haploid, we need to use a different function, `readData`, which requires a folder with a separate VCF for each scaffold.
 
 ```sh
-
+## On your command line
 # Make new directory
 mkdir popgenome-vcf
 
@@ -173,6 +173,7 @@ You can now load the data in `R`.
 library(PopGenome)
 
 # Load the data
+# MODIFY the path for the above created folder
 snp <- readData("popgenome-vcf", format="VCF")
 
 # This is complex object, with several slots
