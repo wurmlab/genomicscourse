@@ -72,7 +72,7 @@ Now have a look at the `.fq.gz` files.
 
 ## Aligning reads to a reference assembly
 
-This part of the analysis is done in the `results/01-mapping` directory. Remember to keep your commands in the `WHATIDID.txt` file.
+This part of the analysis is done in the `results/01-mapping` directory. Remember to keep your commands in the `WHATIDID.txt` file and place the reference.fa file into the appropriate input folder
 
 The first step in our pipeline is to align the paired end reads to the reference genome. We are using the software `bowtie2`, which was created to align short read sequences to long sequences such as the scaffolds in a reference assembly. `bowtie2`, like most aligners, works in two steps.
 
@@ -148,7 +148,7 @@ samtools view tmp/alignments/f1_B.bam scaffold_1:10000-10500 | less -S
 Now that we have alignments, we can copy them to a results file.
 
 ```sh
-mkdir results
+# mkdir results
 mkdir results/alignments
 cp tmp/alignments/*.ba[mi] results/alignments
 ln -rs tmp/alignments results/alignments/original
@@ -223,7 +223,7 @@ bcftools view -v snps -m2 -M2 --min-ac 1:minor tmp/variants/filtered_calls.vcf >
 Now that we have a SNP set, we can copy it to a results file.
 
 ```sh
-mkdir results
+# mkdir results
 cp tmp/variants/snp.vcf results/
 ln -rs tmp/variants/ results/original
 

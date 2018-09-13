@@ -81,7 +81,7 @@ code > span.er { color: #ff0000; font-weight: bold; }
 <li>Knowing that each scaffold is 200kb, what is the expected coverage per base pair of individual f1_B?</li>
 </ul>
 <h2 id="aligning-reads-to-a-reference-assembly">Aligning reads to a reference assembly</h2>
-<p>This part of the analysis is done in the <code>results/01-mapping</code> directory. Remember to keep your commands in the <code>WHATIDID.txt</code> file.</p>
+<p>This part of the analysis is done in the <code>results/01-mapping</code> directory. Remember to keep your commands in the <code>WHATIDID.txt</code> file and place the reference.fa file into the appropriate input folder</p>
 <p>The first step in our pipeline is to align the paired end reads to the reference genome. We are using the software <code>bowtie2</code>, which was created to align short read sequences to long sequences such as the scaffolds in a reference assembly. <code>bowtie2</code>, like most aligners, works in two steps.</p>
 <p>In the first step, the scaffold sequence (sometimes known as the database) is indexed, in this case using the <a href="https://en.wikipedia.org/wiki/Burrows-Wheeler_transform">Burrows-Wheeler Transform</a>, which can help compress a large text into less memory. It thus allows for memory efficient alignment.</p>
 <pre class="sourceCode bash"><code class="sourceCode bash"><span class="kw">ln</span> -rs input/reference.fa tmp
@@ -126,7 +126,7 @@ code > span.er { color: #ff0000; font-weight: bold; }
 <span class="co"># To view a particular region:</span>
 <span class="kw">samtools</span> view tmp/alignments/f1_B.bam scaffold_1:10000-10500 <span class="kw">|</span> <span class="kw">less</span> -S</code></pre>
 <p>Now that we have alignments, we can copy them to a results file.</p>
-<pre class="sh"><code>mkdir results
+<pre class="sh"><code># mkdir results
 mkdir results/alignments
 cp tmp/alignments/*.ba[mi] results/alignments
 ln -rs tmp/alignments results/alignments/original
@@ -180,7 +180,7 @@ ln -rs tmp/alignments results/alignments/original
 <li>Can you find any other parameters indicating the quality of the variant call for a given individual on a given site?</li>
 </ul>
 <p>Now that we have a SNP set, we can copy it to a results file.</p>
-<pre class="sh"><code>mkdir results
+<pre class="sh"><code># mkdir results
 cp tmp/variants/snp.vcf results/
 ln -rs tmp/variants/ results/original
 </code></pre>
