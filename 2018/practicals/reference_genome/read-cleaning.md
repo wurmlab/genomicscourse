@@ -141,7 +141,7 @@ Say you have sequenced your sample at 45x genome coverage. The real coverage dis
 
 It is possible to count and filter "k-mers" using [khmer](http://github.com/ged-lab/khmer) ([documentation](http://khmer.readthedocs.io/en/v2.0/user/index.html); the [kmc2](http://github.com/refresh-bio/KMC) tool is faster and thus can be more appropriate for large datasets).
 
-Below, we use khmer to remove extremely frequent k-mers (more than 100x), remove extremely rare k-mers, and we use seqtk to truncate sequences containing unresolved "N"s and nucleotides of particularly low quality. After all this truncation and removal, seqtk remove reads that have become too short, or no longer have a paired read. Understanding the exact commands – which are a bit convoluted – is unnecessary. It is important to understand the concept of k-mer filtering.
+Below, we use `khmer` to remove extremely frequent (more than 100x) and extremely rare k-mers. We then use `seqtk` to truncate sequences containing unresolved "N"s and nucleotides of particularly low quality. After all this truncation and removal, `seqtk` removes reads that have become too short, or no longer have a paired read. Understanding the exact commands – which are a bit convoluted – is unnecessary. It is important to understand the concept of k-mer filtering.
 
 ```bash
 # 1. Interleave Fastqs (khmer needs both paired end files merged into one file)
