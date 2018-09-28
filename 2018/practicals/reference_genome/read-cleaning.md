@@ -41,7 +41,7 @@ All work must be done in `~/apocrita` on your local PC.
 
 Start by creating a directory to work in. Drawing on ideas from [Noble (2009)](http://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1000424 "A Quick Guide to Organizing Computational Biology Projects") and others, we recommend following a [specific convention](http://github.com/wurmlab/templates/blob/master/project_structures.md "Typical multi-day project structure") for all your projects.
 
-For this, create a main directory for this section of the course (`~/2018-09-28-reference_genome`), and create relevant `input` and `results` subdirectories.
+For this, create a main directory for this section of the course (`~/apocrita/2018-09-28-reference_genome`), and create `input` and `results` subdirectories.
 
 For each step that we will perform, you should:
  * have input data in a relevant subdirectory
@@ -72,13 +72,13 @@ Sequencers aren't perfect. All kinds of things [can](http://genomecuration.githu
 
 [FastQC](http://www.bioinformatics.babraham.ac.uk/projects/fastqc/) ([documentation](http://www.bioinformatics.babraham.ac.uk/projects/fastqc/Help/)) can help you understand sequence quality and composition, and thus can inform read cleaning strategy.
 
-Copy the raw sequence files (`~/2018-09-BIO721_input/reads.pe*.fastq.gz`) to a relevant input directory (e.g., `~/2018-09-28-reference_genome/input/01-read_cleaning/`).
+Copy the raw sequence files (`~/apocrita/2018-09-BIO721_input/reads.pe*.fastq.gz`) to a relevant input directory (e.g., `~/apocrita/2018-09-28-reference_genome/input/01-read_cleaning/`).
 
-Now move to a relevant results directory (e.g., `~/2018-09-28-reference_genome/results/01-read_cleaning/`) and link your input directory here.
+Now move to a relevant results directory (e.g., `~/apocrita/2018-09-28-reference_genome/results/01-read_cleaning/`) and link your input directory here.
 
 Here, run FastQC on the `reads.pe2` file. The `--outdir` option will help you clearly separate input and output files (and remember to log the commands you used in the `WHATIDID.txt` file).
 
-Your [resulting directory structure](http://github.com/wurmlab/templates/blob/master/project_structures.md "Typical multi-day project structure"), should look like this:
+Your [resulting directory structure](http://github.com/wurmlab/templates/blob/master/project_structures.md "Typical multi-day project structure") (`~/apocrita/2018-09-28-reference_genome`), should look like this:
 
 ```bash
 tree
