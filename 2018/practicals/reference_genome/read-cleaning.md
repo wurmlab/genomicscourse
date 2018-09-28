@@ -70,19 +70,20 @@ Here, run FastQC on the `reads.pe2` file. The `--outdir` option will help you cl
 Your [resulting directory structure](http://github.com/wurmlab/templates/blob/master/project_structures.md "Typical multi-day project structure"), should look like this:
 
 ```bash
-tree -h
+tree
 .
-├── [4.0K]  input
-│   └── [4.0K]  01-read_cleaning
-│       ├── [  53]  reads.pe1.fastq.gz
-│       ├── [  53]  reads.pe2.fastq.gz
-│       └── [  44]  WHATIDID.txt
-└── [4.0K]  results
-    └── [4.0K]  01-read_cleaning
-        ├── [  28]  input -> ../../input/01-read_cleaning/
-        ├── [336K]  reads.pe2_fastqc.html
-        ├── [405K]  reads.pe2_fastqc.zip
-        └── [ 126]  WHATIDID.txt
+├── input
+│   └── 01-read_cleaning
+│       ├── reads.pe1.fastq.gz
+│       ├── reads.pe2.fastq.gz
+│       └── WHATIDID.txt
+└── results
+    └── 01-read_cleaning
+        ├── input -> ../../input/01-read_cleaning
+        ├── tmp
+        │   ├── reads.pe2_fastqc.html
+        │   └── reads.pe2_fastqc.zip
+        └── WHATIDID.txt
 ```
 
 What does the FastQC report tell you? ([the documentation clarifies what each plot means](http://www.bioinformatics.babraham.ac.uk/projects/fastqc/Help/3%20Analysis%20Modules/)). For comparison, have a look at some plots from other sequencing libraries: e.g, [[1]](img-qc/per_base_quality.png), [[2]](img-qc/qc_factq_tile_sequence_quality.png), [[3]](img-qc/per_base_sequence_content.png).
