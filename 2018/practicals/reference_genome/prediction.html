@@ -34,7 +34,7 @@ code > span.er { color: #ff0000; font-weight: bold; }
 <a href="/team">Team</a> | 
 <a href="/news">News</a> | 
 <a href="/tools">Tools</a>
-<h2 id="gene-prediction">Gene prediction</h2>
+<h2 id="part-3-gene-prediction">Part 3: Gene prediction</h2>
 <p>You need to have gone through <a href="assembly">Part 2: Genome assembly</a> before starting this practical.</p>
 <p>Many tools exist for gene prediction, some based on <em>ab initio</em> statistical models of what a protein-coding gene should look like, others that use similarity with protein-coding genes from other species, and others (such as <a href="http://bioinf.uni-greifswald.de/augustus/">Augustus</a> and SNAP), that use both. There is no perfect tool or approach, thus we typically run many gene-finding tools and call a consensus between the different predicted gene models. <a href="http://www.yandell-lab.org/software/maker.html">MAKER</a> and <a href="https://github.com/genomecuration/JAMg">JAMg</a> can do this for us. Let's use MAKER on a sandbox example.</p>
 <p>Start in a new directory (e.g., <code>~/apocrita/2018-09-28-reference_genome/results/03-gene_prediction</code>). Pull out the longest few scaffolds from the <code>assembly.scafSeq</code> (e.g., using <code>seqtk seq -L 20000</code>) into their own fasta (e.g., <code>min20000.fa</code>).</p>

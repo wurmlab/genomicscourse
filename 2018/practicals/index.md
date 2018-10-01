@@ -22,7 +22,8 @@ It may be feasible to do some of this stuff on a your favorite cluster or your l
 ## Practicals
 
 * [Short read cleaning](./reference_genome/read-cleaning): Illumina short read cleaning
-* [Reads to genome to gene predictions](./reference_genome/assembly): genome assembly, quality control, gene prediction, quality control.
+* [Reads to genome](./reference_genome/assembly): genome assembly, quality control
+* [Gene prediction](./reference_genome/prediction): gene prediction, quality control
 * Population sequencing to genotypes to population genetics statistics:
      * [Mapping reads, calling variants, visualizing variant calls.](./population_genetics/map_call)
      * [Analysing variants: PCA, measuring Differentiation & Diversity.](./population_genetics/popgen)
