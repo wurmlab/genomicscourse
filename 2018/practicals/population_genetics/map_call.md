@@ -12,7 +12,7 @@ There are several approaches to variant calling from short pair-end reads. We ar
 
 We will analyse subsets of whole-genome sequences of several fire ant individuals. The fire ant, *Solenopsis invicta*, is notable for being dimorphic in terms of colony organisation, with some colonies having one queen and other colonies having multiple queens. Interestingly, this trait is genetically determined. In this practical, we will try to find the genetic difference between ants from single queen and multiple queen colonies.
 
-We will use a subset of the reads from whole-genome sequencing of 14 male fire ants. Samples 1B to 7B are from single-queen colonies, samples 1b to 7b are from multiple-queen colonies. Ants are haplodiploid, which means that females are haploid and males, haploid. Here we will use onlymales, so all our samples are haploid, which makes variant calling easier.
+We will use a subset of the reads from whole-genome sequencing of 14 male fire ants. Samples 1B to 7B are from single-queen colonies, samples 1b to 7b are from multiple-queen colonies. Ants are haplodiploid, which means that females are diploid and males are haploid. Here we will use only males, so all our samples are haploid, which makes variant calling easier.
 
 The aim of this practical is to genotype these 14 individuals. The steps in the practical are:
 1. Align the reads of each individual to a reference genome assembly using the aligner `bowtie2`.
@@ -23,22 +23,20 @@ The aim of this practical is to genotype these 14 individuals. The steps in the 
 
 ## The data
 
-Run the following command to copy the data used in this practical to your local computer:
+Run the following command to download the data used in this practical to your local computer:
 
 ```bash
-scp -r btxxxxx@login2.hpc.qmul.ac.uk:/data/SBCS-MSc-BioInf/2017/popgen ~/2017-10-BIO721_popgen_input
-```
-
-Then type:
-
-```bash
-chmod a-w -R ~/2017-10-BIO721_popgen_input
+cd ~/apocrita
+wget -c https://antgenomes.org/~BIO721/popgen_data.tar.gz
+tar xvf popgen_data.tar.gz
+mv popgen_data 2018-10-popgen_data
+chmod a-w -R ~/2018-10-BIO721_popgen_input
 ```
 
 We recommend that you set up a directory for today following [our convention](https://github.com/wurmlab/templates/blob/master/project_structures), as [you did in the last practical](../reference_genome/read-cleaning#set-up-directory-hierarchy-to-work-in). You should have a subdirectory called `input` and another called `results`. In each, you should have a directory for the read mapping, and another for the variant calling:
 
 ```
-2017-10-04-genotyping/
+2018-10-04-genotyping/
 ├── input
 │   ├── 01-mapping
 │   └── 02-genotyping
@@ -54,9 +52,9 @@ We recommend that you set up a directory for today following [our convention](ht
 
 ```
 
-The data we need is in the `~/2017-10-BIO721_popgen_input` directory. Link (with `ln -s`) the file `reference.fa`  and the `reads` directory to `2017-10-04-genotyping/input/01-mapping`.
+For the first step of the pipeline, copy the file `reference.fa` and the `reads` directory to `input/01-mapping`.
 
-To see how many scaffolds there are in the reference genome, type:
+Check how many scaffolds there are in the reference genome:
 
 ```sh
 grep "^>" reference.fa
@@ -72,11 +70,11 @@ Now have a look at the `.fq.gz` files.
 
 ## Aligning reads to a reference assembly
 
-This part of the analysis is done in the `results/01-mapping` directory. Remember to keep your commands in the `WHATIDID.txt` file and place the reference.fa file into the appropriate input folder
+This part of the analysis is done in the `results/01-mapping` directory. Remember to keep your commands in the `WHATIDID.txt` file.
 
 The first step in our pipeline is to align the paired end reads to the reference genome. We are using the software `bowtie2`, which was created to align short read sequences to long sequences such as the scaffolds in a reference assembly. `bowtie2`, like most aligners, works in two steps.
 
-In the first step, the scaffold sequence (sometimes known as the database) is indexed, in this case using the [Burrows-Wheeler Transform](https://en.wikipedia.org/wiki/Burrows-Wheeler_transform), which can help compress a large text into less memory. It thus allows for memory efficient alignment.
+In the first step, the scaffold sequence (sometimes known as the database) is indexed, in this case using the [Burrows-Wheeler Transform](https://en.wikipedia.org/wiki/Burrows-Wheeler_transform), which can help compress a large text into less memory. It thus allows for memory efficient alignment. Index files often require the original file to be present in the same directory. We thus start by linking scaffold sequences to `tmp` directory (where all output will be written first).
 
 ```bash
 ln -rs input/reference.fa tmp
@@ -98,9 +96,9 @@ bowtie2 \
 
 * What is the meaning of the `-1` and `-2` parameters?
 
-The command produced a SAM file (Sequence Alignment/Map file), which is the standard file used to store sequence alignments. Have a quick look at the file by typing `less f1.sam`. The file includes a header (lines starting with the `@` symbol), and a line for every read aligned to the reference assembly. For each read, we are given a mapping quality values, the position of both pairs, the actual sequence and its quality by base pair, and a series of flags with additional measures of mapping quality.
+The command produced a SAM file (Sequence Alignment/Map file), which is the standard file used to store sequence alignments. Have a quick look at the file using `less`. The file includes a header (lines starting with the `@` symbol), and a line for every read aligned to the reference assembly. For each read, we are given a mapping quality values, the position of both pairs, the actual sequence and its quality by base pair, and a series of flags with additional measures of mapping quality.
 
-We now need to run bowtie2 for all the other samples. We could do this by typing the same command another 13 times (changing the sample name), or we can use the `GNU parallel` tool, which allows to run the same command on several samples at once:
+We now need to run `bowtie2` for all the other samples. We could do this by typing the same command another 13 times (changing the sample name), or we can use the `GNU parallel` tool, which allows to run the same command on several samples at once:
 
 ```bash
 # Create a file with all sample names
@@ -117,7 +115,7 @@ Because SAM files include a lot of information, they tend to occupy a lot of spa
 # samtools view: compresses the SAM to BAM
 # samtools sort: sorts by scaffold position (creates f1_B.bam)
 # Note that the argument "-" stands for the input that is being piped in
-samtools view -Sb tmp/alignments/f1_B.sam | samtools sort - > tmp/alignments/f1_B.bam
+samtools view -b tmp/alignments/f1_B.sam | samtools sort - > tmp/alignments/f1_B.bam
 
 ## This creates a file (f1_B.bam), which we then index
 samtools index tmp/alignments/f1_B.bam   # creates f1_B.bam.bai
@@ -128,7 +126,7 @@ Again, we can use `parallel` to run this step for all the samples:
 
 ```bash
 cat tmp/names.txt \
-  | parallel -t "samtools view -Sb tmp/alignments/{}.sam | samtools sort - > tmp/alignments/{}.bam"
+  | parallel -t "samtools view -b tmp/alignments/{}.sam | samtools sort - > tmp/alignments/{}.bam"
 
 cat tmp/names.txt \
   | parallel -t "samtools index tmp/alignments/{}.bam"
@@ -145,20 +143,18 @@ samtools view tmp/alignments/f1_B.bam | less -S
 samtools view tmp/alignments/f1_B.bam scaffold_1:10000-10500 | less -S
 ```
 
-Now that we have alignments, we can copy them to a results file.
+Copy the alignments to `input/02-genotyping`.
 
 ```sh
-# mkdir results
-mkdir results/alignments
-cp tmp/alignments/*.ba[mi] results/alignments
-ln -rs tmp/alignments results/alignments/original
-
+cp tmp/alignments/*.ba[mi] ../input/02-genotyping
 ```
 
 
 ## Variant calling
 
-The following analysis is done in the directory `results/02-genotyping`. Remember to keep your commands in the `WHATIDID.txt` file. We will need the reference fasta file, as well as the alignments we just created, so create a link to those files in the `input/02-genotyping` directory.
+To begin with, we will need the reference fasta file in addition to the alignments we just created. Copy it over from `input/01-mapping` to `input/02-genotyping` directory.
+
+The following analysis is done in the directory `results/02-genotyping`. Remember to keep your commands in the `WHATIDID.txt` file.
 
 There are several approaches to call variants. The simplest approach is to look for positions where the mapped reads consistently have a different base than the reference assembly (the consensus approach). We need to run two steps, `samtools mpileup`, which looks for inconsistencies between the reference and the aligned reads, and `bcftools call`, which interprets them as variants.
 
@@ -220,12 +216,10 @@ bcftools view -v snps -m2 -M2 --min-ac 1:minor tmp/variants/filtered_calls.vcf >
 * Can you find any other parameters indicating the quality of the site?
 * Can you find any other parameters indicating the quality of the variant call for a given individual on a given site?
 
-Now that we have a SNP set, we can copy it to a results file.
+Now that we have a SNP set, we can copy it to `results/` directory.
 
 ```sh
-# mkdir results
-cp tmp/variants/snp.vcf results/
-ln -rs tmp/variants/ results/original
+cp tmp/variants/snp.vcf ..
 
 ```
 
