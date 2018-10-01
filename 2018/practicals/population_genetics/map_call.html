@@ -128,7 +128,7 @@ code > span.er { color: #ff0000; font-weight: bold; }
 <span class="co"># To view a particular region:</span>
 <span class="kw">samtools</span> view tmp/alignments/f1_B.bam scaffold_1:10000-10500 <span class="kw">|</span> <span class="kw">less</span> -S</code></pre>
 <p>Copy the alignments to <code>input/02-genotyping</code>.</p>
-<pre class="sh"><code>cp tmp/alignments/*.ba[mi] ../input/02-genotyping</code></pre>
+<pre class="sh"><code>cp -r tmp/alignments ../../input/02-genotyping</code></pre>
 <h2 id="variant-calling">Variant calling</h2>
 <p>To begin with, we will need the reference fasta file in addition to the alignments we just created. Copy it over from <code>input/01-mapping</code> to <code>input/02-genotyping</code> directory.</p>
 <p>The following analysis is done in the directory <code>results/02-genotyping</code>. Remember to keep your commands in the <code>WHATIDID.txt</code> file.</p>

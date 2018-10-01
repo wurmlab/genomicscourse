@@ -146,7 +146,7 @@ samtools view tmp/alignments/f1_B.bam scaffold_1:10000-10500 | less -S
 Copy the alignments to `input/02-genotyping`.
 
 ```sh
-cp tmp/alignments/*.ba[mi] ../input/02-genotyping
+cp -r tmp/alignments ../../input/02-genotyping
 ```
 
 
