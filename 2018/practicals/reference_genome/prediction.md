@@ -1,4 +1,4 @@
-## Gene prediction
+## Part 3: Gene prediction
 
 You need to have gone through [Part 2: Genome assembly](assembly) before starting this practical.
 
