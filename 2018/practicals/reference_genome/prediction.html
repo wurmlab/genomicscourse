@@ -34,61 +34,45 @@ code > span.er { color: #ff0000; font-weight: bold; }
 <a href="/team">Team</a> | 
 <a href="/news">News</a> | 
 <a href="/tools">Tools</a>
-<h1 id="part-2-genome-assembly">Part 2: Genome assembly</h1>
-<p>You need to have gone through <a href="read-cleaning">Part 1: Read cleaning</a> before starting this practical.</p>
-<h3 id="offline-exercise">Offline exercise</h3>
-<p>Find (or make) some friends; find a table. In groups of 4 or 5, ask an assistant for an assembly task.</p>
-<h3 id="brief-assembly-example-concepts">Brief assembly example / concepts</h3>
-<p>Many different pieces of software exist for genome assembly. We will be using SOAPdenovo.</p>
-<p>Create a new <code>input/02-assembly</code> directory and link the output from yesterday's practical into it. Make a new <code>results/02-assembly</code> directory. Create a link between <code>input/02-assembly</code> and <code>results/02-assembly/input</code>.</p>
-<p>To assemble our cleaned reads with SOAPdenovo, we create a <code>soap_config.txt</code> file containing the following:</p>
-<pre><code>max_rd_len=101          # maximal read length
-[LIB]            # One [LIB] section per library
-avg_ins=470             # average insert size
-reverse_seq=0           # if sequence needs to be reversed
-asm_flags=3             # use for contig building and subsequent scaffolding
-rank=1                  # in which order the reads are used while scaffolding
-q1=input/reads.pe1.clean.fq
-q2=input/reads.pe2.clean.fq</code></pre>
-<p>Then run the following line. <em>THIS IS RAM-INTENSE, your computer may struggle</em></p>
-<pre class="sourceCode bash"><code class="sourceCode bash"><span class="kw">soapdenovo2-63mer</span> all -s soap_config.txt -K 63 -R -o tmp/assembly</code></pre>
-<p>Like any other assembler, SOAPdenovo creates many files, including an <code>assembly.scafSeq</code> file that is likely to be used for follow-up analyses<a href="../../data/reference_assembly/output/assembly.scafSeq.gz">.</a> Link this file to your results directory:</p>
-<pre class="sourceCode bash"><code class="sourceCode bash"><span class="kw">ln</span> -s tmp/assembly.scafSeq</code></pre>
-<p>Why does this file contain so many NNNN sequences?</p>
-<p>There are many other genome assembly approaches. While waiting for everyone to make it to this stage, try to understand some of the challenges of <em>de novo</em> genome assembly and the approaches used to overcome them via the following papers:</p>
+<h2 id="gene-prediction">Gene prediction</h2>
+<p>You need to have gone through <a href="assembly">Part 2: Genome assembly</a> before starting this practical.</p>
+<p>Many tools exist for gene prediction, some based on <em>ab initio</em> statistical models of what a protein-coding gene should look like, others that use similarity with protein-coding genes from other species, and others (such as <a href="http://bioinf.uni-greifswald.de/augustus/">Augustus</a> and SNAP), that use both. There is no perfect tool or approach, thus we typically run many gene-finding tools and call a consensus between the different predicted gene models. <a href="http://www.yandell-lab.org/software/maker.html">MAKER</a> and <a href="https://github.com/genomecuration/JAMg">JAMg</a> can do this for us. Let's use MAKER on a sandbox example.</p>
+<p>Start in a new directory (e.g., <code>~/apocrita/2018-09-28-reference_genome/results/03-gene_prediction</code>). Pull out the longest few scaffolds from the <code>assembly.scafSeq</code> (e.g., using <code>seqtk seq -L 20000</code>) into their own fasta (e.g., <code>min20000.fa</code>).</p>
+<p>Running <code>maker -OPTS</code> will generate an empty <code>maker_opts.ctl</code> configuration file (ignore the warning). Edit that file to specify:</p>
 <ul class="incremental">
-<li><a href="http://www.nature.com/nrg/journal/v16/n11/full/nrg3933.html">Genetic variation and the <em>de novo</em> assembly of human genomes. Chaisson et al 2015 NRG</a> (to overcome the paywall, login via your university, email the authors, or try <a href="http://en.wikipedia.org/wiki/Sci-Hub">scihub</a>).<br /></li>
-<li>The now slightly outdated (2013) <a href="http://gigascience.biomedcentral.com/articles/10.1186/2047-217X-2-10">Assemblathon paper</a>.<br /></li>
-<li><a href="http://genomebiology.biomedcentral.com/articles/10.1186/s13059-015-0764-4">Metassembler: merging and optimizing <em>de novo</em> genome assemblies. Wences &amp; Schatz (2015)</a>.<br /></li>
-<li><a href="http://www.nature.com/nmeth/journal/vaop/ncurrent/full/nmeth.3865.html">A hybrid approach for <em>de novo</em> human genome sequence assembly and phasing. Mostovoy et al (2016)</a>.</li>
+<li>genome: <code>min20000.fa</code><br /></li>
+<li>augustus species: a known gene set from a related species, in this case we choose <code>honeybee1</code> (yes that's a 1)<br /></li>
+<li>deactivate RepeatMasker by replacing <code>model_org=all</code> to <code>model_org=</code> (i.e., nothing)</li>
 </ul>
-<p>At home: what are the tradeoffs between a <code>de bruijn</code> graph assembly approach and an <code>overlap-layout-consensus</code> assembly approach?</p>
-<h3 id="quality-assessment">Quality assessment</h3>
-<p>How do we know if our genome is good?</p>
+<p>For a real project, we <em>would</em> include RepeatMasker (perhaps after creating a new repeat library), we would provide as much relevant information as possible (e.g., RNAseq read mappings, transcriptome assembly – both improve gene prediction performance <em>tremendously</em>), and iteratively train gene prediction algorithms for our data including Augustus and SNAP.</p>
+<p>Run <code>maker maker_opts.ctl</code>. This may take a few minutes, depending on how much data you gave it.<br />Once its done the results will be hidden in subdirectories of <code>*maker.output/min20k_datastore</code>. Perhaps its easier to find the gene predictions using <code>find</code> then grep for <code>gff</code> or <code>proteins</code>. You can ignore the (temporary) contents under <code>theVoid</code> directories.</p>
+<h3 id="quality-control-of-individual-genes">Quality control of individual genes</h3>
+<p>So now we have some gene predictions... how can we know if they are any good? The easiest way to get a feel for this is by comparing a few of them (<a href="predictions.fa" title="backup MAKER gene predictions just in case">backup examples</a>) to known sequences from other species. For this, launch a <a href="http://sequenceserver.com" title="BLAST graphical interface">local BLAST server</a> to compare a few of your protein-coding gene predictions to the high quality predictions in swissprot:</p>
+<pre class="sourceCode bash"><code class="sourceCode bash"><span class="co"># download swissprot database</span>
+<span class="kw">cd</span> PATH_WHERE_I_WANT_TO_HAVE_DATABASES
+
+<span class="kw">wget</span> ftp://ftp.uniprot.org/pub/databases/uniprot/current_release/knowledgebase/complete/uniprot_sprot.fasta.gz
+<span class="kw">gunzip</span> uniprot_sprot.fasta.gz
+<span class="kw">makeblastdb</span> -in  uniprot_sprot.fasta  -dbtype <span class="st">'prot'</span> -parse_seqids
+
+<span class="co"># Run BLAST server:</span>
+<span class="kw">sequenceserver</span> -d PATH_TO_BLAST_DATABASE_DIRECTORY</code></pre>
+<p>Do any of the gene predictions have significant similarity to known sequences? For a given gene prediction, do you think it is complete, or can you infer from the BLAST alignments that something may be wrong?</p>
+<hr />
+<p>As you can see, gene prediction software is imperfect – this is even the case when using all available evidence. This is potentially costly for analyses that rely on gene predictions - i.e. many of the analyses we might want to do!</p>
 <blockquote>
-<p><em>&quot;... the performance of different </em>de novo* genome assembly algorithms can vary greatly on the same dataset, although it has been repeatedly demonstrated that no single assembler is optimal in every possible quality metric [6, 7, 8]. The most widely used metrics for evaluating an assembly include 1) contiguity statistics such as scaffold and contig N50 size, 2) accuracy statistics such as the number of structural errors found when compared with an available reference genome (GAGE (Genome Assembly Gold Standard Evaluation) evaluation tool [8]), 3) presence of core eukaryotic genes (CEGMA (Core Eukaryotic Genes Mapping Approach) [9]) or, if available, transcript mapping rates, and 4) the concordance of the sequence with remapped paired-end and mate-pair reads (REAPR (Recognizing Errors in Assemblies using Paired Reads) [10], assembly validation [11], or assembly likelihood [12]).&quot;* - <a href="http://genomebiology.biomedcentral.com/articles/10.1186/s13059-015-0764-4">Wences &amp; Schatz (2015)</a></p>
+<p><em>“Incorrect annotations [ie. gene identifications] poison every experiment that makes use of them. Worse still the poison spreads.”</em> – <a href="http://www.ncbi.nlm.nih.gov/pubmed/22510764">Yandell &amp; Ence (2012)</a>.</p>
 </blockquote>
-<h4 id="simple-metrics">Simple metrics</h4>
-<p>An assembly software will generally provide some statistics about what it did. But the output formats differ between assemblers. <a href="http://bioinf.spbau.ru/quast">Quast</a>, the <em>Quality Assessment Tool for Genome Assemblies</em> creates a standardized report. Run Quast (<code>quast.py</code>) on the <code>assembly.scafSeq</code> file. No special options - just the simple scenario to get some statistics.</p>
-<p>Have a look at the report (pdf or html) Quast generated.</p>
-<p>What do the values in the table mean? For which ones is higher better, and for which ones is smaller better? Is Quast's use of the word &quot;contig&quot; appropriate?</p>
-<p>Perhaps we have prior knowledge about the %GC content to expect, the number of chromosomes to expect, and the total genome size – these can inform comparisons with output statistics present in Quast's report.</p>
-<h4 id="biologically-meaningful-measures">Biologically meaningful measures</h4>
-<p>Unfortunately, with many of the simple metrics, it is difficult to determine whether the assembler did things correctly, or just haphazardly stuck lots of reads together!</p>
-<p>We probably have other prior information about what to expect in this genome. For example:</p>
-<ol class="incremental">
-<li>If we have a reference assembly from a not-too-distant relative, we could expect large parts of genome to be organised in the same order, i.e., synteny.<br /></li>
-<li>If we independently created a transcriptome assembly, we can expect the exons making up each transcript to map sequentially onto the genome (see <a href="http://github.com/ksanao/TGNet">TGNet</a> for an implementation).<br /></li>
-<li>We can expect the different scaffolds in the genome to have a unimodal distribution in sequence read coverage. Similarly, one can expect GC% to be unimodally distributed among scaffolds. Using this idea, the <a href="https://github.com/sujaikumar/assemblage">Blobology</a> approach determined that evidence of foreign sequences in Tardigrades is largely due to extensive contamination rather than extensive horizontal gene transfer <a href="http://www.pnas.org/content/113/18/5053">Koutsovoulos et al 2016</a>.<br /></li>
-<li>We can expect different patterns of gene content and structure between eukaryotes and prokaryotes.<br /></li>
-<li><p>Pushing this idea further, we can expect a genome to contain a single copy of each of the &quot;house-keeping&quot; genes found in related species. This is applied in BUSCO (Benchmarking Universal Single-Copy Orthologs). Note that:</p>
+<p>The <a href="http://bioinformatics.oxfordjournals.org/content/32/10/1559.long">GeneValidator</a> tool can help to evaluate quality of a gene prediction by comparing features of a gene prediction to similar database sequences. This approach expects that similar sequences should for example be of similar length.</p>
+<p>You can simply run <code>genevalidator  -d ~/apocrita/2018-09-BIO721_input/reference_databases/uniprot/uniprot_sprot.fasta proteins.fasta</code> (on your gene predictions, or <a href="../../data/reference_assembly/gv_examples.fa">these examples</a>), or use the <a href="http://genevalidator.sbcs.qmul.ac.uk/">web service</a> for queries of few sequences. Alternatively just check the screenshots linked in the next sentence. Try to understand why some gene predictions have no reason for concern <a href="img-qc/good.png">(e.g.)</a>, while others do <a href="img-qc/bad.png">(e.g.)</a>.</p>
+<h3 id="comparing-whole-genesets-prioritizing-genes-for-manual-curation">Comparing whole genesets &amp; prioritizing genes for manual curation</h3>
+<p>Genevalidator's visual output can be handy when looking at few genes. But the tool also provides tab-delimited output, handy when working in the command-line or when running the software on whole proteomes. For example, this can help analysis:</p>
 <ul class="incremental">
-<li>BUSCO is a refined, modernized implementation of <a href title="http://korflab.ucdavis.edu/Datasets/cegma/">CEGMA</a> (Core Eukaryotic Genes Mapping Approach). CEGMA examines a eukaryotic genome assembly for presence and completeness of 248 &quot;core eukaryotic genes&quot;.<br /></li>
-<li>QUAST also includes a &quot;quick and dirty&quot; method of finding genes.</li>
-</ul></li>
-</ol>
-<p>It is <em>very important</em> to understand the concepts underlying these different approaches.</p>
-<h2 id="part-3-gene-prediction">Part 3: <a href="prediction">Gene prediction</a></h2>
+<li>in situations when you can choose between multiple gene sets.<br /></li>
+<li>or to identify which gene predictions are likely ok, and which need to be inspected and potentially manual fixed.</li>
+</ul>
+<h3 id="manual-curation">Manual curation</h3>
+<p>Because automated gene predictions aren't perfect, manual inspection and fixing are often required. The most commonly used software for this is <a href="http://genomearchitect.org/">Apollo/WebApollo</a>.</p>
 <hr>
 <small>Copyright 2016 <a href="https://github.com/wurmlab/genomicscourse/graphs/contributors">Authors</a>. All rights reserverd.
 
