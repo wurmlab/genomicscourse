@@ -219,7 +219,7 @@ bcftools view -v snps -m2 -M2 --min-ac 1:minor tmp/variants/filtered_calls.vcf >
 Now that we have a SNP set, we can copy it to `results/` directory.
 
 ```sh
-cp tmp/variants/snp.vcf ..
+cp tmp/variants/snp.vcf ./
 
 ```
 
