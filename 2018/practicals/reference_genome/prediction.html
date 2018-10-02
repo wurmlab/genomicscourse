@@ -52,15 +52,14 @@ code > span.er { color: #ff0000; font-weight: bold; }
 <span class="kw">ssh</span> login.hpc.qmul.ac.uk
 
 <span class="co"># Copy the uniref50 database to your home directory.</span>
-<span class="kw">cp</span> -r /data/SBCS-MSc-BioInf/data/reference_databases/uniref50 \
-  <span class="kw">~/2018-09-BIO721_input/reference_databases</span>
+<span class="kw">cp</span> -r /data/SBCS-MSc-BioInf/data/reference_databases/uniref50 ~/2018-10-uniref50
 
 <span class="co"># Logout</span>
 <span class="kw">exit</span></code></pre>
-<p>On your local PC, check that you have a directory called <code>~/apocrita/2018-09-BIO721_input/reference_databases/uniref50</code>. If not, ask for help.</p>
+<p>On your local PC, check that you have a directory called <code>~/apocrita/2018-10-uniref50</code>. If not, ask for help.</p>
 <p>Now run the BLAST server:</p>
 <pre><code># Run BLAST server:
-sequenceserver -d ~/apocrita/2018-09-BIO721_input/reference_databases/uniref50</code></pre>
+sequenceserver -d ~/apocrita/2018-10-uniref50</code></pre>
 <p>Do any of the gene predictions have significant similarity to known sequences? For a given gene prediction, do you think it is complete, or can you infer from the BLAST alignments that something may be wrong?</p>
 <hr />
 <p>As you can see, gene prediction software is imperfect – this is even the case when using all available evidence. This is potentially costly for analyses that rely on gene predictions - i.e. many of the analyses we might want to do!</p>
@@ -68,7 +67,7 @@ sequenceserver -d ~/apocrita/2018-09-BIO721_input/reference_databases/uniref50</
 <p><em>“Incorrect annotations [ie. gene identifications] poison every experiment that makes use of them. Worse still the poison spreads.”</em> – <a href="http://www.ncbi.nlm.nih.gov/pubmed/22510764">Yandell &amp; Ence (2012)</a>.</p>
 </blockquote>
 <p>The <a href="http://bioinformatics.oxfordjournals.org/content/32/10/1559.long">GeneValidator</a> tool can help to evaluate quality of a gene prediction by comparing features of a gene prediction to similar database sequences. This approach expects that similar sequences should for example be of similar length.</p>
-<p>You can simply run <code>genevalidator  -d ~/apocrita/2018-09-BIO721_input/reference_databases/uniref50/uniref50.fasta proteins.fasta</code> (on your gene predictions, or <a href="../../data/reference_assembly/gv_examples.fa">these examples</a>), or use the <a href="http://genevalidator.sbcs.qmul.ac.uk/">web service</a> for queries of few sequences. Alternatively just check the screenshots linked in the next sentence. Try to understand why some gene predictions have no reason for concern <a href="img-qc/good.png">(e.g.)</a>, while others do <a href="img-qc/bad.png">(e.g.)</a>.</p>
+<p>You can simply run <code>genevalidator -d ~/apocrita/2018-10-uniref50/uniref50.fasta proteins.fasta</code> (on your gene predictions, or <a href="../../data/reference_assembly/gv_examples.fa">these examples</a>), or use the <a href="http://genevalidator.sbcs.qmul.ac.uk/">web service</a> for queries of few sequences. Alternatively just check the screenshots linked in the next sentence. Try to understand why some gene predictions have no reason for concern <a href="img-qc/good.png">(e.g.)</a>, while others do <a href="img-qc/bad.png">(e.g.)</a>.</p>
 <h3 id="comparing-whole-genesets-prioritizing-genes-for-manual-curation">Comparing whole genesets &amp; prioritizing genes for manual curation</h3>
 <p>Genevalidator's visual output can be handy when looking at few genes. But the tool also provides tab-delimited output, handy when working in the command-line or when running the software on whole proteomes. For example, this can help analysis:</p>
 <ul class="incremental">
