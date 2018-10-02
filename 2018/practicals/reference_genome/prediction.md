@@ -19,18 +19,27 @@ Once its done the results will be hidden in subdirectories of `*maker.output/min
 
 ### Quality control of individual genes
 
-So now we have some gene predictions... how can we know if they are any good? The easiest way to get a feel for this is by comparing a few of them ([backup examples](predictions.fa "backup MAKER gene predictions just in case")) to known sequences from other species. For this, launch a [local BLAST server](http://sequenceserver.com "BLAST graphical interface") to compare a few of your protein-coding gene predictions to the high quality predictions in swissprot:
+So now we have some gene predictions... how can we know if they are any good? The easiest way to get a feel for this is by comparing a few of them ([backup examples](predictions.fa "backup MAKER gene predictions just in case")) to known sequences from other species. For this, launch a [local BLAST server](http://sequenceserver.com "BLAST graphical interface") to compare a few of your protein-coding gene predictions to the high quality predictions in uniref50 database. First, get a copy of this database:
 
 ```bash
-# download swissprot database
-cd PATH_WHERE_I_WANT_TO_HAVE_DATABASES
+# Log in to Apocrita.
+ssh login.hpc.qmul.ac.uk
 
-wget ftp://ftp.uniprot.org/pub/databases/uniprot/current_release/knowledgebase/complete/uniprot_sprot.fasta.gz
-gunzip uniprot_sprot.fasta.gz
-makeblastdb -in  uniprot_sprot.fasta  -dbtype 'prot' -parse_seqids
+# Copy the uniref50 database to your home directory.
+cp -r /data/SBCS-MSc-BioInf/data/reference_databases/uniref50 \
+  ~/2018-09-BIO721_input/reference_databases
 
+# Logout
+exit
+```
+
+On your local PC, check that you have a directory called `~/apocrita/2018-09-BIO721_input/reference_databases/uniref50`. If not, ask for help.
+
+Now run the BLAST server:
+
+```
 # Run BLAST server:
-sequenceserver -d PATH_TO_BLAST_DATABASE_DIRECTORY
+sequenceserver -d ~/apocrita/2018-09-BIO721_input/reference_databases/uniref50
 ```
 
 Do any of the gene predictions have significant similarity to known sequences? For a given gene prediction, do you think it is complete, or can you infer from the BLAST alignments that something may be wrong?
@@ -43,7 +52,7 @@ As you can see, gene prediction software is imperfect – this is even the case 
 
 The [GeneValidator](http://bioinformatics.oxfordjournals.org/content/32/10/1559.long) tool can help to evaluate quality of a gene prediction by comparing features of a gene prediction to similar database sequences. This approach expects that similar sequences should for example be of similar length.
 
-You can simply run `genevalidator  -d ~/apocrita/2018-09-BIO721_input/reference_databases/uniprot/uniprot_sprot.fasta proteins.fasta` (on your gene predictions, or [these examples](../../data/reference_assembly/gv_examples.fa)), or use the [web service](http://genevalidator.sbcs.qmul.ac.uk/) for queries of few sequences. Alternatively just check the screenshots linked in the next sentence. Try to understand why some gene predictions have no reason for concern [(e.g.)](img-qc/good.png), while others do [(e.g.)](img-qc/bad.png).
+You can simply run `genevalidator  -d ~/apocrita/2018-09-BIO721_input/reference_databases/uniref50/uniref50.fasta proteins.fasta` (on your gene predictions, or [these examples](../../data/reference_assembly/gv_examples.fa)), or use the [web service](http://genevalidator.sbcs.qmul.ac.uk/) for queries of few sequences. Alternatively just check the screenshots linked in the next sentence. Try to understand why some gene predictions have no reason for concern [(e.g.)](img-qc/good.png), while others do [(e.g.)](img-qc/bad.png).
 
 
 ### Comparing whole genesets & prioritizing genes for manual curation
