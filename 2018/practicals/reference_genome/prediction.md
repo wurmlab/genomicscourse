@@ -10,8 +10,11 @@ Running `maker -OPTS` will generate an empty `maker_opts.ctl` configuration file
   * genome: `min20000.fa`
   * augustus species: a known gene set from a related species, in this case we choose `honeybee1` (yes that's a 1)
   * deactivate RepeatMasker by replacing `model_org=all` to `model_org= ` (i.e., nothing)
+  * further check that `repeat_proteins` setting is empty as well
 
 For a real project, we *would* include RepeatMasker (perhaps after creating a new repeat library), we would provide as much relevant information as possible (e.g., RNAseq read mappings, transcriptome assembly – both improve gene prediction performance *tremendously*), and iteratively train gene prediction algorithms for our data including Augustus and SNAP.
+
+**Run MAKER on Apocrita. Results will be available on your local PC.**
 
 Run `maker maker_opts.ctl`. This may take a few minutes, depending on how much data you gave it.
 Once its done the results will be hidden in subdirectories of `*maker.output/min20k_datastore`. Perhaps its easier to find the gene predictions using `find` then grep for `gff` or `proteins`. You can ignore the (temporary) contents under `theVoid` directories.
