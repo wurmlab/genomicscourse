@@ -22,27 +22,13 @@ Once its done the results will be hidden in subdirectories of `*maker.output/min
 
 ### Quality control of individual genes
 
-So now we have some gene predictions... how can we know if they are any good? The easiest way to get a feel for this is by comparing a few of them ([backup examples](predictions.fa "backup MAKER gene predictions just in case")) to known sequences from other species. For this, launch a [local BLAST server](http://sequenceserver.com "BLAST graphical interface") to compare a few of your protein-coding gene predictions to the high quality predictions in uniref50 database. First, get a copy of this database:
+So now we have some gene predictions... how can we know if they are any good? The easiest way to get a feel for this is by comparing a few of them ([backup examples](predictions.fa "backup MAKER gene predictions just in case")) to known sequences from other species. For this, use BLAST to compare a few of your protein-coding gene predictions to the high quality predictions in uniref50 database.
 
-```bash
-# Log in to Apocrita.
-ssh login.hpc.qmul.ac.uk
+**Run BLAST on Apocrita. Inspect results on your local PC.**
 
-# Copy the uniref50 database to your home directory.
-cp -r /data/SBCS-MSc-BioInf/data/reference_databases/uniref50 ~/2018-10-uniref50
-
-# Logout
-exit
-```
-
-On your local PC, check that you have a directory called `~/apocrita/2018-10-uniref50`. If not, ask for help.
-
-Now run the BLAST server:
-
-```
-# Run BLAST server:
-sequenceserver -d ~/apocrita/2018-10-uniref50
-```
+- Log in to Apocrita
+- Link /data/SBCS-MSc-BioInf/data/reference_databases/uniref50 to your input directory
+- BLAST can produce in different formats, including HTML format, which may be more amenable for inspection.
 
 Do any of the gene predictions have significant similarity to known sequences? For a given gene prediction, do you think it is complete, or can you infer from the BLAST alignments that something may be wrong?
 
