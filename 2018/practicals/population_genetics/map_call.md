@@ -30,7 +30,7 @@ cd ~/apocrita
 wget -c https://antgenomes.org/~BIO721/popgen_data.tar.gz
 tar xvf popgen_data.tar.gz
 mv popgen_data 2018-10-popgen_data
-chmod a-w -R ~/2018-10-BIO721_popgen_input
+chmod a-w -R ~/2018-10-popgen_data
 ```
 
 We recommend that you set up a directory for today following [our convention](https://github.com/wurmlab/templates/blob/master/project_structures), as [you did in the last practical](../reference_genome/read-cleaning#set-up-directory-hierarchy-to-work-in). You should have a subdirectory called `input` and another called `results`. In each, you should have a directory for the read mapping, and another for the variant calling:
