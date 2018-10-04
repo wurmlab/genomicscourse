@@ -2,9 +2,9 @@
 
 ## Introduction
 
-We have samples with two genotypes: the B genotype (associated with single-queen colony phenotype) and the b genotype (associated with multiple-queen colony phenotype). B and b actually mark a large supergene, a genomic region with strong linkage disequilibrium ([Wang et al, 2013](http://www.nature.com/nature/journal/v493/n7434/full/nature11832.html)). The B and b variants of this region do not recombine with each other.
+We have samples with two genotypes: the B genotype (associated with single-queen colony phenotype) and the b genotype (associated with multiple-queen colony phenotype). 
 
-Our dummy assembly has two scaffolds, each from a different chromosome. The aim of our analysis is to test whether any part of this assembly is associated with the B and b supergene variants.
+Our dummy assembly has two scaffolds, each from a different chromosome. The aim of our analysis is to test whether any parts of this assembly also differ between the group of B and the group of b individuals.
 
 In the first part of the analysis, we are going to create a heat map of the genotypes of the individuals and we are going to run Principal Component Analysis (PCA) on these genotypes. This will allow us to test if any of the individuals cluster together by their B/b genotype. This will be done using the `adegenet` package in R.
 
