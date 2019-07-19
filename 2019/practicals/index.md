@@ -1,6 +1,4 @@
-# Spring-school in Bioinformatics & Population Genomics
-
-Practicals for Sept/Oct 2019 Genome Bioinformatics module at qmul.
+# Practicals for Sept/Oct 2019 Genome Bioinformatics module at qmul.
 
 ## Prerequisites (we'll cover this sepeartely)
 
