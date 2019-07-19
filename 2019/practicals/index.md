@@ -10,12 +10,6 @@ We suppose that you are able at ease:
      * follow at least the *ggplot* section of the *Exploratory_Data_Analysis* swirl course
 
 
-## Computers
-
-Computers in should be set up as necessary to do all of this. It should alternatively be possible to do all of this on Apocrita or on QMUL's Linux VDI (Virtual Desktop).
-
-It may be feasible to do some of this stuff on a your favorite cluster or your local machine. However, it will be complicated. Among other things you'll need to install a bunch of [software](./software) and [data](./data). 
-
 
 ## Practicals
 
@@ -27,7 +21,9 @@ It may be feasible to do some of this stuff on a your favorite cluster or your l
      * [Analysing variants: PCA, measuring Differentiation & Diversity.](./population_genetics/popgen)
 
 
+## Computers
 
+Computers should be set up as necessary to do all of this. It may alternatively be possible to do all of this on Apocrita or on QMUL's Linux VDI (Virtual Desktop). It could also be feasible to do some of this stuff on a your favorite cluster or your local machine. However, it will be complicated. Among other things you'll need to install a bunch of [software](./software) and [data](./data). 
 
 
 ## Authors/Credits
@@ -44,7 +40,7 @@ Special thanks to Tom King, Tom Bradford, Simon Butcher, Sam Court, ITS and ITSR
 
 
 
-## Things we will not explore here but have been used in other versions of this course: 
+## Things used in other versions of this course: 
 	
 * ~~[Inferring population sizes and gene flow.](./msmc/msmc-tutorial/guide) (Credit Stefan Schiffels [@stschiff](http://twitter.com/stschiff))~~
 * ~~Gene expression  ( Credit Julien Roux [www](http://www.unil.ch/dee/home/menuinst/people/post-docs--associates/dr-julien-roux.html) [@_julien_roux](http://twitter.com/_julien_roux)):~~
