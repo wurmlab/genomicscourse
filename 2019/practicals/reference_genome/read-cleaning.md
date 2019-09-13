@@ -20,28 +20,27 @@ Please note that these are toy/sandbox examples simplified to run on laptops and
 
 ## Locate input data to work with
 
-First, log in to Apocrita (our HPC cluster) and copy over the input files to your home directory:
+First, create a symlink to the input data that will be used in the next steps:
 
-    # Login and copy.
-    ssh login.hpc.qmul.ac.uk
-    cp -r /data/SBCS-MSc-BioInf/data ~/2018-09-BIO721_input
+    # Create a symlink from the input data to home directory
+    ln -s /import/teaching/bio/data ~/2019-09-xx-input_data
+    
+    # Create a symlink from the software directory to home directory
+    ln -s /import/teaching/bio/ ~/2019-09-xx-software
 
     # Remove write permission to prevent accidentally overwriting the input
     # files.
-    chmod a-w -R ~/2018-09-BIO721_input
+    chmod a-w -R ~/2019-09-xx-input_data
+    chmod a-w -R ~/2019-09-xx-software
 
-    # Logout.
-    exit
 
-On your local PC, check that you have a directory called `~/apocrita/2018-09-BIO721_input`. If not, ask for help.
+Check that you have a directory called `~/2019-09-xx-input_data`. If not, ask for help.
 
 ## Set up directory hierarchy to work in
 
-All work must be done in `~/apocrita` on your local PC.
-
 Start by creating a directory to work in. Drawing on ideas from [Noble (2009)](http://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1000424 "A Quick Guide to Organizing Computational Biology Projects") and others, we recommend following a [specific convention](http://github.com/wurmlab/templates/blob/master/project_structures.md "Typical multi-day project structure") for all your projects.
 
-For this, create a main directory for this section of the course (`~/apocrita/2018-09-28-reference_genome`), and create `input` and `results` subdirectories.
+For this, create a main directory for this section of the course (`~/2019-09-xx-reference_genome`), and create `input` and `results` subdirectories.
 
 For each step that we will perform, you should:
  * have input data in a relevant subdirectory
@@ -72,13 +71,13 @@ Sequencers aren't perfect. All kinds of things [can](http://genomecuration.githu
 
 [FastQC](http://www.bioinformatics.babraham.ac.uk/projects/fastqc/) ([documentation](http://www.bioinformatics.babraham.ac.uk/projects/fastqc/Help/)) can help you understand sequence quality and composition, and thus can inform read cleaning strategy.
 
-Copy the raw sequence files (`~/apocrita/2018-09-BIO721_input/reads.pe*.fastq.gz`) to a relevant input directory (e.g., `~/apocrita/2018-09-28-reference_genome/input/01-read_cleaning/`).
+Copy the raw sequence files (`~/2019-09-xx_input_data/reads.pe*.fastq.gz`) to a relevant input directory (e.g., `~/2019-09-xx-reference_genome/input/01-read_cleaning/`).
 
-Now move to a relevant results directory (e.g., `~/apocrita/2018-09-28-reference_genome/results/01-read_cleaning/`) and link your input directory here.
+Now move to a relevant results directory (e.g., `~/2019-09-xx-reference_genome/results/01-read_cleaning/`) and link your input directory here.
 
 Here, run FastQC on the `reads.pe2` file. The `--outdir` option will help you clearly separate input and output files (and remember to log the commands you used in the `WHATIDID.txt` file).
 
-Your [resulting directory structure](http://github.com/wurmlab/templates/blob/master/project_structures.md "Typical multi-day project structure") (`~/apocrita/2018-09-28-reference_genome`), should look like this:
+Your [resulting directory structure](http://github.com/wurmlab/templates/blob/master/project_structures.md "Typical multi-day project structure") (`~/2019-09-xx-reference_genome`), should look like this:
 
 ```bash
 tree
