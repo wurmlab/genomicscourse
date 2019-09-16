@@ -28,10 +28,6 @@ First, create a symlink to the input data that will be used in the next steps:
     # Create a symlink from the software directory to home directory
     ln -s /import/teaching/bio/ ~/2019-09-xx-software
 
-    # Remove write permission to prevent accidentally overwriting the input
-    # files.
-    chmod a-w -R ~/2019-09-xx-input_data
-    chmod a-w -R ~/2019-09-xx-software
 
 
 Check that you have a directory called `~/2019-09-xx-input_data`. If not, ask for help.
