@@ -23,14 +23,10 @@ Please note that these are toy/sandbox examples simplified to run on laptops and
 First, create a symlink to the input data that will be used in the next steps:
 
     # Create a symlink from the input data to home directory
-    ln -s /import/teaching/bio/data ~/2019-09-xx-input_data
+    ln -s /import/teaching/bio/data ~/2019-09-BIO271_input
     
-    # Create a symlink from the software directory to home directory
-    ln -s /import/teaching/bio/ ~/2019-09-xx-software
 
-
-
-Check that you have a directory called `~/2019-09-xx-input_data`. If not, ask for help.
+Check that you have a directory called `~/2019-09-BIO271_input`. If not, ask for help.
 
 ## Set up directory hierarchy to work in
 
@@ -67,7 +63,7 @@ Sequencers aren't perfect. All kinds of things [can](http://genomecuration.githu
 
 [FastQC](http://www.bioinformatics.babraham.ac.uk/projects/fastqc/) ([documentation](http://www.bioinformatics.babraham.ac.uk/projects/fastqc/Help/)) can help you understand sequence quality and composition, and thus can inform read cleaning strategy.
 
-Copy the raw sequence files (`~/2019-09-xx_input_data/reads.pe*.fastq.gz`) to a relevant input directory (e.g., `~/2019-09-xx-reference_genome/input/01-read_cleaning/`).
+Symlink the raw sequence files ('`~/2019-09-BIO271_input/reads.pe*.fastq.gz`) to a relevant input directory (e.g., `~/2019-09-xx-reference_genome/input/01-read_cleaning/`).
 
 Now move to a relevant results directory (e.g., `~/2019-09-xx-reference_genome/results/01-read_cleaning/`) and link your input directory here.
 
