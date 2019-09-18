@@ -138,14 +138,15 @@ ln -s /import/teaching/bio/data ~/2019-09-BIO271_input</code></pre>
 
 <span class="co"># 4. Remove orphanned reads</span>
 <span class="co"># 4.1 Collect read ids that appear in both files</span>
-<span class="kw">cat</span> tmp/reads.*.highqual.fq <span class="kw">|</span> <span class="kw">seqtk</span> comp <span class="kw">|</span> <span class="kw">cut</span> -f1 <span class="kw">|</span> <span class="kw">sort</span> <span class="kw">|</span> <span class="kw">uniq</span> -d <span class="kw">&gt;</span> tmp/ids.paired
+<span class="kw">cat</span> tmp/reads.pe1.trimmed.norare.max100.noshort.highqual.fq tmp/reads.pe2.trimmed.norare.max100.noshort.highqual.fq \
+<span class="kw">|</span> <span class="kw">seqtk</span> comp <span class="kw">|</span> <span class="kw">cut</span> -f1 <span class="kw">|</span> <span class="kw">sort</span> <span class="kw">|</span> <span class="kw">uniq</span> -d <span class="kw">&gt;</span> tmp/ids.paired
 
 <span class="co"># 4.2 Extract reads corresponding to the selected ids from both the files</span>
 <span class="kw">seqtk</span> subseq tmp/reads.pe1.trimmed.norare.max100.noshort.highqual.fq tmp/ids.paired <span class="kw">&gt;</span> tmp/reads.pe1.clean.fq
 <span class="kw">seqtk</span> subseq tmp/reads.pe2.trimmed.norare.max100.noshort.highqual.fq tmp/ids.paired <span class="kw">&gt;</span> tmp/reads.pe2.clean.fq
 
 <span class="co"># 5. Copy over the cleaned reads to a results directory</span>
-<span class="kw">cp</span> tmp/reads.*.clean.fq results</code></pre>
+<span class="kw">cp</span> tmp/reads.pe1.clean.fq tmp/reads.pe2.clean.fq results</code></pre>
 <h3 id="inspecting-quality-of-cleaned-reads">Inspecting quality of cleaned reads</h3>
 <p>Which percentage of reads have we removed overall? (hint: <code>wc -l</code> can count lines in a non-gzipped file). Is there a general rule about how much we should be removing?<br />Run <code>fastqc</code> again, this time on <code>reads.pe2.clean.fq</code>. Which statistics have changed? Does the &quot;per tile&quot; sequence quality indicate to you that we should perhaps do more cleaning?</p>
 <h2 id="part-2-genome-assembly">Part 2: <a href="assembly">Genome assembly</a></h2>

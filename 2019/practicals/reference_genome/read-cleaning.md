@@ -149,14 +149,15 @@ seqtk seq -q 10 -N -L 80 tmp/reads.pe2.trimmed.norare.max100.fq > tmp/reads.pe2.
 
 # 4. Remove orphanned reads
 # 4.1 Collect read ids that appear in both files
-cat tmp/reads.*.highqual.fq | seqtk comp | cut -f1 | sort | uniq -d > tmp/ids.paired
+cat tmp/reads.pe1.trimmed.norare.max100.noshort.highqual.fq tmp/reads.pe2.trimmed.norare.max100.noshort.highqual.fq \
+| seqtk comp | cut -f1 | sort | uniq -d > tmp/ids.paired
 
 # 4.2 Extract reads corresponding to the selected ids from both the files
 seqtk subseq tmp/reads.pe1.trimmed.norare.max100.noshort.highqual.fq tmp/ids.paired > tmp/reads.pe1.clean.fq
 seqtk subseq tmp/reads.pe2.trimmed.norare.max100.noshort.highqual.fq tmp/ids.paired > tmp/reads.pe2.clean.fq
 
 # 5. Copy over the cleaned reads to a results directory
-cp tmp/reads.*.clean.fq results
+cp tmp/reads.pe1.clean.fq tmp/reads.pe2.clean.fq results
 ```
 
 ### Inspecting quality of cleaned reads
