@@ -67,7 +67,9 @@ Symlink the raw sequence files ('`~/2019-09-BIO271_input/reads.pe*.fastq.gz`) to
 
 Now move to a relevant results directory (e.g., `~/2019-09-xx-reference_genome/results/01-read_cleaning/`) and link your input directory here.
 
-Here, run FastQC on the `reads.pe2` file. The `--outdir` option will help you clearly separate input and output files (and remember to log the commands you used in the `WHATIDID.txt` file).
+Before running the FastQC familiarise with the help section in the terminal `fastqc --help`.
+
+In the results directory, run FastQC on the `reads.pe2` file. The `--outdir` option will help you clearly separate input and output files (and remember to log the commands you used in the `WHATIDID.txt` file).
 
 Your [resulting directory structure](http://github.com/wurmlab/templates/blob/master/project_structures.md "Typical multi-day project structure") (`~/2019-09-xx-reference_genome`), should look like this:
 
