@@ -4,7 +4,7 @@ You need to have gone through [Part 2: Genome assembly](assembly) before startin
 
 Many tools exist for gene prediction, some based on *ab initio* statistical models of what a protein-coding gene should look like, others that use similarity with protein-coding genes from other species, and others (such as [Augustus](http://bioinf.uni-greifswald.de/augustus/) and SNAP), that use both. There is no perfect tool or approach, thus we typically run many gene-finding tools and call a consensus between the different predicted gene models.  [MAKER](http://www.yandell-lab.org/software/maker.html) and [JAMg](https://github.com/genomecuration/JAMg) can do this for us. Let's use MAKER on a sandbox example.
 
-Start in a new directory (e.g., `~/apocrita/2018-09-28-reference_genome/results/03-gene_prediction`). Pull out the longest few scaffolds from the `assembly.scafSeq` (e.g., using `seqtk seq -L 20000`) into their own fasta (e.g., `min20000.fa`).
+Start in a new directory (e.g., `~/2019-09-xx-reference_genome/results/03-gene_prediction`). Pull out the longest few scaffolds from the `assembly.scafSeq` (e.g., using `seqtk seq -L 20000`) into their own fasta (e.g., `min20000.fa`).
 
 Running `maker -OPTS` will generate an empty `maker_opts.ctl` configuration file (ignore the warning). Edit that file to specify:
   * genome: `min20000.fa`
@@ -24,9 +24,8 @@ Once its done the results will be hidden in subdirectories of `*maker.output/min
 
 So now we have some gene predictions... how can we know if they are any good? The easiest way to get a feel for this is by comparing a few of them ([backup examples](predictions.fa "backup MAKER gene predictions just in case")) to known sequences from other species. For this, use BLAST to compare a few of your protein-coding gene predictions to the high quality predictions in uniref50 database.
 
-**Run BLAST on Apocrita. Inspect results on your local PC.**
+# Running BLAST locally
 
-- Log in to Apocrita
 - Link /data/SBCS-MSc-BioInf/data/reference_databases/uniref50 to your input directory
 - BLAST can produce in different formats, including HTML format, which may be more amenable for inspection.
 
