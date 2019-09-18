@@ -121,17 +121,13 @@ seqtk trimfq -b REPLACE -e REPLACE input/reads.pe1.fastq.gz > tmp/reads.pe1.trim
 
 ### K-mer filtering, removal of low quality and short sequences
 
-Say you have sequenced your sample at 45x genome coverage. The real coverage distribution will be influenced by factors including DNA quality, library preparation type and local GC content, but you might expect most of the genome to be covered between 20 and 70x. In practice, the distribution can be very strange. One way of rapidly examining the coverage distribution before you have a reference genome is to chop your raw sequence reads into short "k-mers" of 31 nucleotides, and count how often you get each possible k-mer. Surprisingly,
-
- * many sequences are extremely rare (e.g., present only once). These are likely to be errors that appeared during library preparation or sequencing, or could be rare somatic mutations). Such sequences can confuse assembly software; eliminating them can decrease subsequent memory & CPU requirements.
- * Other sequences may exist at 10,000x coverage. These could be pathogens or repetitive elements. Often, there is no benefit to retaining all copies of such sequences because the assembly software will be confused by them; while retaining a small proportion could of such reads could  significantly reduce CPU, memory and space requirements.
-
-
-An example plot of a k-mer frequencies from a haploid sample sequenced at ~45x coverage:
+Say you have sequenced your sample at 45x genome coverage. The real coverage distribution will be influenced by factors including DNA quality, library preparation type and local GC content, but you might expect most of the genome to be covered between 20 and 70x. In practice, the distribution can be very strange. One way of rapidly examining the coverage distribution before you have a reference genome is to chop your raw sequence reads into short "k-mers" of 31 nucleotides, and count how often you get each possible k-mer. An example plot of k-mer frequencies from a haploid sample sequenced at ~45x coverage is shown below:
 
 ![kmer distribution graph from UCSC](img-qc/quake_kmer_distribution.jpg)
 
-Below, we use [kmc3](http://github.com/refresh-bio/KMC) to remove extremely rare and extremely frequent (more than 100x) k-mers. One could have used alternatives such as [khmer](http://github.com/ged-lab/khmer) ([documentation](http://khmer.readthedocs.io/en/v2.0/user/index.html)) instead; we use `kmc` for its speed. After k-mer filtering, we use `seqtk` to remove reads containing low quality and "uncalled" bases (i.e., where sequencer could not determine the correct base and inserted an 'N' instead). In the same step, we ask  `seqtk` to also remove reads that have become too short from k-mer filtering step. Finally, we eliminate reads that are no longer paired. Understanding the exact commands – which are a bit convoluted – is unnecessary. It is important to understand the concept of k-mer filtering.
+Surprisingly, many sequences are extremely rare (e.g., present only once). These are likely to be errors that appeared during library preparation or sequencing, or could be rare somatic mutations. Although not show in the above graph, other sequences may exist at 10,000x coverage. These could be pathogens or repetitive elements. Both extremely rare and extremely frequent sequences can confuse assembly software and eliminating them can reduce subsequent memory, disk space and CPU requirements considerably.
+
+Below, we use [kmc3](http://github.com/refresh-bio/KMC) to trim extremely rare and extremely frequent (more than 100x) k-mers from the reads.  Multiple alternative approaches (e.g., using [khmer](http://github.com/ged-lab/khmer)) exist. After k-mer filtering, we use `seqtk` to remove reads containing low quality and "uncalled" bases (i.e., where sequencer could not determine the correct base and inserted an 'N' instead). In the same step, we ask  `seqtk` to also remove reads that have become too short from k-mer filtering step. Finally, we eliminate reads that are no longer paired. Understanding the exact commands – which are a bit convoluted – is unnecessary. It is important to understand the concept of k-mer filtering.
 
 ```bash
 # 1. Build a database of k-mers (includes count for each unique k-mer)
@@ -142,30 +138,24 @@ kmc -k31 @tmp/file_list_for_kmc 31-mers /tmp
 
 # 2. Trim reads so that k-mers observed less than 3 times and more than
 # 100 times are eliminated.
-kmc_tools -t1 filter -t 31-mers tmp/reads.pe1.trimmed.fq -ci3 -cx100 \
-  tmp/reads.pe1.trimmed.norare.max100.fq
-kmc_tools -t1 filter -t 31-mers tmp/reads.pe2.trimmed.fq -ci3 -cx100 \
-  tmp/reads.pe2.trimmed.norare.max100.fq
+kmc_tools -t1 filter -t 31-mers tmp/reads.pe1.trimmed.fq -ci3 -cx100 tmp/reads.pe1.trimmed.norare.max100.fq
+kmc_tools -t1 filter -t 31-mers tmp/reads.pe2.trimmed.fq -ci3 -cx100 tmp/reads.pe2.trimmed.norare.max100.fq
 
 # 3. Remove low quality bases, short sequences, and non-paired reads
-seqtk seq -q 10 -N -L 80 tmp/reads.pe1.trimmed.norare.max100.fq \
-  > tmp/reads.pe1.trimmed.norare.max100.noshort.highqual.fq
-seqtk seq -q 10 -N -L 80 tmp/reads.pe2.trimmed.norare.max100.fq \
-  > tmp/reads.pe2.trimmed.norare.max100.noshort.highqual.fq
+seqtk seq -q 10 -N -L 80 tmp/reads.pe1.trimmed.norare.max100.fq > tmp/reads.pe1.trimmed.norare.max100.noshort.highqual.fq
+seqtk seq -q 10 -N -L 80 tmp/reads.pe2.trimmed.norare.max100.fq > tmp/reads.pe2.trimmed.norare.max100.noshort.highqual.fq
 
 # 4. Remove orphanned reads
 # 4.1 Collect read ids that appear in both files
-cat tmp/reads.*.highqual.fq | seqtk comp | cut -f1 \
-  | sort | uniq -d > tmp/ids.paired
+cat tmp/reads.pe1.trimmed.norare.max100.noshort.highqual.fq tmp/reads.pe2.trimmed.norare.max100.noshort.highqual.fq \
+| seqtk comp | cut -f1 | sort | uniq -d > tmp/ids.paired
 
 # 4.2 Extract reads corresponding to the selected ids from both the files
-seqtk subseq tmp/reads.pe1.trimmed.norare.max100.noshort.highqual.fq \
-  tmp/ids.paired > tmp/reads.pe1.clean.fq
-seqtk subseq tmp/reads.pe2.trimmed.norare.max100.noshort.highqual.fq \
-  tmp/ids.paired > tmp/reads.pe2.clean.fq
+seqtk subseq tmp/reads.pe1.trimmed.norare.max100.noshort.highqual.fq tmp/ids.paired > tmp/reads.pe1.clean.fq
+seqtk subseq tmp/reads.pe2.trimmed.norare.max100.noshort.highqual.fq tmp/ids.paired > tmp/reads.pe2.clean.fq
 
-# 5. Copy over the cleaned reads to results directory
-cp tmp/reads.*.clean.fq results
+# 5. Copy over the cleaned reads to a results directory
+cp tmp/reads.pe1.clean.fq tmp/reads.pe2.clean.fq results
 ```
 
 ### Inspecting quality of cleaned reads
