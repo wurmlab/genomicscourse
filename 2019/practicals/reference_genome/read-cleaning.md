@@ -67,7 +67,9 @@ Symlink the raw sequence files ('`~/2019-09-BIO271_input/reads.pe*.fastq.gz`) to
 
 Now move to a relevant results directory (e.g., `~/2019-09-xx-reference_genome/results/01-read_cleaning/`) and link your input directory here.
 
-Here, run FastQC on the `reads.pe2` file. The `--outdir` option will help you clearly separate input and output files (and remember to log the commands you used in the `WHATIDID.txt` file).
+Before running the FastQC familiarise with the help section in the terminal `fastqc --help`.
+
+In the results directory, run FastQC on the `reads.pe2` file. The `--outdir` option will help you clearly separate input and output files (and remember to log the commands you used in the `WHATIDID.txt` file).
 
 Your [resulting directory structure](http://github.com/wurmlab/templates/blob/master/project_structures.md "Typical multi-day project structure") (`~/2019-09-xx-reference_genome`), should look like this:
 
@@ -103,7 +105,7 @@ Other tools including [fastx_toolkit](http://github.com/agordon/fastx_toolkit), 
 
 [seqtk](http://github.com/lh3/seqtk) ([documentation](http://manpages.ubuntu.com/manpages/vivid/man1/seqtk.1.html)) is a fast and lightweight tool for processing FASTA and FASTQ sequences.
 
-Based on the results from FastQC, replace `REPLACE` and `REPLACE` below to appropriately trim from the beginning (`-b`) and end (`-e`)  of the sequences.
+Based on the results from FastQC, replace `REPLACE` and `REPLACE` below to appropriately trim from the beginning (`-b`) and end (`-e`)  of the sequences. If arguments seem to be unclear, check `seqtk --help` to gain more understanding.
 
 ```bash
 seqtk trimfq -b REPLACE -e REPLACE input/reads.pe2.fastq.gz > tmp/reads.pe2.trimmed.fq
