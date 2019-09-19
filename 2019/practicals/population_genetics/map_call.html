@@ -51,11 +51,11 @@ code > span.er { color: #ff0000; font-weight: bold; }
 </ol>
 <h2 id="the-data">The data</h2>
 <p>Run the following command to download the data used in this practical to your local computer:</p>
-<pre class="sourceCode bash"><code class="sourceCode bash"><span class="kw">cd</span> ~/apocrita
+<pre class="sourceCode bash"><code class="sourceCode bash"><span class="kw">cd</span> ~
 <span class="kw">wget</span> -c https://antgenomes.org/~BIO721/popgen_data.tar.gz
 <span class="kw">tar</span> xvf popgen_data.tar.gz
-<span class="kw">mv</span> popgen_data 2018-10-popgen_data
-<span class="kw">chmod</span> a-w -R 2018-10-popgen_data</code></pre>
+<span class="kw">mv</span> popgen_data 2019-10-popgen_data
+<span class="kw">chmod</span> a-w -R 2019-10-popgen_data</code></pre>
 <p>We recommend that you set up a directory for today following <a href="https://github.com/wurmlab/templates/blob/master/project_structures">our convention</a>, as <a href="../reference_genome/read-cleaning#set-up-directory-hierarchy-to-work-in">you did in the last practical</a>. You should have a subdirectory called <code>input</code> and another called <code>results</code>. In each, you should have a directory for the read mapping, and another for the variant calling:</p>
 <pre><code>2018-10-04-genotyping/
 ├── input
@@ -105,8 +105,7 @@ code > span.er { color: #ff0000; font-weight: bold; }
 <span class="kw">ls</span> input/reads/*fq.gz <span class="kw">|</span> <span class="kw">cut</span> -d <span class="st">'/'</span> -f 3 <span class="kw">|</span> <span class="kw">cut</span> -d <span class="st">'.'</span> -f 1 <span class="kw">|</span> <span class="kw">sort</span> <span class="kw">|</span> <span class="kw">uniq</span> <span class="kw">&gt;</span> tmp/names.txt
 
 <span class="co"># Run bowtie with each sample (will take a few minutes)</span>
-<span class="kw">cat</span> tmp/names.txt <span class="kw">|</span> <span class="kw">\</span>
-  <span class="kw">parallel</span> -t <span class="st">&quot;bowtie2 -x tmp/reference -1 input/reads/{}.1.fq.gz -2 input/reads/{}.2.fq.gz &gt; tmp/alignments/{}.sam&quot;</span></code></pre>
+<span class="kw">cat</span> tmp/names.txt <span class="kw">|</span> <span class="kw">parallel</span> -t <span class="st">&quot;bowtie2 -x tmp/reference -1 input/reads/{}.1.fq.gz -2 input/reads/{}.2.fq.gz &gt; tmp/alignments/{}.sam&quot;</span></code></pre>
 <p>Because SAM files include a lot of information, they tend to occupy a lot of space (even with our small example data). Therefore, SAM files are generally compressed into BAM files (Binary sAM). Most tools that use aligned reads require BAM files that have been sorted and indexed by genomic position. This is done using <code>samtools</code>, a set of tools created to manipulate SAM/BAM files:</p>
 <pre class="sourceCode bash"><code class="sourceCode bash"><span class="co"># samtools view: compresses the SAM to BAM</span>
 <span class="co"># samtools sort: sorts by scaffold position (creates f1_B.bam)</span>
@@ -116,11 +115,9 @@ code > span.er { color: #ff0000; font-weight: bold; }
 <span class="co">## This creates a file (f1_B.bam), which we then index</span>
 <span class="kw">samtools</span> index tmp/alignments/f1_B.bam   <span class="co"># creates f1_B.bam.bai</span></code></pre>
 <p>Again, we can use <code>parallel</code> to run this step for all the samples:</p>
-<pre class="sourceCode bash"><code class="sourceCode bash"><span class="kw">cat</span> tmp/names.txt \
-  <span class="kw">|</span> <span class="kw">parallel</span> -t <span class="st">&quot;samtools view -b tmp/alignments/{}.sam | samtools sort - &gt; tmp/alignments/{}.bam&quot;</span>
+<pre class="sourceCode bash"><code class="sourceCode bash"><span class="kw">cat</span> tmp/names.txt <span class="kw">|</span> <span class="kw">parallel</span> -t <span class="st">&quot;samtools view -b tmp/alignments/{}.sam | samtools sort - &gt; tmp/alignments/{}.bam&quot;</span>
 
-<span class="kw">cat</span> tmp/names.txt \
-  <span class="kw">|</span> <span class="kw">parallel</span> -t <span class="st">&quot;samtools index tmp/alignments/{}.bam&quot;</span></code></pre>
+<span class="kw">cat</span> tmp/names.txt <span class="kw">|</span> <span class="kw">parallel</span> -t <span class="st">&quot;samtools index tmp/alignments/{}.bam&quot;</span></code></pre>
 <p>Now check that a <code>bam</code> and a <code>bai</code> exist for each sample.</p>
 <p>To view what's in a BAM file, you have to use <code>samtools view</code></p>
 <pre class="sourceCode bash"><code class="sourceCode bash"><span class="kw">samtools</span> view tmp/alignments/f1_B.bam <span class="kw">|</span> <span class="kw">less</span> -S
@@ -162,8 +159,7 @@ code > span.er { color: #ff0000; font-weight: bold; }
 <li>What does a Phred-scale quality score of 30 mean?</li>
 </ul>
 <p>We will filter the VCF using <code>bcftools filter</code>. We can remove anything with quality call smaller than 30:</p>
-<pre class="sourceCode bash"><code class="sourceCode bash"><span class="kw">bcftools</span> filter --exclude <span class="st">'QUAL &lt; 30'</span> tmp/variants/calls.vcf <span class="kw">|</span> <span class="kw">\</span>
-    <span class="kw">bcftools</span> view -g ^miss <span class="kw">&gt;</span> tmp/variants/filtered_calls.vcf</code></pre>
+<pre class="sourceCode bash"><code class="sourceCode bash"><span class="kw">bcftools</span> filter --exclude <span class="st">'QUAL &lt; 30'</span> tmp/variants/calls.vcf <span class="kw">|</span> <span class="kw">bcftools</span> view -g ^miss <span class="kw">&gt;</span> tmp/variants/filtered_calls.vcf</code></pre>
 <p>In more serious analyses, it may be important to filter by other parameters.</p>
 <p>In the downstream analysis, we only want to look at sites that are:</p>
 <ol class="incremental">
