@@ -101,13 +101,13 @@ ln -s /import/teaching/bio/data ~/2019-09-BIO271_input</code></pre>
 <p>Below, we will perform three cleaning steps:</p>
 <ul class="incremental">
 <li>Trimming the ends of sequence reads using seqtk.<br /></li>
-<li>K-mer filtering using khmer.<br /></li>
+<li>K-mer filtering using kmc3.<br /></li>
 <li>Removing sequences that are of low quality or too short using seqtk.</li>
 </ul>
 <p>Other tools including <a href="http://github.com/agordon/fastx_toolkit">fastx_toolkit</a>, <a href="http://arxiv.org/abs/1407.1507">kmc2</a> and <a href="http://www.usadellab.org/cms/index.php?page=trimmomatic">Trimmomatic</a> can also be useful.</p>
 <h3 id="trimming">Trimming</h3>
 <p><a href="http://github.com/lh3/seqtk">seqtk</a> (<a href="http://manpages.ubuntu.com/manpages/vivid/man1/seqtk.1.html">documentation</a>) is a fast and lightweight tool for processing FASTA and FASTQ sequences.</p>
-<p>Based on the results from FastQC, replace <code>REPLACE</code> and <code>REPLACE</code> below to appropriately trim from the beginning (<code>-b</code>) and end (<code>-e</code>) of the sequences.</p>
+<p>Based on the results from FastQC, replace <code>REPLACE</code> and <code>REPLACE</code> below to appropriately trim from the beginning (<code>-b</code>) and end (<code>-e</code>) of the sequences. Do not trim too much!! (i.e. not more than a few nucleotides). Algorithms are generally able to cope with a small amount of errors. If you trim too much of your sequence, you are also eliminating important information.</p>
 <pre class="sourceCode bash"><code class="sourceCode bash"><span class="kw">seqtk</span> trimfq -b REPLACE -e REPLACE input/reads.pe2.fastq.gz <span class="kw">&gt;</span> tmp/reads.pe2.trimmed.fq</code></pre>
 <p>This will only take a few seconds (make sure you replaced <code>REPLACE</code>).</p>
 <p>Let's similarly inspect the paired set of reads, <code>reads.pe1</code>, and appropriately trim them.</p>
