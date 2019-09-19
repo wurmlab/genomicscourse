@@ -94,7 +94,7 @@ Decide whether and how much to trim from the beginning and end of our sequences.
 
 Below, we will perform three cleaning steps:
   * Trimming the ends of sequence reads using seqtk.  
-  * K-mer filtering using khmer.
+  * K-mer filtering using kmc3.
   * Removing sequences that are of low quality or too short using seqtk.
 
 Other tools including [fastx_toolkit](http://github.com/agordon/fastx_toolkit), [kmc2](http://arxiv.org/abs/1407.1507) and [Trimmomatic](http://www.usadellab.org/cms/index.php?page=trimmomatic) can also be useful.
