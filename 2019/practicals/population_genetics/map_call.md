@@ -29,8 +29,8 @@ Run the following command to download the data used in this practical to your lo
 cd ~
 wget -c https://antgenomes.org/~BIO721/popgen_data.tar.gz
 tar xvf popgen_data.tar.gz
-mv popgen_data 2018-10-popgen_data
-chmod a-w -R 2018-10-popgen_data
+mv popgen_data 2019-10-popgen_data
+chmod a-w -R 2019-10-popgen_data
 ```
 
 We recommend that you set up a directory for today following [our convention](https://github.com/wurmlab/templates/blob/master/project_structures), as [you did in the last practical](../reference_genome/read-cleaning#set-up-directory-hierarchy-to-work-in). You should have a subdirectory called `input` and another called `results`. In each, you should have a directory for the read mapping, and another for the variant calling:
