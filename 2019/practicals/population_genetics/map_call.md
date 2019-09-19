@@ -36,7 +36,7 @@ chmod a-w -R 2019-10-popgen_data
 We recommend that you set up a directory for today following [our convention](https://github.com/wurmlab/templates/blob/master/project_structures), as [you did in the last practical](../reference_genome/read-cleaning#set-up-directory-hierarchy-to-work-in). You should have a subdirectory called `input` and another called `results`. In each, you should have a directory for the read mapping, and another for the variant calling:
 
 ```
-2018-10-04-genotyping/
+2019-10-xx-genotyping/
 ├── input
 │   ├── 01-mapping
 │   └── 02-genotyping
