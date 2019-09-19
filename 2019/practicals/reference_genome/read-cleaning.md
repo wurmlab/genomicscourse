@@ -125,7 +125,7 @@ Say you have sequenced your sample at 45x genome coverage. The real coverage dis
 
 Surprisingly, many sequences are extremely rare (e.g., present only once). These are likely to be errors that appeared during library preparation or sequencing, or could be rare somatic mutations. Although not show in the above graph, other sequences may exist at 10,000x coverage. These could be pathogens or repetitive elements. Both extremely rare and extremely frequent sequences can confuse assembly software and eliminating them can reduce subsequent memory, disk space and CPU requirements considerably.
 
-Below, we use [kmc3](http://github.com/refresh-bio/KMC) to trim extremely rare and extremely frequent (more than 100x) k-mers from the reads.  Multiple alternative approaches (e.g., using [khmer](http://github.com/ged-lab/khmer)) exist. After k-mer filtering, we use `seqtk` to remove reads containing low quality and "uncalled" bases (i.e., where sequencer could not determine the correct base and inserted an 'N' instead). In the same step, we ask  `seqtk` to also remove reads that have become too short from k-mer filtering step. Finally, we eliminate reads that are no longer paired. Understanding the exact commands – which are a bit convoluted – is unnecessary. It is important to understand the concept of k-mer filtering.
+Below, we use [kmc3](http://github.com/refresh-bio/KMC) to trim extremely rare and extremely frequent (more than 100x) k-mers from the reads.  Multiple alternative approaches (e.g., using [khmer](http://github.com/ged-lab/khmer)) exist. Trimming rare or frequent k-mers can cause some reads to become too short to be informative. We remove such reads in the subsequent step using `seqtk`. In the same same step, we also ask `seqtk` to remove reads containing low quality and "uncalled" bases, i.e., where sequencer could not determine the correct base and inserted an 'N' instead. Finally, because we have discarded certain reads (either because they had become too short or because they contained low quality or uncalled base) some reads may have become "orphaned", i.e., they are no longer paired. We eliminate these in the next step because subsequent analysis (e.g., genome assembly, or variant calling) often assume all reads to be paired. Understanding the exact commands – which are a bit convoluted – is unnecessary. It is important to understand the concept of k-mer filtering and the reasoning behind each step.
 
 ```bash
 # 1. Build a database of k-mers (includes count for each unique k-mer)
@@ -134,14 +134,13 @@ ls tmp/reads.*.trimmed.fq > tmp/file_list_for_kmc
 # 1.2 Run KMC on the file list
 kmc -k31 @tmp/file_list_for_kmc 31-mers /tmp
 
-# 2. Trim reads so that k-mers observed less than 3 times and more than
-# 100 times are eliminated.
+# 2. Trim reads so that k-mers observed less than 3 times and more than 100 times are eliminated.
 kmc_tools -t1 filter -t 31-mers tmp/reads.pe1.trimmed.fq -ci3 -cx100 tmp/reads.pe1.trimmed.norare.max100.fq
 kmc_tools -t1 filter -t 31-mers tmp/reads.pe2.trimmed.fq -ci3 -cx100 tmp/reads.pe2.trimmed.norare.max100.fq
 
-# 3. Remove low quality bases, short sequences, and non-paired reads
-seqtk seq -q 10 -N -L 80 tmp/reads.pe1.trimmed.norare.max100.fq > tmp/reads.pe1.trimmed.norare.max100.noshort.highqual.fq
-seqtk seq -q 10 -N -L 80 tmp/reads.pe2.trimmed.norare.max100.fq > tmp/reads.pe2.trimmed.norare.max100.noshort.highqual.fq
+# 3. Remove reads containing low quality and uncalled bases, and those shorter than 80 bp.
+seqtk seq -L 80 -q 10 -N tmp/reads.pe1.trimmed.norare.max100.fq > tmp/reads.pe1.trimmed.norare.max100.noshort.highqual.fq
+seqtk seq -L 80 -q 10 -N tmp/reads.pe2.trimmed.norare.max100.fq > tmp/reads.pe2.trimmed.norare.max100.noshort.highqual.fq
 
 # 4. Remove orphanned reads
 # 4.1 Collect read ids that appear in both files
