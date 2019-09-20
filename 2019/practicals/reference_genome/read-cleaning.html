@@ -119,14 +119,15 @@ ln -s /import/teaching/bio/data ~/2019-09-BIO271_input</code></pre>
 <p>Surprisingly, many sequences are extremely rare (e.g., present only once). These are likely to be errors that appeared during library preparation or sequencing, or could be rare somatic mutations. Although not show in the above graph, other sequences may exist at 10,000x coverage. These could be pathogens or repetitive elements. Both extremely rare and extremely frequent sequences can confuse assembly software and eliminating them can reduce subsequent memory, disk space and CPU requirements considerably.</p>
 <p>Below, we use <a href="http://github.com/refresh-bio/KMC">kmc3</a> to trim extremely rare and extremely frequent (more than 100x) k-mers from the reads. Multiple alternative approaches (e.g., using <a href="http://github.com/ged-lab/khmer">khmer</a>) exist. Trimming rare or frequent k-mers can cause some reads to become too short to be informative. We remove such reads in the subsequent step using <code>seqtk</code>. In the same same step, we also ask <code>seqtk</code> to remove reads containing low quality and &quot;uncalled&quot; bases, i.e., where sequencer could not determine the correct base and inserted an 'N' instead. Finally, because we have discarded certain reads (either because they had become too short or because they contained low quality or uncalled base) some reads may have become &quot;orphaned&quot;, i.e., they are no longer paired. We eliminate these in the next step because subsequent analysis (e.g., genome assembly, or variant calling) often assume all reads to be paired. Understanding the exact commands – which are a bit convoluted – is unnecessary. It is important to understand the concept of k-mer filtering and the reasoning behind each step.</p>
 <pre class="sourceCode bash"><code class="sourceCode bash"><span class="co"># 1. Build a database of k-mers (includes count for each unique k-mer)</span>
-<span class="co"># 1.1 Make a list of files to make k-mer database of</span>
-<span class="kw">ls</span> tmp/reads.*.trimmed.fq <span class="kw">&gt;</span> tmp/file_list_for_kmc
-<span class="co"># 1.2 Run KMC on the file list</span>
-<span class="kw">kmc</span> -k31 @tmp/file_list_for_kmc 31-mers /tmp
+<span class="co"># 1.1 Make a list of files to make k-mer database from</span>
+<span class="kw">ls</span> tmp/reads.pe1.trimmed.fq tmp/reads.pe1.trimmed.fq <span class="kw">&gt;</span> tmp/file_list_for_kmc
+
+<span class="co"># 1.2 Run KMC on the list of files</span>
+<span class="kw">kmc</span> -k31 @tmp/file_list_for_kmc tmp/31-mers tmp
 
 <span class="co"># 2. Trim reads so that k-mers observed less than 3 times and more than 100 times are eliminated.</span>
-<span class="kw">kmc_tools</span> -t1 filter -t 31-mers tmp/reads.pe1.trimmed.fq -ci3 -cx100 tmp/reads.pe1.trimmed.norare.max100.fq
-<span class="kw">kmc_tools</span> -t1 filter -t 31-mers tmp/reads.pe2.trimmed.fq -ci3 -cx100 tmp/reads.pe2.trimmed.norare.max100.fq
+<span class="kw">kmc_tools</span> -t1 filter -t tmp/31-mers tmp/reads.pe1.trimmed.fq -ci3 -cx100 tmp/reads.pe1.trimmed.norare.max100.fq
+<span class="kw">kmc_tools</span> -t1 filter -t tmp/31-mers tmp/reads.pe2.trimmed.fq -ci3 -cx100 tmp/reads.pe2.trimmed.norare.max100.fq
 
 <span class="co"># 3. Remove reads containing low quality and uncalled bases, and those shorter than 80 bp.</span>
 <span class="kw">seqtk</span> seq -L 80 -q 10 -N tmp/reads.pe1.trimmed.norare.max100.fq <span class="kw">&gt;</span> tmp/reads.pe1.trimmed.norare.max100.noshort.highqual.fq
