@@ -135,11 +135,11 @@ Below, we use [kmc3](http://github.com/refresh-bio/KMC) to trim extremely rare a
 ls tmp/reads.pe1.trimmed.fq tmp/reads.pe1.trimmed.fq > tmp/file_list_for_kmc
 
 # 1.2 Run KMC on the list of files
-kmc -k31 @tmp/file_list_for_kmc tmp/31-mers tmp
+kmc -k21 @tmp/file_list_for_kmc tmp/21-mers tmp
 
 # 2. Trim reads so that k-mers observed less than 3 times and more than 100 times are eliminated.
-kmc_tools -t1 filter -t tmp/31-mers tmp/reads.pe1.trimmed.fq -ci3 -cx100 tmp/reads.pe1.trimmed.norare.max100.fq
-kmc_tools -t1 filter -t tmp/31-mers tmp/reads.pe2.trimmed.fq -ci3 -cx100 tmp/reads.pe2.trimmed.norare.max100.fq
+kmc_tools -t1 filter -t tmp/21-mers tmp/reads.pe1.trimmed.fq -ci3 -cx100 tmp/reads.pe1.trimmed.norare.max100.fq
+kmc_tools -t1 filter -t tmp/21-mers tmp/reads.pe2.trimmed.fq -ci3 -cx100 tmp/reads.pe2.trimmed.norare.max100.fq
 
 # 3. Remove reads shorter than 50 bp and those containing low quality and uncalled bases.
 seqtk seq -L 50 -q 10 -N tmp/reads.pe1.trimmed.norare.max100.fq > tmp/reads.pe1.trimmed.norare.max100.noshort.highqual.fq
