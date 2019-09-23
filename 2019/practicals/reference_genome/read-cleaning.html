@@ -123,24 +123,24 @@ ln -s /import/teaching/bio/data ~/2019-09-BIO271_input</code></pre>
 <span class="kw">ls</span> tmp/reads.pe1.trimmed.fq tmp/reads.pe1.trimmed.fq <span class="kw">&gt;</span> tmp/file_list_for_kmc
 
 <span class="co"># 1.2 Run KMC on the list of files</span>
-<span class="kw">kmc</span> -k31 @tmp/file_list_for_kmc tmp/31-mers tmp
+<span class="kw">kmc</span> -k21 @tmp/file_list_for_kmc tmp/21-mers tmp
 
 <span class="co"># 2. Trim reads so that k-mers observed less than 3 times and more than 100 times are eliminated.</span>
-<span class="kw">kmc_tools</span> -t1 filter -t tmp/31-mers tmp/reads.pe1.trimmed.fq -ci3 -cx100 tmp/reads.pe1.trimmed.norare.max100.fq
-<span class="kw">kmc_tools</span> -t1 filter -t tmp/31-mers tmp/reads.pe2.trimmed.fq -ci3 -cx100 tmp/reads.pe2.trimmed.norare.max100.fq
+<span class="kw">kmc_tools</span> -t1 filter -t tmp/21-mers tmp/reads.pe1.trimmed.fq -ci3 -cx100 tmp/reads.pe1.trimmed.norare.max100.fq
+<span class="kw">kmc_tools</span> -t1 filter -t tmp/21-mers tmp/reads.pe2.trimmed.fq -ci3 -cx100 tmp/reads.pe2.trimmed.norare.max100.fq
 
-<span class="co"># 3. Remove reads containing low quality and uncalled bases, and those shorter than 80 bp.</span>
-<span class="kw">seqtk</span> seq -L 80 -q 10 -N tmp/reads.pe1.trimmed.norare.max100.fq <span class="kw">&gt;</span> tmp/reads.pe1.trimmed.norare.max100.noshort.highqual.fq
-<span class="kw">seqtk</span> seq -L 80 -q 10 -N tmp/reads.pe2.trimmed.norare.max100.fq <span class="kw">&gt;</span> tmp/reads.pe2.trimmed.norare.max100.noshort.highqual.fq
+<span class="co"># 3. Remove reads shorter than 50 bp and those containing low quality and uncalled bases.</span>
+<span class="kw">seqtk</span> seq -L 50 -q 10 -N tmp/reads.pe1.trimmed.norare.max100.fq <span class="kw">&gt;</span> tmp/reads.pe1.trimmed.norare.max100.noshort.highqual.fq
+<span class="kw">seqtk</span> seq -L 50 -q 10 -N tmp/reads.pe2.trimmed.norare.max100.fq <span class="kw">&gt;</span> tmp/reads.pe2.trimmed.norare.max100.noshort.highqual.fq
 
 <span class="co"># 4. Remove orphanned reads</span>
 <span class="co"># 4.1 Collect read ids that appear in both files</span>
 <span class="kw">cat</span> tmp/reads.pe1.trimmed.norare.max100.noshort.highqual.fq tmp/reads.pe2.trimmed.norare.max100.noshort.highqual.fq \
-<span class="kw">|</span> <span class="kw">seqtk</span> comp <span class="kw">|</span> <span class="kw">cut</span> -f1 <span class="kw">|</span> <span class="kw">sort</span> <span class="kw">|</span> <span class="kw">uniq</span> -d <span class="kw">&gt;</span> tmp/ids.paired
+<span class="kw">|</span> <span class="kw">seqtk</span> comp <span class="kw">|</span> <span class="kw">cut</span> -f1 <span class="kw">|</span> <span class="kw">sort</span> <span class="kw">|</span> <span class="kw">uniq</span> -d <span class="kw">&gt;</span> tmp/paired_read_ids
 
 <span class="co"># 4.2 Extract reads corresponding to the selected ids from both the files</span>
-<span class="kw">seqtk</span> subseq tmp/reads.pe1.trimmed.norare.max100.noshort.highqual.fq tmp/ids.paired <span class="kw">&gt;</span> tmp/reads.pe1.clean.fq
-<span class="kw">seqtk</span> subseq tmp/reads.pe2.trimmed.norare.max100.noshort.highqual.fq tmp/ids.paired <span class="kw">&gt;</span> tmp/reads.pe2.clean.fq
+<span class="kw">seqtk</span> subseq tmp/reads.pe1.trimmed.norare.max100.noshort.highqual.fq tmp/paired_read_ids <span class="kw">&gt;</span> tmp/reads.pe1.clean.fq
+<span class="kw">seqtk</span> subseq tmp/reads.pe2.trimmed.norare.max100.noshort.highqual.fq tmp/paired_read_ids <span class="kw">&gt;</span> tmp/reads.pe2.clean.fq
 
 <span class="co"># 5. Copy over the cleaned reads to a results directory</span>
 <span class="kw">cp</span> tmp/reads.pe1.clean.fq tmp/reads.pe2.clean.fq results</code></pre>
