@@ -28,7 +28,7 @@ q2=input/reads.pe2.clean.fq
 Then run the following line. *THIS IS RAM-INTENSE, your computer may struggle*
 
 ```bash
-SOAPdenovo-63mer all -s soap_config.txt -K 63 -R -o tmp/assembly
+SOAPdenovo-63mer all -s soap_config.txt -K 45 -R -o tmp/assembly
 ```
 
 Like any other assembler, SOAPdenovo creates many files, including an `assembly.scafSeq` file that is likely to be used for follow-up analyses[.](../../data/reference_assembly/output/assembly.scafSeq.gz) Link this file to your results directory:
