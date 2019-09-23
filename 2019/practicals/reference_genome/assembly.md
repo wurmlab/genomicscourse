@@ -15,7 +15,7 @@ Create a new `input/02-assembly` directory and link the output from yesterday's 
 To assemble our cleaned reads with SOAPdenovo, we create a `soap_config.txt` file containing the following:
 
 ```
-max_rd_len=101          # maximal read length
+max_rd_len=100          # maximal read length
 [LIB]            # One [LIB] section per library
 avg_ins=470             # average insert size
 reverse_seq=0           # if sequence needs to be reversed
