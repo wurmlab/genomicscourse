@@ -141,9 +141,9 @@ kmc -k31 @tmp/file_list_for_kmc tmp/31-mers tmp
 kmc_tools -t1 filter -t tmp/31-mers tmp/reads.pe1.trimmed.fq -ci3 -cx100 tmp/reads.pe1.trimmed.norare.max100.fq
 kmc_tools -t1 filter -t tmp/31-mers tmp/reads.pe2.trimmed.fq -ci3 -cx100 tmp/reads.pe2.trimmed.norare.max100.fq
 
-# 3. Remove reads containing low quality and uncalled bases, and those shorter than 80 bp.
-seqtk seq -L 80 -q 10 -N tmp/reads.pe1.trimmed.norare.max100.fq > tmp/reads.pe1.trimmed.norare.max100.noshort.highqual.fq
-seqtk seq -L 80 -q 10 -N tmp/reads.pe2.trimmed.norare.max100.fq > tmp/reads.pe2.trimmed.norare.max100.noshort.highqual.fq
+# 3. Remove reads shorter than 50 bp and those containing low quality and uncalled bases.
+seqtk seq -L 50 -q 10 -N tmp/reads.pe1.trimmed.norare.max100.fq > tmp/reads.pe1.trimmed.norare.max100.noshort.highqual.fq
+seqtk seq -L 50 -q 10 -N tmp/reads.pe2.trimmed.norare.max100.fq > tmp/reads.pe2.trimmed.norare.max100.noshort.highqual.fq
 
 # 4. Remove orphanned reads
 # 4.1 Collect read ids that appear in both files
