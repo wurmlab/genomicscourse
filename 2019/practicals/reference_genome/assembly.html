@@ -51,7 +51,7 @@ rank=1                  # in which order the reads are used while scaffolding
 q1=input/reads.pe1.clean.fq
 q2=input/reads.pe2.clean.fq</code></pre>
 <p>Then run the following line. <em>THIS IS RAM-INTENSE, your computer may struggle</em></p>
-<pre class="sourceCode bash"><code class="sourceCode bash"><span class="kw">SOAPdenovo2-63mer</span> all -s soap_config.txt -K 63 -R -o tmp/assembly</code></pre>
+<pre class="sourceCode bash"><code class="sourceCode bash"><span class="kw">SOAPdenovo-63mer</span> all -s soap_config.txt -K 45 -R -o tmp/assembly</code></pre>
 <p>Like any other assembler, SOAPdenovo creates many files, including an <code>assembly.scafSeq</code> file that is likely to be used for follow-up analyses<a href="../../data/reference_assembly/output/assembly.scafSeq.gz">.</a> Link this file to your results directory:</p>
 <pre class="sourceCode bash"><code class="sourceCode bash"><span class="kw">ln</span> -s tmp/assembly.scafSeq</code></pre>
 <p>Why does this file contain so many NNNN sequences?</p>
