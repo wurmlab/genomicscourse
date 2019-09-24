@@ -4,6 +4,8 @@ You need to have gone through [Part 2: Genome assembly](assembly) before startin
 
 Many tools exist for gene prediction, some based on *ab initio* statistical models of what a protein-coding gene should look like, others that use similarity with protein-coding genes from other species, and others (such as [Augustus](http://bioinf.uni-greifswald.de/augustus/) and SNAP), that use both. There is no perfect tool or approach, thus we typically run many gene-finding tools and call a consensus between the different predicted gene models.  [MAKER](http://www.yandell-lab.org/software/maker.html) and [JAMg](https://github.com/genomecuration/JAMg) can do this for us. Let's use MAKER on a sandbox example.
 
+### Running Maker
+
 Start in a new directory (e.g., `~/2019-09-xx-reference_genome/results/03-gene_prediction`). Pull out the longest few scaffolds from the `assembly.scafSeq` (e.g., using `seqtk seq -L 10000`) into their own fasta (e.g., `min10000.fa`).
 
 Running `maker -OPTS` will generate an empty `maker_opts.ctl` configuration file (ignore the warning). Edit that file to specify:
@@ -14,8 +16,6 @@ Running `maker -OPTS` will generate an empty `maker_opts.ctl` configuration file
 
 For a real project, we *would* include RepeatMasker (perhaps after creating a new repeat library), we would provide as much relevant information as possible (e.g., RNAseq read mappings, transcriptome assembly – both improve gene prediction performance *tremendously*), and iteratively train gene prediction algorithms for our data including Augustus and SNAP.
 
-**Running Maker**
-
 Run `maker maker_opts.ctl`. This may take a few minutes, depending on how much data you gave it.
 Once its done the results will be hidden in subdirectories of `min10000.maker.output/min10000_datastore`. Perhaps its easier to find the gene predictions using `find` then grep for `gff` or `proteins`. You can ignore the (temporary) contents under `theVoid` directories.
 
@@ -24,7 +24,7 @@ Once its done the results will be hidden in subdirectories of `min10000.maker.ou
 
 So now we have some gene predictions... how can we know if they are any good? The easiest way to get a feel for this is by comparing a few of them ([backup examples](predictions.fa "backup MAKER gene predictions just in case")) to known sequences from other species. For this, use BLAST to compare a few of your protein-coding gene predictions to the high quality predictions in uniref50 database.
 
-**Running BLAST**
+#### Running BLAST
 
 - Link /data/SBCS-MSc-BioInf/data/reference_databases/uniref50 to your input directory
 - BLAST can produce in different formats, including HTML format, which may be more amenable for inspection.
@@ -36,6 +36,10 @@ Do any of the gene predictions have significant similarity to known sequences? F
 As you can see, gene prediction software is imperfect – this is even the case when using all available evidence. This is potentially costly for analyses that rely on gene predictions - i.e. many of the analyses we might want to do!
 
 > *“Incorrect annotations [ie. gene identifications] poison every experiment that makes use of them. Worse still the poison spreads.”* – [Yandell & Ence (2012)](http://www.ncbi.nlm.nih.gov/pubmed/22510764).
+
+---
+
+#### Using GeneValidator
 
 The [GeneValidator](http://bioinformatics.oxfordjournals.org/content/32/10/1559.long) tool can help to evaluate quality of a gene prediction by comparing features of a gene prediction to similar database sequences. This approach expects that similar sequences should for example be of similar length.
 You can simply run `genevalidator -d ~/2019-09-BIO271_input/uniref50/uniref50.fasta proteins.fasta --num_threads 8` (on your gene predictions, or [these examples](../../data/reference_assembly/gv_examples.fa)), or use the [web service](http://genevalidator.sbcs.qmul.ac.uk/) for queries of few sequences. Alternatively just check the screenshots linked in the next sentence. Try to understand why some gene predictions have no reason for concern [(e.g.)](img-qc/good.png), while others do [(e.g.)](img-qc/bad.png).
