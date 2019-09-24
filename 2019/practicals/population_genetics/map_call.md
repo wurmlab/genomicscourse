@@ -133,7 +133,7 @@ Copy the alignments to a results folder (`results/01-mapping/results`) and symli
 
 ## Variant calling
 
-To begin with, we will need the reference fasta file in addition to the alignments we just created. Copy it over from `input/01-mapping` to `input/02-genotyping` directory.
+To begin with, we will need the reference fasta file in addition to the alignments we just created. Symlink the reference fasta file from `input/01-mapping` to `input/02-genotyping` directory.
 
 The following analysis is done in the directory `results/02-genotyping`. Remember to keep your commands in the `WHATIDID.txt` file.
 
