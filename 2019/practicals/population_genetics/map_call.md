@@ -64,10 +64,12 @@ The first step in our pipeline is to align the paired end reads to the reference
 In the first step, the scaffold sequence (sometimes known as the database) is indexed, in this case using the [Burrows-Wheeler Transform](https://en.wikipedia.org/wiki/Burrows-Wheeler_transform), which can help compress a large text into less memory. It thus allows for memory efficient alignment. Index files often require the original file to be present in the same directory. We thus start by linking scaffold sequences to `tmp` directory (where all output will be written first).
 
 ```bash
+# Symlink reference.fa to tmp/
 cd tmp
-
 ln -s ../input/reference.fa
+cd -
 
+# Build the index now.
 bowtie2-build tmp/reference.fa tmp/reference
 ```
 
@@ -129,27 +131,27 @@ samtools view tmp/alignments/f1_B.bam | less -S
 samtools view tmp/alignments/f1_B.bam scaffold_1:10000-10500 | less -S
 ```
 
-Copy the alignments to `input/02-genotyping`.
-
-```sh
-cp -r tmp/alignments ../../input/02-genotyping
-```
-
+Copy the alignments to a results folder (`results/01-mapping/results`) and symlink the individual files to `input/02-genotyping`.
 
 ## Variant calling
 
-To begin with, we will need the reference fasta file in addition to the alignments we just created. Copy it over from `input/01-mapping` to `input/02-genotyping` directory.
+To begin with, we will need the reference fasta file in addition to the alignments we just created. Symlink the reference fasta file from `input/01-mapping` to `input/02-genotyping` directory.
 
 The following analysis is done in the directory `results/02-genotyping`. Remember to keep your commands in the `WHATIDID.txt` file.
 
 There are several approaches to call variants. The simplest approach is to look for positions where the mapped reads consistently have a different base than the reference assembly (the consensus approach). We need to run two steps, `samtools mpileup`, which looks for inconsistencies between the reference and the aligned reads, and `bcftools call`, which interprets them as variants.
 
-We will use multiallelic caller (option `-m`) of bcftools and set all individuals as haploid. We want
+We will use multiallelic caller (option `-m`) of bcftools and set all individuals as haploid.
 
 ```bash
 # Step 1: samtools mpileup
-## Create index of the reference (different from that used by bowtie2)
-ln -rs input/reference.fa tmp/reference.fa
+
+# Symlink reference.fa to tmp/
+cd tmp
+ln -s ../input/reference.fa
+cd -
+
+# Create index of the reference (different from that used by bowtie2)
 samtools faidx tmp/reference.fa
 
 # Run samtools mpileup

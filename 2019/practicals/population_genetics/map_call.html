@@ -79,10 +79,12 @@ code > span.er { color: #ff0000; font-weight: bold; }
 <p>This part of the analysis is done in the <code>results/01-mapping</code> directory. Remember to keep your commands in the <code>WHATIDID.txt</code> file.</p>
 <p>The first step in our pipeline is to align the paired end reads to the reference genome. We are using the software <code>bowtie2</code>, which was created to align short read sequences to long sequences such as the scaffolds in a reference assembly. <code>bowtie2</code>, like most aligners, works in two steps.</p>
 <p>In the first step, the scaffold sequence (sometimes known as the database) is indexed, in this case using the <a href="https://en.wikipedia.org/wiki/Burrows-Wheeler_transform">Burrows-Wheeler Transform</a>, which can help compress a large text into less memory. It thus allows for memory efficient alignment. Index files often require the original file to be present in the same directory. We thus start by linking scaffold sequences to <code>tmp</code> directory (where all output will be written first).</p>
-<pre class="sourceCode bash"><code class="sourceCode bash"><span class="kw">cd</span> tmp
-
+<pre class="sourceCode bash"><code class="sourceCode bash"><span class="co"># Symlink reference.fa to tmp/</span>
+<span class="kw">cd</span> tmp
 <span class="kw">ln</span> -s ../input/reference.fa
+<span class="kw">cd</span> -
 
+<span class="co"># Build the index now.</span>
 <span class="kw">bowtie2-build</span> tmp/reference.fa tmp/reference</code></pre>
 <p>The second step is the alignment itself:</p>
 <pre class="sourceCode bash"><code class="sourceCode bash"><span class="kw">mkdir</span> tmp/alignments
@@ -119,16 +121,20 @@ code > span.er { color: #ff0000; font-weight: bold; }
 
 <span class="co"># To view a particular region:</span>
 <span class="kw">samtools</span> view tmp/alignments/f1_B.bam scaffold_1:10000-10500 <span class="kw">|</span> <span class="kw">less</span> -S</code></pre>
-<p>Copy the alignments to <code>input/02-genotyping</code>.</p>
-<pre class="sh"><code>cp -r tmp/alignments ../../input/02-genotyping</code></pre>
+<p>Copy the alignments to a results folder (<code>results/01-mapping/results</code>) and symlink the individual files to <code>input/02-genotyping</code>.</p>
 <h2 id="variant-calling">Variant calling</h2>
-<p>To begin with, we will need the reference fasta file in addition to the alignments we just created. Copy it over from <code>input/01-mapping</code> to <code>input/02-genotyping</code> directory.</p>
+<p>To begin with, we will need the reference fasta file in addition to the alignments we just created. Symlink the reference fasta file from <code>input/01-mapping</code> to <code>input/02-genotyping</code> directory.</p>
 <p>The following analysis is done in the directory <code>results/02-genotyping</code>. Remember to keep your commands in the <code>WHATIDID.txt</code> file.</p>
 <p>There are several approaches to call variants. The simplest approach is to look for positions where the mapped reads consistently have a different base than the reference assembly (the consensus approach). We need to run two steps, <code>samtools mpileup</code>, which looks for inconsistencies between the reference and the aligned reads, and <code>bcftools call</code>, which interprets them as variants.</p>
-<p>We will use multiallelic caller (option <code>-m</code>) of bcftools and set all individuals as haploid. We want</p>
+<p>We will use multiallelic caller (option <code>-m</code>) of bcftools and set all individuals as haploid.</p>
 <pre class="sourceCode bash"><code class="sourceCode bash"><span class="co"># Step 1: samtools mpileup</span>
-<span class="co">## Create index of the reference (different from that used by bowtie2)</span>
-<span class="kw">ln</span> -rs input/reference.fa tmp/reference.fa
+
+<span class="co"># Symlink reference.fa to tmp/</span>
+<span class="kw">cd</span> tmp
+<span class="kw">ln</span> -s ../input/reference.fa
+<span class="kw">cd</span> -
+
+<span class="co"># Create index of the reference (different from that used by bowtie2)</span>
 <span class="kw">samtools</span> faidx tmp/reference.fa
 
 <span class="co"># Run samtools mpileup</span>
