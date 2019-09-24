@@ -64,10 +64,12 @@ The first step in our pipeline is to align the paired end reads to the reference
 In the first step, the scaffold sequence (sometimes known as the database) is indexed, in this case using the [Burrows-Wheeler Transform](https://en.wikipedia.org/wiki/Burrows-Wheeler_transform), which can help compress a large text into less memory. It thus allows for memory efficient alignment. Index files often require the original file to be present in the same directory. We thus start by linking scaffold sequences to `tmp` directory (where all output will be written first).
 
 ```bash
+# Symlink reference.fa to tmp/
 cd tmp
-
 ln -s ../input/reference.fa
+cd -
 
+# Build the index now.
 bowtie2-build tmp/reference.fa tmp/reference
 ```
 
