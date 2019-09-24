@@ -86,7 +86,9 @@ code > span.er { color: #ff0000; font-weight: bold; }
 <p>This part of the analysis is done in the <code>results/01-mapping</code> directory. Remember to keep your commands in the <code>WHATIDID.txt</code> file.</p>
 <p>The first step in our pipeline is to align the paired end reads to the reference genome. We are using the software <code>bowtie2</code>, which was created to align short read sequences to long sequences such as the scaffolds in a reference assembly. <code>bowtie2</code>, like most aligners, works in two steps.</p>
 <p>In the first step, the scaffold sequence (sometimes known as the database) is indexed, in this case using the <a href="https://en.wikipedia.org/wiki/Burrows-Wheeler_transform">Burrows-Wheeler Transform</a>, which can help compress a large text into less memory. It thus allows for memory efficient alignment. Index files often require the original file to be present in the same directory. We thus start by linking scaffold sequences to <code>tmp</code> directory (where all output will be written first).</p>
-<pre class="sourceCode bash"><code class="sourceCode bash"><span class="kw">ln</span> -rs input/reference.fa tmp
+<pre class="sourceCode bash"><code class="sourceCode bash"><span class="kw">cd</span> tmp
+
+<span class="kw">ln</span> -s ../input/reference.fa
 
 <span class="kw">bowtie2-build</span> tmp/reference.fa tmp/reference</code></pre>
 <p>The second step is the alignment itself:</p>
