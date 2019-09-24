@@ -24,7 +24,7 @@ Once its done the results will be hidden in subdirectories of `min10000.maker.ou
 
 So now we have some gene predictions... how can we know if they are any good? The easiest way to get a feel for this is by comparing a few of them ([backup examples](predictions.fa "backup MAKER gene predictions just in case")) to known sequences from other species. For this, use BLAST to compare a few of your protein-coding gene predictions to the high quality predictions in uniref50 database.
 
-#### Running BLAST
+##### Running BLAST
 
 - Link /data/SBCS-MSc-BioInf/data/reference_databases/uniref50 to your input directory
 - BLAST can produce in different formats, including HTML format, which may be more amenable for inspection.
@@ -39,7 +39,7 @@ As you can see, gene prediction software is imperfect – this is even the case 
 
 ---
 
-#### Using GeneValidator
+##### Using GeneValidator
 
 The [GeneValidator](http://bioinformatics.oxfordjournals.org/content/32/10/1559.long) tool can help to evaluate quality of a gene prediction by comparing features of a gene prediction to similar database sequences. This approach expects that similar sequences should for example be of similar length.
 You can simply run `genevalidator -d ~/2019-09-BIO271_input/uniref50/uniref50.fasta proteins.fasta --num_threads 8` (on your gene predictions, or [these examples](../../data/reference_assembly/gv_examples.fa)), or use the [web service](http://genevalidator.sbcs.qmul.ac.uk/) for queries of few sequences. Alternatively just check the screenshots linked in the next sentence. Try to understand why some gene predictions have no reason for concern [(e.g.)](img-qc/good.png), while others do [(e.g.)](img-qc/bad.png).
