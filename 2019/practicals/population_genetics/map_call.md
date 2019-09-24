@@ -143,8 +143,13 @@ We will use multiallelic caller (option `-m`) of bcftools and set all individual
 
 ```bash
 # Step 1: samtools mpileup
-## Create index of the reference (different from that used by bowtie2)
-ln -rs input/reference.fa tmp/reference.fa
+
+# Symlink reference.fa to tmp/
+cd tmp
+ln -s ../input/reference.fa
+cd -
+
+# Create index of the reference (different from that used by bowtie2)
 samtools faidx tmp/reference.fa
 
 # Run samtools mpileup
