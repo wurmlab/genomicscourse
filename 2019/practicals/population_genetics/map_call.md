@@ -129,12 +129,7 @@ samtools view tmp/alignments/f1_B.bam | less -S
 samtools view tmp/alignments/f1_B.bam scaffold_1:10000-10500 | less -S
 ```
 
-Copy the alignments to `input/02-genotyping`.
-
-```sh
-cp -r tmp/alignments ../../input/02-genotyping
-```
-
+Copy the alignments to a results folder (`results/01-mapping/results`) and symlink the individual files to `input/02-genotyping`.
 
 ## Variant calling
 
