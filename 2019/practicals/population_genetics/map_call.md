@@ -20,19 +20,6 @@ The aim of this practical is to genotype these 14 individuals. The steps in the 
 3. Filter the SNP calls to produce a set of good-quality SNPs.
 4. Visualise the alignments and the SNP calls in the genome browser `igv`.
 
-
-## The data
-
-Run the following command to download the data used in this practical to your local computer:
-
-```bash
-cd ~
-wget -c https://antgenomes.org/~BIO721/popgen_data.tar.gz
-tar xvf popgen_data.tar.gz
-mv popgen_data 2019-10-popgen_data
-chmod a-w -R 2019-10-popgen_data
-```
-
 We recommend that you set up a directory for today following [our convention](https://github.com/wurmlab/templates/blob/master/project_structures), as [you did in the last practical](../reference_genome/read-cleaning#set-up-directory-hierarchy-to-work-in). You should have a subdirectory called `input` and another called `results`. In each, you should have a directory for the read mapping, and another for the variant calling:
 
 ```
@@ -52,7 +39,7 @@ We recommend that you set up a directory for today following [our convention](ht
 
 ```
 
-For the first step of the pipeline, copy the file `reference.fa` and the `reads` directory to `input/01-mapping`.
+For the first step of the pipeline, symlink the file `/import/teaching/bio/data/popgen/reference.fa` and the directory `/import/teaching/bio/data/popgen/reads` to `input/01-mapping`.
 
 Check how many scaffolds there are in the reference genome:
 
