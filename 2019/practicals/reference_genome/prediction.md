@@ -35,7 +35,7 @@ So now we have some gene predictions... how can we know if they are any good? Th
 - Link /data/SBCS-MSc-BioInf/data/reference_databases/uniref50 to your input directory
 - BLAST can produce in different formats, including HTML format, which may be more amenable for inspection.
 
-Do any of the gene predictions have significant similarity to known sequences? For a given gene prediction, do you think it is complete, or can you infer from the BLAST alignments that something may be wrong?
+Do any of the gene predictions have significant similarity to known sequences? For a given gene prediction, do you think it is complete, or can you infer from the BLAST alignments that something may be wrong? The simplest thing to look for is if the length of your gene prediction is close to those of BLAST hits. If not, why is your gene prediction longer or shorter than BLAST hits?
 
 ---
 
