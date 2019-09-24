@@ -139,7 +139,7 @@ The following analysis is done in the directory `results/02-genotyping`. Remembe
 
 There are several approaches to call variants. The simplest approach is to look for positions where the mapped reads consistently have a different base than the reference assembly (the consensus approach). We need to run two steps, `samtools mpileup`, which looks for inconsistencies between the reference and the aligned reads, and `bcftools call`, which interprets them as variants.
 
-We will use multiallelic caller (option `-m`) of bcftools and set all individuals as haploid. We want
+We will use multiallelic caller (option `-m`) of bcftools and set all individuals as haploid.
 
 ```bash
 # Step 1: samtools mpileup
