@@ -37,7 +37,7 @@ Like any other assembler, SOAPdenovo creates many files, including an `assembly.
 cp tmp/assembly.scafSeq results/
 ```
 
-Why does this file contain so many NNNN sequences?
+Take a look at this file (e.g., `less results/assembly.scafSeq`). Why does this file contain so many NNNN sequences?
 
 There are many other genome assembly approaches. While waiting for everyone to make it to this stage, try to understand some of the challenges of *de novo* genome assembly and the approaches used to overcome them via the following papers:
 
