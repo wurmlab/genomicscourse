@@ -19,8 +19,10 @@
 <p>You need to have gone through <a href="assembly">Part 2: Genome assembly</a> before starting this practical.</p>
 <p>Many tools exist for gene prediction, some based on <em>ab initio</em> statistical models of what a protein-coding gene should look like, others that use similarity with protein-coding genes from other species, and others (such as <a href="http://bioinf.uni-greifswald.de/augustus/">Augustus</a> and SNAP), that use both. There is no perfect tool or approach, thus we typically run many gene-finding tools and call a consensus between the different predicted gene models. <a href="http://www.yandell-lab.org/software/maker.html">MAKER</a> and <a href="https://github.com/genomecuration/JAMg">JAMg</a> can do this for us. Let's use MAKER on a sandbox example.</p>
 <h3 id="running-maker">Running Maker</h3>
-<p>Start in a new directory (e.g., <code>~/2019-09-xx-reference_genome/results/03-gene_prediction</code>). Pull out the longest few scaffolds from the <code>assembly.scafSeq</code> (e.g., using <code>seqtk seq -L 10000</code>) into their own fasta (e.g., <code>min10000.fa</code>).</p>
-<p>Running <code>maker -OPTS</code> will generate an empty <code>maker_opts.ctl</code> configuration file (ignore the warning). Edit that file to specify:</p>
+<p>Create a new <code>input/03-assembly</code> directory and link the output from yesterday's practical into it. Make a new <code>results/03-assembly</code> directory. Create a link between <code>input/03-assembly</code> and <code>results/03-assembly/input</code>.</p>
+<p>Pull out the longest few scaffolds from <code>assembly.scafSeq</code> into a new file:</p>
+<pre><code>seqtk seq -L 10000 input/assembly.scafSeq &gt; tmp/min10000.fa</code></pre>
+<p>Next, <code>cd</code> to your <code>tmp/</code> folder and run <code>maker -OPTS</code>. This will generate an empty <code>maker_opts.ctl</code> configuration file (ignore the warning). Edit that file to specify:</p>
 <ul class="incremental">
 <li>genome: <code>min10000.fa</code><br /></li>
 <li>augustus species: a known gene set from a related species, in this case we choose <code>honeybee1</code> (yes that's a 1)<br /></li>
@@ -28,10 +30,10 @@
 <li>further check that <code>repeat_protein</code> setting is empty as well</li>
 </ul>
 <p>For a real project, we <em>would</em> include RepeatMasker (perhaps after creating a new repeat library), we would provide as much relevant information as possible (e.g., RNAseq read mappings, transcriptome assembly – both improve gene prediction performance <em>tremendously</em>), and iteratively train gene prediction algorithms for our data including Augustus and SNAP.</p>
-<p>Run <code>maker maker_opts.ctl</code>. This may take a few minutes, depending on how much data you gave it.<br />Once its done the results will be hidden in subdirectories of <code>min10000.maker.output/min10000_datastore</code>. Perhaps its easier to find the gene predictions using <code>find</code> then grep for <code>gff</code> or <code>proteins</code>. You can ignore the (temporary) contents under <code>theVoid</code> directories.</p>
+<p>Finally, run <code>maker maker_opts.ctl</code>. This may take a few minutes, depending on how much data you gave it.<br />Once its done the results will be hidden in subdirectories of <code>min10000.maker.output/min10000_datastore</code>. Perhaps its easier to find the gene predictions using <code>find</code> then grep for <code>gff</code> or <code>proteins</code>. You can ignore the (temporary) contents under <code>theVoid</code> directories.</p>
 <h3 id="quality-control-of-individual-genes">Quality control of individual genes</h3>
 <p>So now we have some gene predictions... how can we know if they are any good? The easiest way to get a feel for this is by comparing a few of them (<a href="predictions.fa" title="backup MAKER gene predictions just in case">backup examples</a>) to known sequences from other species. For this, use BLAST to compare a few of your protein-coding gene predictions to the high quality predictions in uniref50 database.</p>
-<h4 id="running-blast">Running BLAST</h4>
+<h5 id="running-blast">Running BLAST</h5>
 <ul class="incremental">
 <li>Link /data/SBCS-MSc-BioInf/data/reference_databases/uniref50 to your input directory<br /></li>
 <li>BLAST can produce in different formats, including HTML format, which may be more amenable for inspection.</li>
@@ -43,7 +45,7 @@
 <p><em>“Incorrect annotations [ie. gene identifications] poison every experiment that makes use of them. Worse still the poison spreads.”</em> – <a href="http://www.ncbi.nlm.nih.gov/pubmed/22510764">Yandell &amp; Ence (2012)</a>.</p>
 </blockquote>
 <hr />
-<h4 id="using-genevalidator">Using GeneValidator</h4>
+<h5 id="using-genevalidator">Using GeneValidator</h5>
 <p>The <a href="http://bioinformatics.oxfordjournals.org/content/32/10/1559.long">GeneValidator</a> tool can help to evaluate quality of a gene prediction by comparing features of a gene prediction to similar database sequences. This approach expects that similar sequences should for example be of similar length.<br />You can simply run <code>genevalidator -d ~/2019-09-BIO271_input/uniref50/uniref50.fasta proteins.fasta --num_threads 8</code> (on your gene predictions, or <a href="../../data/reference_assembly/gv_examples.fa">these examples</a>), or use the <a href="http://genevalidator.sbcs.qmul.ac.uk/">web service</a> for queries of few sequences. Alternatively just check the screenshots linked in the next sentence. Try to understand why some gene predictions have no reason for concern <a href="img-qc/good.png">(e.g.)</a>, while others do <a href="img-qc/bad.png">(e.g.)</a>.</p>
 <h3 id="comparing-whole-genesets-prioritizing-genes-for-manual-curation">Comparing whole genesets &amp; prioritizing genes for manual curation</h3>
 <p>Genevalidator's visual output can be handy when looking at few genes. But the tool also provides tab-delimited output, handy when working in the command-line or when running the software on whole proteomes. For example, this can help analysis:</p>
