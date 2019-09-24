@@ -6,9 +6,15 @@ Many tools exist for gene prediction, some based on *ab initio* statistical mode
 
 ### Running Maker
 
-Start in a new directory (e.g., `~/2019-09-xx-reference_genome/results/03-gene_prediction`). Pull out the longest few scaffolds from the `assembly.scafSeq` (e.g., using `seqtk seq -L 10000`) into their own fasta (e.g., `min10000.fa`).
+Create a new `input/03-assembly` directory and link the output from yesterday's practical into it. Make a new `results/03-assembly` directory. Create a link between `input/03-assembly` and `results/03-assembly/input`.
 
-Running `maker -OPTS` will generate an empty `maker_opts.ctl` configuration file (ignore the warning). Edit that file to specify:
+Pull out the longest few scaffolds from `assembly.scafSeq` into a new file:
+
+```
+seqtk seq -L 10000 input/assembly.scafSeq > tmp/min10000.fa
+```
+
+Next, `cd` to your `tmp/` folder and run `maker -OPTS`. This will generate an empty `maker_opts.ctl` configuration file (ignore the warning). Edit that file to specify:
   * genome: `min10000.fa`
   * augustus species: a known gene set from a related species, in this case we choose `honeybee1` (yes that's a 1)
   * deactivate RepeatMasker by replacing `model_org=all` to `model_org= ` (i.e., nothing)
@@ -16,7 +22,7 @@ Running `maker -OPTS` will generate an empty `maker_opts.ctl` configuration file
 
 For a real project, we *would* include RepeatMasker (perhaps after creating a new repeat library), we would provide as much relevant information as possible (e.g., RNAseq read mappings, transcriptome assembly – both improve gene prediction performance *tremendously*), and iteratively train gene prediction algorithms for our data including Augustus and SNAP.
 
-Run `maker maker_opts.ctl`. This may take a few minutes, depending on how much data you gave it.
+Finally, run `maker maker_opts.ctl`. This may take a few minutes, depending on how much data you gave it.
 Once its done the results will be hidden in subdirectories of `min10000.maker.output/min10000_datastore`. Perhaps its easier to find the gene predictions using `find` then grep for `gff` or `proteins`. You can ignore the (temporary) contents under `theVoid` directories.
 
 
