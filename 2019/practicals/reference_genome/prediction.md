@@ -22,9 +22,11 @@ Next, `cd` to your `tmp/` folder and run `maker -OPTS`. This will generate an em
 
 For a real project, we *would* include RepeatMasker (perhaps after creating a new repeat library), we would provide as much relevant information as possible (e.g., RNAseq read mappings, transcriptome assembly – both improve gene prediction performance *tremendously*), and iteratively train gene prediction algorithms for our data including Augustus and SNAP.
 
-Finally, run `maker maker_opts.ctl`. This may take a few minutes, depending on how much data you gave it.
-Once its done the results will be hidden in subdirectories of `min10000.maker.output/min10000_datastore`. Perhaps its easier to find the gene predictions using `find` then grep for `gff` or `proteins`. You can ignore the (temporary) contents under `theVoid` directories.
+Finally, run `maker maker_opts.ctl`. This may take a few minutes, depending on how much data you gave it. Once its done the results will be hidden in subdirectories of `min10000.maker.output`. MAKER provides a helper script to collect gene predictions into a single file:
 
+```
+fasta_merge -d min10000.maker.output/min10000_master_datastore_index.log
+```
 
 ### Quality control of individual genes
 
