@@ -54,9 +54,15 @@ As you can see, gene prediction software is imperfect – this is even the case 
 
 ##### Using GeneValidator
 
-The [GeneValidator](http://bioinformatics.oxfordjournals.org/content/32/10/1559.long) tool can help to evaluate quality of several genes, including whole genome datasets. This approach expects that similar sequences should for example be of similar length.
+The [GeneValidator](http://bioinformatics.oxfordjournals.org/content/32/10/1559.long) tool can help to evaluate quality of several genes, including whole genome datasets. In addition to automating the above process, GeneValidator uses several statistical tests to try and infer what might be wrong with the gene predictions.
 
-You can simply run `genevalidator -d ~/2019-09-BIO271_input/uniref50/uniref50.fasta proteins.fasta --num_threads 8` (on your gene predictions, or [these examples](../../data/reference_assembly/gv_examples.fa)), or use the [web service](http://genevalidator.sbcs.qmul.ac.uk/) for queries of few sequences. Alternatively just check the screenshots linked in the next sentence. Try to understand why some gene predictions have no reason for concern [(e.g.)](img-qc/good.png), while others do [(e.g.)](img-qc/bad.png).
+For the purpose of this practical we will use the example sequences from the previous section. Run GV on the example sequences:
+
+```
+genevalidator -d /import/teaching/bio/data/reference_databases/uniref50/uniref50.fasta proteins.fasta --num_threads 8 predictions.fa
+```
+
+You can simply run `genevalidator -d /import/teaching/bio/data/reference_databases/uniref50/uniref50.fasta proteins.fasta --num_threads 8` (on your gene predictions, or [these examples](../../data/reference_assembly/gv_examples.fa)), or use the [web service](http://genevalidator.sbcs.qmul.ac.uk/) for queries of few sequences. Alternatively just check the screenshots linked in the next sentence. Try to understand why some gene predictions have no reason for concern [(e.g.)](img-qc/good.png), while others do [(e.g.)](img-qc/bad.png).
 
 
 ### Comparing whole genesets & prioritizing genes for manual curation
