@@ -130,7 +130,7 @@ Below, we use [kmc3](http://github.com/refresh-bio/KMC) to trim extremely rare k
 ```bash
 # 1. Build a database of k-mers (includes count for each unique k-mer)
 # 1.1 Make a list of files to make k-mer database from
-ls tmp/reads.pe1.trimmed.fq tmp/reads.pe1.trimmed.fq > tmp/file_list_for_kmc
+ls tmp/reads.pe1.trimmed.fq tmp/reads.pe2.trimmed.fq > tmp/file_list_for_kmc
 
 # 1.2 Run KMC on the list of files
 kmc -k21 @tmp/file_list_for_kmc tmp/21-mers tmp
