@@ -66,8 +66,8 @@ code > span.er { color: #ff0000; font-weight: bold; }
 </code></pre>
 <p>For the first step of the pipeline, symlink the file <code>/import/teaching/bio/data/popgen/reference.fa</code> and the directory <code>/import/teaching/bio/data/popgen/reads</code> to <code>input/01-mapping</code>.</p>
 <p>Check how many scaffolds there are in the reference genome:</p>
-<pre class="sh"><code>grep &quot;^&gt;&quot; reference.fa</code></pre>
-<p>Now have a look at the <code>.fq.gz</code> files.</p>
+<pre class="sh"><code>grep &quot;^&gt;&quot; input/reference.fa</code></pre>
+<p>Now have a look at the <code>.fq.gz</code> files (<code>ls input/reads</code>).</p>
 <ul class="incremental">
 <li>Why does each sample have two sets of reads?<br /></li>
 <li>What is each line of the <code>.fq.gz</code> file? (you can use <code>zless</code>)<br /></li>
@@ -121,7 +121,7 @@ code > span.er { color: #ff0000; font-weight: bold; }
 
 <span class="co"># To view a particular region:</span>
 <span class="kw">samtools</span> view tmp/alignments/f1_B.bam scaffold_1:10000-10500 <span class="kw">|</span> <span class="kw">less</span> -S</code></pre>
-<p>Copy the alignments to a results folder (<code>results/01-mapping/results</code>) and symlink the individual files to <code>input/02-genotyping</code>.</p>
+<p>Copy the <code>.bam</code> and <code>.bai</code> files files to a results folder (<code>results/01-mapping/results</code>) and symlink them to <code>input/02-genotyping</code>.</p>
 <h2 id="variant-calling">Variant calling</h2>
 <p>To begin with, we will need the reference fasta file in addition to the alignments we just created. Symlink the reference fasta file from <code>input/01-mapping</code> to <code>input/02-genotyping</code> directory.</p>
 <p>The following analysis is done in the directory <code>results/02-genotyping</code>. Remember to keep your commands in the <code>WHATIDID.txt</code> file.</p>
@@ -139,7 +139,7 @@ code > span.er { color: #ff0000; font-weight: bold; }
 
 <span class="co"># Run samtools mpileup</span>
 <span class="kw">mkdir</span> tmp/variants
-<span class="kw">samtools</span> mpileup -uf tmp/reference.fa input/alignments/*.bam <span class="kw">&gt;</span> tmp/variants/raw_calls.bcf
+<span class="kw">samtools</span> mpileup -uf tmp/reference.fa input/*.bam <span class="kw">&gt;</span> tmp/variants/raw_calls.bcf
 
 <span class="co"># Run bcftools call</span>
 <span class="kw">bcftools</span> call --ploidy 1 -v -m tmp/variants/raw_calls.bcf <span class="kw">&gt;</span> tmp/variants/calls.vcf</code></pre>
@@ -176,7 +176,7 @@ code > span.er { color: #ff0000; font-weight: bold; }
 <li>Can you find any other parameters indicating the quality of the variant call for a given individual on a given site?</li>
 </ul>
 <p>Now that we have a SNP set, we can copy it to <code>results/</code> directory.</p>
-<pre class="sh"><code>cp tmp/variants/snp.vcf ./
+<pre class="sh"><code>cp tmp/variants/snp.vcf results
 </code></pre>
 <h2 id="viewing-the-results-using-igv-integrative-genome-viewer">Viewing the results using IGV (Integrative Genome Viewer)</h2>
 <p>In this part of the practical, we are going to use the software IGV to visualise the alignments we created and check some of the positions where variants were called.</p>

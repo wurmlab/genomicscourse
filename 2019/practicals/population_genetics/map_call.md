@@ -44,10 +44,10 @@ For the first step of the pipeline, symlink the file `/import/teaching/bio/data/
 Check how many scaffolds there are in the reference genome:
 
 ```sh
-grep "^>" reference.fa
+grep "^>" input/reference.fa
 ```
 
-Now have a look at the `.fq.gz` files.
+Now have a look at the `.fq.gz` files (`ls input/reads`).
 * Why does each sample have two sets of reads?
 * What is each line of the `.fq.gz` file? (you can use `zless`)
 * How many reads do we have in individual f1_B? (you can use `zcat` and `wc -l`)
@@ -131,7 +131,7 @@ samtools view tmp/alignments/f1_B.bam | less -S
 samtools view tmp/alignments/f1_B.bam scaffold_1:10000-10500 | less -S
 ```
 
-Copy the alignments to a results folder (`results/01-mapping/results`) and symlink the individual files to `input/02-genotyping`.
+Copy the `.bam` and `.bai` files files to a results folder (`results/01-mapping/results`) and symlink them to `input/02-genotyping`.
 
 ## Variant calling
 
@@ -156,7 +156,7 @@ samtools faidx tmp/reference.fa
 
 # Run samtools mpileup
 mkdir tmp/variants
-samtools mpileup -uf tmp/reference.fa input/alignments/*.bam > tmp/variants/raw_calls.bcf
+samtools mpileup -uf tmp/reference.fa input/*.bam > tmp/variants/raw_calls.bcf
 
 # Run bcftools call
 bcftools call --ploidy 1 -v -m tmp/variants/raw_calls.bcf > tmp/variants/calls.vcf
@@ -206,7 +206,7 @@ bcftools view -v snps -m2 -M2 --min-ac 1:minor tmp/variants/filtered_calls.vcf >
 Now that we have a SNP set, we can copy it to `results/` directory.
 
 ```sh
-cp tmp/variants/snp.vcf ./
+cp tmp/variants/snp.vcf results
 
 ```
 

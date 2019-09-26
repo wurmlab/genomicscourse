@@ -22,20 +22,27 @@ Next, `cd` to your `tmp/` folder and run `maker -OPTS`. This will generate an em
 
 For a real project, we *would* include RepeatMasker (perhaps after creating a new repeat library), we would provide as much relevant information as possible (e.g., RNAseq read mappings, transcriptome assembly – both improve gene prediction performance *tremendously*), and iteratively train gene prediction algorithms for our data including Augustus and SNAP.
 
-Finally, run `maker maker_opts.ctl`. This may take a few minutes, depending on how much data you gave it.
-Once its done the results will be hidden in subdirectories of `min10000.maker.output/min10000_datastore`. Perhaps its easier to find the gene predictions using `find` then grep for `gff` or `proteins`. You can ignore the (temporary) contents under `theVoid` directories.
+Finally, run `maker maker_opts.ctl`. This may take a few minutes, depending on how much data you gave it. Once its done the results will be hidden in subdirectories of `min10000.maker.output`. MAKER provides a helper script to collect gene predictions into a single file:
 
+```
+fasta_merge -d min10000.maker.output/min10000_master_datastore_index.log
+```
 
 ### Quality control of individual genes
 
-So now we have some gene predictions... how can we know if they are any good? The easiest way to get a feel for this is by comparing a few of them ([backup examples](predictions.fa "backup MAKER gene predictions just in case")) to known sequences from other species. For this, use BLAST to compare a few of your protein-coding gene predictions to the high quality predictions in uniref50 database.
+So now we have some gene predictions... how can we know if they are any good? The easiest way to get a feel for this is to use the following example sequences: [illustrative examples](predictions.fa). We will compare them using BLAST to known sequences from other species in the [uniref50 database](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4375400/).
 
 ##### Running BLAST
 
-- Link /data/SBCS-MSc-BioInf/data/reference_databases/uniref50 to your input directory
-- BLAST can produce in different formats, including HTML format, which may be more amenable for inspection.
+We will use [SequenceServer](https://doi.org/10.1093/molbev/msz185) to run BLAST.
+
+```bash
+sequenceserver -d /import/teaching/bio/data/reference_databases/uniref50
+```
 
 Do any of the gene predictions have significant similarity to known sequences? For a given gene prediction, do you think it is complete, or can you infer from the BLAST alignments that something may be wrong? Start by comparing the length of your gene prediction to that of the BLAST hits. Is your gene prediction considerably longer or considerably shorter than BLAST hits? Why?
+
+Now try a few of your gene predictions. BLAST only a maximum of 10 sequences at a time. Instead of selecting the first 10 genes, copy-paste your sequences randomly from the file.
 
 ---
 
