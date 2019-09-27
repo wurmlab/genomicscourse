@@ -216,7 +216,11 @@ cp tmp/variants/snp.vcf results
 
 In this part of the practical, we are going to use the software IGV to visualise the alignments we created and check some of the positions where variants were called.
 
-Open IGV. It should be installed on the applications menu (`Applications > Other > IGV`) on the top left of the screen[.](http://software.broadinstitute.org/software/igv/download)
+Open IGV[.](http://software.broadinstitute.org/software/igv/download)
+
+```
+igv.sh
+```
 
 IGV loads the human genome, so you need to define another genome file (`Genome` > `Genomes from file`, then choose the assembly `reference.fa` file).
 

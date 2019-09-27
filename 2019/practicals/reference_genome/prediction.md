@@ -34,7 +34,7 @@ So now we have some gene predictions... how can we know if they are any good? Th
 
 ##### Running BLAST
 
-We will use [SequenceServer](https://doi.org/10.1093/molbev/msz185) to run BLAST.
+We will use [SequenceServer](https://doi.org/10.1093/molbev/msz185) to run BLAST. The command below will start a server. Once it is ready, open http://localhost:4567 in your browser, paste the [example sequences](predictions.fa) in the textbox and click on the 'BLAST' button to run a BLAST search.
 
 ```bash
 sequenceserver -d /import/teaching/bio/data/reference_databases/uniref50
