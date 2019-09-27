@@ -42,14 +42,17 @@ colnames(loci) <- c("scaffold", "position")
 
 
 # Turn the matrix on its side (rows = individuals, columns = loci)
+# t() returns the transpose of a matrix (turns it on its side)
 snp_matrix <- snp_matrix[,3:ncol(snp_matrix)]
 snp_matrix <- t(snp_matrix)
 
 # add sample names
+# gsub() performs a find and replace for strings of text
 sample_names <- gsub("\\.bam","", sample_names)
 row.names(snp_matrix) <- sample_names
 
 # reorder the rows by population
+# grep() performs a search for a specified text-string
 bb <- sample_names[grep("B", sample_names)]
 lb <- sample_names[grep("b", sample_names)]
 
@@ -91,12 +94,12 @@ Now plot a heatmap showing the genotypes.
 glPlot(snp)
 
 ```
-You can also perform a Principle Component Analysis (PCA) and plot the first few axes.
+You can also perform a Principle Component Analysis (PCA) and plot the first few components.
 
 ```r
 
 ## PCA
-pca <- glPca(snp, nf=10) # you can select 10 axes
+pca <- glPca(snp, nf=10) # you can select 10 components
 
 # fast plot
 scatter(pca, posi="bottomright")
@@ -126,7 +129,7 @@ scaffold_2 <- snp[,scaffold_2_index]
 
 glPlot(scaffold_2)
 
-pca2 <- glPca(scaffold_2, nf=10)
+pca2 <- glPca(scaffold_2, nf=10) # you can select 10 components
 scatter(pca2, posi="bottomright")
 
 
@@ -136,7 +139,7 @@ scaffold_1 <- snp[,scaffold_1_index]
 
 glPlot(scaffold_1)
 
-pca1 <- glPca(scaffold_1, nf=10) # you can select 10 axes
+pca1 <- glPca(scaffold_1, nf=10) 
 scatter(pca1, posi="bottomright")
 
 ```
@@ -161,7 +164,7 @@ Return to the command line by either opening a new terminal or by typing `q()` i
 mkdir popgenome-vcf
 
 # compress and index the VCF
-bgzip inpu/snp.vcf
+bgzip input/snp.vcf
 tabix -p input/vcf snp.vcf.gz
 
 bcftools view input/snp.vcf.gz scaffold_1 > popgenome-vcf/scaffold_1
