@@ -8,7 +8,7 @@ Our dummy assembly has two scaffolds, each from a different chromosome. The aim 
 
 In the first part of the analysis, we are going to create a heat map of the genotypes of the individuals and we are going to run Principal Component Analysis (PCA) on these genotypes. This will allow us to test if any of the individuals cluster together by their B/b genotype. This will be done using the `adegenet` package in R.
 
-In the second part, we are going to measure genetic differentiation between the two groups (B and b). We will do this analysis over a sliding window, to see if the differentiation between B and b are specific to any portion of the genome. We will also measure the the genetic diversity among each of the groups, which may tell us something about the evolutionary history of the portions of genome represented in our assembly. This will be done using the `PopGenome` package in R.
+In the second part, we are going to measure genetic differentiation between the two groups (B and b). We will do this analysis over a sliding window, to see if the differentiation between B and b are specific to any portion of the genome. We will also measure the genetic diversity among each of the groups, which may tell us something about the evolutionary history of the portions of genome represented in our assembly. This will be done using the `PopGenome` package in R.
 
 ## Input into R
 
@@ -27,7 +27,7 @@ bcftools query -l input/snp.vcf > sample_names.txt
 
 ```
 
-You can open a new R session by typing `R` in the terminal. Then:
+You can open a new R session by typing `rstudio-genomics` in the terminal. Then:
 
 ```r
 
