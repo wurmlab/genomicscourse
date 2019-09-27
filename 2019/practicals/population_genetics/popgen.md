@@ -4,7 +4,7 @@
 
 We have samples with two genotypes: the B genotype (associated with single-queen colony phenotype) and the b genotype (associated with multiple-queen colony phenotype). 
 
-Our dummy assembly has two scaffolds, each from a different chromosome. The aim of our analysis is to test whether any parts of this assembly also differ between the group of B and the group of b individuals.
+Our dummy assembly has two scaffolds, from two different chromosomes. The aim of our analysis is to test whether any parts of this assembly differ between the individuals from these two groups (B and b).
 
 In the first part of the analysis, we are going to create a heat map of the genotypes of the individuals and we are going to run Principal Component Analysis (PCA) on these genotypes. This will allow us to test if any of the individuals cluster together by their B/b genotype. This will be done using the `adegenet` package in R.
 
@@ -12,9 +12,10 @@ In the second part, we are going to measure genetic differentiation between the 
 
 ## Input into R
 
-Again, make a directory for this practical. You should create a directory for the data and one for the results (with a link, using `ln -s`, to the data directory). You will only need the `snp.vcf` file we created in the last practical and place it into the appropriate input (if you don't have this file, you can download it from [here](https://github.com/wurmlab/genomicscourse/blob/master/2016-BIO721P/data/popgen/vcf/snp.vcf.gz "Download vcf"), you will need to replace 'snp.vcf' with 'snp.vcf.gz' in the lines below if you do this).
+Again, make a directory for this practical. You should create a directory for the input data and one for the results (with a link, using `ln -s`, to the data directory). You will only need the `snp.vcf` file we created in the last practical and place it into the appropriate input (if you don't have this file, you can download it from [here](https://github.com/wurmlab/genomicscourse/blob/master/2016-BIO721P/data/popgen/vcf/snp.vcf.gz "Download vcf"), if you do this you will need to replace 'snp.vcf' with 'snp.vcf.gz' in the lines below).
 
-It's a good idea to note down the results of your analysis in the results directory, as well saving any graph you make.
+
+It's a good idea to note down the results of your analysis in the results directory, as well as saving any graph you make.
 
 The package `adegenet` uses a object called `r genlight`. To create it, we need to input a matrix where each row is an individual and each column is a locus (i.e. a SNP position). We can do this using bcftools:
 
