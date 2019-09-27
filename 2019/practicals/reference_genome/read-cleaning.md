@@ -85,7 +85,7 @@ tree
         ├── tmp
         │   ├── reads.pe2_fastqc.html
         │   └── reads.pe2_fastqc.zip
-        ├── results
+        ├── results
         └── WHATIDID.txt
 ```
 
