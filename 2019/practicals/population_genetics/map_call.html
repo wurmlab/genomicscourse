@@ -63,7 +63,7 @@ code > span.er { color: #ff0000; font-weight: bold; }
     └── 02-genotyping
         ├── input -&gt; ../../input/02-genotyping/
         ├── tmp
-    │   ├── results
+        ├── results
         └── WHATIDID.txt
 </code></pre>
 <p>For the first step of the pipeline, symlink the file <code>/import/teaching/bio/data/popgen/reference.fa</code> and the directory <code>/import/teaching/bio/data/popgen/reads</code> to <code>input/01-mapping</code>.</p>
@@ -90,11 +90,8 @@ code > span.er { color: #ff0000; font-weight: bold; }
 <span class="kw">bowtie2-build</span> tmp/reference.fa tmp/reference</code></pre>
 <p>The second step is the alignment itself:</p>
 <pre class="sourceCode bash"><code class="sourceCode bash"><span class="kw">mkdir</span> tmp/alignments
-<span class="kw">bowtie2</span> \
- <span class="kw">-x</span> tmp/reference \
- <span class="kw">-1</span> input/reads/f1_B.1.fq.gz \
- <span class="kw">-2</span> input/reads/f1_B.2.fq.gz \
-  <span class="kw">&gt;</span> <span class="kw">tmp/alignments/f1_B.sam</span></code></pre>
+
+<span class="kw">bowtie2</span> -x tmp/reference -1 input/reads/f1_B.1.fq.gz -2 input/reads/f1_B.2.fq.gz <span class="kw">&gt;</span> tmp/alignments/f1_B.sam</code></pre>
 <ul class="incremental">
 <li>What is the meaning of the <code>-1</code> and <code>-2</code> parameters?</li>
 </ul>
@@ -104,7 +101,8 @@ code > span.er { color: #ff0000; font-weight: bold; }
 <span class="kw">ls</span> input/reads/*fq.gz <span class="kw">|</span> <span class="kw">cut</span> -d <span class="st">'/'</span> -f 3 <span class="kw">|</span> <span class="kw">cut</span> -d <span class="st">'.'</span> -f 1 <span class="kw">|</span> <span class="kw">sort</span> <span class="kw">|</span> <span class="kw">uniq</span> <span class="kw">&gt;</span> tmp/names.txt
 
 <span class="co"># Run bowtie with each sample (will take a few minutes)</span>
-<span class="kw">cat</span> tmp/names.txt <span class="kw">|</span> <span class="kw">parallel</span> -t <span class="st">&quot;bowtie2 -x tmp/reference -1 input/reads/{}.1.fq.gz -2 input/reads/{}.2.fq.gz &gt; tmp/alignments/{}.sam&quot;</span></code></pre>
+<span class="kw">cat</span> tmp/names.txt \
+<span class="kw">|</span> <span class="kw">parallel</span> -t <span class="st">&quot;bowtie2 -x tmp/reference -1 input/reads/{}.1.fq.gz -2 input/reads/{}.2.fq.gz &gt; tmp/alignments/{}.sam&quot;</span></code></pre>
 <p>Because SAM files include a lot of information, they tend to occupy a lot of space (even with our small example data). Therefore, SAM files are generally compressed into BAM files (Binary sAM). Most tools that use aligned reads require BAM files that have been sorted and indexed by genomic position. This is done using <code>samtools</code>, a set of tools created to manipulate SAM/BAM files:</p>
 <pre class="sourceCode bash"><code class="sourceCode bash"><span class="co"># samtools view: compresses the SAM to BAM</span>
 <span class="co"># samtools sort: sorts by scaffold position (creates f1_B.bam)</span>

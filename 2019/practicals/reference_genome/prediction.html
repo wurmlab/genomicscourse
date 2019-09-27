@@ -64,14 +64,8 @@ code > span.er { color: #ff0000; font-weight: bold; }
 <p><em>“Incorrect annotations [ie. gene identifications] poison every experiment that makes use of them. Worse still the poison spreads.”</em> – <a href="http://www.ncbi.nlm.nih.gov/pubmed/22510764">Yandell &amp; Ence (2012)</a>.</p>
 </blockquote>
 <hr />
-<h5 id="using-genevalidator">Using GeneValidator</h5>
-<p>The <a href="http://bioinformatics.oxfordjournals.org/content/32/10/1559.long">GeneValidator</a> tool can help to evaluate quality of a gene prediction by comparing features of a gene prediction to similar database sequences. This approach expects that similar sequences should for example be of similar length.<br />You can simply run <code>genevalidator -d ~/2019-09-BIO271_input/uniref50/uniref50.fasta proteins.fasta --num_threads 8</code> (on your gene predictions, or <a href="../../data/reference_assembly/gv_examples.fa">these examples</a>), or use the <a href="http://genevalidator.sbcs.qmul.ac.uk/">web service</a> for queries of few sequences. Alternatively just check the screenshots linked in the next sentence. Try to understand why some gene predictions have no reason for concern <a href="img-qc/good.png">(e.g.)</a>, while others do <a href="img-qc/bad.png">(e.g.)</a>.</p>
-<h3 id="comparing-whole-genesets-prioritizing-genes-for-manual-curation">Comparing whole genesets &amp; prioritizing genes for manual curation</h3>
-<p>Genevalidator's visual output can be handy when looking at few genes. But the tool also provides tab-delimited output, handy when working in the command-line or when running the software on whole proteomes. For example, this can help analysis:</p>
-<ul class="incremental">
-<li>in situations when you can choose between multiple gene sets.<br /></li>
-<li>or to identify which gene predictions are likely ok, and which need to be inspected and potentially manual fixed.</li>
-</ul>
+<h3 id="quality-control-of-whole-genesets">Quality control of whole genesets</h3>
+<p>The <a href="http://bioinformatics.oxfordjournals.org/content/32/10/1559.long">GeneValidator</a> tool can be used to evaluate several genes at once, including whole genesets. It runs several tests for each gene and accordingly assigns a quality score. Based on GeneValidator's evaluation you may want to eliminate problematic predictions, manually refine the problematic ones, or choose between two genesets: <a href="https://wurmlab.github.io/publications/moghulAndPriyam2019.pdf">GeneValidator workflows</a>.</p>
 <h3 id="manual-curation">Manual curation</h3>
 <p>Because automated gene predictions aren't perfect, manual inspection and fixing are often required. The most commonly used software for this is <a href="http://genomearchitect.org/">Apollo/WebApollo</a>.</p>
 <hr>
