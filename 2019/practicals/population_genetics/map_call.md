@@ -36,7 +36,7 @@ We recommend that you set up a directory for today following [our convention](ht
     └── 02-genotyping
         ├── input -> ../../input/02-genotyping/
         ├── tmp
-    │   ├── results
+        ├── results
         └── WHATIDID.txt
 
 ```
