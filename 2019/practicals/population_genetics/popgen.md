@@ -68,6 +68,8 @@ Once this is done, we can create a new `genlight` object that contains all the S
 
 library(adegenet)
 
+# Note that the following line has been split up over multiple lines to make it easier to read
+# R won't run the command until all brackets have been closed
 snp <- new("genlight",
            snp_matrix,
            chromosome=loci$scaffold,
