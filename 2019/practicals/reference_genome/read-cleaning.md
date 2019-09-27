@@ -85,6 +85,7 @@ tree
         ├── tmp
         │   ├── reads.pe2_fastqc.html
         │   └── reads.pe2_fastqc.zip
+        ├── results
         └── WHATIDID.txt
 ```
 
@@ -143,7 +144,7 @@ kmc_tools -t1 filter -t tmp/21-mers tmp/reads.pe2.trimmed.fq -ci3 tmp/reads.pe2.
 seqtk seq -L 50 -q 10 -N tmp/reads.pe1.trimmed.norare.fq > tmp/reads.pe1.trimmed.norare.noshort.highqual.fq
 seqtk seq -L 50 -q 10 -N tmp/reads.pe2.trimmed.norare.fq > tmp/reads.pe2.trimmed.norare.noshort.highqual.fq
 
-# 4. Remove orphanned reads
+# 4. Remove orphaned reads
 # 4.1 Collect read ids that appear in both files
 cat tmp/reads.pe1.trimmed.norare.noshort.highqual.fq tmp/reads.pe2.trimmed.norare.noshort.highqual.fq \
 | seqtk comp | cut -f1 | sort | uniq -d > tmp/paired_read_ids
