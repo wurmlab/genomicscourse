@@ -94,6 +94,7 @@ code > span.er { color: #ff0000; font-weight: bold; }
         ├── <span class="kw">tmp</span>
         │   ├── <span class="kw">reads.pe2_fastqc.html</span>
         │   └── <span class="kw">reads.pe2_fastqc.zip</span>
+        ├── <span class="kw">results</span>
         └── <span class="kw">WHATIDID.txt</span></code></pre>
 <p>What does the FastQC report tell you? (<a href="http://www.bioinformatics.babraham.ac.uk/projects/fastqc/Help/3%20Analysis%20Modules/">the documentation clarifies what each plot means</a>). For comparison, have a look at some plots from other sequencing libraries: e.g, <a href="img-qc/per_base_quality.png">[1]</a>, <a href="img-qc/qc_factq_tile_sequence_quality.png">[2]</a>, <a href="img-qc/per_base_sequence_content.png">[3]</a>.</p>
 <p>Decide whether and how much to trim from the beginning and end of our sequences. What else might you want to do?</p>
@@ -131,7 +132,7 @@ code > span.er { color: #ff0000; font-weight: bold; }
 <span class="kw">seqtk</span> seq -L 50 -q 10 -N tmp/reads.pe1.trimmed.norare.fq <span class="kw">&gt;</span> tmp/reads.pe1.trimmed.norare.noshort.highqual.fq
 <span class="kw">seqtk</span> seq -L 50 -q 10 -N tmp/reads.pe2.trimmed.norare.fq <span class="kw">&gt;</span> tmp/reads.pe2.trimmed.norare.noshort.highqual.fq
 
-<span class="co"># 4. Remove orphanned reads</span>
+<span class="co"># 4. Remove orphaned reads</span>
 <span class="co"># 4.1 Collect read ids that appear in both files</span>
 <span class="kw">cat</span> tmp/reads.pe1.trimmed.norare.noshort.highqual.fq tmp/reads.pe2.trimmed.norare.noshort.highqual.fq \
 <span class="kw">|</span> <span class="kw">seqtk</span> comp <span class="kw">|</span> <span class="kw">cut</span> -f1 <span class="kw">|</span> <span class="kw">sort</span> <span class="kw">|</span> <span class="kw">uniq</span> -d <span class="kw">&gt;</span> tmp/paired_read_ids

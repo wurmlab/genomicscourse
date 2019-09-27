@@ -58,10 +58,12 @@ code > span.er { color: #ff0000; font-weight: bold; }
     ├── 01-mapping
     │   ├── input -&gt; ../../input/01-mapping/
     │   ├── tmp
+    │   ├── results
     │   └── WHATIDID.txt
     └── 02-genotyping
         ├── input -&gt; ../../input/02-genotyping/
         ├── tmp
+    │   ├── results
         └── WHATIDID.txt
 </code></pre>
 <p>For the first step of the pipeline, symlink the file <code>/import/teaching/bio/data/popgen/reference.fa</code> and the directory <code>/import/teaching/bio/data/popgen/reads</code> to <code>input/01-mapping</code>.</p>
@@ -81,7 +83,7 @@ code > span.er { color: #ff0000; font-weight: bold; }
 <p>In the first step, the scaffold sequence (sometimes known as the database) is indexed, in this case using the <a href="https://en.wikipedia.org/wiki/Burrows-Wheeler_transform">Burrows-Wheeler Transform</a>, which can help compress a large text into less memory. It thus allows for memory efficient alignment. Index files often require the original file to be present in the same directory. We thus start by linking scaffold sequences to <code>tmp</code> directory (where all output will be written first).</p>
 <pre class="sourceCode bash"><code class="sourceCode bash"><span class="co"># Symlink reference.fa to tmp/</span>
 <span class="kw">cd</span> tmp
-<span class="kw">ln</span> -s ../input/reference.fa
+<span class="kw">ln</span> -s ../input/reference.fa .
 <span class="kw">cd</span> ..
 
 <span class="co"># Build the index now.</span>
