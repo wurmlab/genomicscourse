@@ -31,10 +31,12 @@ We recommend that you set up a directory for today following [our convention](ht
     ├── 01-mapping
     │   ├── input -> ../../input/01-mapping/
     │   ├── tmp
+    │   ├── results
     │   └── WHATIDID.txt
     └── 02-genotyping
         ├── input -> ../../input/02-genotyping/
         ├── tmp
+    │   ├── results
         └── WHATIDID.txt
 
 ```
@@ -66,7 +68,7 @@ In the first step, the scaffold sequence (sometimes known as the database) is in
 ```bash
 # Symlink reference.fa to tmp/
 cd tmp
-ln -s ../input/reference.fa
+ln -s ../input/reference.fa .
 cd ..
 
 # Build the index now.
