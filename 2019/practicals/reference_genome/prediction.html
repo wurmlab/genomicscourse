@@ -54,7 +54,7 @@ code > span.er { color: #ff0000; font-weight: bold; }
 <h3 id="quality-control-of-individual-genes">Quality control of individual genes</h3>
 <p>So now we have some gene predictions... how can we know if they are any good? The easiest way to get a feel for this is to use the following example sequences: <a href="predictions.fa">illustrative examples</a>. We will compare them using BLAST to known sequences from other species in the <a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4375400/">uniref50 database</a>.</p>
 <h5 id="running-blast">Running BLAST</h5>
-<p>We will use <a href="https://doi.org/10.1093/molbev/msz185">SequenceServer</a> to run BLAST.</p>
+<p>We will use <a href="https://doi.org/10.1093/molbev/msz185">SequenceServer</a> to run BLAST. The command below will start a server. Once it is ready, open <a href="http://localhost:4567">http://localhost:4567</a> in your browser.</p>
 <pre class="sourceCode bash"><code class="sourceCode bash"><span class="kw">sequenceserver</span> -d /import/teaching/bio/data/reference_databases/uniref50</code></pre>
 <p>Do any of the gene predictions have significant similarity to known sequences? For a given gene prediction, do you think it is complete, or can you infer from the BLAST alignments that something may be wrong? Start by comparing the length of your gene prediction to that of the BLAST hits. Is your gene prediction considerably longer or considerably shorter than BLAST hits? Why?</p>
 <p>Now try a few of your gene predictions. BLAST only a maximum of 10 sequences at a time. Instead of selecting the first 10 genes, copy-paste your sequences randomly from the file.</p>
