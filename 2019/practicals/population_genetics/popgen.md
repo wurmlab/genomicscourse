@@ -12,7 +12,7 @@ In the second part, we are going to measure genetic differentiation between the 
 
 ## Input into R
 
-Again, make a directory for this practical. You should create a directory for the data and one for the results (with a link, using `ln -s`, to the data directory). You will only need the `snp.vcf` file we created in the last practical and place it into the appropriate input (if you don't have this file, you can download it from [here](https://github.com/wurmlab/genomicscourse/blob/master/2016-BIO721P/data/popgen/vcf/snp.vcf.gz "Download vcf")).
+Again, make a directory for this practical. You should create a directory for the data and one for the results (with a link, using `ln -s`, to the data directory). You will only need the `snp.vcf` file we created in the last practical and place it into the appropriate input (if you don't have this file, you can download it from [here](https://github.com/wurmlab/genomicscourse/blob/master/2016-BIO721P/data/popgen/vcf/snp.vcf.gz "Download vcf"), you will need to replace 'snp.vcf' with 'snp.vcf.gz' in the lines below if you do this).
 
 It's a good idea to note down the results of your analysis in the results directory, as well saving any graph you make.
 
@@ -91,7 +91,7 @@ Now plot a heatmap showing the genotypes.
 glPlot(snp)
 
 ```
-You can also perform a PCA and plot the first few axes.
+You can also perform a Principle Component Analysis (PCA) and plot the first few axes.
 
 ```r
 
@@ -119,6 +119,16 @@ The aim of these analysis is to test whether the B and the b individuals cluster
 Each of the scaffolds has been retrieved from a different chromosome. Below, we can test whether the differentiation between B and b is only seen in one of the scaffolds.
 
 ```r
+# We will start with scaffold_2
+
+scaffold_2_index <- which(snp@chromosome == "scaffold_2")
+scaffold_2 <- snp[,scaffold_2_index]
+
+glPlot(scaffold_2)
+
+pca2 <- glPca(scaffold_2, nf=10)
+scatter(pca2, posi="bottomright")
+
 
 # scaffold_1
 scaffold_1_index <- which(snp@chromosome == "scaffold_1")
@@ -128,15 +138,6 @@ glPlot(scaffold_1)
 
 pca1 <- glPca(scaffold_1, nf=10) # you can select 10 axes
 scatter(pca1, posi="bottomright")
-
-# scaffold_2
-scaffold_2_index <- which(snp@chromosome == "scaffold_2")
-scaffold_2 <- snp[,scaffold_2_index]
-
-glPlot(scaffold_2)
-
-pca2 <- glPca(scaffold_2, nf=10)
-scatter(pca2, posi="bottomright")
 
 ```
 * Is differentiation coming mainly from one of the scaffolds?
@@ -152,21 +153,23 @@ We will measure FST and nucleotide diversity (a measure of genetic diversity) us
 
 In theory, the `r PopGenome` can read VCF files directly, using the `readVCF` function. However, because our samples are haploid, we need to use a different function, `readData`, which requires a folder with a separate VCF for each scaffold.
 
+Return to the command line by either opening a new terminal or by typing `q()` into R.
+
 ```sh
 ## On your command line
 # Make new directory
 mkdir popgenome-vcf
 
 # compress and index the VCF
-bgzip snp.vcf
-tabix -p vcf snp.vcf.gz
+bgzip inpu/snp.vcf
+tabix -p input/vcf snp.vcf.gz
 
-bcftools view snp.vcf.gz scaffold_1 > popgenome-vcf/scaffold_1
-bcftools view snp.vcf.gz scaffold_2 > popgenome-vcf/scaffold_2
+bcftools view input/snp.vcf.gz scaffold_1 > popgenome-vcf/scaffold_1
+bcftools view input/snp.vcf.gz scaffold_2 > popgenome-vcf/scaffold_2
 
 ```
 
-You can now load the data in `R`.
+You can now load the data in `R` (Open with `rstudio-genomics`).
 
 ```r
 
