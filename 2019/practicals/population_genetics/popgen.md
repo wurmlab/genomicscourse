@@ -12,7 +12,7 @@ In the second part, we are going to measure genetic differentiation between the 
 
 ## Input into R
 
-Again, make a directory for this practical. You should create a directory for the input data (with a link, using `ln -s`, to the data directory), one for the results and a 'WHATIDID.txt' file in which you log your commands. You will only need the `snp.vcf` file we created in the last practical and place it into the appropriate input (if you don't have this file, you can download it from [here](https://github.com/wurmlab/genomicscourse/blob/master/2016-BIO721P/data/popgen/vcf/snp.vcf.gz "Download vcf"), if you do this you will need to replace 'snp.vcf' with 'snp.vcf.gz' in the code below).
+Again, make a directory for this practical. You should create a directory for the input data (with a link, using `ln -s`, to the data directory), one for the results and a 'WHATIDID.txt' file in which you log your commands. 
 
 ```bash
 2019-10-xx-population_genetics
@@ -21,6 +21,10 @@ Again, make a directory for this practical. You should create a directory for th
 ├── results
 └── WHATIDID.txt
 ```
+
+You will only need the `snp.vcf` file we created in the last practical and place it into the appropriate input (if you don't have this file, you can download it from [here](https://github.com/wurmlab/genomicscourse/blob/master/2016-BIO721P/data/popgen/vcf/snp.vcf.gz "Download vcf"), if you do this you will need to replace 'snp.vcf' with 'snp.vcf.gz' in the code below).
+
+
 It's a good idea to note down the results of your analysis in the results directory, as well as saving any graph you make.
 
 The package `adegenet` uses a object called `r genlight`. To create it, we need to input a matrix where each row is an individual and each column is a locus (i.e. a SNP position). We can do this using bcftools:
