@@ -146,8 +146,7 @@ seqtk seq -L 50 -q 10 -N tmp/reads.pe2.trimmed.norare.fq > tmp/reads.pe2.trimmed
 
 # 4. Remove orphaned reads
 # 4.1 Collect read ids that appear in both files
-cat tmp/reads.pe1.trimmed.norare.noshort.highqual.fq tmp/reads.pe2.trimmed.norare.noshort.highqual.fq \
-| seqtk comp | cut -f1 | sort | uniq -d > tmp/paired_read_ids
+cat tmp/reads.pe1.trimmed.norare.noshort.highqual.fq tmp/reads.pe2.trimmed.norare.noshort.highqual.fq | seqtk comp | cut -f1 | sort | uniq -d > tmp/paired_read_ids
 
 # 4.2 Extract reads corresponding to the selected ids from both the files
 seqtk subseq tmp/reads.pe1.trimmed.norare.noshort.highqual.fq tmp/paired_read_ids > tmp/reads.pe1.clean.fq
