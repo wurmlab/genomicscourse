@@ -47,7 +47,7 @@ code > span.er { color: #ff0000; font-weight: bold; }
 │   └── <span class="kw">snp.vcf</span>
 ├── <span class="kw">results</span>
 └── <span class="kw">WHATIDID.txt</span></code></pre>
-<p>You will only need the <code>snp.vcf</code> file we created in the last practical and place it into the appropriate input directory (if you don't have this file, you can download it from <a href="https://github.com/wurmlab/genomicscourse/blob/master/2016-BIO721P/data/popgen/vcf/snp.vcf.gz" title="Download vcf">here</a>, if you do this you will need to replace 'snp.vcf' with 'snp.vcf.gz' in the code below).</p>
+<p>You will only need the <code>snp.vcf</code> file we created in the last practical and place it into the appropriate input directory (if you don't have this file, you can download it from <a href="../../data/popgen/vcf/snp.vcf.gz?raw=true" title="Download vcf">here</a>, if you do this you will need to replace 'snp.vcf' with 'snp.vcf.gz' in the code below).</p>
 <p>It's a good idea to note down the results of your analysis in the results directory, as well as saving any graph you make.</p>
 <p>The package <code>adegenet</code> uses a object called <code>r genlight</code>. To create it, we need to input a matrix where each row is an individual and each column is a locus (i.e. a SNP position). We can do this using bcftools:</p>
 <pre class="sh"><code># Select the information in the vcf file without the header
