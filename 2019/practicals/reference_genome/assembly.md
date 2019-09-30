@@ -10,7 +10,7 @@ Find (or make) some friends; find a table. In groups of 4 or 5, ask an assistant
 
 Many different pieces of software exist for genome assembly. We will be using `SOAPdenovo`.
 
-Create a new `input/02-assembly` directory and link the output from yesterday's practical into it. Make a new `results/02-assembly` directory. Create a link between `input/02-assembly` and `results/02-assembly/input`.
+Create a new main directory for today's practical (e.g., 2019-09-xx-assembly) and the `input`, `tmp`, and `results` subdirectory. Link the output (cleaned reads) from yesterday's practical into `2019-09-xx-assembly/input`.
 
 To assemble our cleaned reads with SOAPdenovo, we create a `soap_config.txt` file containing the following:
 
