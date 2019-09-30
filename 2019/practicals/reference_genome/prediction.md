@@ -6,7 +6,12 @@ Many tools exist for gene prediction, some based on *ab initio* statistical mode
 
 ### Running Maker
 
-Create a new main directory for today's practical (e.g., 2019-09-xx-gene_prediction) and the `input`, `tmp`, and `results` subdirectory. Link the output (assembly) from yesterday's practical into `2019-09-xx-gene_prediction/input`.
+Create a new main directory for today's practical (e.g., 2019-09-xx-gene_prediction) and the `input`, `tmp`, and `results` subdirectory. Link the output (assembly) from yesterday's practical into `2019-09-xx-gene_prediction/input`:
+
+```
+cd 2019-09-xx-gene_prediction
+ln -s ~/2019-09-xx-assembly/results/assembly.scafSeq input/
+```
 
 Pull out the longest few scaffolds from `assembly.scafSeq` into a new file:
 
