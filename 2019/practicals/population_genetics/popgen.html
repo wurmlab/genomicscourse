@@ -37,12 +37,18 @@ code > span.er { color: #ff0000; font-weight: bold; }
 <h1 id="population-genetics-in-r">Population genetics in R</h1>
 <h2 id="introduction">Introduction</h2>
 <p>We have samples with two genotypes: the B genotype (associated with single-queen colony phenotype) and the b genotype (associated with multiple-queen colony phenotype).</p>
-<p>Our dummy assembly has two scaffolds, each from a different chromosome. The aim of our analysis is to test whether any parts of this assembly also differ between the group of B and the group of b individuals.</p>
+<p>Our dummy assembly has two scaffolds, from two different chromosomes. The aim of our analysis is to test whether any parts of this assembly differ between the individuals from these two groups (B and b).</p>
 <p>In the first part of the analysis, we are going to create a heat map of the genotypes of the individuals and we are going to run Principal Component Analysis (PCA) on these genotypes. This will allow us to test if any of the individuals cluster together by their B/b genotype. This will be done using the <code>adegenet</code> package in R.</p>
 <p>In the second part, we are going to measure genetic differentiation between the two groups (B and b). We will do this analysis over a sliding window, to see if the differentiation between B and b are specific to any portion of the genome. We will also measure the genetic diversity among each of the groups, which may tell us something about the evolutionary history of the portions of genome represented in our assembly. This will be done using the <code>PopGenome</code> package in R.</p>
 <h2 id="input-into-r">Input into R</h2>
-<p>Again, make a directory for this practical. You should create a directory for the data and one for the results (with a link, using <code>ln -s</code>, to the data directory). You will only need the <code>snp.vcf</code> file we created in the last practical and place it into the appropriate input (if you don't have this file, you can download it from <a href="https://github.com/wurmlab/genomicscourse/blob/master/2016-BIO721P/data/popgen/vcf/snp.vcf.gz" title="Download vcf">here</a>).</p>
-<p>It's a good idea to note down the results of your analysis in the results directory, as well saving any graph you make.</p>
+<p>Again, make a directory for this practical. You should create a directory for the input data (with a link, using <code>ln -s</code>, to the data directory), one for the results and a <code>WHATIDID.txt</code> file in which you log your commands.</p>
+<pre class="sourceCode bash"><code class="sourceCode bash"><span class="kw">2019-10-xx-population_genetics</span>
+├── <span class="kw">input</span>
+│   └── <span class="kw">snp.vcf</span>
+├── <span class="kw">results</span>
+└── <span class="kw">WHATIDID.txt</span></code></pre>
+<p>You will only need the <code>snp.vcf</code> file we created in the last practical and place it into the appropriate input directory (if you don't have this file, you can download it from <a href="https://github.com/wurmlab/genomicscourse/blob/master/2016-BIO721P/data/popgen/vcf/snp.vcf.gz" title="Download vcf">here</a>, if you do this you will need to replace 'snp.vcf' with 'snp.vcf.gz' in the code below).</p>
+<p>It's a good idea to note down the results of your analysis in the results directory, as well as saving any graph you make.</p>
 <p>The package <code>adegenet</code> uses a object called <code>r genlight</code>. To create it, we need to input a matrix where each row is an individual and each column is a locus (i.e. a SNP position). We can do this using bcftools:</p>
 <pre class="sh"><code># Select the information in the vcf file without the header
 bcftools query input/snp.vcf -f '%CHROM\t%POS[\t%GT]\n' &gt; snp_matrix.txt
@@ -63,14 +69,17 @@ loci       &lt;-<span class="st"> </span>snp_matrix[,<span class="dv">1</span>:<
 
 
 <span class="co"># Turn the matrix on its side (rows = individuals, columns = loci)</span>
+<span class="co"># t() returns the transpose of a matrix (turns it on its side)</span>
 snp_matrix &lt;-<span class="st"> </span>snp_matrix[,<span class="dv">3</span>:<span class="kw">ncol</span>(snp_matrix)]
 snp_matrix &lt;-<span class="st"> </span><span class="kw">t</span>(snp_matrix)
 
 <span class="co"># add sample names</span>
+<span class="co"># gsub() performs a find and replace for strings of text</span>
 sample_names &lt;-<span class="st"> </span><span class="kw">gsub</span>(<span class="st">&quot;</span><span class="ch">\\</span><span class="st">.bam&quot;</span>,<span class="st">&quot;&quot;</span>, sample_names)
 <span class="kw">row.names</span>(snp_matrix) &lt;-<span class="st"> </span>sample_names
 
 <span class="co"># reorder the rows by population</span>
+<span class="co"># grep() performs a search for a specified text-string</span>
 bb &lt;-<span class="st"> </span>sample_names[<span class="kw">grep</span>(<span class="st">&quot;B&quot;</span>, sample_names)]
 lb &lt;-<span class="st"> </span>sample_names[<span class="kw">grep</span>(<span class="st">&quot;b&quot;</span>, sample_names)]
 
@@ -80,6 +89,8 @@ snp_matrix &lt;-<span class="st"> </span>snp_matrix[<span class="kw">c</span>(bb
 <pre class="sourceCode r"><code class="sourceCode r">
 <span class="kw">library</span>(adegenet)
 
+<span class="co"># Note that the following line has been split up over multiple lines to make it easier to read</span>
+<span class="co"># R won't run the command until all brackets have been closed</span>
 snp &lt;-<span class="st"> </span><span class="kw">new</span>(<span class="st">&quot;genlight&quot;</span>,
            snp_matrix,
            <span class="dt">chromosome=</span>loci$scaffold,
@@ -99,10 +110,10 @@ snp@chromosome
 <pre class="sourceCode r"><code class="sourceCode r">
 ## Heat map of genotype
 <span class="kw">glPlot</span>(snp)</code></pre>
-<p>You can also perform a PCA and plot the first few axes.</p>
+<p>You can also perform a Principle Component Analysis (PCA) and plot the first few components.</p>
 <pre class="sourceCode r"><code class="sourceCode r">
 ## PCA
-pca &lt;-<span class="st"> </span><span class="kw">glPca</span>(snp, <span class="dt">nf=</span><span class="dv">10</span>) <span class="co"># you can select 10 axes</span>
+pca &lt;-<span class="st"> </span><span class="kw">glPca</span>(snp, <span class="dt">nf=</span><span class="dv">10</span>) <span class="co"># you can select 10 components</span>
 
 <span class="co"># fast plot</span>
 <span class="kw">scatter</span>(pca, <span class="dt">posi=</span><span class="st">&quot;bottomright&quot;</span>)
@@ -119,24 +130,25 @@ pca &lt;-<span class="st"> </span><span class="kw">glPca</span>(snp, <span class
     <span class="dt">labels=</span><span class="kw">rownames</span>(pca$scores), <span class="dt">cex=</span> <span class="fl">0.7</span>)</code></pre>
 <p>The aim of these analysis is to test whether the B and the b individuals cluster together or separately. The first principal component separates B and b. But if you look in the heat map, the separation is not constant in the whole genome.</p>
 <p>Each of the scaffolds has been retrieved from a different chromosome. Below, we can test whether the differentiation between B and b is only seen in one of the scaffolds.</p>
-<pre class="sourceCode r"><code class="sourceCode r">
+<pre class="sourceCode r"><code class="sourceCode r"><span class="co"># We will start with scaffold_2</span>
+
+scaffold_2_index &lt;-<span class="st"> </span><span class="kw">which</span>(snp@chromosome ==<span class="st"> &quot;scaffold_2&quot;</span>)
+scaffold_2 &lt;-<span class="st"> </span>snp[,scaffold_2_index]
+
+<span class="kw">glPlot</span>(scaffold_2)
+
+pca2 &lt;-<span class="st"> </span><span class="kw">glPca</span>(scaffold_2, <span class="dt">nf=</span><span class="dv">10</span>) <span class="co"># you can select 10 components</span>
+<span class="kw">scatter</span>(pca2, <span class="dt">posi=</span><span class="st">&quot;bottomright&quot;</span>)
+
+
 <span class="co"># scaffold_1</span>
 scaffold_1_index &lt;-<span class="st"> </span><span class="kw">which</span>(snp@chromosome ==<span class="st"> &quot;scaffold_1&quot;</span>)
 scaffold_1 &lt;-<span class="st"> </span>snp[,scaffold_1_index]
 
 <span class="kw">glPlot</span>(scaffold_1)
 
-pca1 &lt;-<span class="st"> </span><span class="kw">glPca</span>(scaffold_1, <span class="dt">nf=</span><span class="dv">10</span>) <span class="co"># you can select 10 axes</span>
-<span class="kw">scatter</span>(pca1, <span class="dt">posi=</span><span class="st">&quot;bottomright&quot;</span>)
-
-<span class="co"># scaffold_2</span>
-scaffold_2_index &lt;-<span class="st"> </span><span class="kw">which</span>(snp@chromosome ==<span class="st"> &quot;scaffold_2&quot;</span>)
-scaffold_2 &lt;-<span class="st"> </span>snp[,scaffold_2_index]
-
-<span class="kw">glPlot</span>(scaffold_2)
-
-pca2 &lt;-<span class="st"> </span><span class="kw">glPca</span>(scaffold_2, <span class="dt">nf=</span><span class="dv">10</span>)
-<span class="kw">scatter</span>(pca2, <span class="dt">posi=</span><span class="st">&quot;bottomright&quot;</span>)</code></pre>
+pca1 &lt;-<span class="st"> </span><span class="kw">glPca</span>(scaffold_1, <span class="dt">nf=</span><span class="dv">10</span>) 
+<span class="kw">scatter</span>(pca1, <span class="dt">posi=</span><span class="st">&quot;bottomright&quot;</span>)</code></pre>
 <ul class="incremental">
 <li>Is differentiation coming mainly from one of the scaffolds?<br /></li>
 <li>If so, which one?</li>
@@ -146,18 +158,19 @@ pca2 &lt;-<span class="st"> </span><span class="kw">glPca</span>(scaffold_2, <sp
 <p>An important population genetics measure is genetic diversity. Patterns of genetic diversity can be informative of a population's evolutionary past - for example, low genetic diversity may be evidence for a recent population bottleneck. Furthermore, the variation of diversity within the genome can be informative of different evolutionary effects, such as the strength of selection in different parts of the genome.</p>
 <p>We will measure FST and nucleotide diversity (a measure of genetic diversity) using the R package <code>PopGenome</code>.</p>
 <p>In theory, the <code>r PopGenome</code> can read VCF files directly, using the <code>readVCF</code> function. However, because our samples are haploid, we need to use a different function, <code>readData</code>, which requires a folder with a separate VCF for each scaffold.</p>
+<p>Return to the command line by either opening a new terminal or by typing <code>q()</code> into R.</p>
 <pre class="sh"><code>## On your command line
 # Make new directory
 mkdir popgenome-vcf
 
 # compress and index the VCF
-bgzip snp.vcf
-tabix -p vcf snp.vcf.gz
+bgzip input/snp.vcf
+tabix -p input/vcf snp.vcf.gz
 
-bcftools view snp.vcf.gz scaffold_1 &gt; popgenome-vcf/scaffold_1
-bcftools view snp.vcf.gz scaffold_2 &gt; popgenome-vcf/scaffold_2
+bcftools view input/snp.vcf.gz scaffold_1 &gt; popgenome-vcf/scaffold_1
+bcftools view input/snp.vcf.gz scaffold_2 &gt; popgenome-vcf/scaffold_2
 </code></pre>
-<p>You can now load the data in <code>R</code>.</p>
+<p>You can now load the data in <code>R</code> (Open with <code>rstudio-genomics</code>).</p>
 <pre class="sourceCode r"><code class="sourceCode r">
 <span class="kw">library</span>(PopGenome)
 

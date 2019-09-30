@@ -8,7 +8,7 @@ Find (or make) some friends; find a table. In groups of 4 or 5, ask an assistant
 
 ### Brief assembly example / concepts
 
-Many different pieces of software exist for genome assembly. We will be using SOAPdenovo.
+Many different pieces of software exist for genome assembly. We will be using `SOAPdenovo`.
 
 Create a new main directory for today's practical (e.g., 2019-09-xx-assembly) and the `input`, `tmp`, and `results` subdirectory. Link the output (cleaned reads) from yesterday's practical into `2019-09-xx-assembly/input`.
 
