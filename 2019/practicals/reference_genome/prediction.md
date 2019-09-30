@@ -52,9 +52,17 @@ As you can see, gene prediction software is imperfect – this is even the case 
 
 ---
 
-### Quality control of whole genesets
+##### Using GeneValidator
 
-The [GeneValidator](http://bioinformatics.oxfordjournals.org/content/32/10/1559.long) tool can be used to evaluate several genes at once, including whole genesets. It runs several tests for each gene and accordingly assigns a quality score. Based on GeneValidator's evaluation you may want to eliminate problematic predictions, manually refine the problematic ones, or choose between two genesets: [GeneValidator workflows](https://wurmlab.github.io/publications/moghulAndPriyam2019.pdf).
+The [GeneValidator](http://bioinformatics.oxfordjournals.org/content/32/10/1559.long) tool can help to evaluate quality of a gene prediction by comparing features of a gene prediction to similar database sequences. This approach expects that similar sequences should for example be of similar length.
+You can simply run `genevalidator -d ~/2019-09-BIO271_input/uniref50/uniref50.fasta proteins.fasta --num_threads 8` (on your gene predictions, or [these examples](../../data/reference_assembly/gv_examples.fa)), or use the [web service](http://genevalidator.sbcs.qmul.ac.uk/) for queries of few sequences. Alternatively just check the screenshots linked in the next sentence. Try to understand why some gene predictions have no reason for concern [(e.g.)](img-qc/good.png), while others do [(e.g.)](img-qc/bad.png).
+
+
+### Comparing whole genesets & prioritizing genes for manual curation
+
+Genevalidator's visual output can be handy when looking at few genes. But the tool also provides tab-delimited output, handy when working in the command-line or when running the software on whole proteomes. For example, this can help analysis:
+  * in situations when you can choose between multiple gene sets.
+  * or to identify which gene predictions are likely ok, and which need to be inspected and potentially manual fixed.
 
 ### Manual curation
 
