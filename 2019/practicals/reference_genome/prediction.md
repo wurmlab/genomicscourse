@@ -27,9 +27,20 @@ Next, `cd` to your `tmp/` folder and run `maker -OPTS`. This will generate an em
 
 For a real project, we *would* include RepeatMasker (perhaps after creating a new repeat library), we would provide as much relevant information as possible (e.g., RNAseq read mappings, transcriptome assembly – both improve gene prediction performance *tremendously*), and iteratively train gene prediction algorithms for our data including Augustus and SNAP.
 
-Finally, run `maker maker_opts.ctl`. This may take a few minutes, depending on how much data you gave it. Once its done the results will be hidden in subdirectories of `min10000.maker.output`. MAKER provides a helper script to collect gene predictions into a single file:
+Finally, run `maker maker_opts.ctl`. This may take a few minutes, depending on how much data you gave it.
+
+Genome annotation software like MAKER usually provide information about the exon-intron structure of the genes (e.g., in GFF3 format), and sequence of corresponding messenger RNA and protein products (e.g., in FASTA format).
+
+Once MAKER is done the results will be hidden in subdirectories of `min10000.maker.output`. MAKER provides a helper script to collect this hidden hidden output in one place:
 
 ```
+# Pull out information about exon-intron structure of the predicted genes. This
+# will be saved to the file min10000.all.gff.
+gff3_merge -d min10000.maker.output/min10000_master_datastore_index.log
+
+# Pull out predicted messenger RNA and protein sequences. These will be saved
+# to the files: min10000.all.maker.augustus.transcripts.fasta, and
+# min10000.all.maker.augustus.proteins.fasta
 fasta_merge -d min10000.maker.output/min10000_master_datastore_index.log
 ```
 
