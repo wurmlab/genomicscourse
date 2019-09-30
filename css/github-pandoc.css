@@ -187,6 +187,10 @@ pre {
     white-space: pre-wrap;
 }
 
+pre > code {
+    white-space: pre-wrap;
+}
+
 /**
  * Set consistent quote types.
  */
