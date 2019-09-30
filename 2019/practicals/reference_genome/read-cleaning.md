@@ -12,7 +12,7 @@ Specifically, focusing on low coverage of ~0.5% of the fire ant genome, we will:
  3. assess the quality of the genome assembly using simple statistics,
  4. predict protein-coding genes,
  5. assess quality of gene predictions,
- 6. assess quality of the entire process using a biologically meaning measure.
+ 6. assess quality of the entire process using a biologically meaningful measure.
 
 Please note that these are toy/sandbox examples simplified to run on laptops and to fit into the short format of this course. For real projects, much more sophisticated approaches are needed!
 
@@ -32,7 +32,7 @@ For each step that we will perform, you should:
  * have input data in a relevant subdirectory
  * work in a relevant subdirectory
 
-And each directory in which you have done something [should include a `WHATIDID.txt` file](http://github.com/wurmlab/templates/blob/master/project_structures.md) in which you log your commands.
+Each directory in which you have done something [should include a `WHATIDID.txt` file](http://github.com/wurmlab/templates/blob/master/project_structures.md) in which you log your commands.
 
 Being disciplined about this is *extremely important*. It is similar to having a laboratory notebook. It will prevent you from becoming overwhelmed by having too many files, or not remembering what you did where.
 
