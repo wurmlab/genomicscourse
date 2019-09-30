@@ -52,7 +52,7 @@ q1=input/reads.pe1.clean.fq
 q2=input/reads.pe2.clean.fq</code></pre>
 <p>Then run the following line. <em>THIS IS RAM-INTENSE, your computer may struggle</em></p>
 <pre class="sourceCode bash"><code class="sourceCode bash"><span class="kw">SOAPdenovo-63mer</span> all -s soap_config.txt -K 45 -R -o tmp/assembly</code></pre>
-<p>Like any other assembler, SOAPdenovo creates many files, including an <code>assembly.scafSeq</code> file that is likely to be used for follow-up analyses<a href="../../data/reference_assembly/output/assembly.scafSeq.gz?raw=true">.</a> Copy this file to results directory (<code>results/02-assembly/results</code>):</p>
+<p>Like any other assembler, SOAPdenovo creates many files, including an <code>assembly.scafSeq</code> file that is likely to be used for follow-up analyses<a href="../../data/reference_assembly/output/assembly.scafSeq.gz?raw=true">.</a> Copy this file to your results directory:</p>
 <pre class="sourceCode bash"><code class="sourceCode bash"><span class="kw">cp</span> tmp/assembly.scafSeq results/</code></pre>
 <p>Take a look at the contents of this file (e.g., <code>less results/assembly.scafSeq</code>). Why does this file contain so many NNNN sequences?</p>
 <p>There are many other genome assembly approaches. While waiting for everyone to make it to this stage, try to understand some of the challenges of <em>de novo</em> genome assembly and the approaches used to overcome them via the following papers:</p>

@@ -31,7 +31,7 @@ Then run the following line. *THIS IS RAM-INTENSE, your computer may struggle*
 SOAPdenovo-63mer all -s soap_config.txt -K 45 -R -o tmp/assembly
 ```
 
-Like any other assembler, SOAPdenovo creates many files, including an `assembly.scafSeq` file that is likely to be used for follow-up analyses[.](../../data/reference_assembly/output/assembly.scafSeq.gz?raw=true) Copy this file to results directory (`results/02-assembly/results`):
+Like any other assembler, SOAPdenovo creates many files, including an `assembly.scafSeq` file that is likely to be used for follow-up analyses[.](../../data/reference_assembly/output/assembly.scafSeq.gz?raw=true) Copy this file to your results directory:
 
 ```bash
 cp tmp/assembly.scafSeq results/
