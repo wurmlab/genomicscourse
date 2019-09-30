@@ -158,5 +158,3 @@ cp tmp/reads.pe1.clean.fq tmp/reads.pe2.clean.fq results
 
 Which percentage of reads have we removed overall? (hint: `wc -l` can count lines in a non-gzipped file). Is there a general rule about how much we should be removing?
 Run `fastqc` again, this time on `reads.pe2.clean.fq`. Which statistics have changed? Does the "per tile" sequence quality indicate to you that we should perhaps do more cleaning?
-
-## Part 2: [Genome assembly](assembly)
