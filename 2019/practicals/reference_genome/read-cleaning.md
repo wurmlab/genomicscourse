@@ -74,7 +74,7 @@ Remember to log the commands you used in the `WHATIDID.txt` file.
 Your [resulting directory structure](http://github.com/wurmlab/templates/blob/master/project_structures.md "Typical multi-day project structure") (`~/2019-09-xx-read_cleaning`), should look like this:
 
 ```bash
-tree
+2019-09-xx-read_cleaning
 ├── input
 │   ├── reads.pe1.fastq.gz -> /import/teaching/bio/data/reads.pe1.fastq.gz
 │   └── reads.pe2.fastq.gz -> /import/teaching/bio/data/reads.pe2.fastq.gz
