@@ -121,7 +121,10 @@ code > span.er { color: #ff0000; font-weight: bold; }
 <span class="co"># 1.1 Make a list of files to make k-mer database from</span>
 <span class="kw">ls</span> tmp/reads.pe1.trimmed.fq tmp/reads.pe2.trimmed.fq <span class="kw">&gt;</span> tmp/file_list_for_kmc
 
-<span class="co"># 1.2 Run KMC on the list of files</span>
+<span class="co"># 1.2 Count k-mers. This will produce two files in your tmp/ directory:</span>
+<span class="co"># 21-mers.kmc_pre and 21-mers.kmc_suf. The last argument (tmp) tells</span>
+<span class="co"># kmc where to put intermediate files during computation; these are</span>
+<span class="co"># automatically deleted afterwards.</span>
 <span class="kw">kmc</span> -k21 @tmp/file_list_for_kmc tmp/21-mers tmp
 
 <span class="co"># 2. Trim reads so that k-mers observed less than 3 times are eliminated.</span>

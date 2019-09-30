@@ -133,7 +133,10 @@ Below, we use [kmc3](http://github.com/refresh-bio/KMC) to trim extremely rare k
 # 1.1 Make a list of files to make k-mer database from
 ls tmp/reads.pe1.trimmed.fq tmp/reads.pe2.trimmed.fq > tmp/file_list_for_kmc
 
-# 1.2 Run KMC on the list of files
+# 1.2 Count k-mers. This will produce two files in your tmp/ directory:
+# 21-mers.kmc_pre and 21-mers.kmc_suf. The last argument (tmp) tells
+# kmc where to put intermediate files during computation; these are
+# automatically deleted afterwards.
 kmc -k21 @tmp/file_list_for_kmc tmp/21-mers tmp
 
 # 2. Trim reads so that k-mers observed less than 3 times are eliminated.
