@@ -120,14 +120,22 @@ samtools view tmp/alignments/f1_B.bam scaffold_1:10000-10500 | less -S
 
 Copy the `.bam` and `.bai` files to the `results` directory.
 
+```bash
+cp tmp/alignments/*.bam results/
+cp tmp/alignments/*.bai results/
+
+```
+
 
 ## Variant calling
 
-Set up a new directory for the second part of today's practical (`2019-10-xx-genotyping`). You will want to set up the relevant subdirectories and `WHATIDID.txt` file as before. Then create a symlink to the `results` from the mapping part of the practical. Remember to keep your commands in the `WHATIDID.txt` file.
+Set up a new directory for the second part of today's practical (`2019-10-xx-genotyping`). You will want to set up the relevant subdirectories and `WHATIDID.txt` file as before. Then create symlinks from `/import/teaching/bio/data/popgen/reference.fa` and the `results` from the mapping part of the practical to your `input` directory. Remember to keep your commands in the `WHATIDID.txt` file.
 
 ```
 2019-10-xx-genotyping/
-├── input  -> ~/2019-10-xx-mapping/results/
+├── input  
+│   ├── -> /import/teaching/bio/data/popgen/reference.fa
+│   └── -> ~/2019-10-xx-mapping/results/*
 ├── results
 ├── tmp
 └── WHATIDID.txt
@@ -197,7 +205,7 @@ bcftools view -v snps -m2 -M2 --min-ac 1:minor tmp/variants/filtered_calls.vcf >
 * Can you find any other parameters indicating the quality of the site?
 * Can you find any other parameters indicating the quality of the variant call for a given individual on a given site?
 
-Now that we have a SNP set, we can copy it to `results/` directory.
+Now that we have a SNP set, we can copy it to `results` directory.
 
 ```sh
 cp tmp/variants/snp.vcf results
@@ -214,7 +222,7 @@ Open IGV[.](http://software.broadinstitute.org/software/igv/download)
 igv.sh
 ```
 
-IGV loads the human genome, so you need to define another genome file (`Genome` > `Genomes from file`, then choose the assembly `reference.fa` file).
+IGV loads the human genome, so you need to define another genome file (`Genome` > `Load Genome from File`, then choose the assembly `reference.fa` file).
 
 You can load some of the BAMs and the VCF file you produced.
 
