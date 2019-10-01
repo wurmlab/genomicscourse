@@ -58,7 +58,7 @@ In the first step, the scaffold sequence (sometimes known as the database) is in
 ```bash
 # Symlink reference.fa to tmp/
 
-ln -s input/reference.fa tmp/
+ln -s ~/2019-10-xx-mapping/input/reference.fa tmp/
 
 # Build the index now.
 bowtie2-build tmp/reference.fa tmp/reference
@@ -143,7 +143,7 @@ We will use multiallelic caller (option `-m`) of bcftools and set all individual
 
 # Symlink reference.fa to tmp/
 
-ln -s input/reference.fa tmp/
+ln -s ~/2019-10-xx-genotyping/input/reference.fa tmp/
 
 # Create index of the reference (different from that used by bowtie2)
 samtools faidx tmp/reference.fa
