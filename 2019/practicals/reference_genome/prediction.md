@@ -46,11 +46,11 @@ fasta_merge -d min10000.maker.output/min10000_master_datastore_index.log
 
 ### Quality control of individual genes
 
-So now we have some gene predictions... how can we know if they are any good? The easiest way to get a feel for this is to use the following example sequences: [illustrative examples](predictions.fa). We will compare them using BLAST to known sequences from other species in the [uniref50 database](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4375400/).
+So now we have some gene predictions... how can we know if they are any good? The easiest way to get a feel for this is to use the following example sequences: [predicted protein sequences from rice and honeybee](predictions.fa). We will compare them using BLAST to known sequences from other species in the [uniref50 database](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4375400/).
 
 ##### Running BLAST
 
-We will use [SequenceServer](https://doi.org/10.1093/molbev/msz185) to run BLAST. The command below will start a server. Once it is ready, open http://localhost:4567 in your browser, paste the [example sequences](predictions.fa) in the textbox and click on the 'BLAST' button to run a BLAST search.
+We will use [SequenceServer](https://doi.org/10.1093/molbev/msz185) to run BLAST. The command below will start a server. Once the server is ready, open http://localhost:4567 in your browser, paste the [example rice and honeybee protein sequences](predictions.fa) in the textbox and click on the 'BLAST' button to run a BLAST search.
 
 ```bash
 sequenceserver -d /import/teaching/bio/data/reference_databases/uniref50
@@ -58,7 +58,7 @@ sequenceserver -d /import/teaching/bio/data/reference_databases/uniref50
 
 Do any of the gene predictions have significant similarity to known sequences? For a given gene prediction, do you think it is complete, or can you infer from the BLAST alignments that something may be wrong? Start by comparing the length of your gene prediction to that of the BLAST hits. Is your gene prediction considerably longer or considerably shorter than BLAST hits? Why?
 
-Now try a few of your gene predictions. BLAST only a maximum of 10 sequences at a time. Instead of selecting the first 10 genes, copy-paste your sequences randomly from the file.
+Now try a few of your gene predictions. BLAST only a maximum of 8 sequences at a time (instead of simply selecting the first 8 genes in your file, copy-paste sequences randomly from the file).
 
 ---
 
