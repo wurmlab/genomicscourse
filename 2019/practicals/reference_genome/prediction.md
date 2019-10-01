@@ -77,10 +77,10 @@ Although we won't be running GeneValidator, please check the screenshots linked 
 
 ### Comparing whole genesets & prioritizing genes for manual curation
 
-Genevalidator's visual output can be handy when looking at few genes. But the tool also provides tab-delimited output, handy when working in the command-line or when running the software on whole proteomes. For example, this can help analysis:
-  * in situations when you can choose between multiple gene sets.
-  * or to identify which gene predictions are likely ok, and which need to be inspected and potentially manual fixed.
+Genevalidator's visual output can be handy when looking at few genes. But the tool also provides tab-delimited output, useful when working in the command-line or running the software on whole proteomes. This can help analysis:
+  * In situations when you can choose between multiple gene sets.
+  * To identify which gene predictions are likely correct, and which predictions need might require further inspection and potentially be manually fixed.
 
 ### Manual curation
 
-Because automated gene predictions aren't perfect, manual inspection and fixing are often required. The most commonly used software for this is [Apollo/WebApollo](http://genomearchitect.org/).
+Because automated gene predictions aren't perfect, manual inspection and fixing is often required. The most commonly used software for this is [Apollo/WebApollo](http://genomearchitect.org/).
