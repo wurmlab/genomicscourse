@@ -6,10 +6,10 @@ Many tools exist for gene prediction, some based on *ab initio* statistical mode
 
 ### Running Maker
 
-Create a new main directory for today's practical (e.g., 2019-09-xx-gene_prediction) and the `input`, `tmp`, and `results` subdirectory. Link the output (assembly) from yesterday's practical into `2019-09-xx-gene_prediction/input`:
+Create a new main directory for today's practical (e.g., 2019-10-xx-gene_prediction) as well as the `input`, `tmp`, and `results` subdirectories and a `WHATIDID.txt` file to log your commands. Link the output (assembly) from yesterday's practical into `2019-10-xx-gene_prediction/input`:
 
 ```
-cd 2019-09-xx-gene_prediction
+cd ~/2019-10-xx-gene_prediction
 ln -s ~/2019-09-xx-assembly/results/assembly.scafSeq input/
 ```
 
@@ -19,7 +19,7 @@ Pull out the longest few scaffolds from `assembly.scafSeq` into a new file:
 seqtk seq -L 10000 input/assembly.scafSeq > tmp/min10000.fa
 ```
 
-Next, `cd` to your `tmp/` folder and run `maker -OPTS`. This will generate an empty `maker_opts.ctl` configuration file (ignore the warning). Edit that file to specify:
+Next, `cd` to your `tmp/` folder and run `maker -OPTS`. This will generate an empty `maker_opts.ctl` configuration file (ignore the warnings). Edit that file using a text editor such as `nano` or `vim` to specify:
   * genome: `min10000.fa`
   * augustus species: a known gene set from a related species, in this case we choose `honeybee1` (yes that's a 1)
   * deactivate RepeatMasker by replacing `model_org=all` to `model_org= ` (i.e., nothing)
@@ -31,7 +31,7 @@ Finally, run `maker maker_opts.ctl`. This may take a few minutes, depending on h
 
 Genome annotation software like MAKER usually provide information about the exon-intron structure of the genes (e.g., in GFF3 format), and sequence of corresponding messenger RNA and protein products (e.g., in FASTA format).
 
-Once MAKER is done the results will be hidden in subdirectories of `min10000.maker.output`. MAKER provides a helper script to collect this hidden hidden output in one place:
+Once MAKER is done the results will be hidden in subdirectories of `min10000.maker.output`. MAKER provides a helper script to collect this hidden hidden output in one place (again please ignore the warnings for these steps):
 
 ```
 # Pull out information about exon-intron structure of the predicted genes. This
@@ -70,17 +70,17 @@ As you can see, gene prediction software is imperfect – this is even the case 
 
 ##### Using GeneValidator
 
-The [GeneValidator](http://bioinformatics.oxfordjournals.org/content/32/10/1559.long) tool can help to evaluate quality of a gene prediction by comparing features of a gene prediction to similar database sequences. This approach expects that similar sequences should for example be of similar length.
+The [GeneValidator](http://bioinformatics.oxfordjournals.org/content/32/10/1559.long) tool can help to evaluate the quality of a gene prediction by comparing features of a predicted gene to similar database sequences. This approach expects that similar sequences should for example be of similar length.
 
-Although we won't be running GeneValidator, do check the screenshots linked in the next sentence. Try to understand why some gene predictions have no reason for concern [(e.g.)](img-qc/good.png), while others do [(e.g.)](img-qc/bad.png).
+Although we won't be running GeneValidator, please check the screenshots linked in the next sentence. Try to understand why some gene predictions [have no reason for concern](img-qc/good.png), while [others do](img-qc/bad.png).
 
 
 ### Comparing whole genesets & prioritizing genes for manual curation
 
-Genevalidator's visual output can be handy when looking at few genes. But the tool also provides tab-delimited output, handy when working in the command-line or when running the software on whole proteomes. For example, this can help analysis:
-  * in situations when you can choose between multiple gene sets.
-  * or to identify which gene predictions are likely ok, and which need to be inspected and potentially manual fixed.
+Genevalidator's visual output can be handy when looking at few genes. But the tool also provides tab-delimited output, useful when working in the command-line or running the software on whole proteomes. This can help analysis:
+  * In situations when you can choose between multiple gene sets.
+  * To identify which gene predictions are likely correct, and which predictions need might require further inspection and potentially be manually fixed.
 
 ### Manual curation
 
-Because automated gene predictions aren't perfect, manual inspection and fixing are often required. The most commonly used software for this is [Apollo/WebApollo](http://genomearchitect.org/).
+Because automated gene predictions aren't perfect, manual inspection and fixing is often required. The most commonly used software for this is [Apollo/WebApollo](http://genomearchitect.org/).

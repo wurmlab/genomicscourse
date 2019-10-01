@@ -20,28 +20,20 @@ The aim of this practical is to genotype these 14 individuals. The steps in the 
 3. Filter the SNP calls to produce a set of good-quality SNPs.
 4. Visualise the alignments and the SNP calls in the genome browser `igv`.
 
-We recommend that you set up a directory for today following [our convention](https://github.com/wurmlab/templates/blob/master/project_structures), as [you did in the last practical](../reference_genome/read-cleaning#set-up-directory-hierarchy-to-work-in). You should have a subdirectory called `input` and another called `results`. In each, you should have a directory for the read mapping, and another for the variant calling:
+We recommend that you set up a directory for this work following the same principles as in the last few practicals. You should have subdirectories called `input`, `results` and `tmp` and a `WHATIDID.txt` file in which to log your commands:
 
 ```
-2019-10-xx-genotyping/
-├── input
-│   ├── 01-mapping
-│   └── 02-genotyping
-└── results
-    ├── 01-mapping
-    │   ├── input -> ../../input/01-mapping/
-    │   ├── tmp
-    │   ├── results
-    │   └── WHATIDID.txt
-    └── 02-genotyping
-        ├── input -> ../../input/02-genotyping/
-        ├── tmp
-        ├── results
-        └── WHATIDID.txt
+2019-10-xx-mapping/
+├── input  
+│   ├── -> /import/teaching/bio/data/popgen/reference.fa
+│   └── -> /import/teaching/bio/data/popgen/reads
+├── results
+├── tmp
+└── WHATIDID.txt
 
 ```
 
-For the first step of the pipeline, symlink the file `/import/teaching/bio/data/popgen/reference.fa` and the directory `/import/teaching/bio/data/popgen/reads` to `input/01-mapping`.
+For the first step of the pipeline, symlink the file `/import/teaching/bio/data/popgen/reference.fa` and the directory `/import/teaching/bio/data/popgen/reads` to `~/2019-10-xx-mapping/input/`.
 
 Check how many scaffolds there are in the reference genome:
 
@@ -59,17 +51,14 @@ Now have a look at the `.fq.gz` files (`ls input/reads`).
 
 ## Aligning reads to a reference assembly
 
-This part of the analysis is done in the `results/01-mapping` directory. Remember to keep your commands in the `WHATIDID.txt` file.
-
 The first step in our pipeline is to align the paired end reads to the reference genome. We are using the software `bowtie2`, which was created to align short read sequences to long sequences such as the scaffolds in a reference assembly. `bowtie2`, like most aligners, works in two steps.
 
 In the first step, the scaffold sequence (sometimes known as the database) is indexed, in this case using the [Burrows-Wheeler Transform](https://en.wikipedia.org/wiki/Burrows-Wheeler_transform), which can help compress a large text into less memory. It thus allows for memory efficient alignment. Index files often require the original file to be present in the same directory. We thus start by linking scaffold sequences to `tmp` directory (where all output will be written first).
 
 ```bash
 # Symlink reference.fa to tmp/
-cd tmp
-ln -s ../input/reference.fa .
-cd ..
+
+ln -s input/reference.fa tmp/
 
 # Build the index now.
 bowtie2-build tmp/reference.fa tmp/reference
@@ -129,13 +118,21 @@ samtools view tmp/alignments/f1_B.bam | less -S
 samtools view tmp/alignments/f1_B.bam scaffold_1:10000-10500 | less -S
 ```
 
-Copy the `.bam` and `.bai` files files to a results folder (`results/01-mapping/results`) and symlink them to `input/02-genotyping`.
+Copy the `.bam` and `.bai` files to the `results` directory.
+
 
 ## Variant calling
 
-To begin with, we will need the reference fasta file in addition to the alignments we just created. Symlink the reference fasta file from `input/01-mapping` to `input/02-genotyping` directory.
+Set up a new directory for the second part of today's practical (`2019-10-xx-genotyping`). You will want to set up the relevant subdirectories and `WHATIDID.txt` file as before. Then create a symlink to the `results` from the mapping part of the practical. Remember to keep your commands in the `WHATIDID.txt` file.
 
-The following analysis is done in the directory `results/02-genotyping`. Remember to keep your commands in the `WHATIDID.txt` file.
+```
+2019-10-xx-genotyping/
+├── input  -> ~/2019-10-xx-mapping/results/
+├── results
+├── tmp
+└── WHATIDID.txt
+
+```
 
 There are several approaches to call variants. The simplest approach is to look for positions where the mapped reads consistently have a different base than the reference assembly (the consensus approach). We need to run two steps, `samtools mpileup`, which looks for inconsistencies between the reference and the aligned reads, and `bcftools call`, which interprets them as variants.
 
@@ -145,9 +142,8 @@ We will use multiallelic caller (option `-m`) of bcftools and set all individual
 # Step 1: samtools mpileup
 
 # Symlink reference.fa to tmp/
-cd tmp
-ln -s ../input/reference.fa
-cd ..
+
+ln -s input/reference.fa tmp/
 
 # Create index of the reference (different from that used by bowtie2)
 samtools faidx tmp/reference.fa
