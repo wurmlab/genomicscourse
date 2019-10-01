@@ -6,10 +6,10 @@ Many tools exist for gene prediction, some based on *ab initio* statistical mode
 
 ### Running Maker
 
-Create a new main directory for today's practical (e.g., 2019-09-xx-gene_prediction) and the `input`, `tmp`, and `results` subdirectory. Link the output (assembly) from yesterday's practical into `2019-09-xx-gene_prediction/input`:
+Create a new main directory for today's practical (e.g., 2019-10-xx-gene_prediction) as well as the `input`, `tmp`, and `results` subdirectories and a `WHATIDID.txt` file to log your commands. Link the output (assembly) from yesterday's practical into `2019-10-xx-gene_prediction/input`:
 
 ```
-cd 2019-09-xx-gene_prediction
+cd ~/2019-10-xx-gene_prediction
 ln -s ~/2019-09-xx-assembly/results/assembly.scafSeq input/
 ```
 
@@ -19,7 +19,7 @@ Pull out the longest few scaffolds from `assembly.scafSeq` into a new file:
 seqtk seq -L 10000 input/assembly.scafSeq > tmp/min10000.fa
 ```
 
-Next, `cd` to your `tmp/` folder and run `maker -OPTS`. This will generate an empty `maker_opts.ctl` configuration file (ignore the warning). Edit that file to specify:
+Next, `cd` to your `tmp/` folder and run `maker -OPTS`. This will generate an empty `maker_opts.ctl` configuration file (ignore the warnings). Edit that file using a text editor such as `nano` or `vim` to specify:
   * genome: `min10000.fa`
   * augustus species: a known gene set from a related species, in this case we choose `honeybee1` (yes that's a 1)
   * deactivate RepeatMasker by replacing `model_org=all` to `model_org= ` (i.e., nothing)
