@@ -31,7 +31,7 @@ Finally, run `maker maker_opts.ctl`. This may take a few minutes, depending on h
 
 Genome annotation software like MAKER usually provide information about the exon-intron structure of the genes (e.g., in GFF3 format), and sequence of corresponding messenger RNA and protein products (e.g., in FASTA format).
 
-Once MAKER is done the results will be hidden in subdirectories of `min10000.maker.output`. MAKER provides a helper script to collect this hidden hidden output in one place:
+Once MAKER is done the results will be hidden in subdirectories of `min10000.maker.output`. MAKER provides a helper script to collect this hidden hidden output in one place (again please ignore the warnings for these steps):
 
 ```
 # Pull out information about exon-intron structure of the predicted genes. This
@@ -70,9 +70,9 @@ As you can see, gene prediction software is imperfect – this is even the case 
 
 ##### Using GeneValidator
 
-The [GeneValidator](http://bioinformatics.oxfordjournals.org/content/32/10/1559.long) tool can help to evaluate quality of a gene prediction by comparing features of a gene prediction to similar database sequences. This approach expects that similar sequences should for example be of similar length.
+The [GeneValidator](http://bioinformatics.oxfordjournals.org/content/32/10/1559.long) tool can help to evaluate the quality of a gene prediction by comparing features of a predicted gene to similar database sequences. This approach expects that similar sequences should for example be of similar length.
 
-Although we won't be running GeneValidator, do check the screenshots linked in the next sentence. Try to understand why some gene predictions have no reason for concern [(e.g.)](img-qc/good.png), while others do [(e.g.)](img-qc/bad.png).
+Although we won't be running GeneValidator, please check the screenshots linked in the next sentence. Try to understand why some gene predictions [have no reason for concern](img-qc/good.png), while [others do](img-qc/bad.png).
 
 
 ### Comparing whole genesets & prioritizing genes for manual curation
