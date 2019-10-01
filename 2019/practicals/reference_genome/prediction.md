@@ -2,11 +2,16 @@
 
 You need to have gone through [Part 2: Genome assembly](assembly) before starting this practical.
 
-Many tools exist for gene prediction, some based on *ab initio* statistical models of what a protein-coding gene should look like, others that use similarity with protein-coding genes from other species, and others (such as [Augustus](http://bioinf.uni-greifswald.de/augustus/) and SNAP), that use both. There is no perfect tool or approach, thus we typically run many gene-finding tools and call a consensus between the different predicted gene models.  [MAKER](http://www.yandell-lab.org/software/maker.html) and [JAMg](https://github.com/genomecuration/JAMg) can do this for us. Let's use MAKER on a sandbox example.
+Many tools exist for gene prediction, some based on *ab initio* statistical models of what a protein-coding gene should look like, others that use similarity with protein-coding genes from other species, and others (such as [Augustus](http://bioinf.uni-greifswald.de/augustus/) and [SNAP](https://github.com/KorfLab/SNAP)), that use both. There is no perfect tool or approach, thus we typically run many gene-finding tools and call a consensus between the different predicted gene models.  [MAKER](http://www.yandell-lab.org/software/maker.html) and [JAMg](https://github.com/genomecuration/JAMg) can do this for us. Let's use MAKER on a sandbox example.
 
 ### Running Maker
 
-Create a new main directory for today's practical (e.g., 2019-09-xx-gene_prediction) and the `input`, `tmp`, and `results` subdirectory. Link the output (assembly) from yesterday's practical into `2019-09-xx-gene_prediction/input`.
+Create a new main directory for today's practical (e.g., 2019-09-xx-gene_prediction) and the `input`, `tmp`, and `results` subdirectory. Link the output (assembly) from yesterday's practical into `2019-09-xx-gene_prediction/input`:
+
+```
+cd 2019-09-xx-gene_prediction
+ln -s ~/2019-09-xx-assembly/results/assembly.scafSeq input/
+```
 
 Pull out the longest few scaffolds from `assembly.scafSeq` into a new file:
 
@@ -22,19 +27,30 @@ Next, `cd` to your `tmp/` folder and run `maker -OPTS`. This will generate an em
 
 For a real project, we *would* include RepeatMasker (perhaps after creating a new repeat library), we would provide as much relevant information as possible (e.g., RNAseq read mappings, transcriptome assembly – both improve gene prediction performance *tremendously*), and iteratively train gene prediction algorithms for our data including Augustus and SNAP.
 
-Finally, run `maker maker_opts.ctl`. This may take a few minutes, depending on how much data you gave it. Once its done the results will be hidden in subdirectories of `min10000.maker.output`. MAKER provides a helper script to collect gene predictions into a single file:
+Finally, run `maker maker_opts.ctl`. This may take a few minutes, depending on how much data you gave it.
+
+Genome annotation software like MAKER usually provide information about the exon-intron structure of the genes (e.g., in GFF3 format), and sequence of corresponding messenger RNA and protein products (e.g., in FASTA format).
+
+Once MAKER is done the results will be hidden in subdirectories of `min10000.maker.output`. MAKER provides a helper script to collect this hidden hidden output in one place:
 
 ```
+# Pull out information about exon-intron structure of the predicted genes. This
+# will be saved to the file min10000.all.gff.
+gff3_merge -d min10000.maker.output/min10000_master_datastore_index.log
+
+# Pull out predicted messenger RNA and protein sequences. These will be saved
+# to the files: min10000.all.maker.augustus.transcripts.fasta, and
+# min10000.all.maker.augustus.proteins.fasta
 fasta_merge -d min10000.maker.output/min10000_master_datastore_index.log
 ```
 
 ### Quality control of individual genes
 
-So now we have some gene predictions... how can we know if they are any good? The easiest way to get a feel for this is to use the following example sequences: [illustrative examples](predictions.fa). We will compare them using BLAST to known sequences from other species in the [uniref50 database](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4375400/).
+So now we have some gene predictions... how can we know if they are any good? The easiest way to get a feel for this is to use the following example sequences: [predicted protein sequences from rice and honeybee](predictions.fa). We will compare them using BLAST to known sequences from other species in the [uniref50 database](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4375400/).
 
 ##### Running BLAST
 
-We will use [SequenceServer](https://doi.org/10.1093/molbev/msz185) to run BLAST. The command below will start a server. Once it is ready, open http://localhost:4567 in your browser, paste the [example sequences](predictions.fa) in the textbox and click on the 'BLAST' button to run a BLAST search.
+We will use [SequenceServer](https://doi.org/10.1093/molbev/msz185) to run BLAST. The command below will start a server. Once the server is ready, open http://localhost:4567 in your browser, paste the [example rice and honeybee protein sequences](predictions.fa) in the textbox and click on the 'BLAST' button to run a BLAST search.
 
 ```bash
 sequenceserver -d /import/teaching/bio/data/reference_databases/uniref50
@@ -42,7 +58,7 @@ sequenceserver -d /import/teaching/bio/data/reference_databases/uniref50
 
 Do any of the gene predictions have significant similarity to known sequences? For a given gene prediction, do you think it is complete, or can you infer from the BLAST alignments that something may be wrong? Start by comparing the length of your gene prediction to that of the BLAST hits. Is your gene prediction considerably longer or considerably shorter than BLAST hits? Why?
 
-Now try a few of your gene predictions. BLAST only a maximum of 10 sequences at a time. Instead of selecting the first 10 genes, copy-paste your sequences randomly from the file.
+Now try a few of your gene predictions. BLAST only a maximum of 8 sequences at a time (instead of simply selecting the first 8 genes in your file, copy-paste sequences randomly from the file).
 
 ---
 
