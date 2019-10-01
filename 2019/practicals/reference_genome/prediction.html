@@ -38,12 +38,12 @@ code > span.er { color: #ff0000; font-weight: bold; }
 <p>You need to have gone through <a href="assembly">Part 2: Genome assembly</a> before starting this practical.</p>
 <p>Many tools exist for gene prediction, some based on <em>ab initio</em> statistical models of what a protein-coding gene should look like, others that use similarity with protein-coding genes from other species, and others (such as <a href="http://bioinf.uni-greifswald.de/augustus/">Augustus</a> and <a href="https://github.com/KorfLab/SNAP">SNAP</a>), that use both. There is no perfect tool or approach, thus we typically run many gene-finding tools and call a consensus between the different predicted gene models. <a href="http://www.yandell-lab.org/software/maker.html">MAKER</a> and <a href="https://github.com/genomecuration/JAMg">JAMg</a> can do this for us. Let's use MAKER on a sandbox example.</p>
 <h3 id="running-maker">Running Maker</h3>
-<p>Create a new main directory for today's practical (e.g., 2019-09-xx-gene_prediction) and the <code>input</code>, <code>tmp</code>, and <code>results</code> subdirectory. Link the output (assembly) from yesterday's practical into <code>2019-09-xx-gene_prediction/input</code>:</p>
-<pre><code>cd 2019-09-xx-gene_prediction
+<p>Create a new main directory for today's practical (e.g., 2019-10-xx-gene_prediction) as well as the <code>input</code>, <code>tmp</code>, and <code>results</code> subdirectories and a <code>WHATIDID.txt</code> file to log your commands. Link the output (assembly) from yesterday's practical into <code>2019-10-xx-gene_prediction/input</code>:</p>
+<pre><code>cd ~/2019-10-xx-gene_prediction
 ln -s ~/2019-09-xx-assembly/results/assembly.scafSeq input/</code></pre>
 <p>Pull out the longest few scaffolds from <code>assembly.scafSeq</code> into a new file:</p>
 <pre><code>seqtk seq -L 10000 input/assembly.scafSeq &gt; tmp/min10000.fa</code></pre>
-<p>Next, <code>cd</code> to your <code>tmp/</code> folder and run <code>maker -OPTS</code>. This will generate an empty <code>maker_opts.ctl</code> configuration file (ignore the warning). Edit that file to specify:</p>
+<p>Next, <code>cd</code> to your <code>tmp/</code> folder and run <code>maker -OPTS</code>. This will generate an empty <code>maker_opts.ctl</code> configuration file (ignore the warnings). Edit that file using a text editor such as <code>nano</code> or <code>vim</code> to specify:</p>
 <ul class="incremental">
 <li>genome: <code>min10000.fa</code><br /></li>
 <li>augustus species: a known gene set from a related species, in this case we choose <code>honeybee1</code> (yes that's a 1)<br /></li>
@@ -53,7 +53,7 @@ ln -s ~/2019-09-xx-assembly/results/assembly.scafSeq input/</code></pre>
 <p>For a real project, we <em>would</em> include RepeatMasker (perhaps after creating a new repeat library), we would provide as much relevant information as possible (e.g., RNAseq read mappings, transcriptome assembly – both improve gene prediction performance <em>tremendously</em>), and iteratively train gene prediction algorithms for our data including Augustus and SNAP.</p>
 <p>Finally, run <code>maker maker_opts.ctl</code>. This may take a few minutes, depending on how much data you gave it.</p>
 <p>Genome annotation software like MAKER usually provide information about the exon-intron structure of the genes (e.g., in GFF3 format), and sequence of corresponding messenger RNA and protein products (e.g., in FASTA format).</p>
-<p>Once MAKER is done the results will be hidden in subdirectories of <code>min10000.maker.output</code>. MAKER provides a helper script to collect this hidden hidden output in one place:</p>
+<p>Once MAKER is done the results will be hidden in subdirectories of <code>min10000.maker.output</code>. MAKER provides a helper script to collect this hidden hidden output in one place (again please ignore the warnings for these steps):</p>
 <pre><code># Pull out information about exon-intron structure of the predicted genes. This
 # will be saved to the file min10000.all.gff.
 gff3_merge -d min10000.maker.output/min10000_master_datastore_index.log
@@ -76,16 +76,16 @@ fasta_merge -d min10000.maker.output/min10000_master_datastore_index.log</code><
 </blockquote>
 <hr />
 <h5 id="using-genevalidator">Using GeneValidator</h5>
-<p>The <a href="http://bioinformatics.oxfordjournals.org/content/32/10/1559.long">GeneValidator</a> tool can help to evaluate quality of a gene prediction by comparing features of a gene prediction to similar database sequences. This approach expects that similar sequences should for example be of similar length.</p>
-<p>Although we won't be running GeneValidator, do check the screenshots linked in the next sentence. Try to understand why some gene predictions have no reason for concern <a href="img-qc/good.png">(e.g.)</a>, while others do <a href="img-qc/bad.png">(e.g.)</a>.</p>
+<p>The <a href="http://bioinformatics.oxfordjournals.org/content/32/10/1559.long">GeneValidator</a> tool can help to evaluate the quality of a gene prediction by comparing features of a predicted gene to similar database sequences. This approach expects that similar sequences should for example be of similar length.</p>
+<p>Although we won't be running GeneValidator, please check the screenshots linked in the next sentence. Try to understand why some gene predictions <a href="img-qc/good.png">have no reason for concern</a>, while <a href="img-qc/bad.png">others do</a>.</p>
 <h3 id="comparing-whole-genesets-prioritizing-genes-for-manual-curation">Comparing whole genesets &amp; prioritizing genes for manual curation</h3>
-<p>Genevalidator's visual output can be handy when looking at few genes. But the tool also provides tab-delimited output, handy when working in the command-line or when running the software on whole proteomes. For example, this can help analysis:</p>
+<p>Genevalidator's visual output can be handy when looking at few genes. But the tool also provides tab-delimited output, useful when working in the command-line or running the software on whole proteomes. This can help analysis:</p>
 <ul class="incremental">
-<li>in situations when you can choose between multiple gene sets.<br /></li>
-<li>or to identify which gene predictions are likely ok, and which need to be inspected and potentially manual fixed.</li>
+<li>In situations when you can choose between multiple gene sets.<br /></li>
+<li>To identify which gene predictions are likely correct, and which predictions need might require further inspection and potentially be manually fixed.</li>
 </ul>
 <h3 id="manual-curation">Manual curation</h3>
-<p>Because automated gene predictions aren't perfect, manual inspection and fixing are often required. The most commonly used software for this is <a href="http://genomearchitect.org/">Apollo/WebApollo</a>.</p>
+<p>Because automated gene predictions aren't perfect, manual inspection and fixing is often required. The most commonly used software for this is <a href="http://genomearchitect.org/">Apollo/WebApollo</a>.</p>
 <hr>
 <small>Copyright <a href="https://github.com/wurmlab/genomicscourse/graphs/contributors">Authors</a>. All rights reserverd.
 
