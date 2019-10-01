@@ -224,7 +224,7 @@ igv.sh
 
 IGV loads the human genome, so you need to define another genome file (`Genome` > `Load Genome from File`, then choose the assembly `reference.fa` file).
 
-You can load some of the BAMs and the VCF file you produced.
+You can then load some of the BAMs and the VCF file you produced (`File` > `Load from File`).
 
 * Has bcftools/mpileup recovered the same positions as you would by looking at the alignments with IGV?
 * Do you think our filtering was effective?
