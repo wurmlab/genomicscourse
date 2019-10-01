@@ -58,7 +58,7 @@ In the first step, the scaffold sequence (sometimes known as the database) is in
 ```bash
 # Symlink reference.fa to tmp/
 
-ln -s input/reference.fa tmp/
+ln -s ~/2019-10-xx-mapping/input/reference.fa tmp/
 
 # Build the index now.
 bowtie2-build tmp/reference.fa tmp/reference
@@ -120,14 +120,22 @@ samtools view tmp/alignments/f1_B.bam scaffold_1:10000-10500 | less -S
 
 Copy the `.bam` and `.bai` files to the `results` directory.
 
+```bash
+cp tmp/alignments/*.bam results/
+cp tmp/alignments/*.bai results/
+
+```
+
 
 ## Variant calling
 
-Set up a new directory for the second part of today's practical (`2019-10-xx-genotyping`). You will want to set up the relevant subdirectories and `WHATIDID.txt` file as before. Then create a symlink to the `results` from the mapping part of the practical. Remember to keep your commands in the `WHATIDID.txt` file.
+Set up a new directory for the second part of today's practical (`2019-10-xx-genotyping`). You will want to set up the relevant subdirectories and `WHATIDID.txt` file as before. Then create symlinks from `/import/teaching/bio/data/popgen/reference.fa` and the `results` from the mapping part of the practical to your `input` directory. Remember to keep your commands in the `WHATIDID.txt` file.
 
 ```
 2019-10-xx-genotyping/
-├── input  -> ~/2019-10-xx-mapping/results/
+├── input  
+│   ├── -> /import/teaching/bio/data/popgen/reference.fa
+│   └── -> ~/2019-10-xx-mapping/results/*
 ├── results
 ├── tmp
 └── WHATIDID.txt
@@ -143,7 +151,7 @@ We will use multiallelic caller (option `-m`) of bcftools and set all individual
 
 # Symlink reference.fa to tmp/
 
-ln -s input/reference.fa tmp/
+ln -s ~/2019-10-xx-genotyping/input/reference.fa tmp/
 
 # Create index of the reference (different from that used by bowtie2)
 samtools faidx tmp/reference.fa
@@ -197,7 +205,7 @@ bcftools view -v snps -m2 -M2 --min-ac 1:minor tmp/variants/filtered_calls.vcf >
 * Can you find any other parameters indicating the quality of the site?
 * Can you find any other parameters indicating the quality of the variant call for a given individual on a given site?
 
-Now that we have a SNP set, we can copy it to `results/` directory.
+Now that we have a SNP set, we can copy it to `results` directory.
 
 ```sh
 cp tmp/variants/snp.vcf results
@@ -214,9 +222,9 @@ Open IGV[.](http://software.broadinstitute.org/software/igv/download)
 igv.sh
 ```
 
-IGV loads the human genome, so you need to define another genome file (`Genome` > `Genomes from file`, then choose the assembly `reference.fa` file).
+IGV loads the human genome, so you need to define another genome file (`Genome` > `Load Genome from File`, then choose the assembly `reference.fa` file).
 
-You can load some of the BAMs and the VCF file you produced.
+You can then load some of the BAMs and the VCF file you produced (`File` > `Load from File`).
 
 * Has bcftools/mpileup recovered the same positions as you would by looking at the alignments with IGV?
 * Do you think our filtering was effective?
