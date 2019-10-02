@@ -12,7 +12,7 @@ In the second part, we are going to measure genetic differentiation between the 
 
 ## Input into R
 
-Again, make a directory for this practical. You should create a directory for the input data (with a link, using `ln -s`, to the data directory), one for the results and a `WHATIDID.txt` file in which you log your commands. 
+Again, make a directory for this practical. You should create a directory for the `input` data (with a link, using `ln -s`, to the data directory), one for the `results` and a `WHATIDID.txt` file in which you log your commands. 
 
 ```bash
 2019-10-xx-population_genetics
@@ -22,12 +22,12 @@ Again, make a directory for this practical. You should create a directory for th
 └── WHATIDID.txt
 ```
 
-You will only need the `snp.vcf` file we created in the last practical and place it into the appropriate input directory (if you don't have this file, you can download it from [here](../../data/popgen/vcf/snp.vcf.gz?raw=true "Download vcf"), if you do this you will need to replace 'snp.vcf' with 'snp.vcf.gz' in the code below).
+You will only need the `snp.vcf` file we created in the last practical and place it into the appropriate input directory (if you don't have this file, you can download it from [here](../../data/popgen/vcf/snp.vcf.gz?raw=true "Download vcf"), if you do this you will need to replace `snp.vcf` with `snp.vcf.gz` in the code below).
 
 
 It's a good idea to note down the results of your analysis in the results directory, as well as saving any graph you make.
 
-The package `adegenet` uses a object called `r genlight`. To create it, we need to input a matrix where each row is an individual and each column is a locus (i.e. a SNP position). We can do this using bcftools:
+The package `adegenet` uses an object called `r genlight`. To create it, we need to input a matrix where each row is an individual and each column is a locus (i.e. a SNP position). We can do this using bcftools:
 
 ```sh
 # Select the information in the vcf file without the header
@@ -38,28 +38,27 @@ bcftools query -l input/snp.vcf > sample_names.txt
 
 ```
 
-You can open a new R session by typing `rstudio-genomics` in the terminal. Then:
+You can open a new R session by typing `rstudio-genomics` in the terminal. The following lines of code should be entered into your console within Rstudio:
 
 ```r
 
-# input the SNP data and the sample names
-snp_matrix   <- read.table("snp_matrix.txt")
-sample_names <- read.table("sample_names.txt")
-sample_names <- sample_names$V1
+# input the SNP data and the sample names by reading the .txt files you just created with bcftools
+snp_data   <- read.table("snp_matrix.txt")
+names_input <- read.table("sample_names.txt")
+raw_sample_names <- names_input$V1
 
 # Keep the position of the loci
-loci       <- snp_matrix[,1:2]
+loci       <- snp_data[,1:2]
 colnames(loci) <- c("scaffold", "position")
 
 
-# Turn the matrix on its side (rows = individuals, columns = loci)
-# t() returns the transpose of a matrix (turns it on its side)
-snp_matrix <- snp_matrix[,3:ncol(snp_matrix)]
-snp_matrix <- t(snp_matrix)
+# Transpose the data (turn it on its side so that rows = individuals and columns = loci)
 
-# add sample names
+snp_matrix <- t(snp_data[,3:ncol(snp_data)])
+
+# Clean the sample names and add them to the rows of our matrix
 # gsub() performs a find and replace for strings of text
-sample_names <- gsub("\\.bam","", sample_names)
+sample_names <- gsub("\\.bam","", raw_sample_names)
 row.names(snp_matrix) <- sample_names
 
 # reorder the rows by population
