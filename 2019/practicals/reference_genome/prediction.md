@@ -84,3 +84,11 @@ Genevalidator's visual output can be handy when looking at few genes. But the to
 ### Manual curation
 
 Because automated gene predictions aren't perfect, manual inspection and fixing is often required. The most commonly used software for this is [Apollo/WebApollo](http://genomearchitect.org/).
+
+For this practical we will modify one of the vitellogenin genes in the fire ant genome.
+
+Open WebApollo: http://138.37.86.30
+
+It will ask you for username and password. The username is your email address. Password will be announced in class.
+
+Once you have logged in, search for the gene model "XM_026131882.1" (paste it in the first textbox left of "Go" button).
