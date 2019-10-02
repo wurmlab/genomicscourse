@@ -22,7 +22,7 @@ The aim of this practical is to genotype these 14 individuals. The steps in the 
 
 We recommend that you set up a directory for this work following the same principles as in the last few practicals. You should have subdirectories called `input`, `results` and `tmp` and a `WHATIDID.txt` file in which to log your commands:
 
-```
+```bash
 2019-10-xx-mapping/
 ├── input  
 │   ├── -> /import/teaching/bio/data/popgen/reference.fa
@@ -37,7 +37,7 @@ For the first step of the pipeline, symlink the file `/import/teaching/bio/data/
 
 Check how many scaffolds there are in the reference genome:
 
-```sh
+```bash
 grep "^>" input/reference.fa
 ```
 
@@ -196,7 +196,7 @@ In the downstream analysis, we only want to look at sites that are:
 2. biallelic (-m2 -M2)
 3. where the minor allele is present in at least one individual (because we do not care for the sites where all individuals are different from the reference, yet equal to each other)
 
-```sh
+```bash
 bcftools view -v snps -m2 -M2 --min-ac 1:minor tmp/variants/filtered_calls.vcf > tmp/variants/snp.vcf
 
 ```
@@ -207,7 +207,7 @@ bcftools view -v snps -m2 -M2 --min-ac 1:minor tmp/variants/filtered_calls.vcf >
 
 Now that we have a SNP set, we can copy it to `results` directory.
 
-```sh
+```bash
 cp tmp/variants/snp.vcf results
 
 ```
@@ -218,7 +218,7 @@ In this part of the practical, we are going to use the software IGV to visualise
 
 Open IGV[.](http://software.broadinstitute.org/software/igv/download)
 
-```
+```bash
 igv.sh
 ```
 

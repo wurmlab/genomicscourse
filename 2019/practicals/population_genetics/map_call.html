@@ -50,17 +50,16 @@ code > span.er { color: #ff0000; font-weight: bold; }
 <li>Visualise the alignments and the SNP calls in the genome browser <code>igv</code>.</li>
 </ol>
 <p>We recommend that you set up a directory for this work following the same principles as in the last few practicals. You should have subdirectories called <code>input</code>, <code>results</code> and <code>tmp</code> and a <code>WHATIDID.txt</code> file in which to log your commands:</p>
-<pre><code>2019-10-xx-mapping/
-├── input  
-│   ├── -&gt; /import/teaching/bio/data/popgen/reference.fa
-│   └── -&gt; /import/teaching/bio/data/popgen/reads
-├── results
-├── tmp
-└── WHATIDID.txt
-</code></pre>
+<pre class="sourceCode bash"><code class="sourceCode bash"><span class="kw">2019-10-xx-mapping/</span>
+├── <span class="kw">input</span>  
+│   ├── <span class="kw">-&gt;</span> /import/teaching/bio/data/popgen/reference.fa
+│   └── <span class="kw">-&gt;</span> /import/teaching/bio/data/popgen/reads
+├── <span class="kw">results</span>
+├── <span class="kw">tmp</span>
+└── <span class="kw">WHATIDID.txt</span></code></pre>
 <p>For the first step of the pipeline, symlink the file <code>/import/teaching/bio/data/popgen/reference.fa</code> and the directory <code>/import/teaching/bio/data/popgen/reads</code> to <code>~/2019-10-xx-mapping/input/</code>.</p>
 <p>Check how many scaffolds there are in the reference genome:</p>
-<pre class="sh"><code>grep &quot;^&gt;&quot; input/reference.fa</code></pre>
+<pre class="sourceCode bash"><code class="sourceCode bash"><span class="kw">grep</span> <span class="st">&quot;^&gt;&quot;</span> input/reference.fa</code></pre>
 <p>Now have a look at the <code>.fq.gz</code> files (<code>ls input/reads</code>).</p>
 <ul class="incremental">
 <li>Why does each sample have two sets of reads?<br /></li>
@@ -165,20 +164,18 @@ code > span.er { color: #ff0000; font-weight: bold; }
 <li>biallelic (-m2 -M2)<br /></li>
 <li>where the minor allele is present in at least one individual (because we do not care for the sites where all individuals are different from the reference, yet equal to each other)</li>
 </ol>
-<pre class="sh"><code>bcftools view -v snps -m2 -M2 --min-ac 1:minor tmp/variants/filtered_calls.vcf &gt; tmp/variants/snp.vcf
-</code></pre>
+<pre class="sourceCode bash"><code class="sourceCode bash"><span class="kw">bcftools</span> view -v snps -m2 -M2 --min-ac 1:minor tmp/variants/filtered_calls.vcf <span class="kw">&gt;</span> tmp/variants/snp.vcf</code></pre>
 <ul class="incremental">
 <li>How many SNPs does the resulting VCF file have?<br /></li>
 <li>Can you find any other parameters indicating the quality of the site?<br /></li>
 <li>Can you find any other parameters indicating the quality of the variant call for a given individual on a given site?</li>
 </ul>
 <p>Now that we have a SNP set, we can copy it to <code>results</code> directory.</p>
-<pre class="sh"><code>cp tmp/variants/snp.vcf results
-</code></pre>
+<pre class="sourceCode bash"><code class="sourceCode bash"><span class="kw">cp</span> tmp/variants/snp.vcf results</code></pre>
 <h2 id="viewing-the-results-using-igv-integrative-genome-viewer">Viewing the results using IGV (Integrative Genome Viewer)</h2>
 <p>In this part of the practical, we are going to use the software IGV to visualise the alignments we created and check some of the positions where variants were called.</p>
 <p>Open IGV<a href="http://software.broadinstitute.org/software/igv/download">.</a></p>
-<pre><code>igv.sh</code></pre>
+<pre class="sourceCode bash"><code class="sourceCode bash"><span class="kw">igv.sh</span></code></pre>
 <p>IGV loads the human genome, so you need to define another genome file (<code>Genome</code> &gt; <code>Load Genome from File</code>, then choose the assembly <code>reference.fa</code> file).</p>
 <p>You can then load some of the BAMs and the VCF file you produced (<code>File</code> &gt; <code>Load from File</code>).</p>
 <ul class="incremental">

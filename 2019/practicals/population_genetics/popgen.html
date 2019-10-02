@@ -41,49 +41,46 @@ code > span.er { color: #ff0000; font-weight: bold; }
 <p>In the first part of the analysis, we are going to create a heat map of the genotypes of the individuals and we are going to run Principal Component Analysis (PCA) on these genotypes. This will allow us to test if any of the individuals cluster together by their B/b genotype. This will be done using the <code>adegenet</code> package in R.</p>
 <p>In the second part, we are going to measure genetic differentiation between the two groups (B and b). We will do this analysis over a sliding window, to see if the differentiation between B and b are specific to any portion of the genome. We will also measure the genetic diversity among each of the groups, which may tell us something about the evolutionary history of the portions of genome represented in our assembly. This will be done using the <code>PopGenome</code> package in R.</p>
 <h2 id="input-into-r">Input into R</h2>
-<p>Again, make a directory for this practical. You should create a directory for the input data (with a link, using <code>ln -s</code>, to the data directory), one for the results and a <code>WHATIDID.txt</code> file in which you log your commands.</p>
+<p>Again, make a directory for this practical. You should create a directory for the <code>input</code>, one for the <code>results</code> and a <code>WHATIDID.txt</code> file in which you log your commands.</p>
 <pre class="sourceCode bash"><code class="sourceCode bash"><span class="kw">2019-10-xx-population_genetics</span>
 ├── <span class="kw">input</span>
 │   └── <span class="kw">snp.vcf</span>
 ├── <span class="kw">results</span>
 └── <span class="kw">WHATIDID.txt</span></code></pre>
-<p>You will only need the <code>snp.vcf</code> file we created in the last practical and place it into the appropriate input directory (if you don't have this file, you can download it from <a href="../../data/popgen/vcf/snp.vcf.gz?raw=true" title="Download vcf">here</a>, if you do this you will need to replace 'snp.vcf' with 'snp.vcf.gz' in the code below).</p>
+<p>You will only need the <code>snp.vcf</code> file we created in the last practical and place it into the appropriate input directory (if you don't have this file, you can download it from <a href="../../data/popgen/vcf/snp.vcf.gz?raw=true" title="Download vcf">here</a>, if you do this you will need to replace <code>snp.vcf</code> with <code>snp.vcf.gz</code> in the code below).</p>
 <p>It's a good idea to note down the results of your analysis in the results directory, as well as saving any graph you make.</p>
-<p>The package <code>adegenet</code> uses a object called <code>r genlight</code>. To create it, we need to input a matrix where each row is an individual and each column is a locus (i.e. a SNP position). We can do this using bcftools:</p>
-<pre class="sh"><code># Select the information in the vcf file without the header
-bcftools query input/snp.vcf -f '%CHROM\t%POS[\t%GT]\n' &gt; snp_matrix.txt
+<p>The package <code>adegenet</code> uses an object called <code>r genlight</code>. To create it, we need to input a matrix where each row is an individual and each column is a locus (i.e. a SNP position). We can do this using bcftools:</p>
+<pre class="sourceCode bash"><code class="sourceCode bash"><span class="co"># Select the information in the vcf file without the header</span>
+<span class="kw">bcftools</span> query input/snp.vcf -f <span class="st">'%CHROM\t%POS[\t%GT]\n'</span> <span class="kw">&gt;</span> snp_matrix.txt
 
-# get sample names
-bcftools query -l input/snp.vcf &gt; sample_names.txt
-</code></pre>
-<p>You can open a new R session by typing <code>rstudio-genomics</code> in the terminal. Then:</p>
+<span class="co"># get sample names</span>
+<span class="kw">bcftools</span> query -l input/snp.vcf <span class="kw">&gt;</span> sample_names.txt</code></pre>
+<p>You can open a new R session by typing <code>rstudio-genomics</code> in the terminal. The following lines of code should be entered into your console within Rstudio:</p>
 <pre class="sourceCode r"><code class="sourceCode r">
-<span class="co"># input the SNP data and the sample names</span>
-snp_matrix   &lt;-<span class="st"> </span><span class="kw">read.table</span>(<span class="st">&quot;snp_matrix.txt&quot;</span>)
-sample_names &lt;-<span class="st"> </span><span class="kw">read.table</span>(<span class="st">&quot;sample_names.txt&quot;</span>)
-sample_names &lt;-<span class="st"> </span>sample_names$V1
+<span class="co"># input the SNP data and the sample names by reading the .txt files you just created with bcftools</span>
+snp_data   &lt;-<span class="st"> </span><span class="kw">read.table</span>(<span class="st">&quot;snp_matrix.txt&quot;</span>)
+names_input &lt;-<span class="st"> </span><span class="kw">read.table</span>(<span class="st">&quot;sample_names.txt&quot;</span>)
+raw_sample_names &lt;-<span class="st"> </span>names_input$V1
 
 <span class="co"># Keep the position of the loci</span>
-loci       &lt;-<span class="st"> </span>snp_matrix[,<span class="dv">1</span>:<span class="dv">2</span>]
+loci       &lt;-<span class="st"> </span>snp_data[, <span class="dv">1</span>:<span class="dv">2</span>]
 <span class="kw">colnames</span>(loci) &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;scaffold&quot;</span>, <span class="st">&quot;position&quot;</span>)
 
 
-<span class="co"># Turn the matrix on its side (rows = individuals, columns = loci)</span>
-<span class="co"># t() returns the transpose of a matrix (turns it on its side)</span>
-snp_matrix &lt;-<span class="st"> </span>snp_matrix[,<span class="dv">3</span>:<span class="kw">ncol</span>(snp_matrix)]
-snp_matrix &lt;-<span class="st"> </span><span class="kw">t</span>(snp_matrix)
+<span class="co"># Transpose the data (turn it on its side so that rows = individuals and columns = loci)</span>
 
-<span class="co"># add sample names</span>
-<span class="co"># gsub() performs a find and replace for strings of text</span>
-sample_names &lt;-<span class="st"> </span><span class="kw">gsub</span>(<span class="st">&quot;</span><span class="ch">\\</span><span class="st">.bam&quot;</span>,<span class="st">&quot;&quot;</span>, sample_names)
+snp_matrix &lt;-<span class="st"> </span><span class="kw">t</span>(snp_data[,<span class="dv">3</span>:<span class="kw">ncol</span>(snp_data)])
+
+<span class="co"># Clean the sample names and add them to the rows of our matrix</span>
+
+sample_names &lt;-<span class="st"> </span><span class="kw">gsub</span>(<span class="st">&quot;</span><span class="ch">\\</span><span class="st">.bam&quot;</span>, <span class="st">&quot;&quot;</span>, raw_sample_names)
 <span class="kw">row.names</span>(snp_matrix) &lt;-<span class="st"> </span>sample_names
 
-<span class="co"># reorder the rows by population</span>
-<span class="co"># grep() performs a search for a specified text-string</span>
-bb &lt;-<span class="st"> </span>sample_names[<span class="kw">grep</span>(<span class="st">&quot;B&quot;</span>, sample_names)]
-lb &lt;-<span class="st"> </span>sample_names[<span class="kw">grep</span>(<span class="st">&quot;b&quot;</span>, sample_names)]
+<span class="co"># Finally we reorder the rows by population </span>
+bb &lt;-<span class="st"> </span>sample_names[<span class="kw">grep</span>(<span class="st">&quot;B&quot;</span>, sample_names)] <span class="co"># B samples (bb = &quot;big B&quot;)</span>
+lb &lt;-<span class="st"> </span>sample_names[<span class="kw">grep</span>(<span class="st">&quot;b&quot;</span>, sample_names) ]<span class="co"># b samples (lb = &quot;little b&quot;)</span>
 
-snp_matrix &lt;-<span class="st"> </span>snp_matrix[<span class="kw">c</span>(bb,lb),]</code></pre>
+snp_matrix &lt;-<span class="st"> </span>snp_matrix[<span class="kw">c</span>(bb, lb), ]</code></pre>
 <h2 id="analysis-using-adegenet">Analysis using <code>adegenet</code></h2>
 <p>Once this is done, we can create a new <code>genlight</code> object that contains all the SNP data</p>
 <pre class="sourceCode r"><code class="sourceCode r">
@@ -93,9 +90,9 @@ snp_matrix &lt;-<span class="st"> </span>snp_matrix[<span class="kw">c</span>(bb
 <span class="co"># R won't run the command until all brackets have been closed</span>
 snp &lt;-<span class="st"> </span><span class="kw">new</span>(<span class="st">&quot;genlight&quot;</span>,
            snp_matrix,
-           <span class="dt">chromosome=</span>loci$scaffold,
-           <span class="dt">position=</span>loci$position,
-           <span class="dt">pop=</span><span class="kw">as.factor</span>(<span class="kw">c</span>(<span class="kw">rep</span>(<span class="st">&quot;B&quot;</span>,<span class="dv">7</span>), <span class="kw">rep</span>(<span class="st">&quot;b&quot;</span>,<span class="dv">7</span>))))
+           <span class="dt">chromosome =</span> loci$scaffold,
+           <span class="dt">position =</span> loci$position,
+           <span class="dt">pop =</span> <span class="kw">as.factor</span>(<span class="kw">c</span>(<span class="kw">rep</span>(<span class="st">&quot;B&quot;</span>, <span class="dv">7</span>), <span class="kw">rep</span>(<span class="st">&quot;b&quot;</span>, <span class="dv">7</span>))))
 
 <span class="co"># You can access the data using the &quot;@&quot; sign:</span>
 snp
@@ -104,7 +101,7 @@ snp@gen
 
 snp@chromosome
 
-<span class="co"># although there are some functions that may also be helpful:</span>
+<span class="co"># There are some functions that may also be helpful:</span>
 <span class="kw">ploidy</span>(snp)</code></pre>
 <p>Now plot a heatmap showing the genotypes.</p>
 <pre class="sourceCode r"><code class="sourceCode r">
@@ -113,42 +110,43 @@ snp@chromosome
 <p>You can also perform a Principle Component Analysis (PCA) and plot the first few components.</p>
 <pre class="sourceCode r"><code class="sourceCode r">
 ## PCA
-pca &lt;-<span class="st"> </span><span class="kw">glPca</span>(snp, <span class="dt">nf=</span><span class="dv">10</span>) <span class="co"># you can select 10 components</span>
+pca &lt;-<span class="st"> </span><span class="kw">glPca</span>(snp, <span class="dt">nf =</span> <span class="dv">10</span>) <span class="co"># you can select 10 components</span>
 
-<span class="co"># fast plot</span>
-<span class="kw">scatter</span>(pca, <span class="dt">posi=</span><span class="st">&quot;bottomright&quot;</span>)
+<span class="co"># Quick plot</span>
+<span class="kw">scatter</span>(pca, <span class="dt">posi =</span> <span class="st">&quot;none&quot;</span>)
+
 
 <span class="co"># Plot of the first few axes coloured by population</span>
-<span class="kw">par</span>(<span class="dt">mfrow=</span><span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">2</span>))
-<span class="kw">plot</span>(pca$scores[,<span class="dv">1</span>], pca$scores[,<span class="dv">2</span>],
-     <span class="dt">col=</span><span class="kw">c</span>(<span class="kw">rep</span>(<span class="st">&quot;blue&quot;</span>,<span class="dv">7</span>), <span class="kw">rep</span>(<span class="st">&quot;orange&quot;</span>,<span class="dv">7</span>)),<span class="dt">cex=</span><span class="dv">2</span>)
-<span class="kw">text</span>(pca$scores[,<span class="dv">1</span>], pca$scores[,<span class="dv">2</span>] +<span class="st"> </span><span class="fl">0.7</span>,
-     <span class="dt">labels=</span><span class="kw">rownames</span>(pca$scores), <span class="dt">cex=</span> <span class="fl">0.7</span>)
-<span class="kw">plot</span>(pca$scores[,<span class="dv">1</span>], pca$scores[,<span class="dv">3</span>],
-     <span class="dt">col=</span><span class="kw">c</span>(<span class="kw">rep</span>(<span class="st">&quot;blue&quot;</span>,<span class="dv">7</span>), <span class="kw">rep</span>(<span class="st">&quot;orange&quot;</span>,<span class="dv">7</span>)),<span class="dt">cex=</span><span class="dv">2</span>)
+
+<span class="kw">plot</span>(<span class="dt">x =</span> pca$scores[, <span class="dv">1</span>], <span class="dt">y =</span> pca$scores[, <span class="dv">2</span>],
+     <span class="dt">col =</span> <span class="kw">c</span>(<span class="kw">rep</span>(<span class="st">&quot;blue&quot;</span>, <span class="dv">7</span>), <span class="kw">rep</span>(<span class="st">&quot;orange&quot;</span>, <span class="dv">7</span>)), <span class="dt">cex =</span> <span class="dv">2</span>)
+<span class="kw">text</span>(pca$scores[, <span class="dv">1</span>], pca$scores[, <span class="dv">2</span>] +<span class="st"> </span><span class="fl">0.7</span>,
+     <span class="dt">labels =</span> <span class="kw">rownames</span>(pca$scores), <span class="dt">cex =</span> <span class="fl">0.7</span>)
+<span class="kw">plot</span>(pca$scores[, <span class="dv">1</span>], pca$scores[, <span class="dv">3</span>],
+     <span class="dt">col =</span> <span class="kw">c</span>(<span class="kw">rep</span>(<span class="st">&quot;blue&quot;</span>, <span class="dv">7</span>), <span class="kw">rep</span>(<span class="st">&quot;orange&quot;</span>, <span class="dv">7</span>)), <span class="dt">cex =</span> <span class="dv">2</span>)
 <span class="kw">text</span>(pca$scores[,<span class="dv">1</span>], pca$scores[,<span class="dv">3</span>] +<span class="st"> </span><span class="fl">0.7</span>,
-    <span class="dt">labels=</span><span class="kw">rownames</span>(pca$scores), <span class="dt">cex=</span> <span class="fl">0.7</span>)</code></pre>
-<p>The aim of these analysis is to test whether the B and the b individuals cluster together or separately. The first principal component separates B and b. But if you look in the heat map, the separation is not constant in the whole genome.</p>
-<p>Each of the scaffolds has been retrieved from a different chromosome. Below, we can test whether the differentiation between B and b is only seen in one of the scaffolds.</p>
+    <span class="dt">labels=</span><span class="kw">rownames</span>(pca$scores), <span class="dt">cex =</span> <span class="fl">0.7</span>)</code></pre>
+<p>The aim of these analysis is to test whether the B and the b individuals cluster together or separately. The first principal component separates B and b. But if you look at the heat map, the separation is not constant in the whole genome (you can navigate between your plots using the arrow buttons above the plot window in Rstudio).</p>
+<p>Each of the scaffolds has been retrieved from a different chromosome. We can test whether the differentiation between B and b is only seen in one of the scaffolds.</p>
 <pre class="sourceCode r"><code class="sourceCode r"><span class="co"># We will start with scaffold_2</span>
 
 scaffold_2_index &lt;-<span class="st"> </span><span class="kw">which</span>(snp@chromosome ==<span class="st"> &quot;scaffold_2&quot;</span>)
-scaffold_2 &lt;-<span class="st"> </span>snp[,scaffold_2_index]
+scaffold_2 &lt;-<span class="st"> </span>snp[, scaffold_2_index]
 
 <span class="kw">glPlot</span>(scaffold_2)
 
-pca2 &lt;-<span class="st"> </span><span class="kw">glPca</span>(scaffold_2, <span class="dt">nf=</span><span class="dv">10</span>) <span class="co"># you can select 10 components</span>
-<span class="kw">scatter</span>(pca2, <span class="dt">posi=</span><span class="st">&quot;bottomright&quot;</span>)
+scaffold_2_pca &lt;-<span class="st"> </span><span class="kw">glPca</span>(scaffold_2, <span class="dt">nf =</span> <span class="dv">10</span>)
+<span class="kw">scatter</span>(scaffold_2_pca, <span class="dt">posi =</span> <span class="st">&quot;none&quot;</span>)
 
 
 <span class="co"># scaffold_1</span>
 scaffold_1_index &lt;-<span class="st"> </span><span class="kw">which</span>(snp@chromosome ==<span class="st"> &quot;scaffold_1&quot;</span>)
-scaffold_1 &lt;-<span class="st"> </span>snp[,scaffold_1_index]
+scaffold_1 &lt;-<span class="st"> </span>snp[, scaffold_1_index]
 
 <span class="kw">glPlot</span>(scaffold_1)
 
-pca1 &lt;-<span class="st"> </span><span class="kw">glPca</span>(scaffold_1, <span class="dt">nf=</span><span class="dv">10</span>) 
-<span class="kw">scatter</span>(pca1, <span class="dt">posi=</span><span class="st">&quot;bottomright&quot;</span>)</code></pre>
+scaffold_1_pca &lt;-<span class="st"> </span><span class="kw">glPca</span>(scaffold_1, <span class="dt">nf =</span> <span class="dv">10</span>) 
+<span class="kw">scatter</span>(scaffold_1_pca, <span class="dt">posi =</span> <span class="st">&quot;none&quot;</span>)</code></pre>
 <ul class="incremental">
 <li>Is differentiation coming mainly from one of the scaffolds?<br /></li>
 <li>If so, which one?</li>
@@ -159,24 +157,23 @@ pca1 &lt;-<span class="st"> </span><span class="kw">glPca</span>(scaffold_1, <sp
 <p>We will measure FST and nucleotide diversity (a measure of genetic diversity) using the R package <code>PopGenome</code>.</p>
 <p>In theory, the <code>r PopGenome</code> can read VCF files directly, using the <code>readVCF</code> function. However, because our samples are haploid, we need to use a different function, <code>readData</code>, which requires a folder with a separate VCF for each scaffold.</p>
 <p>Return to the command line by either opening a new terminal or by typing <code>q()</code> into R.</p>
-<pre class="sh"><code>## On your command line
-# Make new directory
-mkdir popgenome-vcf
+<pre class="sourceCode bash"><code class="sourceCode bash"><span class="co">## On your command line</span>
+<span class="co"># Make new directory</span>
+<span class="kw">mkdir</span> popgenome-vcf
 
-# compress and index the VCF
-bgzip input/snp.vcf
-tabix -p input/vcf snp.vcf.gz
+<span class="co"># compress and index the VCF</span>
+<span class="kw">bgzip</span> input/snp.vcf <span class="co"># This step is not necessary if you downloaded the snp.vcf.gz file from the link above</span>
+<span class="kw">tabix</span> -p vcf input/snp.vcf.gz
 
-bcftools view input/snp.vcf.gz scaffold_1 &gt; popgenome-vcf/scaffold_1
-bcftools view input/snp.vcf.gz scaffold_2 &gt; popgenome-vcf/scaffold_2
-</code></pre>
+<span class="kw">bcftools</span> view input/snp.vcf.gz scaffold_1 <span class="kw">&gt;</span> popgenome-vcf/scaffold_1
+<span class="kw">bcftools</span> view input/snp.vcf.gz scaffold_2 <span class="kw">&gt;</span> popgenome-vcf/scaffold_2</code></pre>
 <p>You can now load the data in <code>R</code> (Open with <code>rstudio-genomics</code>).</p>
 <pre class="sourceCode r"><code class="sourceCode r">
 <span class="kw">library</span>(PopGenome)
 
 <span class="co"># Load the data</span>
 <span class="co"># MODIFY the path for the above created folder</span>
-snp &lt;-<span class="st"> </span><span class="kw">readData</span>(<span class="st">&quot;popgenome-vcf&quot;</span>, <span class="dt">format=</span><span class="st">&quot;VCF&quot;</span>)
+snp &lt;-<span class="st"> </span><span class="kw">readData</span>(<span class="st">&quot;popgenome-vcf&quot;</span>, <span class="dt">format =</span> <span class="st">&quot;VCF&quot;</span>)
 
 <span class="co"># This is complex object, with several slots</span>
 <span class="kw">get.sum.data</span>(snp)
@@ -187,10 +184,10 @@ snp@n.sites
 
 <span class="co"># Set populations</span>
 pops &lt;-<span class="st"> </span><span class="kw">get.individuals</span>(snp)[[<span class="dv">1</span>]]
-pop1 &lt;-<span class="st"> </span>pops[<span class="kw">grep</span>(<span class="st">&quot;B</span><span class="ch">\\</span><span class="st">.bam&quot;</span>,pops)]
+pop1 &lt;-<span class="st"> </span>pops[<span class="kw">grep</span>(<span class="st">&quot;B</span><span class="ch">\\</span><span class="st">.bam&quot;</span>, pops)]
 pop2 &lt;-<span class="st"> </span>pops[<span class="kw">grep</span>(<span class="st">&quot;b</span><span class="ch">\\</span><span class="st">.bam&quot;</span>,pops)]
 
-snp  &lt;-<span class="st"> </span><span class="kw">set.populations</span>(snp, <span class="kw">list</span>(pop1,pop2))
+snp  &lt;-<span class="st"> </span><span class="kw">set.populations</span>(snp, <span class="kw">list</span>(pop1, pop2))
 
 snp@populations <span class="co"># check if it worked</span></code></pre>
 <p>Let's calculate FST between the two populations and nucleotide diversity in each of the populations.</p>
@@ -212,9 +209,10 @@ snp@nuc.diversity.within</code></pre>
 <pre class="sourceCode r"><code class="sourceCode r">
 <span class="co"># Transform object into object divided by sliding window</span>
 win_snp &lt;-<span class="st"> </span><span class="kw">sliding.window.transform</span>(snp,
-    <span class="dt">width=</span><span class="dv">10000</span>, <span class="dt">jump=</span><span class="dv">10000</span>,
-    <span class="dt">type=</span><span class="dv">2</span>,
-    <span class="dt">whole.data=</span><span class="ot">FALSE</span>)
+    <span class="dt">width =</span> <span class="dv">10000</span>, 
+    <span class="dt">jump =</span> <span class="dv">10000</span>,
+    <span class="dt">type =</span> <span class="dv">2</span>,
+    <span class="dt">whole.data =</span> <span class="ot">FALSE</span>)
 
 <span class="co"># Measurements per window</span>
 win_snp &lt;-<span class="st"> </span><span class="kw">F_ST.stats</span>(win_snp)
@@ -223,18 +221,15 @@ win_snp@nucleotide.F_ST
 win_snp@nuc.diversity.within
 
 <span class="co"># A simple plot</span>
-win_fst &lt;-<span class="st"> </span>win_snp@nucleotide.F_ST[,<span class="dv">1</span>]
-bb_div  &lt;-<span class="st"> </span>win_snp@nuc.diversity.within[,<span class="dv">1</span>] <span class="co"># diversity among B (bb = &quot;big B&quot;)</span>
-lb_div  &lt;-<span class="st"> </span>win_snp@nuc.diversity.within[,<span class="dv">2</span>] <span class="co"># diversity among B (lb = &quot;little b&quot;)</span>
+win_fst &lt;-<span class="st"> </span>win_snp@nucleotide.F_ST[, <span class="dv">1</span>]
+bb_div  &lt;-<span class="st"> </span>win_snp@nuc.diversity.within[, <span class="dv">1</span>] <span class="co"># diversity among B (bb = &quot;big B&quot;)</span>
+lb_div  &lt;-<span class="st"> </span>win_snp@nuc.diversity.within[, <span class="dv">2</span>] <span class="co"># diversity among b (lb = &quot;little b&quot;)</span>
 
 
 <span class="kw">plot</span>(<span class="dv">1</span>:<span class="kw">length</span>(win_fst), win_fst)
 
-<span class="kw">par</span>(<span class="dt">mfrow=</span><span class="kw">c</span>(<span class="dv">2</span>,<span class="dv">1</span>))
-win_fst &lt;-<span class="st"> </span>win_snp@nucleotide.F_ST[,<span class="dv">1</span>]
 <span class="kw">plot</span>(<span class="dv">1</span>:<span class="kw">length</span>(bb_div), bb_div)
 
-win_fst &lt;-<span class="st"> </span>win_snp@nucleotide.F_ST[,<span class="dv">1</span>]
 <span class="kw">plot</span>(<span class="dv">1</span>:<span class="kw">length</span>(lb_div), lb_div)</code></pre>
 <ul class="incremental">
 <li>Knowing that there is no recombination between B and b somewhere in the genome, why do you think there is high FST in one scaffold and not the other?<br /></li>

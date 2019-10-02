@@ -12,7 +12,7 @@ In the second part, we are going to measure genetic differentiation between the 
 
 ## Input into R
 
-Again, make a directory for this practical. You should create a directory for the input data (with a link, using `ln -s`, to the data directory), one for the results and a `WHATIDID.txt` file in which you log your commands. 
+Again, make a directory for this practical. You should create a directory for the `input`, one for the `results` and a `WHATIDID.txt` file in which you log your commands. 
 
 ```bash
 2019-10-xx-population_genetics
@@ -22,14 +22,14 @@ Again, make a directory for this practical. You should create a directory for th
 └── WHATIDID.txt
 ```
 
-You will only need the `snp.vcf` file we created in the last practical and place it into the appropriate input directory (if you don't have this file, you can download it from [here](../../data/popgen/vcf/snp.vcf.gz?raw=true "Download vcf"), if you do this you will need to replace 'snp.vcf' with 'snp.vcf.gz' in the code below).
+You will only need the `snp.vcf` file we created in the last practical and place it into the appropriate input directory (if you don't have this file, you can download it from [here](../../data/popgen/vcf/snp.vcf.gz?raw=true "Download vcf"), if you do this you will need to replace `snp.vcf` with `snp.vcf.gz` in the code below).
 
 
 It's a good idea to note down the results of your analysis in the results directory, as well as saving any graph you make.
 
-The package `adegenet` uses a object called `r genlight`. To create it, we need to input a matrix where each row is an individual and each column is a locus (i.e. a SNP position). We can do this using bcftools:
+The package `adegenet` uses an object called `r genlight`. To create it, we need to input a matrix where each row is an individual and each column is a locus (i.e. a SNP position). We can do this using bcftools:
 
-```sh
+```bash
 # Select the information in the vcf file without the header
 bcftools query input/snp.vcf -f '%CHROM\t%POS[\t%GT]\n' > snp_matrix.txt
 
@@ -38,36 +38,34 @@ bcftools query -l input/snp.vcf > sample_names.txt
 
 ```
 
-You can open a new R session by typing `rstudio-genomics` in the terminal. Then:
+You can open a new R session by typing `rstudio-genomics` in the terminal. The following lines of code should be entered into your console within Rstudio:
 
 ```r
 
-# input the SNP data and the sample names
-snp_matrix   <- read.table("snp_matrix.txt")
-sample_names <- read.table("sample_names.txt")
-sample_names <- sample_names$V1
+# input the SNP data and the sample names by reading the .txt files you just created with bcftools
+snp_data   <- read.table("snp_matrix.txt")
+names_input <- read.table("sample_names.txt")
+raw_sample_names <- names_input$V1
 
 # Keep the position of the loci
-loci       <- snp_matrix[,1:2]
+loci       <- snp_data[, 1:2]
 colnames(loci) <- c("scaffold", "position")
 
 
-# Turn the matrix on its side (rows = individuals, columns = loci)
-# t() returns the transpose of a matrix (turns it on its side)
-snp_matrix <- snp_matrix[,3:ncol(snp_matrix)]
-snp_matrix <- t(snp_matrix)
+# Transpose the data (turn it on its side so that rows = individuals and columns = loci)
 
-# add sample names
-# gsub() performs a find and replace for strings of text
-sample_names <- gsub("\\.bam","", sample_names)
+snp_matrix <- t(snp_data[,3:ncol(snp_data)])
+
+# Clean the sample names and add them to the rows of our matrix
+
+sample_names <- gsub("\\.bam", "", raw_sample_names)
 row.names(snp_matrix) <- sample_names
 
-# reorder the rows by population
-# grep() performs a search for a specified text-string
-bb <- sample_names[grep("B", sample_names)]
-lb <- sample_names[grep("b", sample_names)]
+# Finally we reorder the rows by population 
+bb <- sample_names[grep("B", sample_names)] # B samples (bb = "big B")
+lb <- sample_names[grep("b", sample_names) ]# b samples (lb = "little b")
 
-snp_matrix <- snp_matrix[c(bb,lb),]
+snp_matrix <- snp_matrix[c(bb, lb), ]
 
 ```
 
@@ -83,9 +81,9 @@ library(adegenet)
 # R won't run the command until all brackets have been closed
 snp <- new("genlight",
            snp_matrix,
-           chromosome=loci$scaffold,
-           position=loci$position,
-           pop=as.factor(c(rep("B",7), rep("b",7))))
+           chromosome = loci$scaffold,
+           position = loci$position,
+           pop = as.factor(c(rep("B", 7), rep("b", 7))))
 
 # You can access the data using the "@" sign:
 snp
@@ -94,7 +92,7 @@ snp@gen
 
 snp@chromosome
 
-# although there are some functions that may also be helpful:
+# There are some functions that may also be helpful:
 ploidy(snp)
 
 ```
@@ -112,48 +110,49 @@ You can also perform a Principle Component Analysis (PCA) and plot the first few
 ```r
 
 ## PCA
-pca <- glPca(snp, nf=10) # you can select 10 components
+pca <- glPca(snp, nf = 10) # you can select 10 components
 
-# fast plot
-scatter(pca, posi="bottomright")
+# Quick plot
+scatter(pca, posi = "none")
+
 
 # Plot of the first few axes coloured by population
-par(mfrow=c(1,2))
-plot(pca$scores[,1], pca$scores[,2],
-     col=c(rep("blue",7), rep("orange",7)),cex=2)
-text(pca$scores[,1], pca$scores[,2] + 0.7,
-     labels=rownames(pca$scores), cex= 0.7)
-plot(pca$scores[,1], pca$scores[,3],
-     col=c(rep("blue",7), rep("orange",7)),cex=2)
+
+plot(x = pca$scores[, 1], y = pca$scores[, 2],
+     col = c(rep("blue", 7), rep("orange", 7)), cex = 2)
+text(pca$scores[, 1], pca$scores[, 2] + 0.7,
+     labels = rownames(pca$scores), cex = 0.7)
+plot(pca$scores[, 1], pca$scores[, 3],
+     col = c(rep("blue", 7), rep("orange", 7)), cex = 2)
 text(pca$scores[,1], pca$scores[,3] + 0.7,
-    labels=rownames(pca$scores), cex= 0.7)
+    labels=rownames(pca$scores), cex = 0.7)
 
 ```
 
-The aim of these analysis is to test whether the B and the b individuals cluster together or separately. The first principal component separates B and b. But if you look in the heat map, the separation is not constant in the whole genome.
+The aim of these analysis is to test whether the B and the b individuals cluster together or separately. The first principal component separates B and b. But if you look at the heat map, the separation is not constant in the whole genome (you can navigate between your plots using the arrow buttons above the plot window in Rstudio).
 
-Each of the scaffolds has been retrieved from a different chromosome. Below, we can test whether the differentiation between B and b is only seen in one of the scaffolds.
+Each of the scaffolds has been retrieved from a different chromosome. We can test whether the differentiation between B and b is only seen in one of the scaffolds.
 
 ```r
 # We will start with scaffold_2
 
 scaffold_2_index <- which(snp@chromosome == "scaffold_2")
-scaffold_2 <- snp[,scaffold_2_index]
+scaffold_2 <- snp[, scaffold_2_index]
 
 glPlot(scaffold_2)
 
-pca2 <- glPca(scaffold_2, nf=10) # you can select 10 components
-scatter(pca2, posi="bottomright")
+scaffold_2_pca <- glPca(scaffold_2, nf = 10)
+scatter(scaffold_2_pca, posi = "none")
 
 
 # scaffold_1
 scaffold_1_index <- which(snp@chromosome == "scaffold_1")
-scaffold_1 <- snp[,scaffold_1_index]
+scaffold_1 <- snp[, scaffold_1_index]
 
 glPlot(scaffold_1)
 
-pca1 <- glPca(scaffold_1, nf=10) 
-scatter(pca1, posi="bottomright")
+scaffold_1_pca <- glPca(scaffold_1, nf = 10) 
+scatter(scaffold_1_pca, posi = "none")
 
 ```
 * Is differentiation coming mainly from one of the scaffolds?
@@ -171,14 +170,14 @@ In theory, the `r PopGenome` can read VCF files directly, using the `readVCF` fu
 
 Return to the command line by either opening a new terminal or by typing `q()` into R.
 
-```sh
+```bash
 ## On your command line
 # Make new directory
 mkdir popgenome-vcf
 
 # compress and index the VCF
-bgzip input/snp.vcf
-tabix -p input/vcf snp.vcf.gz
+bgzip input/snp.vcf # This step is not necessary if you downloaded the snp.vcf.gz file from the link above
+tabix -p vcf input/snp.vcf.gz
 
 bcftools view input/snp.vcf.gz scaffold_1 > popgenome-vcf/scaffold_1
 bcftools view input/snp.vcf.gz scaffold_2 > popgenome-vcf/scaffold_2
@@ -193,7 +192,7 @@ library(PopGenome)
 
 # Load the data
 # MODIFY the path for the above created folder
-snp <- readData("popgenome-vcf", format="VCF")
+snp <- readData("popgenome-vcf", format = "VCF")
 
 # This is complex object, with several slots
 get.sum.data(snp)
@@ -204,10 +203,10 @@ snp@n.sites
 
 # Set populations
 pops <- get.individuals(snp)[[1]]
-pop1 <- pops[grep("B\\.bam",pops)]
+pop1 <- pops[grep("B\\.bam", pops)]
 pop2 <- pops[grep("b\\.bam",pops)]
 
-snp  <- set.populations(snp, list(pop1,pop2))
+snp  <- set.populations(snp, list(pop1, pop2))
 
 snp@populations # check if it worked
 
@@ -239,9 +238,10 @@ Another useful tool is to do the calculations along a sliding window.
 
 # Transform object into object divided by sliding window
 win_snp <- sliding.window.transform(snp,
-    width=10000, jump=10000,
-    type=2,
-    whole.data=FALSE)
+    width = 10000, 
+    jump = 10000,
+    type = 2,
+    whole.data = FALSE)
 
 # Measurements per window
 win_snp <- F_ST.stats(win_snp)
@@ -250,18 +250,15 @@ win_snp@nucleotide.F_ST
 win_snp@nuc.diversity.within
 
 # A simple plot
-win_fst <- win_snp@nucleotide.F_ST[,1]
-bb_div  <- win_snp@nuc.diversity.within[,1] # diversity among B (bb = "big B")
-lb_div  <- win_snp@nuc.diversity.within[,2] # diversity among B (lb = "little b")
+win_fst <- win_snp@nucleotide.F_ST[, 1]
+bb_div  <- win_snp@nuc.diversity.within[, 1] # diversity among B (bb = "big B")
+lb_div  <- win_snp@nuc.diversity.within[, 2] # diversity among b (lb = "little b")
 
 
 plot(1:length(win_fst), win_fst)
 
-par(mfrow=c(2,1))
-win_fst <- win_snp@nucleotide.F_ST[,1]
 plot(1:length(bb_div), bb_div)
 
-win_fst <- win_snp@nucleotide.F_ST[,1]
 plot(1:length(lb_div), lb_div)
 
 ```
