@@ -41,6 +41,14 @@ For the module prior to Yannick's (this may be incomplete)
 * jalview 2.11.0 (requires launching with specified path to java binary)
 
 
-### Web servers for the practicals
+### Other resources
+
+##### Singularity images
+
+The singularity images and the corresponding recipe files (for maker, sequenceserver, and rstudio) created by Priyam are here:
+/data/SBCS-MSc-BioInf/2019-priyam_singularity_images. There’s a README file in that directory that provides instructions for building singularity images from recipe files.
+
+##### Web servers
 
 * WebApollo (best to use docker on prometheus for this)
+* GV?
