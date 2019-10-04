@@ -17,9 +17,13 @@
 <a href="/tools">Tools</a>
 <h1 id="software">Software</h1>
 <p>It should be possible to run all software locally. That is, without needing<br />Apocrita.</p>
-<p>Running the software listed below requires a reasonably powerful PC. 2019 PCs<br />were great (4 HT cores, i.e., ability to run 8 threads) and 16 Gb RAM is great!</p>
+<p>Running the software listed below requires a reasonably powerful PC. 2019 PCs:<br />4 HT cores, i.e., ability to run 8 threads, and with 16 Gb RAM were great!</p>
 <p>2019 file-system setup, i.e., all 40 students connected to a single NFS server<br />was bad. In addition to load sharing between multiple NFS servers, also provide<br />local scratch for computations.</p>
-<h3 id="local-pc">Local PC</h3>
+<p>Regarding shell configuration:</p>
+<ol class="incremental">
+<li>Prefer to put aliases in ~/.bashrc instead of ~/.bash_profile</li>
+</ol>
+<h3 id="list-of-software-to-be-installed-on-local-pc">List of software to be installed on local PC:</h3>
 <p>Yannick's module:</p>
 <ul class="incremental">
 <li>git, htop, tree<br /></li>
@@ -40,13 +44,13 @@
 <li>RStudio xxx, R yyy, and <code>ggplot2</code>, <code>adegenet</code>, and <code>popgenome</code> R packages<br /></li>
 <li>Latest Firefox and Google Chrome, with Firefox set as the default browser</li>
 </ul>
-<p>For the module prior to Yannick's</p>
+<p>For the module prior to Yannick's (this may be incomplete)</p>
 <ul class="incremental">
 <li>bwa 0.7.17<br /></li>
 <li>dotter 4.44.1<br /></li>
 <li>jalview 2.11.0 (requires launching with specified path to java binary)</li>
 </ul>
-<h3 id="separately">Separately</h3>
+<h3 id="web-servers-for-the-practicals">Web servers for the practicals</h3>
 <ul class="incremental">
 <li>WebApollo (best to use docker on prometheus for this)</li>
 </ul>
