@@ -3,14 +3,17 @@
 It should be possible to run all software locally. That is, without needing
 Apocrita.
 
-Running the software listed below requires a reasonably powerful PC. 2019 PCs
-were great (4 HT cores, i.e., ability to run 8 threads) and 16 Gb RAM is great!
+Running the software listed below requires a reasonably powerful PC. 2019 PCs:
+4 HT cores, i.e., ability to run 8 threads, and with 16 Gb RAM were great!
 
 2019 file-system setup, i.e., all 40 students connected to a single NFS server
 was bad. In addition to load sharing between multiple NFS servers, also provide
 local scratch for computations.
 
-### Local PC
+Regarding shell configuration:
+1. Prefer to put aliases in ~/.bashrc instead of ~/.bash_profile
+
+### List of software to be installed on local PC:
 
 Yannick's module:
 
@@ -32,12 +35,12 @@ Yannick's module:
 * RStudio xxx, R yyy, and `ggplot2`, `adegenet`, and `popgenome` R packages
 * Latest Firefox and Google Chrome, with Firefox set as the default browser
 
-For the module prior to Yannick's
+For the module prior to Yannick's (this may be incomplete)
 * bwa 0.7.17
 * dotter 4.44.1
 * jalview 2.11.0 (requires launching with specified path to java binary)
 
 
-### Separately
+### Web servers for the practicals
 
 * WebApollo (best to use docker on prometheus for this)
