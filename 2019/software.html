@@ -15,45 +15,40 @@
 <a href="/team">Team</a> | 
 <a href="/news">News</a> | 
 <a href="/tools">Tools</a>
-<h1 id="software---this-list-is-outdated-as-its-from-2017">Software - THIS LIST IS OUTDATED AS ITS FROM 2017 (!)</h1>
-<p>(if newer versions are available, those are likely preferered but not yet tested)</p>
-<h3 id="apocrita">Apocrita</h3>
-<ul class="incremental">
-<li>fastqc<br /></li>
-<li>kmc3 # But won't be run, right?<br /></li>
-<li>seqtk<br /></li>
-<li>khmer # Needs to be installed<br /></li>
-<li>soapdenovo2<br /></li>
-<li>quast<br /></li>
-<li>maker<br /></li>
-<li>BUSCO # But won't be run, right?<br /></li>
-<li>htslib (&gt; 1.3.1)<br /></li>
-<li>samtools (&gt; 1.3.1) (important that it is this version or over)<br /></li>
-<li>bcftools (&gt; 1.3.1) (important that it is this version or over)<br /></li>
-<li>bowtie2<br /></li>
-<li>parallel<br /></li>
-<li>Augustus 3.2.1 <a href="http://bioinf.uni-greifswald.de/augustus/binaries/old/augustus-3.2.1.tar.gz">http://bioinf.uni-greifswald.de/augustus/binaries/old/augustus-3.2.1.tar.gz</a> (not 3.2.2. as it is only just released and not tested with BUSCO yet)<br /></li>
-<li>Dependency of BUSCO and MAKER<br /></li>
-<li>Forget 3.2.2, even 3.2.3 works fine with BUSCO (afaik)<br /></li>
-<li>NCBI BLAST <a href="http://ftp.ncbi.nlm.nih.gov/blast/executables/blast+/LATEST/">http://ftp.ncbi.nlm.nih.gov/blast/executables/blast+/LATEST/</a><br /></li>
-<li>Dependency of BUSCO, MAKER, SequenceServer, and GeneValidator</li>
-</ul>
+<h1 id="software">Software</h1>
+<p>It should be possible to run all software locally. That is, without needing<br />Apocrita.</p>
+<p>Running the software listed below requires a reasonably powerful PC. 2019 PCs<br />were great (4 HT cores, i.e., ability to run 8 threads) and 16 Gb RAM is great!</p>
+<p>2019 file-system setup, i.e., all 40 students connected to a single NFS server<br />was bad. In addition to load sharing between multiple NFS servers, also provide<br />local scratch for computations.</p>
 <h3 id="local-pc">Local PC</h3>
+<p>Yannick's module:</p>
 <ul class="incremental">
-<li>sequenceserver<br /></li>
-<li>BLAST 2.2.30+<br /></li>
-<li>ruby &gt;=2.1<br /></li>
-<li>genevalidator<br /></li>
-<li>BLAST 2.2.30+<br /></li>
-<li>ruby &gt;=2.1<br /></li>
-<li>MAFFT<br /></li>
-<li>Chrome, Firefox<br /></li>
-<li>standard text editors including emacs, vi and Atom<br /></li>
 <li>git, htop, tree<br /></li>
-<li>R &gt;=3 (in the commandline). If possible, wait for R 3.3 to be released on May 3rd.<br /></li>
-<li>RStudio (clickable R)<br /></li>
-<li>igv<br /></li>
-<li>ruby &gt;=2.1</li>
+<li>standard text editors including emacs, vi and Atom<br /></li>
+<li>FastQC 0.11.8<br /></li>
+<li>seqtk 1.3-r106<br /></li>
+<li>kmc 3.0.0<br /></li>
+<li>SOAPdenovo 2.04<br /></li>
+<li>quast-5.0.2<br /></li>
+<li>MAKER 2.31.0 (installed as a singularity image)<br /></li>
+<li>SequenceServer 2.0 beta (installed as a singularity image)<br /></li>
+<li>Bowtie2 2.3.5.1<br /></li>
+<li>GNU parallel<br /></li>
+<li>samtools 1.9<br /></li>
+<li>bcftools 1.9<br /></li>
+<li>bgzip<br /></li>
+<li>Latest IGV and suitable Java version<br /></li>
+<li>RStudio xxx, R yyy, and <code>ggplot2</code>, <code>adegenet</code>, and <code>popgenome</code> R packages<br /></li>
+<li>Latest Firefox and Google Chrome, with Firefox set as the default browser</li>
+</ul>
+<p>For the module prior to Yannick's</p>
+<ul class="incremental">
+<li>bwa 0.7.17<br /></li>
+<li>dotter 4.44.1<br /></li>
+<li>jalview 2.11.0 (requires launching with specified path to java binary)</li>
+</ul>
+<h3 id="separately">Separately</h3>
+<ul class="incremental">
+<li>WebApollo (best to use docker on prometheus for this)</li>
 </ul>
 <hr>
 <small>Copyright <a href="https://github.com/wurmlab/genomicscourse/graphs/contributors">Authors</a>. All rights reserverd.
