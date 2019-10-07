@@ -16,14 +16,11 @@
 <a href="/news">News</a> | 
 <a href="/tools">Tools</a>
 <h1 id="software">Software</h1>
-<p>The goal of this module is to introduce students to bioinformatics software,<br />without introducing any additional layer of abstraction. Thus, it should be<br />possible to run all software locally. That is, without needing Apocrita.</p>
-<p>Datasets used for teaching this module are subsets of real data: just enough<br />to provide results but do not require HPC.</p>
-<p>Bottlenecks are:</p>
-<ul class="incremental">
-<li>BLAST searching 2 queries against uniref50 database (downloaded Oct, 2018)<br /> takes about 3 minutes. This limits the scope of quality control of gene<br /> prediction practical.</li>
-</ul>
-<p>2019 PCs with 4 HT cores (i.e., ability to run 8 threads) and 16 Gb of RAM<br />were great! High RAM (16 GB) is desirable for viewing data heavy apps and<br />web pages (IGV, JBrowse/WebApollo, SequenceServer).</p>
-<p>For BLAST, local, ideally SSD (128-256 GB range so as to hold latest BLAST<br />database, and provide ample storage for all computations), would be great.<br />SSD would improve BLAST search speeds by 3-5 times.</p>
+<h3 id="pcs">PCs</h3>
+<p>The goal of this module is to introduce students to bioinformatics software,<br />without introducing any additional layer of abstraction. Thus it should be<br />possible to run all software locally on the PC. That is, without needing<br />Apocrita.</p>
+<p>Datasets used for teaching this module are subsets of real data which is<br />just enough to provide results but do not require HPC.</p>
+<p>2019 PCs with 4 HT cores (i.e., ability to run 8 threads) and 16 Gb of RAM<br />were great! Ability to run 8 threads is great for running BLAST. High RAM<br />(16 GB) is desirable for viewing data heavy apps and web pages (IGV,<br />JBrowse/WebApollo, SequenceServer).</p>
+<p>BLAST can still be a bit slow: comparing 2 queries to uniref50 database<br />(downloaded Oct, 2018) took about 3 minutes. This can be speeded up by<br />using local solid-state drives which is now standard on mid- to high-<br />range laptops. The speed gain from using SSD should be 3-5 times.</p>
 <h3 id="list-of-software-required-for-the-practical">List of software required for the practical</h3>
 <ul class="incremental">
 <li>git, htop, tree<br /></li>
@@ -41,7 +38,7 @@
 <li>bcftools 1.9<br /></li>
 <li>bgzip<br /></li>
 <li>Latest IGV<br /></li>
-<li>RStudio xxx, R yyy, and <code>ggplot2</code>, <code>adegenet</code>, and <code>popgenome</code> R packages<br /></li>
+<li>RStudio 1.2.5001+, R 3.5.2+, and <code>ggplot2</code>, <code>adegenet</code>, and <code>popgenome</code> R packages<br /></li>
 <li>Java 1.8+ (Java is required by a few tools - some are picky about version,<br /> some are not - 1.8 is the lowest common version)<br /></li>
 <li>Latest Firefox and Google Chrome, with Firefox set as the default browser<br /></li>
 <li>singularity</li>
@@ -53,12 +50,12 @@
 <li>jalview 2.11.0 (requires launching with specified path to java binary)</li>
 </ul>
 <h3 id="singularity-images-and-setup">Singularity images and setup</h3>
-<p>The decision to provide singularity this year was a good one. For certain<br />reasons it may be desirable to use an old, highly stable linux distribution,<br />e.g., CentOS as the base operating system on the PC. However, this can also<br />complicate the installation of many software packages. In which case, such<br />apps can be built and provided as a singularity image.</p>
+<p>The decision to provide singularity this year was a good one. For certain<br />reasons it may be desirable to use an old, highly stable linux distribution,<br />e.g., CentOS as the base operating system on the PC. However, this can also<br />complicate the installation of many software packages. Such apps can be built<br />and provided as a singularity image.</p>
 <p>Our lab created three singularity images for this year's course: maker,<br />sequenceserver, and rstudio. The singularity images, corresponding recipe<br />files, and instructions for building singularity images from recipe files<br />are here on Apocrita: <code>/data/SBCS-MSc-BioInf/2019-priyam_singularity_images</code>.</p>
 <p>A few other software were provided as singularity images this year. These were<br />created by Tom King and his team.</p>
-<p>Singularity configuration can be improved. All paths relevant to the practical<br />(e.g., /import) was not automatically mounted inside the image this year. This<br />was addressed this year by adding <code>-B /import:/import</code>) to all the aliases<br />created for running tools inside singularity image:</p>
+<p><strong>Singularity configuration can be improved</strong>. All paths relevant to the practical<br />(e.g., <code>/import</code>) was not automatically mounted inside the image this year. This<br />was addressed this year by adding <code>-B /import:/import</code>) to the aliases created<br />for running tools inside singularity image:</p>
 <pre><code>alias sequenceserver=&quot;singularity run -B /import:/import sequenceserver.simg</code></pre>
-<p>Singularity provides a way to configure at the system level which paths should<br />be automatically mounted inside the image. In addition to the default, this<br />should have included <code>/import</code> and <code>/run</code> (this was important for rstudio<br />singularity image) this year. If a local scratch is provided next year,<br />it should be auto-mounted as well.</p>
+<p><strong>Singularity provides a way to configure at the system level which paths<br />should be automatically mounted inside the image</strong>. This should have included<br /><code>/import</code> and <code>/run</code> this year (<code>/run</code> was important for rstudio). If a local<br />scratch is provided next year, it should be auto-mounted as well.</p>
 <p>Given how well Singularity interfaces with the host OS (in contrast to Docker)<br />it might be worth considering providing all software as a single singularity<br />image.</p>
 <h3 id="gotchas">Gotchas</h3>
 <p>We learnt this year the hard way that:</p>

@@ -1,24 +1,23 @@
 # Software
 
+### PCs
 The goal of this module is to introduce students to bioinformatics software,
-without introducing any additional layer of abstraction. Thus, it should be
-possible to run all software locally. That is, without needing Apocrita.
+without introducing any additional layer of abstraction. Thus it should be
+possible to run all software locally on the PC. That is, without needing
+Apocrita.
 
-Datasets used for teaching this module are subsets of real data: just enough
-to provide results but do not require HPC.
-
-Bottlenecks are:
-- BLAST searching 2 queries against uniref50 database (downloaded Oct, 2018)
-  takes about 3 minutes. This limits the scope of quality control of gene
-  prediction practical.
+Datasets used for teaching this module are subsets of real data which is
+just enough to provide results but do not require HPC.
 
 2019 PCs with 4 HT cores (i.e., ability to run 8 threads) and 16 Gb of RAM
-were great! High RAM (16 GB) is desirable for viewing data heavy apps and
-web pages (IGV, JBrowse/WebApollo, SequenceServer).
+were great! Ability to run 8 threads is great for running BLAST. High RAM
+(16 GB) is desirable for viewing data heavy apps and web pages (IGV,
+JBrowse/WebApollo, SequenceServer).
 
-For BLAST, local, ideally SSD (128-256 GB range so as to hold latest BLAST
-database, and provide ample storage for all computations), would be great.
-SSD would improve BLAST search speeds by 3-5 times.
+BLAST can still be a bit slow: comparing 2 queries to uniref50 database
+(downloaded Oct, 2018) took about 3 minutes. This can be speeded up by
+using local solid-state drives which is now standard on mid- to high-
+range laptops. The speed gain from using SSD should be 3-5 times.
 
 ### List of software required for the practical
 
@@ -37,7 +36,7 @@ SSD would improve BLAST search speeds by 3-5 times.
 * bcftools 1.9
 * bgzip
 * Latest IGV
-* RStudio xxx, R yyy, and `ggplot2`, `adegenet`, and `popgenome` R packages
+* RStudio 1.2.5001+, R 3.5.2+, and `ggplot2`, `adegenet`, and `popgenome` R packages
 * Java 1.8+ (Java is required by a few tools - some are picky about version,
   some are not - 1.8 is the lowest common version)
 * Latest Firefox and Google Chrome, with Firefox set as the default browser
@@ -54,8 +53,8 @@ Additionally, for the module prior to Yannick's (this may be incomplete)
 The decision to provide singularity this year was a good one. For certain
 reasons it may be desirable to use an old, highly stable linux distribution,
 e.g., CentOS as the base operating system on the PC. However, this can also
-complicate the installation of many software packages. In which case, such
-apps can be built and provided as a singularity image.
+complicate the installation of many software packages. Such apps can be built
+and provided as a singularity image.
 
 Our lab created three singularity images for this year's course: maker,
 sequenceserver, and rstudio. The singularity images, corresponding recipe
@@ -65,20 +64,19 @@ are here on Apocrita: `/data/SBCS-MSc-BioInf/2019-priyam_singularity_images`.
 A few other software were provided as singularity images this year. These were
 created by Tom King and his team.
 
-Singularity configuration can be improved. All paths relevant to the practical
-(e.g., /import) was not automatically mounted inside the image this year. This
-was addressed this year by adding `-B /import:/import`) to all the aliases
-created for running tools inside singularity image:
+**Singularity configuration can be improved**. All paths relevant to the practical
+(e.g., `/import`) was not automatically mounted inside the image this year. This
+was addressed this year by adding `-B /import:/import`) to the aliases created
+for running tools inside singularity image:
 
 ```
 alias sequenceserver="singularity run -B /import:/import sequenceserver.simg
 ```
 
-Singularity provides a way to configure at the system level which paths should
-be automatically mounted inside the image. In addition to the default, this
-should have included `/import` and `/run` (this was important for rstudio
-singularity image) this year. If a local scratch is provided next year,
-it should be auto-mounted as well.
+**Singularity provides a way to configure at the system level which paths
+should be automatically mounted inside the image**. This should have included
+`/import` and `/run` this year (`/run` was important for rstudio). If a local
+scratch is provided next year, it should be auto-mounted as well.
 
 Given how well Singularity interfaces with the host OS (in contrast to Docker)
 it might be worth considering providing all software as a single singularity
