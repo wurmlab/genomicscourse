@@ -16,48 +16,101 @@
 <a href="/news">News</a> | 
 <a href="/tools">Tools</a>
 <h1 id="software">Software</h1>
-<p>It should be possible to run all software locally. That is, without needing<br />Apocrita.</p>
-<p>Running the software listed below requires a reasonably powerful PC. 2019 PCs:<br />4 HT cores, i.e., ability to run 8 threads, and with 16 Gb RAM were great!</p>
-<p>2019 file-system setup, i.e., all 40 students connected to a single NFS server<br />was bad. In addition to load sharing between multiple NFS servers, also provide<br />local scratch for computations.</p>
-<p>Regarding shell configuration:</p>
-<ol class="incremental">
-<li>Prefer to put aliases in ~/.bashrc instead of ~/.bash_profile</li>
-</ol>
-<h3 id="list-of-software-to-be-installed-on-local-pc">List of software to be installed on local PC:</h3>
-<p>Yannick's module:</p>
+<p>The goal of this module is to introduce students to bioinformatics software,<br />without introducing any additional layer of abstraction. Thus, it should be<br />possible to run all software locally. That is, without needing Apocrita.</p>
+<p>Datasets used for teaching this module are subsets of real data: just enough<br />to provide results but do not require HPC.</p>
+<p>Bottlenecks are:</p>
+<ul class="incremental">
+<li>BLAST searching 2 queries against uniref50 database (downloaded Oct, 2018)<br /> takes about 3 minutes. This limits the scope of quality control of gene<br /> prediction practical.</li>
+</ul>
+<p>2019 PCs with 4 HT cores (i.e., ability to run 8 threads) and 16 Gb of RAM<br />were great! High RAM (16 GB) is desirable for viewing data heavy apps and<br />web pages (IGV, JBrowse/WebApollo, SequenceServer).</p>
+<p>For BLAST, local, ideally SSD (128-256 GB range so as to hold latest BLAST<br />database, and provide ample storage for all computations), would be great.<br />SSD would improve BLAST search speeds by 3-5 times.</p>
+<h3 id="list-of-software-required-for-the-practical">List of software required for the practical</h3>
 <ul class="incremental">
 <li>git, htop, tree<br /></li>
-<li>standard text editors including emacs, vi and Atom<br /></li>
+<li>standard text editors including emacs, vi, nano, Atom<br /></li>
 <li>FastQC 0.11.8<br /></li>
 <li>seqtk 1.3-r106<br /></li>
 <li>kmc 3.0.0<br /></li>
 <li>SOAPdenovo 2.04<br /></li>
 <li>quast-5.0.2<br /></li>
-<li>MAKER 2.31.0 (installed as a singularity image)<br /></li>
-<li>SequenceServer 2.0 beta (installed as a singularity image)<br /></li>
+<li>MAKER 2.31.0<br /></li>
+<li>SequenceServer 2.0 beta<br /></li>
 <li>Bowtie2 2.3.5.1<br /></li>
 <li>GNU parallel<br /></li>
 <li>samtools 1.9<br /></li>
 <li>bcftools 1.9<br /></li>
 <li>bgzip<br /></li>
-<li>Latest IGV and suitable Java version<br /></li>
+<li>Latest IGV<br /></li>
 <li>RStudio xxx, R yyy, and <code>ggplot2</code>, <code>adegenet</code>, and <code>popgenome</code> R packages<br /></li>
-<li>Latest Firefox and Google Chrome, with Firefox set as the default browser</li>
+<li>Java 1.8+ (Java is required by a few tools - some are picky about version,<br /> some are not - 1.8 is the lowest common version)<br /></li>
+<li>Latest Firefox and Google Chrome, with Firefox set as the default browser<br /></li>
+<li>singularity</li>
 </ul>
-<p>For the module prior to Yannick's (this may be incomplete)</p>
+<p>Additionally, for the module prior to Yannick's (this may be incomplete)</p>
 <ul class="incremental">
 <li>bwa 0.7.17<br /></li>
 <li>dotter 4.44.1<br /></li>
 <li>jalview 2.11.0 (requires launching with specified path to java binary)</li>
 </ul>
-<h3 id="other-resources">Other resources</h3>
-<h5 id="singularity-images">Singularity images</h5>
-<p>The singularity images and the corresponding recipe files (for maker, sequenceserver, and rstudio) created by Priyam are here:<br />/data/SBCS-MSc-BioInf/2019-priyam_singularity_images. There’s a README file in that directory that provides instructions for building singularity images from recipe files.</p>
-<h5 id="web-servers">Web servers</h5>
+<h3 id="singularity-images-and-setup">Singularity images and setup</h3>
+<p>The decision to provide singularity this year was a good one. For certain<br />reasons it may be desirable to use an old, highly stable linux distribution,<br />e.g., CentOS as the base operating system on the PC. However, this can also<br />complicate the installation of many software packages. In which case, such<br />apps can be built and provided as a singularity image.</p>
+<p>Our lab created three singularity images for this year's course: maker,<br />sequenceserver, and rstudio. The singularity images, corresponding recipe<br />files, and instructions for building singularity images from recipe files<br />are here on Apocrita: <code>/data/SBCS-MSc-BioInf/2019-priyam_singularity_images</code>.</p>
+<p>A few other software were provided as singularity images this year. These were<br />created by Tom King and his team.</p>
+<p>Singularity configuration can be improved. All paths relevant to the practical<br />(e.g., /import) was not automatically mounted inside the image this year. This<br />was addressed this year by adding <code>-B /import:/import</code>) to all the aliases<br />created for running tools inside singularity image:</p>
+<pre><code>alias sequenceserver=&quot;singularity run -B /import:/import sequenceserver.simg</code></pre>
+<p>Singularity provides a way to configure at the system level which paths should<br />be automatically mounted inside the image. In addition to the default, this<br />should have included <code>/import</code> and <code>/run</code> (this was important for rstudio<br />singularity image) this year. If a local scratch is provided next year,<br />it should be auto-mounted as well.</p>
+<p>Given how well Singularity interfaces with the host OS (in contrast to Docker)<br />it might be worth considering providing all software as a single singularity<br />image.</p>
+<h3 id="gotchas">Gotchas</h3>
+<p>We learnt this year the hard way that:</p>
 <ul class="incremental">
-<li>WebApollo (best to use docker on prometheus for this)<br /></li>
-<li>GV?</li>
+<li>Prefer to put aliases in ~/.bashrc instead of ~/.bash_profile or the aliases<br /> may not get sourced on certain systems.<br /></li>
+<li>Check that <code>/tmp</code> is writable and all relevant paths are available inside<br /> singularity images<br /></li>
+<li>While testing the practicals pay attention to the questions that the<br /> practical asks of the students before and after running commands.</li>
 </ul>
+<h3 id="web-servers">Web servers</h3>
+<p>We have not done manual curation practical for three years in a row. This has<br />been linked to technical challenges installing and running Afra / WebApollo.</p>
+<p>However, WebApollo is now very easy to use via docker on prometheus:</p>
+<pre><code># Make parent directory and cd to it
+mkdir 2019-10-MSc_apollo_gnG &amp;&amp; cd $_
+
+# First, make a directory called postgres which we will pass to WebApollo
+mkdir postgres
+
+# Next, setup JBrowse. We will pass JBrowse's data directory to  WebApollo.
+
+## Download JBrowse from https://jbrowse.org and unzip it here #
+
+## Install JBrowse's dependencies (all installed locally)
+cd JBrowse-1.16.6
+./setup.pl
+
+## Copy over a genome assembly (FASTA) and annotations (GFF) to data/ ##
+
+## Format genome assembly. This step can take a gzip compressed file.
+bin/prepare-refseqs.pl --fasta data/GCF_000188075.2_Si_gnH_genomic.fna.gz
+
+## Format annotations. This step cannot take a compressed file.
+bin/flatfile-to-json.pl --gff data/GCF_000188075.2_Si_gnH_genomic.gff \
+  --type mRNA --trackLabel RefSeqAnnotations
+
+## Index names - required for the search bar to work.
+bin/generate-names.pl
+
+## Copy over BAM, BigWig and other evidence files to data/tracks/ and add them
+to JBrowse using respective commands. ##
+
+## e.g., bam track (note that --bam_url does not begin with data/)
+bin/add-bam-track.pl --label RNASeq --bam_url tracks/RNAseq_merged_subsampled.bam
+## e.g., bigwig (note that --bw_url does not begin with data/)
+bin/add-bw-track.pl --label RNAseq --bw_url tracks/RNAseq_merged_normalized.bw
+
+
+# Finally, run WebApollo using Docker. This will make WebApollo instance
+# accessible on port 80 on prometheus.
+docker run -it -p 80:8080 -v $PWD/JBrowse-1.16.6/data:/data \
+  -v $PWD/postgres:/var/lib/postgresql -e APOLLO_ADMIN_PASSWORD='compGenomics'</code></pre>
+<p>Upon login, first create an organism (don't use space in the name, path to data<br />dir in the above setup is <code>/data</code>).</p>
+<p>The remaining challenge of doing manual curation practical, or homework<br />assignment is providing 40 different problematic gene models for 40 students.<br />An interesting technical question is to emulate how NCBI shows RNAseq evidence<br />for its gene models (for e.g., search vitellogenin fire ant on NCBI and look at<br />the RNAseq tracks).</p>
 <hr>
 <small>Copyright <a href="https://github.com/wurmlab/genomicscourse/graphs/contributors">Authors</a>. All rights reserverd.
 
