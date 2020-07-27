@@ -1,0 +1,38 @@
+Bootstrap: docker
+
+From: ubuntu
+
+%files
+      maker-2.31.10.tgz
+
+%post
+      # Install base packages.
+      apt-get update
+      apt-get install -y --no-install-recommends build-essential ca-certificates curl gcc-5 locales perl
+
+      # Configure UTF8 locale.
+      locale-gen "en_US.UTF-8"
+      dpkg-reconfigure locales
+
+      # Make gcc-5 the default. Required for SNAP.
+      update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-5 10
+
+      # Install and configure MAKER.
+      tar xvf maker-2.31.10.tgz
+      cd maker/src
+      PERL_MM_USE_DEFAULT=1 perl Build.PL
+      echo "ynnnnn" | ./Build installdeps || :
+      echo "n" | ./Build installdeps
+      echo "n" | ./Build installexes
+      ./Build augustus
+      ./Build install
+
+      # Clean up image
+      apt-get -qqy autoclean
+      rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+
+%environment
+      export PATH=/maker/bin:$PATH
+
+%runscript
+      exec maker "$@"
