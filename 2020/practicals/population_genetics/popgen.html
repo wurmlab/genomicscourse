@@ -55,7 +55,7 @@ code > span.er { color: #ff0000; font-weight: bold; }
 
 <span class="co"># get sample names</span>
 <span class="kw">bcftools</span> query -l input/snp.vcf <span class="kw">&gt;</span> sample_names.txt</code></pre>
-<p>You can open a new R session by typing <code>rstudio-genomics</code> in the terminal. The following lines of code should be entered into your console within Rstudio:</p>
+<p>Next, open Rstudio by typing your IP followed by <code>:8787</code> in a browser. The following lines of code should be entered into your console within Rstudio:</p>
 <pre class="sourceCode r"><code class="sourceCode r">
 <span class="co"># input the SNP data and the sample names by reading the .txt files you just created with bcftools</span>
 snp_data   &lt;-<span class="st"> </span><span class="kw">read.table</span>(<span class="st">&quot;snp_matrix.txt&quot;</span>)
