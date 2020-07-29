@@ -23,7 +23,7 @@ The aim of this practical is to genotype these 14 individuals. The steps in the 
 We recommend that you set up a directory for this work following the same principles as in the last few practicals. You should have subdirectories called `input`, `results` and `tmp` and a `WHATIDID.txt` file in which to log your commands:
 
 ```bash
-2019-10-xx-mapping/
+2020-10-xx-mapping/
 ├── input  
 │   ├── -> /import/teaching/bio/data/popgen/reference.fa
 │   └── -> /import/teaching/bio/data/popgen/reads
@@ -33,7 +33,7 @@ We recommend that you set up a directory for this work following the same princi
 
 ```
 
-For the first step of the pipeline, symlink the file `/import/teaching/bio/data/popgen/reference.fa` and the directory `/import/teaching/bio/data/popgen/reads` to `~/2019-10-xx-mapping/input/`.
+For the first step of the pipeline, symlink the file `/shared/data/popgen/reference.fa` and the directory `/shared/data/popgen/reads` to `~/2020-10-xx-mapping/input/`.
 
 Check how many scaffolds there are in the reference genome:
 
@@ -58,7 +58,7 @@ In the first step, the scaffold sequence (sometimes known as the database) is in
 ```bash
 # Symlink reference.fa to tmp/
 
-ln -s ~/2019-10-xx-mapping/input/reference.fa tmp/
+ln -s ~/2020-10-xx-mapping/input/reference.fa tmp/
 
 # Build the index now.
 bowtie2-build tmp/reference.fa tmp/reference
@@ -129,13 +129,13 @@ cp tmp/alignments/*.bai results/
 
 ## Variant calling
 
-Set up a new directory for the second part of today's practical (`2019-10-xx-genotyping`). You will want to set up the relevant subdirectories and `WHATIDID.txt` file as before. Then create symlinks from `/import/teaching/bio/data/popgen/reference.fa` and the `results` from the mapping part of the practical to your `input` directory. Remember to keep your commands in the `WHATIDID.txt` file.
+Set up a new directory for the second part of today's practical (`2020-10-xx-genotyping`). You will want to set up the relevant subdirectories and `WHATIDID.txt` file as before. Then create symlinks from `/shared/data/popgen/reference.fa` and the `results` from the mapping part of the practical to your `input` directory. Remember to keep your commands in the `WHATIDID.txt` file.
 
 ```
-2019-10-xx-genotyping/
+2020-10-xx-genotyping/
 ├── input  
 │   ├── -> /import/teaching/bio/data/popgen/reference.fa
-│   └── -> ~/2019-10-xx-mapping/results/*
+│   └── -> ~/2020-10-xx-mapping/results/*
 ├── results
 ├── tmp
 └── WHATIDID.txt
@@ -151,7 +151,7 @@ We will use multiallelic caller (option `-m`) of bcftools and set all individual
 
 # Symlink reference.fa to tmp/
 
-ln -s ~/2019-10-xx-genotyping/input/reference.fa tmp/
+ln -s ~/2020-10-xx-genotyping/input/reference.fa tmp/
 
 # Create index of the reference (different from that used by bowtie2)
 samtools faidx tmp/reference.fa
