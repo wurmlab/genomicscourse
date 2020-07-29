@@ -15,7 +15,7 @@ In the second part, we are going to measure genetic differentiation between the 
 Again, make a directory for this practical. You should create a directory for the `input`, one for the `results` and a `WHATIDID.txt` file in which you log your commands. 
 
 ```bash
-2019-10-xx-population_genetics
+2020-10-xx-population_genetics
 ├── input
 │   └── snp.vcf
 ├── results
