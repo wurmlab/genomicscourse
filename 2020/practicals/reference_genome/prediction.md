@@ -50,11 +50,7 @@ So now we have some gene predictions... how can we know if they are any good? Th
 
 ##### Running BLAST
 
-We will use [SequenceServer](https://doi.org/10.1093/molbev/msz185) to run BLAST. The command below will start a server. Once the server is ready, open http://localhost:4567 in your browser, paste the [example rice and honeybee protein sequences](predictions.fa) in the textbox and click on the 'BLAST' button to run a BLAST search.
-
-```bash
-sequenceserver -d /import/teaching/bio/data/reference_databases/uniref50
-```
+We will use [SequenceServer](https://doi.org/10.1093/molbev/msz185) to run BLAST. Open http://3.129.147.181/sequenceserver/ in your browser, paste the [example rice and honeybee protein sequences](predictions.fa) in the textbox and click on the 'BLAST' button to run a BLAST search.
 
 Do any of the gene predictions have significant similarity to known sequences? For a given gene prediction, do you think it is complete, or can you infer from the BLAST alignments that something may be wrong? Start by comparing the length of your gene prediction to that of the BLAST hits. Is your gene prediction considerably longer or considerably shorter than BLAST hits? Why?
 
@@ -72,7 +68,7 @@ As you can see, gene prediction software is imperfect – this is even the case 
 
 The [GeneValidator](http://bioinformatics.oxfordjournals.org/content/32/10/1559.long) tool can help to evaluate the quality of a gene prediction by comparing features of a predicted gene to similar database sequences. This approach expects that similar sequences should for example be of similar length.
 
-Although we won't be running GeneValidator, please check the screenshots linked in the next sentence. Try to understand why some gene predictions [have no reason for concern](img-qc/good.png), while [others do](img-qc/bad.png).
+Try to run the [example rice and honeybee protein sequences](predictions.fa) through GeneValidator: http://3.129.147.181/genevalidator/
 
 
 ### Comparing whole genesets & prioritizing genes for manual curation
