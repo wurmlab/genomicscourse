@@ -38,7 +38,7 @@ bcftools query -l input/snp.vcf > sample_names.txt
 
 ```
 
-You can open a new R session by typing `rstudio-genomics` in the terminal. The following lines of code should be entered into your console within Rstudio:
+Next, open Rstudio by typing your IP followed by `:8787` in a browser. The following lines of code should be entered into your console within Rstudio:
 
 ```r
 
