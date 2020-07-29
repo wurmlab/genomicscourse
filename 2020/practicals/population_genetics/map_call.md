@@ -216,15 +216,9 @@ cp tmp/variants/snp.vcf results
 
 In this part of the practical, we are going to use the software IGV to visualise the alignments we created and check some of the positions where variants were called.
 
-Open IGV[.](http://software.broadinstitute.org/software/igv/download)
+Copy the BAM and their index files (.bai) to `~/www/igv/bams`. To visualise them, open IGV in your browser by typing your IP followed by `/~` and your username.
 
-```bash
-igv.sh
-```
-
-IGV loads the human genome, so you need to define another genome file (`Genome` > `Load Genome from File`, then choose the assembly `reference.fa` file).
-
-You can then load some of the BAMs and the VCF file you produced (`File` > `Load from File`).
+This uses an embedable version of IGV that is pre configured to use the assembly (`reference.fa` file) you used for variant calling.
 
 * Has bcftools/mpileup recovered the same positions as you would by looking at the alignments with IGV?
 * Do you think our filtering was effective?
