@@ -12,24 +12,9 @@ In the second part, we are going to measure genetic differentiation between the 
 
 ## Input into R
 
-Again, make a directory for this practical. You should create a directory for the `input`, one for the `results` and a `WHATIDID.txt` file in which you log your commands. 
-
-```{bash}
-2020-10-xx-population_genetics
-├── input
-│   └── snp.vcf
-├── results
-└── WHATIDID.txt
-```
-
-You will only need the `snp.vcf` file we created in the last practical and place it into the appropriate input directory (if you don't have this file, you can download it from [here](../../data/popgen/vcf/snp.vcf.gz?raw=true "Download vcf"), if you do this you will need to replace `snp.vcf` with `snp.vcf.gz` in the code below).
-
-
-It's a good idea to note down the results of your analysis in the results directory, as well as saving any graph you make.
-
 The package `adegenet` uses an object called `r genlight`. To create it, we need to input a matrix where each row is an individual and each column is a locus (i.e. a SNP position). We can do this using bcftools:
 
-```{bash}
+```{bash engine.opts='-l'}
 # Select the information in the vcf file without the header
 bcftools query input/snp.vcf -f '%CHROM\t%POS[\t%GT]\n' > snp_matrix.txt
 
@@ -38,10 +23,9 @@ bcftools query -l input/snp.vcf > sample_names.txt
 
 ```
 
-Next, open Rstudio by typing your IP followed by `:8787` in a browser. The following lines of code should be entered into your console within Rstudio:
+Next, create the `r genlight` object from the files we just created:
 
 ```{r}
-
 # input the SNP data and the sample names by reading the .txt files you just created with bcftools
 snp_data   <- read.table("snp_matrix.txt")
 names_input <- read.table("sample_names.txt")
@@ -53,7 +37,6 @@ colnames(loci) <- c("scaffold", "position")
 
 
 # Transpose the data (turn it on its side so that rows = individuals and columns = loci)
-
 snp_matrix <- t(snp_data[,3:ncol(snp_data)])
 
 # Clean the sample names and add them to the rows of our matrix
@@ -66,7 +49,6 @@ bb <- sample_names[grep("B", sample_names)] # B samples (bb = "big B")
 lb <- sample_names[grep("b", sample_names) ]# b samples (lb = "little b")
 
 snp_matrix <- snp_matrix[c(bb, lb), ]
-
 ```
 
 ## Analysis using `adegenet`
@@ -170,7 +152,7 @@ In theory, the `r PopGenome` can read VCF files directly, using the `readVCF` fu
 
 Return to the command line by either opening a new terminal or by typing `q()` into R.
 
-```{bash}
+```{bash engine.opts='-l'}
 ## On your command line
 # Make new directory
 mkdir popgenome-vcf
