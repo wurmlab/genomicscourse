@@ -150,8 +150,6 @@ We will measure FST and nucleotide diversity (a measure of genetic diversity) us
 
 In theory, the `r PopGenome` can read VCF files directly, using the `readVCF` function. However, because our samples are haploid, we need to use a different function, `readData`, which requires a folder with a separate VCF for each scaffold.
 
-Return to the command line by either opening a new terminal or by typing `q()` into R.
-
 ```{bash engine.opts='-l'}
 ## On your command line
 # Make new directory
@@ -163,13 +161,11 @@ tabix -p vcf input/snp.vcf.gz
 
 bcftools view input/snp.vcf.gz scaffold_1 > popgenome-vcf/scaffold_1
 bcftools view input/snp.vcf.gz scaffold_2 > popgenome-vcf/scaffold_2
-
 ```
 
-You can now load the data in `R` (Open with `rstudio-genomics`).
+Now we can analyse the data:
 
 ```{r}
-
 library(PopGenome)
 
 # Load the data
@@ -191,7 +187,6 @@ pop2 <- pops[grep("b\\.bam",pops)]
 snp  <- set.populations(snp, list(pop1, pop2))
 
 snp@populations # check if it worked
-
 ```
 
 Let's calculate FST between the two populations and nucleotide diversity in each of the populations.
