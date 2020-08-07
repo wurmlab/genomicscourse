@@ -46,7 +46,7 @@ fasta_merge -d min10000.maker.output/min10000_master_datastore_index.log</code><
 <h3 id="quality-control-of-individual-genes">Quality control of individual genes</h3>
 <p>So now we have some gene predictions... how can we know if they are any good? The easiest way to get a feel for this is to use the following example sequences: <a href="predictions.fa.txt">predicted protein sequences from rice and honeybee</a>. We will compare them using BLAST to known sequences from other species in the <a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4375400/">uniref50 database</a>.</p>
 <h5 id="running-blast">Running BLAST</h5>
-<p>We will use <a href="https://doi.org/10.1093/molbev/msz185">SequenceServer</a> to run BLAST. Open <a href="http://3.129.147.181/sequenceserver/">http://3.129.147.181/sequenceserver/</a> in your browser, paste the <a href="predictions.fa">example rice and honeybee protein sequences</a> in the textbox and click on the 'BLAST' button to run a BLAST search.</p>
+<p>We will use <a href="https://doi.org/10.1093/molbev/msz185">SequenceServer</a> to run BLAST. Open <a href="http://3.129.147.181/sequenceserver/">http://3.129.147.181/sequenceserver/</a> in your browser, paste the <a href="predictions.fa.txt">example rice and honeybee protein sequences</a> in the textbox and click on the 'BLAST' button to run a BLAST search.</p>
 <p>Do any of the gene predictions have significant similarity to known sequences? For a given gene prediction, do you think it is complete, or can you infer from the BLAST alignments that something may be wrong? Start by comparing the length of your gene prediction to that of the BLAST hits. Is your gene prediction considerably longer or considerably shorter than BLAST hits? Why?</p>
 <p>Now try a few of your gene predictions. BLAST only a maximum of 8 sequences at a time (instead of simply selecting the first 8 genes in your file, copy-paste sequences randomly from the file).</p>
 <hr />
@@ -57,7 +57,7 @@ fasta_merge -d min10000.maker.output/min10000_master_datastore_index.log</code><
 <hr />
 <h5 id="using-genevalidator">Using GeneValidator</h5>
 <p>The <a href="http://bioinformatics.oxfordjournals.org/content/32/10/1559.long">GeneValidator</a> tool can help to evaluate the quality of a gene prediction by comparing features of a predicted gene to similar database sequences. This approach expects that similar sequences should for example be of similar length.</p>
-<p>Try to run the <a href="predictions.fa">example rice and honeybee protein sequences</a> through GeneValidator: <a href="http://3.129.147.181/genevalidator/">http://3.129.147.181/genevalidator/</a></p>
+<p>Try to run the <a href="predictions.fa.txt">example rice and honeybee protein sequences</a> through GeneValidator: <a href="http://3.129.147.181/genevalidator/">http://3.129.147.181/genevalidator/</a></p>
 <h3 id="comparing-whole-genesets-prioritizing-genes-for-manual-curation">Comparing whole genesets &amp; prioritizing genes for manual curation</h3>
 <p>Genevalidator's visual output can be handy when looking at few genes. But the tool also provides tab-delimited output, useful when working in the command-line or running the software on whole proteomes. This can help analysis:</p>
 <ul class="incremental">
