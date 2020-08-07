@@ -89,20 +89,17 @@ cat tmp/names.txt | parallel -t "bowtie2 -x tmp/reference -1 input/reads/{}.1.fq
 Because SAM files include a lot of information, they tend to occupy a lot of space (even with our small example data). Therefore, SAM files are generally compressed into BAM files (Binary sAM). Most tools that use aligned reads require BAM files that have been sorted and indexed by genomic position. This is done using `samtools`, a set of tools created to manipulate SAM/BAM files:
 
 ```bash
-# samtools view: compresses the SAM to BAM
-# samtools sort: sorts by scaffold position (creates f1_B.bam)
-# Note that the argument "-" stands for the input that is being piped in
-samtools view -b tmp/alignments/f1_B.sam | samtools sort - > tmp/alignments/f1_B.bam
+# Sort the SAM file by scaffold position and output in BAM format.
+samtools sort -O BAM tmp/alignments/f1_B.sam > tmp/alignments/f1_B.bam
 
-## This creates a file (f1_B.bam), which we then index
-samtools index tmp/alignments/f1_B.bam   # creates f1_B.bam.bai
-
+# Index the BAM file generated above (creates f1_B.bam.bai).
+samtools index tmp/alignments/f1_B.bam
 ```
 
 Again, we can use `parallel` to run this step for all the samples:
 
 ```bash
-cat tmp/names.txt | parallel -t "samtools view -b tmp/alignments/{}.sam | samtools sort - > tmp/alignments/{}.bam"
+cat tmp/names.txt | parallel -t "samtools sort -O BAM tmp/alignments/{}.sam > tmp/alignments/{}.bam"
 
 cat tmp/names.txt | parallel -t "samtools index tmp/alignments/{}.bam"
 ```
