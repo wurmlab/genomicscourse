@@ -2,7 +2,7 @@
 
 ## Prerequisites (we'll cover this sepeartely)
 
-We suppose that you are able at ease:
+We suppose that you are at ease:
 
  * in the command line. For a refresher, try the SIB's [UNIX fundamentals online course](http://edu.isb-sib.ch/course/view.php?id=82).
  * with R. The [swirl() library/course](http://swirlstats.com) can help:
