@@ -75,8 +75,8 @@ Your [resulting directory structure](http://github.com/wurmlab/templates/blob/ma
 ```bash
 2020-09-xx-read_cleaning
 ├── input
-│   ├── reads.pe1.fastq.gz -> /import/teaching/bio/data/reads.pe1.fastq.gz
-│   └── reads.pe2.fastq.gz -> /import/teaching/bio/data/reads.pe2.fastq.gz
+│   ├── reads.pe1.fastq.gz -> /shared/data/reads.pe1.fastq.gz
+│   └── reads.pe2.fastq.gz -> /shared/data/reads.pe2.fastq.gz
 ├── tmp
 │   ├── reads.pe2_fastqc.html
 │   └── reads.pe2_fastqc.zip

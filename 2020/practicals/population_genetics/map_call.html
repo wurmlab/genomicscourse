@@ -52,8 +52,8 @@ code > span.er { color: #ff0000; font-weight: bold; }
 <p>We recommend that you set up a directory for this work following the same principles as in the last few practicals. You should have subdirectories called <code>input</code>, <code>results</code> and <code>tmp</code> and a <code>WHATIDID.txt</code> file in which to log your commands:</p>
 <pre class="sourceCode bash"><code class="sourceCode bash"><span class="kw">2020-10-xx-mapping/</span>
 ├── <span class="kw">input</span>  
-│   ├── <span class="kw">-&gt;</span> /import/teaching/bio/data/popgen/reference.fa
-│   └── <span class="kw">-&gt;</span> /import/teaching/bio/data/popgen/reads
+│   ├── <span class="kw">-&gt;</span> /shared/data/popgen/reference.fa
+│   └── <span class="kw">-&gt;</span> /shared/data/popgen/reads
 ├── <span class="kw">results</span>
 ├── <span class="kw">tmp</span>
 └── <span class="kw">WHATIDID.txt</span></code></pre>
@@ -84,8 +84,8 @@ code > span.er { color: #ff0000; font-weight: bold; }
 <ul class="incremental">
 <li>What is the meaning of the <code>-1</code> and <code>-2</code> parameters?</li>
 </ul>
-<p>The command produced a SAM file (Sequence Alignment/Map file), which is the standard file used to store sequence alignments. Have a quick look at the file using <code>less</code>. The file includes a header (lines starting with the <code>@</code> symbol), and a line for every read aligned to the reference assembly. For each read, we are given a mapping quality values, the position of both pairs, the actual sequence and its quality by base pair, and a series of flags with additional measures of mapping quality.</p>
-<p>We now need to run <code>bowtie2</code> for all the other samples. We could do this by typing the same command another 13 times (changing the sample name), or we can use the <code>GNU parallel</code> tool, which allows to run the same command on several samples at once:</p>
+<p>The command produced a SAM file (Sequence Alignment/Map file), which is the standard file used to store sequence alignments. Have a quick look at the file using <code>less</code>. The file includes a header (lines starting with the <code>@</code> symbol), and a line for every read aligned to the reference assembly. For each read, we are given a mapping quality value, the position of both pairs, the actual sequence and its quality by base pair, and a series of flags with additional measures of mapping quality.</p>
+<p>We now need to run <code>bowtie2</code> for all the other samples. We could do this by typing the same command another 13 times (changing the sample name), or we can use the <code>GNU parallel</code> tool, which allows you to run the same command on several samples at once:</p>
 <pre class="sourceCode bash"><code class="sourceCode bash"><span class="co"># Create a file with all sample names</span>
 <span class="kw">ls</span> input/reads/*fq.gz <span class="kw">|</span> <span class="kw">cut</span> -d <span class="st">'/'</span> -f 3 <span class="kw">|</span> <span class="kw">cut</span> -d <span class="st">'.'</span> -f 1 <span class="kw">|</span> <span class="kw">sort</span> <span class="kw">|</span> <span class="kw">uniq</span> <span class="kw">&gt;</span> tmp/names.txt
 
@@ -114,7 +114,7 @@ code > span.er { color: #ff0000; font-weight: bold; }
 <p>Set up a new directory for the second part of today's practical (<code>2020-10-xx-genotyping</code>). You will want to set up the relevant subdirectories and <code>WHATIDID.txt</code> file as before. Then create symlinks from <code>/shared/data/popgen/reference.fa</code> and the <code>results</code> from the mapping part of the practical to your <code>input</code> directory. Remember to keep your commands in the <code>WHATIDID.txt</code> file.</p>
 <pre><code>2020-10-xx-genotyping/
 ├── input  
-│   ├── -&gt; /import/teaching/bio/data/popgen/reference.fa
+│   ├── -&gt; /shared/data/popgen/reference.fa
 │   └── -&gt; ~/2020-10-xx-mapping/results/*
 ├── results
 ├── tmp
