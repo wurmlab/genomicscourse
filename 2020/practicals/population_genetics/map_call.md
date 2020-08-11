@@ -25,8 +25,8 @@ We recommend that you set up a directory for this work following the same princi
 ```bash
 2020-10-xx-mapping/
 ├── input  
-│   ├── -> /import/teaching/bio/data/popgen/reference.fa
-│   └── -> /import/teaching/bio/data/popgen/reads
+│   ├── -> /shared/data/popgen/reference.fa
+│   └── -> /shared/data/popgen/reads
 ├── results
 ├── tmp
 └── WHATIDID.txt
@@ -131,7 +131,7 @@ Set up a new directory for the second part of today's practical (`2020-10-xx-gen
 ```
 2020-10-xx-genotyping/
 ├── input  
-│   ├── -> /import/teaching/bio/data/popgen/reference.fa
+│   ├── -> /shared/data/popgen/reference.fa
 │   └── -> ~/2020-10-xx-mapping/results/*
 ├── results
 ├── tmp
