@@ -8,36 +8,23 @@ Find (or make) some friends; find a table. In groups of 4 or 5, ask an assistant
 
 ### Brief assembly example / concepts
 
-Many different pieces of software exist for genome assembly. We will be using `SOAPdenovo`.
+Many different pieces of software exist for genome assembly. We will be using [SPAdes](https://cab.spbu.ru/software/spades/).
 
-Create a new main directory for today's practical (e.g., 2020-09-xx-assembly) and the `input`, `tmp`, and `results` subdirectory. Link the output (cleaned reads) from yesterday's practical into `2020-09-xx-assembly/input`.
+Create a new main directory for today's practical (e.g., `2020-09-xx-assembly`) and the `input`, `tmp`, and `results` subdirectory. Link the output (cleaned reads) from yesterday's practical into `2020-09-xx-assembly/input`.
 
-To assemble our cleaned reads with SOAPdenovo, we create a `soap_config.txt` file containing the following:
-
-```
-max_rd_len=100          # maximal read length
-[LIB]            # One [LIB] section per library
-avg_ins=470             # average insert size
-reverse_seq=0           # if sequence needs to be reversed
-asm_flags=3             # use for contig building and subsequent scaffolding
-rank=1                  # in which order the reads are used while scaffolding
-q1=input/reads.pe1.clean.fq
-q2=input/reads.pe2.clean.fq
-```
-
-Then run the following line. *THIS IS RAM-INTENSE, your computer may struggle*
+To assemble our cleaned reads with SPAdes, run the following line. *THIS IS RAM-INTENSE, your computer may struggle*
 
 ```bash
-SOAPdenovo-63mer all -s soap_config.txt -K 45 -R -o tmp/assembly
+spades.py -o tmp -1 input/reads.pe1.clean.fq -2 input/reads.pe2.clean.fq
 ```
 
-Like any other assembler, SOAPdenovo creates many files, including an `assembly.scafSeq` file that is likely to be used for follow-up analyses[.](../../data/reference_assembly/output/assembly.scafSeq.gz?raw=true) Copy this file to your results directory:
+Like any other assembler, SPAdes creates many files, including a `scaffolds.fasta` file that is likely to be used for follow-up analyses[.](../../data/reference_assembly/output/scaffolds.fasta.gz?raw=true) Copy this file to your results directory:
 
 ```bash
-cp tmp/assembly.scafSeq results/
+cp tmp/scaffolds.fasta results/
 ```
 
-Take a look at the contents of this file (e.g., `less results/assembly.scafSeq`). Why does this file contain so many NNNN sequences?
+Take a look at the contents of this file (e.g., `less results/scaffolds.fasta`). Why does this file contain so many NNNN sequences?
 
 There are many other genome assembly approaches. While waiting for everyone to make it to this stage, try to understand some of the challenges of *de novo* genome assembly and the approaches used to overcome them via the following papers:
 
@@ -59,7 +46,7 @@ How do we know if our genome is good?
 
 #### Simple metrics
 
-An assembly software will generally provide some statistics about what it did. But the output formats differ between assemblers. [Quast](http://bioinf.spbau.ru/quast), the *Quality Assessment Tool for Genome Assemblies* creates a standardized report. Run Quast (`quast.py`) on the `assembly.scafSeq` file. No special options - just the simple scenario to get some statistics.
+An assembly software will generally provide some statistics about what it did. But the output formats differ between assemblers. [Quast](http://bioinf.spbau.ru/quast), the *Quality Assessment Tool for Genome Assemblies* creates a standardized report. Run Quast (`quast.py`) on the `scaffolds.fasta` file. No special options - just the simple scenario to get some statistics.
 
 Have a look at the report (pdf or html) Quast generated.
 
