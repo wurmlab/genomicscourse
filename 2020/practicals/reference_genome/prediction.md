@@ -10,13 +10,13 @@ Create a new main directory for today's practical (e.g., 2020-10-xx-gene_predict
 
 ```
 cd ~/2020-10-xx-gene_prediction
-ln -s ~/2020-09-xx-assembly/results/assembly.scafSeq input/
+ln -s ~/2020-09-xx-assembly/results/scaffolds.fasta input/
 ```
 
-Pull out the longest few scaffolds from `assembly.scafSeq` into a new file:
+Pull out the longest few scaffolds from `scaffolds.fasta` into a new file:
 
 ```
-seqtk seq -L 10000 input/assembly.scafSeq > tmp/min10000.fa
+seqtk seq -L 10000 input/scaffolds.fasta > tmp/min10000.fa
 ```
 
 Next, `cd` to your `tmp/` folder and run `maker -OPTS`. This will generate an empty `maker_opts.ctl` configuration file (ignore the warnings). Edit that file using a text editor such as `nano` or `vim` to specify:

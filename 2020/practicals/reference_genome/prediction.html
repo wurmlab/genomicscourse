@@ -21,9 +21,9 @@
 <h3 id="running-maker">Running Maker</h3>
 <p>Create a new main directory for today's practical (e.g., 2020-10-xx-gene_prediction) as well as the <code>input</code>, <code>tmp</code>, and <code>results</code> subdirectories and a <code>WHATIDID.txt</code> file to log your commands. Link the output (assembly) from yesterday's practical into <code>2020-10-xx-gene_prediction/input</code>:</p>
 <pre><code>cd ~/2020-10-xx-gene_prediction
-ln -s ~/2020-09-xx-assembly/results/assembly.scafSeq input/</code></pre>
-<p>Pull out the longest few scaffolds from <code>assembly.scafSeq</code> into a new file:</p>
-<pre><code>seqtk seq -L 10000 input/assembly.scafSeq &gt; tmp/min10000.fa</code></pre>
+ln -s ~/2020-09-xx-assembly/results/scaffolds.fasta input/</code></pre>
+<p>Pull out the longest few scaffolds from <code>scaffolds.fasta</code> into a new file:</p>
+<pre><code>seqtk seq -L 10000 input/scaffolds.fasta &gt; tmp/min10000.fa</code></pre>
 <p>Next, <code>cd</code> to your <code>tmp/</code> folder and run <code>maker -OPTS</code>. This will generate an empty <code>maker_opts.ctl</code> configuration file (ignore the warnings). Edit that file using a text editor such as <code>nano</code> or <code>vim</code> to specify:</p>
 <ul class="incremental">
 <li>genome: <code>min10000.fa</code><br /></li>
