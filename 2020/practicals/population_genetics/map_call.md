@@ -156,7 +156,7 @@ samtools faidx tmp/reference.fa
 
 # Run samtools mpileup
 mkdir tmp/variants
-samtools mpileup -uf tmp/reference.fa input/*.bam > tmp/variants/raw_calls.bcf
+bcftools mpileup -Ou -f tmp/reference.fa input/*.bam > tmp/variants/raw_calls.bcf
 
 # Run bcftools call
 bcftools call --ploidy 1 -v -m tmp/variants/raw_calls.bcf > tmp/variants/calls.vcf
