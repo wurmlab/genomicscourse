@@ -24,13 +24,12 @@ We recommend that you set up a directory for this work following the same princi
 
 ```bash
 2020-10-xx-mapping/
-├── input  
+├── input
 │   ├── -> /shared/data/popgen/reference.fa
 │   └── -> /shared/data/popgen/reads
 ├── results
 ├── tmp
 └── WHATIDID.txt
-
 ```
 
 For the first step of the pipeline, symlink the file `/shared/data/popgen/reference.fa` and the directory `/shared/data/popgen/reads` to `~/2020-10-xx-mapping/input/`.
@@ -57,7 +56,6 @@ In the first step, the scaffold sequence (sometimes known as the database) is in
 
 ```bash
 # Symlink reference.fa to tmp/
-
 ln -s ~/2020-10-xx-mapping/input/reference.fa tmp/
 
 # Build the index now.
@@ -121,7 +119,6 @@ Copy the `.bam` and `.bai` files to the `results` directory.
 ```bash
 cp tmp/alignments/*.bam results/
 cp tmp/alignments/*.bai results/
-
 ```
 
 
@@ -131,7 +128,7 @@ Set up a new directory for the second part of today's practical (`2020-10-xx-gen
 
 ```
 2020-10-xx-genotyping/
-├── input  
+├── input
 │   ├── -> /shared/data/popgen/reference.fa
 │   └── -> ~/2020-10-xx-mapping/results/*
 ├── results
@@ -148,7 +145,6 @@ We will use multiallelic caller (option `-m`) of bcftools and set all individual
 # Step 1: samtools mpileup
 
 # Symlink reference.fa to tmp/
-
 ln -s ~/2020-10-xx-genotyping/input/reference.fa tmp/
 
 # Create index of the reference (different from that used by bowtie2)
@@ -160,7 +156,6 @@ bcftools mpileup -Ou -f tmp/reference.fa input/*.bam > tmp/variants/raw_calls.bc
 
 # Run bcftools call
 bcftools call --ploidy 1 -v -m tmp/variants/raw_calls.bcf > tmp/variants/calls.vcf
-
 ```
 
 * Do you understand why we are using the `-v` option in `bcftools call`? Is it ever useful to leave it out?
@@ -184,7 +179,6 @@ We will filter the VCF using `bcftools filter`. We can remove anything with qual
 
 ```bash
 bcftools filter --exclude 'QUAL < 30' tmp/variants/calls.vcf | bcftools view -g ^miss > tmp/variants/filtered_calls.vcf
-
 ```
 
 In more serious analyses, it may be important to filter by other parameters.
@@ -196,7 +190,6 @@ In the downstream analysis, we only want to look at sites that are:
 
 ```bash
 bcftools view -v snps -m2 -M2 --min-ac 1:minor tmp/variants/filtered_calls.vcf > tmp/variants/snp.vcf
-
 ```
 
 * How many SNPs does the resulting VCF file have?
@@ -207,7 +200,6 @@ Now that we have a SNP set, we can copy it to `results` directory.
 
 ```bash
 cp tmp/variants/snp.vcf results
-
 ```
 
 ## Viewing the results using IGV (Integrative Genome Viewer)
