@@ -137,13 +137,11 @@ Set up a new directory for the second part of today's practical (`2020-10-xx-gen
 
 ```
 
-There are several approaches to call variants. The simplest approach is to look for positions where the mapped reads consistently have a different base than the reference assembly (the consensus approach). We need to run two steps, `samtools mpileup`, which looks for inconsistencies between the reference and the aligned reads, and `bcftools call`, which interprets them as variants.
+There are several approaches to call variants. The simplest approach is to look for positions where the mapped reads consistently have a different base than the reference assembly (the consensus approach). We need to run two steps, `bcftools mpileup`, which looks for inconsistencies between the reference and the aligned reads, and `bcftools call`, which interprets them as variants.
 
 We will use multiallelic caller (option `-m`) of bcftools and set all individuals as haploid.
 
 ```bash
-# Step 1: samtools mpileup
-
 # Symlink reference.fa to tmp/
 ln -s ~/2020-10-xx-genotyping/input/reference.fa tmp/
 
