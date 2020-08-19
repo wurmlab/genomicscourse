@@ -51,7 +51,7 @@ code > span.er { color: #ff0000; font-weight: bold; }
 </ol>
 <p>We recommend that you set up a directory for this work following the same principles as in the last few practicals. You should have subdirectories called <code>input</code>, <code>results</code> and <code>tmp</code> and a <code>WHATIDID.txt</code> file in which to log your commands:</p>
 <pre class="sourceCode bash"><code class="sourceCode bash"><span class="kw">2020-10-xx-mapping/</span>
-├── <span class="kw">input</span>  
+├── <span class="kw">input</span>
 │   ├── <span class="kw">-&gt;</span> /shared/data/popgen/reference.fa
 │   └── <span class="kw">-&gt;</span> /shared/data/popgen/reads
 ├── <span class="kw">results</span>
@@ -72,7 +72,6 @@ code > span.er { color: #ff0000; font-weight: bold; }
 <p>The first step in our pipeline is to align the paired end reads to the reference genome. We are using the software <code>bowtie2</code>, which was created to align short read sequences to long sequences such as the scaffolds in a reference assembly. <code>bowtie2</code>, like most aligners, works in two steps.</p>
 <p>In the first step, the scaffold sequence (sometimes known as the database) is indexed, in this case using the <a href="https://en.wikipedia.org/wiki/Burrows-Wheeler_transform">Burrows-Wheeler Transform</a>, which can help compress a large text into less memory. It thus allows for memory efficient alignment. Index files often require the original file to be present in the same directory. We thus start by linking scaffold sequences to <code>tmp</code> directory (where all output will be written first).</p>
 <pre class="sourceCode bash"><code class="sourceCode bash"><span class="co"># Symlink reference.fa to tmp/</span>
-
 <span class="kw">ln</span> -s ~/2020-10-xx-mapping/input/reference.fa tmp/
 
 <span class="co"># Build the index now.</span>
@@ -114,19 +113,16 @@ code > span.er { color: #ff0000; font-weight: bold; }
 <h2 id="variant-calling">Variant calling</h2>
 <p>Set up a new directory for the second part of today's practical (<code>2020-10-xx-genotyping</code>). You will want to set up the relevant subdirectories and <code>WHATIDID.txt</code> file as before. Then create symlinks from <code>/shared/data/popgen/reference.fa</code> and the <code>results</code> from the mapping part of the practical to your <code>input</code> directory. Remember to keep your commands in the <code>WHATIDID.txt</code> file.</p>
 <pre><code>2020-10-xx-genotyping/
-├── input  
+├── input
 │   ├── -&gt; /shared/data/popgen/reference.fa
 │   └── -&gt; ~/2020-10-xx-mapping/results/*
 ├── results
 ├── tmp
 └── WHATIDID.txt
 </code></pre>
-<p>There are several approaches to call variants. The simplest approach is to look for positions where the mapped reads consistently have a different base than the reference assembly (the consensus approach). We need to run two steps, <code>samtools mpileup</code>, which looks for inconsistencies between the reference and the aligned reads, and <code>bcftools call</code>, which interprets them as variants.</p>
+<p>There are several approaches to call variants. The simplest approach is to look for positions where the mapped reads consistently have a different base than the reference assembly (the consensus approach). We need to run two steps, <code>bcftools mpileup</code>, which looks for inconsistencies between the reference and the aligned reads, and <code>bcftools call</code>, which interprets them as variants.</p>
 <p>We will use multiallelic caller (option <code>-m</code>) of bcftools and set all individuals as haploid.</p>
-<pre class="sourceCode bash"><code class="sourceCode bash"><span class="co"># Step 1: samtools mpileup</span>
-
-<span class="co"># Symlink reference.fa to tmp/</span>
-
+<pre class="sourceCode bash"><code class="sourceCode bash"><span class="co"># Symlink reference.fa to tmp/</span>
 <span class="kw">ln</span> -s ~/2020-10-xx-genotyping/input/reference.fa tmp/
 
 <span class="co"># Create index of the reference (different from that used by bowtie2)</span>
