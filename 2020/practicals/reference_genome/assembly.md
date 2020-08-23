@@ -12,7 +12,7 @@ Many different pieces of software exist for genome assembly. We will be using [S
 
 Create a new main directory for today's practical (e.g., `2020-09-xx-assembly`) and the `input`, `tmp`, and `results` subdirectory. Link the output (cleaned reads) from yesterday's practical into `2020-09-xx-assembly/input`.
 
-To assemble our cleaned reads with SPAdes, run the following line. *THIS IS RAM-INTENSE, your computer may struggle*
+To assemble our cleaned reads with SPAdes, run the following line. *THIS WILL TAKE ABOUT 10 MINUTES*
 
 ```bash
 spades.py -o tmp -1 input/reads.pe1.clean.fq -2 input/reads.pe2.clean.fq
