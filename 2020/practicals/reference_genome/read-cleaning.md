@@ -95,7 +95,7 @@ Should you maybe trim the sequences to remove low-quality ends? What else might 
 Below, we will perform two cleaning steps:
   * Trimming the ends of sequence reads using cutadapt.
   * K-mer filtering using kmc3.
-  * Removing sequences that are of low quality or too short using seqtk.
+  * Removing sequences that are of low quality or too short using cutadapt.
 
 Other tools including [fastx_toolkit](http://github.com/agordon/fastx_toolkit), [kmc2](http://arxiv.org/abs/1407.1507) and [Trimmomatic](http://www.usadellab.org/cms/index.php?page=trimmomatic) can also be useful.
 
@@ -117,7 +117,7 @@ cutadapt --cut REPLACE --quality-cutoff REPLACE input/reads.pe2.fastq.gz > tmp/r
 ```
 
 
-### K-mer filtering, removal of low quality and short sequences
+### K-mer filtering, removal of short sequences
 
 Say you have sequenced your sample at 45x genome coverage. The real coverage distribution will be influenced by factors including DNA quality, library preparation type and local GC content, but you might expect most of the genome to be covered between 20 and 70x. In practice, the distribution can be very strange. One way of rapidly examining the coverage distribution before you have a reference genome is to chop your raw sequence reads into short "k-mers" of, for example, 31 nucleotides, and count how often you get each possible k-mer. An example plot of k-mer frequencies from a haploid sample sequenced at ~45x coverage is shown below:
 
@@ -125,36 +125,32 @@ Say you have sequenced your sample at 45x genome coverage. The real coverage dis
 
 Surprisingly, many sequences are extremely rare (e.g., present only once). These are likely to be errors that appeared during library preparation or sequencing, or could be rare somatic mutations. Although not shown in the above graph, other sequences may exist at 10,000x coverage. These could be pathogens or repetitive elements. Both extremely rare and extremely frequent sequences can confuse assembly software and eliminating them can reduce subsequent memory, disk space and CPU requirements considerably.
 
-Below, we use [kmc3](http://github.com/refresh-bio/KMC) to trim extremely rare k-mers from the reads. Multiple alternative approaches (e.g., using [khmer](http://github.com/ged-lab/khmer)) exist. Here, we will use a k-mer size of 21 nucleotides. Trimming rare k-mers can cause some reads to become too short to be informative. We remove such reads in the subsequent step using `seqtk`. In the same same step, we also ask `seqtk` to remove reads containing low quality. Finally, because we have discarded certain reads (either because they had become too short or because they contained low quality bases) some reads may have become "orphaned", i.e., they are no longer paired. We eliminate these in the next step because subsequent analysis (e.g., genome assembly, or variant calling) often assume all reads to be paired. Understanding the exact commands – which are a bit convoluted – is unnecessary. It is important to understand the concept of k-mer filtering and the reasoning behind each step.
+Below, we use [kmc3](http://github.com/refresh-bio/KMC) to "mask" extremely rare k-mers (i.e., convert each base of rare k-mers to 'N'). Multiple alternative approaches for k-mer filtering exist (e.g., using [khmer](http://github.com/ged-lab/khmer)). Here, we use k-mer size of 21 nucleotides. Where the masked k-mers are at the end of the reads, we trim them in a subsequent step using `cutadapt`; where the masked k-mers are in the middle of the reads, we leave them as it is. Trimming reads (either masked k-mers or low quality ends in the previous step) can cause some reads to become too short to be informative. We remove such reads in the same step using `cutadapt`. Finally, discarding reads (because they are too short) can cause the corresponding read of the pair to become "unpaired". These are automatically removed by `cutadapt`. While it is possible to capture and use unpaired reads, we do not illustrate that here for simplicity. Understanding the exact commands – which are a bit convoluted – is unnecessary. It is important to understand the concept of k-mer filtering and the reasoning behind each step.
 
 ```bash
-# 1. Build a database of k-mers (includes count for each unique k-mer)
-# 1.1 Make a list of files to make k-mer database from
+# To mask rare k-mers we will first build a k-mer database that includes counts for each k-mer.
+# For this, we first make a list of files to input to KMC.
 ls tmp/reads.pe1.trimmed.fq tmp/reads.pe2.trimmed.fq > tmp/file_list_for_kmc
 
-# 1.2 Count k-mers. This will produce two files in your tmp/ directory:
-# 21-mers.kmc_pre and 21-mers.kmc_suf. The last argument (tmp) tells
-# kmc where to put intermediate files during computation; these are
-# automatically deleted afterwards.
+# Build a k-mer database using k-mer size of 21 nucleotides (-k). This will produce two files
+# in your tmp/ directory: 21-mers.kmc_pre and 21-mers.kmc_suf. The last argument (tmp) tells
+# kmc where to put intermediate files during computation; these are automatically deleted
+# afterwards. The -m option tells KMC to use only 4 GB of RAM.
 kmc -m4 -k21 @tmp/file_list_for_kmc tmp/21-mers tmp
 
-# 2. Trim reads so that k-mers observed less than 3 times are eliminated.
-kmc_tools -t1 filter -t tmp/21-mers tmp/reads.pe1.trimmed.fq -ci3 tmp/reads.pe1.trimmed.norare.fq
-kmc_tools -t1 filter -t tmp/21-mers tmp/reads.pe2.trimmed.fq -ci3 tmp/reads.pe2.trimmed.norare.fq
+# Mask k-mers (-hm) observed less than two times (-ci) in the database (tmp/21-mers). The -t
+# option tells KMC to run in single-threaded mode: this is required to preserve the order of
+# the reads in the file. filter is a sub-command of kmc_tools that has options to mask, trim,
+# or discard reads contain extremely rare k-mers.
+kmc_tools -t1 filter -hm tmp/21-mers tmp/reads.pe1.trimmed.fq -ci2 tmp/reads.pe1.trimmed.norare.fq
+kmc_tools -t1 filter -hm tmp/21-mers tmp/reads.pe2.trimmed.fq -ci2 tmp/reads.pe2.trimmed.norare.fq
 
-# 3. Remove reads shorter than 50 bp and those containing low quality bases.
-seqtk seq -L 50 -q 10 tmp/reads.pe1.trimmed.norare.fq > tmp/reads.pe1.trimmed.norare.noshort.highqual.fq
-seqtk seq -L 50 -q 10 tmp/reads.pe2.trimmed.norare.fq > tmp/reads.pe2.trimmed.norare.noshort.highqual.fq
+# Trim 'N's from the ends of the reads, then discard reads shorter than 21 bp, and save remaining
+# reads to the paths specified by -o and -p options. -p option ensures that only paired reads are
+# saved (i.e., orphans are discarded).
+cutadapt --trim-n --minimum-length 21 -o tmp/reads.pe1.clean.fq -p tmp/reads.pe2.clean.fq tmp/reads.pe1.trimmed.norare.fq tmp/reads.pe2.trimmed.norare.fq
 
-# 4. Remove orphaned reads
-# 4.1 Collect read ids that appear in both files
-cat tmp/reads.pe1.trimmed.norare.noshort.highqual.fq tmp/reads.pe2.trimmed.norare.noshort.highqual.fq | seqtk comp | cut -f1 | sort | uniq -d > tmp/paired_read_ids
-
-# 4.2 Extract reads corresponding to the selected ids from both the files
-seqtk subseq tmp/reads.pe1.trimmed.norare.noshort.highqual.fq tmp/paired_read_ids > tmp/reads.pe1.clean.fq
-seqtk subseq tmp/reads.pe2.trimmed.norare.noshort.highqual.fq tmp/paired_read_ids > tmp/reads.pe2.clean.fq
-
-# 5. Copy over the cleaned reads to a results directory
+# Finally, we can copy over the cleaned reads to results directory for further analysis
 cp tmp/reads.pe1.clean.fq tmp/reads.pe2.clean.fq results
 ```
 
