@@ -90,24 +90,36 @@ glPlot(snp)
 You can also perform a Principle Component Analysis (PCA) and plot the first few components.
 
 ```{r}
-
 ## PCA
-pca <- glPca(snp, nf = 10) # you can select 10 components
+# Run PCA - scale = TRUE meaning any outliers will be accounted for, reccomended if no prewious normalisation was applied to the data
+pca_results <- prcomp(snp_matrix, scale. = TRUE)
+# Check how much variance each PC explains
+summary(pca_results)
+# Call out another dimension of the data
+pca_results_invert <- as.data.frame(pca_results$x)
+# Add additional column with B or b to set colours in the plot
+pca_results_invert$sample <- rownames(pca_results_invert)
+# Plot the PCA
+pca_plot <- pca_results_invert %>% 
+  mutate_all(~ gsub("results/|f1|f2|f3|f4|f5|f6|f7|_", "", .)) %>%  # Remove redundant pattern from the data to only have B or b
+  transform(pca_results_invert,  # Transform values to numeric
+  PC1 = as.numeric(PC1),
+  PC2 = as.numeric(PC2), PC3 = as.numeric(PC3)
+) %>%
+  ggplot(aes(x = PC1, y = PC2, colour = sample)) + # Plot 2 first PC values
+  geom_point(size = 2, alpha = 0.8, pch = 21) +
+  xlab(paste0("PC1")) +
+  ylab(paste0("PC2")) +
+  coord_fixed(ratio = 1) +
+  theme(
+    axis.title.x = element_text(colour = "gray20", size = 12),
+    axis.title.y = element_text(colour = "gray20", size = 12),
+    axis.text.x = element_text(colour = "gray20", size = 10),
+    axis.text.y = element_text(colour = "gray20", size = 10)
+  ) +
+  theme_minimal()
 
-# Quick plot
-scatter(pca, posi = "none")
-
-
-# Plot of the first few axes coloured by population
-
-plot(x = pca$scores[, 1], y = pca$scores[, 2],
-     col = c(rep("blue", 7), rep("orange", 7)), cex = 2)
-text(pca$scores[, 1], pca$scores[, 2] + 0.7,
-     labels = rownames(pca$scores), cex = 0.7)
-plot(pca$scores[, 1], pca$scores[, 3],
-     col = c(rep("blue", 7), rep("orange", 7)), cex = 2)
-text(pca$scores[,1], pca$scores[,3] + 0.7,
-    labels=rownames(pca$scores), cex = 0.7)
+pca_plot
 
 ```
 
@@ -116,26 +128,83 @@ The aim of these analysis is to test whether the B and the b individuals cluster
 Each of the scaffolds has been retrieved from a different chromosome. We can test whether the differentiation between B and b is only seen in one of the scaffolds.
 
 ```{r}
-# We will start with scaffold_2
-
+## We will start with scaffold_2
+# Plot heat map
 scaffold_2_index <- which(snp@chromosome == "scaffold_2")
 scaffold_2 <- snp[, scaffold_2_index]
-
 glPlot(scaffold_2)
 
-scaffold_2_pca <- glPca(scaffold_2, nf = 10)
-scatter(scaffold_2_pca, posi = "none")
+# Plot PCA
+# Sellect only "scaffold_2" rowes
+scaffold_2_pca <- snp_data %>% dplyr::group_by(V1) %>% dplyr::filter(V1 == "scaffold_2")
+# Transpose the data
+scaffold_2_pca <- t(scaffold_2_pca[, 3:ncol(scaffold_2_pca)])
+scaffold_2_pca_res <- prcomp(scaffold_2_pca, scale. = TRUE)
+# Check how much variance each PC explains
+summary(scaffold_2_pca_res)
+# Call out another dimension of the data
+scaffold_2_pca_inv <- as.data.frame(scaffold_2_pca_res$x)
+# Add additional column with B or b to set colours in the plot
+scaffold_2_pca_inv$sample <- sample_names
+# Plot the PCA
+scaffold_2_pca_plot <- scaffold_2_pca_inv %>% 
+  mutate_all(~ gsub("results/|f1|f2|f3|f4|f5|f6|f7|_", "", .)) %>%  # Remove redundant pattern from the data to only have B or b
+  transform(pca_results_invert,  # Transform values to numeric
+  PC1 = as.numeric(PC1),
+  PC2 = as.numeric(PC2), PC3 = as.numeric(PC3)
+) %>%
+  ggplot(aes(x = PC1, y = PC2, colour = sample)) + # Plot 2 first PC values
+  geom_point(size = 2, alpha = 0.8, pch = 21) +
+  xlab(paste0("PC1")) +
+  ylab(paste0("PC2")) +
+  coord_fixed(ratio = 1) +
+  theme(
+    axis.title.x = element_text(colour = "gray20", size = 12),
+    axis.title.y = element_text(colour = "gray20", size = 12),
+    axis.text.x = element_text(colour = "gray20", size = 10),
+    axis.text.y = element_text(colour = "gray20", size = 10)
+  ) +
+  theme_minimal()
 
+scaffold_2_pca_plot
+```
 
-# scaffold_1
+```{r}
+## scaffold_1
+# Plot heat map
 scaffold_1_index <- which(snp@chromosome == "scaffold_1")
 scaffold_1 <- snp[, scaffold_1_index]
-
 glPlot(scaffold_1)
 
-scaffold_1_pca <- glPca(scaffold_1, nf = 10) 
-scatter(scaffold_1_pca, posi = "none")
+# Plot PCA
+scaffold_1_pca <- snp_data %>% dplyr::group_by(V1) %>% dplyr::filter(V1 == "scaffold_1")
+scaffold_1_pca <- t(scaffold_1_pca[, 3:ncol(scaffold_1_pca)])
+scaffold_1_pca_res <- prcomp(scaffold_1_pca, scale. = TRUE)
+summary(scaffold_1_pca_res)
 
+scaffold_1_pca_inv <- as.data.frame(scaffold_1_pca_res$x)
+scaffold_1_pca_inv$sample <- sample_names
+
+scaffold_1_pca_plot <- scaffold_1_pca_inv %>% 
+  mutate_all(~ gsub("results/|f1|f2|f3|f4|f5|f6|f7|_", "", .)) %>%  
+  transform(pca_results_invert,  
+  PC1 = as.numeric(PC1),
+  PC2 = as.numeric(PC2), PC3 = as.numeric(PC3)
+) %>%
+  ggplot(aes(x = PC1, y = PC2, colour = sample)) + 
+  geom_point(size = 2, alpha = 0.8, pch = 21) +
+  xlab(paste0("PC1")) +
+  ylab(paste0("PC2")) +
+  coord_fixed(ratio = 1) +
+  theme(
+    axis.title.x = element_text(colour = "gray20", size = 12),
+    axis.title.y = element_text(colour = "gray20", size = 12),
+    axis.text.x = element_text(colour = "gray20", size = 10),
+    axis.text.y = element_text(colour = "gray20", size = 10)
+  ) +
+  theme_minimal()
+
+scaffold_1_pca_plot
 ```
 * Is differentiation coming mainly from one of the scaffolds?
 * If so, which one?
@@ -226,17 +295,57 @@ win_snp <- F_ST.stats(win_snp)
 win_snp@nucleotide.F_ST
 win_snp@nuc.diversity.within
 
+```
+
+```{r}
 # A simple plot
 win_fst <- win_snp@nucleotide.F_ST[, 1]
-bb_div  <- win_snp@nuc.diversity.within[, 1] # diversity among B (bb = "big B")
-lb_div  <- win_snp@nuc.diversity.within[, 2] # diversity among b (lb = "little b")
 
+ggplot(data = data.frame(1:length(win_fst), win_fst)) + 
+  geom_point(aes(x  = X1.length.win_fst., y = win_fst)) + 
+  xlab(paste0("window")) +
+  ylab(paste0("measurements per window")) +
+  theme(
+    axis.title.x = element_text(colour = "gray20", size = 12),
+    axis.title.y = element_text(colour = "gray20", size = 12),
+    axis.text.x = element_text(colour = "gray20", size = 10),
+    axis.text.y = element_text(colour = "gray20", size = 10)
+  ) +
+  theme_minimal()
+```
 
-plot(1:length(win_fst), win_fst)
+```{r}
+# diversity among B (bb = "big B")
+bb_div <- win_snp@nuc.diversity.within[, 1] 
 
-plot(1:length(bb_div), bb_div)
+ggplot(data = data.frame(1:length(bb_div), bb_div)) + 
+  geom_point(aes(x  = X1.length.bb_div., y = bb_div)) + 
+  xlab(paste0("window")) +
+  ylab(paste0("diversity among B")) +
+  theme(
+    axis.title.x = element_text(colour = "gray20", size = 12),
+    axis.title.y = element_text(colour = "gray20", size = 12),
+    axis.text.x = element_text(colour = "gray20", size = 10),
+    axis.text.y = element_text(colour = "gray20", size = 10)
+  ) +
+  theme_minimal()
+```
 
-plot(1:length(lb_div), lb_div)
+```{r}
+# diversity among b (lb = "little b")
+lb_div <- win_snp@nuc.diversity.within[, 2] 
+
+ggplot(data = data.frame(1:length(lb_div), lb_div)) + 
+  geom_point(aes(x  = X1.length.lb_div., y = lb_div)) + 
+  xlab(paste0("window")) +
+  ylab(paste0("diversity among b")) +
+  theme(
+    axis.title.x = element_text(colour = "gray20", size = 12),
+    axis.title.y = element_text(colour = "gray20", size = 12),
+    axis.text.x = element_text(colour = "gray20", size = 10),
+    axis.text.y = element_text(colour = "gray20", size = 10)
+  ) +
+  theme_minimal()
 
 ```
 
