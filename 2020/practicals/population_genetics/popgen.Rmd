@@ -20,7 +20,6 @@ bcftools query input/snp.vcf -f '%CHROM\t%POS[\t%GT]\n' > snp_matrix.txt
 
 # get sample names
 bcftools query -l input/snp.vcf > sample_names.txt
-
 ```
 
 Next, create the `r genlight` object from the files we just created:
@@ -56,7 +55,7 @@ snp_matrix <- snp_matrix[c(bb, lb), ]
 Once this is done, we can create a new `genlight` object that contains all the SNP data
 
 ```{r}
-
+library(dplyr)
 library(adegenet)
 
 # Note that the following line has been split up over multiple lines to make it easier to read
@@ -76,66 +75,119 @@ snp@chromosome
 
 # There are some functions that may also be helpful:
 ploidy(snp)
-
 ```
 
 Now plot a heatmap showing the genotypes.
 
 ```{r}
-
 ## Heat map of genotype
 glPlot(snp)
-
 ```
+
 You can also perform a Principle Component Analysis (PCA) and plot the first few components.
 
 ```{r}
+library(ggplot2)
 
 ## PCA
-pca <- glPca(snp, nf = 10) # you can select 10 components
+# Run PCA - scale = TRUE meaning any outlier will be accounted for, recommended if no previous normalisation was applied to the data
+pca_results <- prcomp(snp_matrix, scale. = TRUE)
+# Check how much variance each PC explains
+summary(pca_results)
+# Call out another dimension of the data
+pca_results_invert <- as.data.frame(pca_results$x)
+# Add additional column with B or b to set colours in the plot
+pca_results_invert$sample <- rownames(pca_results_invert)
+# Plot the PCA
+pca_plot <- pca_results_invert %>% 
+  mutate_all(~ gsub("results/|f1|f2|f3|f4|f5|f6|f7|_", "", .)) %>%  # Remove redundant pattern from the data to only have B or b
+  transform(pca_results_invert,  # Transform values to numeric
+  PC1 = as.numeric(PC1),
+  PC2 = as.numeric(PC2), PC3 = as.numeric(PC3)
+) %>%
+  ggplot(aes(x = PC1, y = PC2, colour = sample)) + # Plot 2 first PC values
+  geom_point(size = 2) +
+  xlab(paste0("PC1")) +
+  ylab(paste0("PC2")) +
+  coord_fixed(ratio = 1) +
+  theme_minimal()
 
-# Quick plot
-scatter(pca, posi = "none")
-
-
-# Plot of the first few axes coloured by population
-
-plot(x = pca$scores[, 1], y = pca$scores[, 2],
-     col = c(rep("blue", 7), rep("orange", 7)), cex = 2)
-text(pca$scores[, 1], pca$scores[, 2] + 0.7,
-     labels = rownames(pca$scores), cex = 0.7)
-plot(pca$scores[, 1], pca$scores[, 3],
-     col = c(rep("blue", 7), rep("orange", 7)), cex = 2)
-text(pca$scores[,1], pca$scores[,3] + 0.7,
-    labels=rownames(pca$scores), cex = 0.7)
-
+pca_plot
 ```
 
 The aim of these analysis is to test whether the B and the b individuals cluster together or separately. The first principal component separates B and b. But if you look at the heat map, the separation is not constant in the whole genome (you can navigate between your plots using the arrow buttons above the plot window in Rstudio).
 
 Each of the scaffolds has been retrieved from a different chromosome. We can test whether the differentiation between B and b is only seen in one of the scaffolds.
 
-```{r}
-# We will start with scaffold_2
+We will start with scaffold_2.
 
+```{r}
+## scaffold_2
+# Plot heat map
 scaffold_2_index <- which(snp@chromosome == "scaffold_2")
 scaffold_2 <- snp[, scaffold_2_index]
-
 glPlot(scaffold_2)
 
-scaffold_2_pca <- glPca(scaffold_2, nf = 10)
-scatter(scaffold_2_pca, posi = "none")
+# Plot PCA
+# Select only "scaffold_2" rows
+scaffold_2_pca <- snp_data %>% dplyr::group_by(V1) %>% dplyr::filter(V1 == "scaffold_2")
+# Transpose the data
+scaffold_2_pca <- t(scaffold_2_pca[, 3:ncol(scaffold_2_pca)])
+scaffold_2_pca_res <- prcomp(scaffold_2_pca, scale. = TRUE)
+# Check how much variance each PC explains
+summary(scaffold_2_pca_res)
+# Call out another dimension of the data
+scaffold_2_pca_inv <- as.data.frame(scaffold_2_pca_res$x)
+# Add additional column with B or b to set colours in the plot
+scaffold_2_pca_inv$sample <- sample_names
+# Plot the PCA
+scaffold_2_pca_plot <- scaffold_2_pca_inv %>% 
+  mutate_all(~ gsub("results/|f1|f2|f3|f4|f5|f6|f7|_", "", .)) %>%  # Remove redundant pattern from the data to only have B or b
+  transform(pca_results_invert,  # Transform values to numeric
+  PC1 = as.numeric(PC1),
+  PC2 = as.numeric(PC2), PC3 = as.numeric(PC3)
+) %>%
+  ggplot(aes(x = PC1, y = PC2, colour = sample)) + # Plot 2 first PC values
+  geom_point(size = 2) +
+  xlab(paste0("PC1")) +
+  ylab(paste0("PC2")) +
+  coord_fixed(ratio = 1) +
+  theme_minimal()
 
+scaffold_2_pca_plot
+```
 
-# scaffold_1
+Now check scaffold_1.
+```{r}
+## scaffold_1
+# Plot heat map
 scaffold_1_index <- which(snp@chromosome == "scaffold_1")
 scaffold_1 <- snp[, scaffold_1_index]
-
 glPlot(scaffold_1)
 
-scaffold_1_pca <- glPca(scaffold_1, nf = 10) 
-scatter(scaffold_1_pca, posi = "none")
+# Plot PCA
+scaffold_1_pca <- snp_data %>% dplyr::group_by(V1) %>% dplyr::filter(V1 == "scaffold_1")
+scaffold_1_pca <- t(scaffold_1_pca[, 3:ncol(scaffold_1_pca)])
+scaffold_1_pca_res <- prcomp(scaffold_1_pca, scale. = TRUE)
+summary(scaffold_1_pca_res)
 
+scaffold_1_pca_inv <- as.data.frame(scaffold_1_pca_res$x)
+scaffold_1_pca_inv$sample <- sample_names
+
+scaffold_1_pca_plot <- scaffold_1_pca_inv %>% 
+  mutate_all(~ gsub("results/|f1|f2|f3|f4|f5|f6|f7|_", "", .)) %>%  
+  transform(pca_results_invert,  
+  PC1 = as.numeric(PC1),
+  PC2 = as.numeric(PC2), PC3 = as.numeric(PC3)
+) %>%
+  ggplot(aes(x = PC1, y = PC2, colour = sample)) + 
+  geom_point(size = 2) +
+  xlab(paste0("PC1")) +
+  ylab(paste0("PC2")) +
+  coord_fixed(ratio = 1) +
+  theme_minimal()
+
+scaffold_1_pca_plot
 ```
 * Is differentiation coming mainly from one of the scaffolds?
 * If so, which one?
@@ -192,7 +244,6 @@ snp@populations # check if it worked
 Let's calculate FST between the two populations and nucleotide diversity in each of the populations.
 
 ```{r}
-
 # Diversities and FST (by scaffold)
 snp <- F_ST.stats(snp) # this does the calculations and
                        # adds the results to the appropriate slots
@@ -206,13 +257,11 @@ get.diversity(snp)
 get.diversity(snp)[[1]] # pop1 (B)
 get.diversity(snp)[[2]] # pop2 (b)
 snp@nuc.diversity.within
-
 ```
 
 Another useful tool is to do the calculations along a sliding window.
 
 ```{r}
-
 # Transform object into object divided by sliding window
 win_snp <- sliding.window.transform(snp,
     width = 10000, 
@@ -225,19 +274,45 @@ win_snp <- F_ST.stats(win_snp)
 
 win_snp@nucleotide.F_ST
 win_snp@nuc.diversity.within
+```
 
+Now we can look at the FST for each window.
+
+```{r}
 # A simple plot
 win_fst <- win_snp@nucleotide.F_ST[, 1]
-bb_div  <- win_snp@nuc.diversity.within[, 1] # diversity among B (bb = "big B")
-lb_div  <- win_snp@nuc.diversity.within[, 2] # diversity among b (lb = "little b")
 
+ggplot(data = data.frame(1:length(win_fst), win_fst)) + 
+  geom_point(aes(x  = X1.length.win_fst., y = win_fst)) + 
+  xlab(paste0("window")) +
+  ylab(paste0("FST per window")) +
+  theme_minimal()
+```
 
-plot(1:length(win_fst), win_fst)
+Diversity among B individuals.
 
-plot(1:length(bb_div), bb_div)
+```{r}
+# diversity among B (bb = "big B")
+bb_div <- win_snp@nuc.diversity.within[, 1] 
 
-plot(1:length(lb_div), lb_div)
+ggplot(data = data.frame(1:length(bb_div), bb_div)) + 
+  geom_point(aes(x  = X1.length.bb_div., y = bb_div)) + 
+  xlab(paste0("window")) +
+  ylab(paste0("diversity among B")) +
+  theme_minimal()
+```
 
+Diversity among b individuals.
+
+```{r}
+# diversity among b (lb = "little b")
+lb_div <- win_snp@nuc.diversity.within[, 2] 
+
+ggplot(data = data.frame(1:length(lb_div), lb_div)) + 
+  geom_point(aes(x  = X1.length.lb_div., y = lb_div)) + 
+  xlab(paste0("window")) +
+  ylab(paste0("diversity among b")) +
+  theme_minimal()
 ```
 
 * Knowing that there is no recombination between B and b somewhere in the genome, why do you think there is high FST in one scaffold and not the other?
