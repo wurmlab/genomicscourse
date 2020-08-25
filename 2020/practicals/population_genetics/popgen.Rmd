@@ -21,7 +21,18 @@ bcftools query input/snp.vcf -f '%CHROM\t%POS[\t%GT]\n' > snp_matrix.txt
 # get sample names
 bcftools query -l input/snp.vcf > sample_names.txt
 ```
-
+```{r}
+# Load libraries
+if(!require("ggplot2", "tidyverse", "adegenet", "PopGenome")){
+    install.packages("ggplot2", "tidyverse", "adegenet", "PopGenome")
+    library(ggplot2, tidyverse, tibble, dplyr, adegenet, PopGenome)
+}
+if(!require("dplyr")){
+    install.packages("dplyr")
+    library(dplyr)
+}
+ggplot2.theme_set(theme_minimal))
+```
 Next, create the `r genlight` object from the files we just created:
 
 ```{r}
@@ -55,8 +66,6 @@ snp_matrix <- snp_matrix[c(bb, lb), ]
 Once this is done, we can create a new `genlight` object that contains all the SNP data
 
 ```{r}
-library(dplyr)
-library(adegenet)
 
 # Note that the following line has been split up over multiple lines to make it easier to read
 # R won't run the command until all brackets have been closed
@@ -87,8 +96,6 @@ glPlot(snp)
 You can also perform a Principle Component Analysis (PCA) and plot the first few components.
 
 ```{r}
-library(ggplot2)
-
 ## PCA
 # Run PCA - scale = TRUE meaning any outlier will be accounted for, recommended if no previous normalisation was applied to the data
 pca_results <- prcomp(snp_matrix, scale. = TRUE)
@@ -106,11 +113,10 @@ pca_plot <- pca_results_invert %>%
   PC2 = as.numeric(PC2), PC3 = as.numeric(PC3)
 ) %>%
   ggplot(aes(x = PC1, y = PC2, colour = sample)) + # Plot 2 first PC values
-  geom_point(size = 2) +
-  xlab(paste0("PC1")) +
-  ylab(paste0("PC2")) +
-  coord_fixed(ratio = 1) +
-  theme_minimal()
+    geom_point(size = 2) +
+    xlab(paste0("PC1")) +
+    ylab(paste0("PC2")) +
+    coord_fixed(ratio = 1)
 
 pca_plot
 ```
@@ -147,12 +153,11 @@ scaffold_2_pca_plot <- scaffold_2_pca_inv %>%
   PC1 = as.numeric(PC1),
   PC2 = as.numeric(PC2), PC3 = as.numeric(PC3)
 ) %>%
-  ggplot(aes(x = PC1, y = PC2, colour = sample)) + # Plot 2 first PC values
-  geom_point(size = 2) +
-  xlab(paste0("PC1")) +
-  ylab(paste0("PC2")) +
-  coord_fixed(ratio = 1) +
-  theme_minimal()
+  ggplot(aes(x = PC1, y = PC2, colour = sample)) + 
+    geom_point(size = 2) +
+    xlab("PC1") +
+    ylab("PC2") +
+    coord_fixed(ratio = 1) 
 
 scaffold_2_pca_plot
 ```
@@ -181,11 +186,10 @@ scaffold_1_pca_plot <- scaffold_1_pca_inv %>%
   PC2 = as.numeric(PC2), PC3 = as.numeric(PC3)
 ) %>%
   ggplot(aes(x = PC1, y = PC2, colour = sample)) + 
-  geom_point(size = 2) +
-  xlab(paste0("PC1")) +
-  ylab(paste0("PC2")) +
-  coord_fixed(ratio = 1) +
-  theme_minimal()
+    geom_point(size = 2) +
+    xlab(paste0("PC1")) +
+    ylab(paste0("PC2")) +
+    coord_fixed(ratio = 1) 
 
 scaffold_1_pca_plot
 ```
@@ -218,8 +222,6 @@ bcftools view input/snp.vcf.gz scaffold_2 > popgenome-vcf/scaffold_2
 Now we can analyse the data:
 
 ```{r}
-library(PopGenome)
-
 # Load the data
 # MODIFY the path for the above created folder
 snp <- readData("popgenome-vcf", format = "VCF")
@@ -282,11 +284,10 @@ Now we can look at the FST for each window.
 # A simple plot
 win_fst <- win_snp@nucleotide.F_ST[, 1]
 
-ggplot(data = data.frame(1:length(win_fst), win_fst)) + 
-  geom_point(aes(x  = X1.length.win_fst., y = win_fst)) + 
-  xlab(paste0("window")) +
-  ylab(paste0("FST per window")) +
-  theme_minimal()
+ggplot(data = data.frame(window = 1:length(win_fst), value = win_fst)) + 
+  geom_point(aes(x  = window, y = value)) + 
+  xlab("window") +
+  ylab("FST per window") 
 ```
 
 Diversity among B individuals.
@@ -295,11 +296,10 @@ Diversity among B individuals.
 # diversity among B (bb = "big B")
 bb_div <- win_snp@nuc.diversity.within[, 1] 
 
-ggplot(data = data.frame(1:length(bb_div), bb_div)) + 
-  geom_point(aes(x  = X1.length.bb_div., y = bb_div)) + 
-  xlab(paste0("window")) +
-  ylab(paste0("diversity among B")) +
-  theme_minimal()
+ggplot(data = data.frame(window = 1:length(bb_div), value = bb_div)) + 
+  geom_point(aes(x  = window, y = value)) + 
+  xlab("window") +
+  ylab("diversity among B") 
 ```
 
 Diversity among b individuals.
@@ -308,11 +308,10 @@ Diversity among b individuals.
 # diversity among b (lb = "little b")
 lb_div <- win_snp@nuc.diversity.within[, 2] 
 
-ggplot(data = data.frame(1:length(lb_div), lb_div)) + 
-  geom_point(aes(x  = X1.length.lb_div., y = lb_div)) + 
-  xlab(paste0("window")) +
-  ylab(paste0("diversity among b")) +
-  theme_minimal()
+ggplot(data = data.frame(window = 1:length(lb_div), value = lb_div)) + 
+  geom_point(aes(x  = window, y = value)) + 
+  xlab("window") +
+  ylab("diversity among b") 
 ```
 
 * Knowing that there is no recombination between B and b somewhere in the genome, why do you think there is high FST in one scaffold and not the other?
