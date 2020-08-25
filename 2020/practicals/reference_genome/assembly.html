@@ -40,7 +40,12 @@ code > span.er { color: #ff0000; font-weight: bold; }
 <p>Find (or make) some friends; find a table. In groups of 4 or 5, ask an assistant for an assembly task.</p>
 <h3 id="brief-assembly-example-concepts">Brief assembly example / concepts</h3>
 <p>Many different pieces of software exist for genome assembly. We will be using <a href="https://cab.spbu.ru/software/spades/">SPAdes</a>.</p>
-<p>Create a new main directory for today's practical (e.g., <code>2020-09-xx-assembly</code>) and the <code>input</code>, <code>tmp</code>, and <code>results</code> subdirectory. Link the output (cleaned reads) from yesterday's practical into <code>2020-09-xx-assembly/input</code>.</p>
+<p>Create a new main directory for today's practical (e.g., <code>2020-09-xx-assembly</code>) and the <code>input</code>, <code>tmp</code>, and <code>results</code> subdirectories. Link the output (cleaned reads) from yesterday's practical into <code>input</code> subdirectory:</p>
+<pre><code>cd ~/2020-09-xx-assembly
+ln -s ~/2020-09-xx-read_cleaning/results/reads.pe*.clean.fq input/</code></pre>
+<ul class="incremental">
+<li>What is the meaning of <code>*</code> in the above command?</li>
+</ul>
 <p>To assemble our cleaned reads with SPAdes, run the following line. <em>THIS WILL TAKE ABOUT 10 MINUTES</em></p>
 <pre class="sourceCode bash"><code class="sourceCode bash"><span class="kw">spades.py</span> -o tmp -1 input/reads.pe1.clean.fq -2 input/reads.pe2.clean.fq</code></pre>
 <p>Like any other assembler, SPAdes creates many files, including a <code>scaffolds.fasta</code> file that is likely to be used for follow-up analyses<a href="../../data/reference_assembly/output/scaffolds.fasta.gz?raw=true">.</a> Copy this file to your results directory:</p>
