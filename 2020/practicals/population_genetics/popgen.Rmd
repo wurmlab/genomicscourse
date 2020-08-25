@@ -23,14 +23,7 @@ bcftools query -l input/snp.vcf > sample_names.txt
 ```
 ```{r}
 # Load libraries
-if(!require("ggplot2", "tidyverse", "adegenet", "PopGenome")){
-    install.packages("ggplot2", "tidyverse", "adegenet", "PopGenome")
-    library(ggplot2, tidyverse, tibble, dplyr, adegenet, PopGenome)
-}
-if(!require("dplyr")){
-    install.packages("dplyr")
-    library(dplyr)
-}
+library(ggplot2, dplyr, adegenet, PopGenome)
 ggplot2.theme_set(theme_minimal))
 ```
 Next, create the `r genlight` object from the files we just created:
@@ -114,8 +107,8 @@ pca_plot <- pca_results_invert %>%
 ) %>%
   ggplot(aes(x = PC1, y = PC2, colour = sample)) + # Plot 2 first PC values
     geom_point(size = 2) +
-    xlab(paste0("PC1")) +
-    ylab(paste0("PC2")) +
+    xlab("PC1") +
+    ylab("PC2") +
     coord_fixed(ratio = 1)
 
 pca_plot
@@ -187,8 +180,8 @@ scaffold_1_pca_plot <- scaffold_1_pca_inv %>%
 ) %>%
   ggplot(aes(x = PC1, y = PC2, colour = sample)) + 
     geom_point(size = 2) +
-    xlab(paste0("PC1")) +
-    ylab(paste0("PC2")) +
+    xlab("PC1") +
+    ylab("PC2") +
     coord_fixed(ratio = 1) 
 
 scaffold_1_pca_plot
@@ -286,7 +279,7 @@ win_fst <- win_snp@nucleotide.F_ST[, 1]
 
 ggplot(data = data.frame(window = 1:length(win_fst), value = win_fst)) + 
   geom_point(aes(x  = window, y = value)) + 
-  xlab("window") +
+  xlab("Window") +
   ylab("FST per window") 
 ```
 
@@ -298,8 +291,8 @@ bb_div <- win_snp@nuc.diversity.within[, 1]
 
 ggplot(data = data.frame(window = 1:length(bb_div), value = bb_div)) + 
   geom_point(aes(x  = window, y = value)) + 
-  xlab("window") +
-  ylab("diversity among B") 
+  xlab("Window") +
+  ylab("Diversity among B") 
 ```
 
 Diversity among b individuals.
@@ -310,8 +303,8 @@ lb_div <- win_snp@nuc.diversity.within[, 2]
 
 ggplot(data = data.frame(window = 1:length(lb_div), value = lb_div)) + 
   geom_point(aes(x  = window, y = value)) + 
-  xlab("window") +
-  ylab("diversity among b") 
+  xlab("Window") +
+  ylab("Diversity among b") 
 ```
 
 * Knowing that there is no recombination between B and b somewhere in the genome, why do you think there is high FST in one scaffold and not the other?
