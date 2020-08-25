@@ -29,10 +29,10 @@ Start by creating a directory to work in. Drawing on ideas from [Noble (2009)](h
 For the purpose of these practicals we will use a slightly simplified version of the directory structure explained above.
 
 For each practical (analysis) that we will perform, you should:
- * have a main directory in your home directory (e.g., 2020-09-xx-read_cleaning)
- * have input data in a relevant subdirectory (input)
- * work in a relevant subdirectory (tmp)
- * copy final results to a relevant subdirectory (results)
+ * have a main directory in your home directory (e.g., `2020-09-xx-read_cleaning`)
+ * have input data in a relevant subdirectory (`input`)
+ * work in a relevant subdirectory (`tmp`)
+ * copy final results to a relevant subdirectory (`results`)
 
 Each directory in which you have done something [should include a `WHATIDID.txt` file](http://github.com/wurmlab/templates/blob/master/project_structures.md) in which you log your commands.
 
