@@ -6,7 +6,7 @@ Roddy Pracana and Yannick Wurm
 
 There are several types of variants. Commonly, people look at single nucleotide polymorphisms (SNPs, sometimes also known as single nucleotide variants, SNVs). Other classes include small insertions and deletions (known collectively as indels), as well as larger structural variants, such as large insertions, deletions, inversions and translocations.
 
-There are several approaches to variant calling from short pair-end reads. We are going to use one of them. First, we will map the reads from each individual to a reference assembly similar to the one created in the [previous practical](../reference_genome/read-cleaning). Then we will find the positions where at least some of the individuals differ from the reference (and each other).
+There are several approaches to variant calling from short pair-end reads. We are going to use one of them. First, we will map the reads from each individual to a reference assembly similar to the one created in the [previous practical](../reference_genome/assembly) (you can use your assembly too, but that is better left as an exercise for later!). Then we will find the positions where at least some of the individuals differ from the reference (and each other).
 
 ## Pipeline
 
@@ -32,7 +32,7 @@ We recommend that you set up a directory for this work following the same princi
 └── WHATIDID.txt
 ```
 
-For the first step of the pipeline, symlink the file `/shared/data/popgen/reference.fa` and the directory `/shared/data/popgen/reads` to `~/2020-10-xx-mapping/input/`.
+For the first step of the pipeline, symlink the reference genome `/shared/data/popgen/reference.fa` and the directory containing the reads `/shared/data/popgen/reads` to `~/2020-10-xx-mapping/input/`.
 
 Check how many scaffolds there are in the reference genome:
 
