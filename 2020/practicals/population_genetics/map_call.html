@@ -38,7 +38,7 @@ code > span.er { color: #ff0000; font-weight: bold; }
 <p>Roddy Pracana and Yannick Wurm</p>
 <h2 id="introduction">Introduction</h2>
 <p>There are several types of variants. Commonly, people look at single nucleotide polymorphisms (SNPs, sometimes also known as single nucleotide variants, SNVs). Other classes include small insertions and deletions (known collectively as indels), as well as larger structural variants, such as large insertions, deletions, inversions and translocations.</p>
-<p>There are several approaches to variant calling from short pair-end reads. We are going to use one of them. First, we will map the reads from each individual to a reference assembly similar to the one created in the <a href="../reference_genome/read-cleaning">previous practical</a>. Then we will find the positions where at least some of the individuals differ from the reference (and each other).</p>
+<p>There are several approaches to variant calling from short pair-end reads. We are going to use one of them. First, we will map the reads from each individual to a reference assembly similar to the one created in the <a href="../reference_genome/assembly">previous practical</a> (you can use your assembly too, but that is better left as an exercise for later!). Then we will find the positions where at least some of the individuals differ from the reference (and each other).</p>
 <h2 id="pipeline">Pipeline</h2>
 <p>We will analyse subsets of whole-genome sequences of several fire ant individuals. The fire ant, <em>Solenopsis invicta</em>, is notable for being dimorphic in terms of colony organisation, with some colonies having one queen and other colonies having multiple queens. Interestingly, this trait is genetically determined. In this practical, we will try to find the genetic difference between ants from single queen and multiple queen colonies.</p>
 <p>We will use a subset of the reads from whole-genome sequencing of 14 male fire ants. Samples 1B to 7B are from single-queen colonies, samples 1b to 7b are from multiple-queen colonies. Ants are haplodiploid, which means that females are diploid and males are haploid. Here we will use only males, so all our samples are haploid, which makes variant calling easier.</p>
@@ -57,7 +57,7 @@ code > span.er { color: #ff0000; font-weight: bold; }
 ├── <span class="kw">results</span>
 ├── <span class="kw">tmp</span>
 └── <span class="kw">WHATIDID.txt</span></code></pre>
-<p>For the first step of the pipeline, symlink the file <code>/shared/data/popgen/reference.fa</code> and the directory <code>/shared/data/popgen/reads</code> to <code>~/2020-10-xx-mapping/input/</code>.</p>
+<p>For the first step of the pipeline, symlink the reference genome <code>/shared/data/popgen/reference.fa</code> and the directory containing the reads <code>/shared/data/popgen/reads</code> to <code>~/2020-10-xx-mapping/input/</code>.</p>
 <p>Check how many scaffolds there are in the reference genome:</p>
 <pre class="sourceCode bash"><code class="sourceCode bash"><span class="kw">grep</span> <span class="st">&quot;^&gt;&quot;</span> input/reference.fa</code></pre>
 <p>Now have a look at the <code>.fq.gz</code> files (<code>ls input/reads</code>).</p>
