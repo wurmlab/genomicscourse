@@ -10,7 +10,14 @@ Find (or make) some friends; find a table. In groups of 4 or 5, ask an assistant
 
 Many different pieces of software exist for genome assembly. We will be using [SPAdes](https://cab.spbu.ru/software/spades/).
 
-Create a new main directory for today's practical (e.g., `2020-09-xx-assembly`) and the `input`, `tmp`, and `results` subdirectory. Link the output (cleaned reads) from yesterday's practical into `2020-09-xx-assembly/input`.
+Create a new main directory for today's practical (e.g., `2020-09-xx-assembly`) and the `input`, `tmp`, and `results` subdirectories. Link the output (cleaned reads) from yesterday's practical into `input` subdirectory:
+
+```
+cd ~/2020-09-xx-assembly
+ln -s ~/2020-09-xx-read_cleaning/results/reads.pe*.clean.fq input/
+```
+
+* What is the meaning of `*` in the above command?
 
 To assemble our cleaned reads with SPAdes, run the following line. *THIS WILL TAKE ABOUT 10 MINUTES*
 
