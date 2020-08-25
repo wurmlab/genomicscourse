@@ -6,7 +6,7 @@ Many tools exist for gene prediction, some based on *ab initio* statistical mode
 
 ### Running Maker
 
-Create a new main directory for today's practical (e.g., 2020-10-xx-gene_prediction) as well as the `input`, `tmp`, and `results` subdirectories and a `WHATIDID.txt` file to log your commands. Link the output (assembly) from yesterday's practical into `2020-10-xx-gene_prediction/input`:
+Create a new main directory for today's practical (e.g., `2020-10-xx-gene_prediction`) as well as the `input`, `tmp`, and `results` subdirectories and a `WHATIDID.txt` file to log your commands. Link the output (assembly) from yesterday's practical into `2020-10-xx-gene_prediction/input`:
 
 ```
 cd ~/2020-10-xx-gene_prediction

@@ -49,7 +49,7 @@ code > span.er { color: #ff0000; font-weight: bold; }
 <li>Filter the SNP calls to produce a set of good-quality SNPs.<br /></li>
 <li>Visualise the alignments and the SNP calls in the genome browser <code>igv</code>.</li>
 </ol>
-<p>We recommend that you set up a directory for this work following the same principles as in the last few practicals. You should have subdirectories called <code>input</code>, <code>results</code> and <code>tmp</code> and a <code>WHATIDID.txt</code> file in which to log your commands:</p>
+<p>We recommend that you set up a directory for this work following the same principles as in the last few practicals (e.g., <code>2020-10-xx-mapping</code>). You should have subdirectories called <code>input</code>, <code>results</code> and <code>tmp</code> and a <code>WHATIDID.txt</code> file in which to log your commands. Symlink the reference genome <code>/shared/data/popgen/reference.fa</code> and the directory containing the reads <code>/shared/data/popgen/reads</code> to <code>input</code> subdirectory:</p>
 <pre class="sourceCode bash"><code class="sourceCode bash"><span class="kw">2020-10-xx-mapping/</span>
 ├── <span class="kw">input</span>
 │   ├── <span class="kw">-&gt;</span> /shared/data/popgen/reference.fa
@@ -57,7 +57,6 @@ code > span.er { color: #ff0000; font-weight: bold; }
 ├── <span class="kw">results</span>
 ├── <span class="kw">tmp</span>
 └── <span class="kw">WHATIDID.txt</span></code></pre>
-<p>For the first step of the pipeline, symlink the reference genome <code>/shared/data/popgen/reference.fa</code> and the directory containing the reads <code>/shared/data/popgen/reads</code> to <code>~/2020-10-xx-mapping/input/</code>.</p>
 <p>Check how many scaffolds there are in the reference genome:</p>
 <pre class="sourceCode bash"><code class="sourceCode bash"><span class="kw">grep</span> <span class="st">&quot;^&gt;&quot;</span> input/reference.fa</code></pre>
 <p>Now have a look at the <code>.fq.gz</code> files (<code>ls input/reads</code>).</p>
@@ -77,8 +76,10 @@ code > span.er { color: #ff0000; font-weight: bold; }
 <span class="co"># Build the index now.</span>
 <span class="kw">bowtie2-build</span> tmp/reference.fa tmp/reference</code></pre>
 <p>The second step is the alignment itself:</p>
-<pre class="sourceCode bash"><code class="sourceCode bash"><span class="kw">mkdir</span> tmp/alignments
+<pre class="sourceCode bash"><code class="sourceCode bash"><span class="co"># Create directory for the alignments.</span>
+<span class="kw">mkdir</span> tmp/alignments
 
+<span class="co"># Use bowtie2 to align paired reads from f1_B sample to the reference.</span>
 <span class="kw">bowtie2</span> --local -x tmp/reference -1 input/reads/f1_B.1.fq.gz -2 input/reads/f1_B.2.fq.gz <span class="kw">&gt;</span> tmp/alignments/f1_B.sam</code></pre>
 <ul class="incremental">
 <li>What is the meaning of the <code>-1</code> and <code>-2</code> parameters?<br /></li>
@@ -98,28 +99,32 @@ code > span.er { color: #ff0000; font-weight: bold; }
 <span class="co"># Index the BAM file generated above (creates f1_B.bam.bai).</span>
 <span class="kw">samtools</span> index tmp/alignments/f1_B.bam</code></pre>
 <p>Again, we can use <code>parallel</code> to run this step for all the samples:</p>
-<pre class="sourceCode bash"><code class="sourceCode bash"><span class="kw">cat</span> tmp/names.txt <span class="kw">|</span> <span class="kw">parallel</span> -t <span class="st">&quot;samtools sort -O BAM tmp/alignments/{}.sam &gt; tmp/alignments/{}.bam&quot;</span>
+<pre class="sourceCode bash"><code class="sourceCode bash"><span class="co"># For each sample, sort the SAM file for each and convert to BAM.</span>
+<span class="kw">cat</span> tmp/names.txt <span class="kw">|</span> <span class="kw">parallel</span> -t <span class="st">&quot;samtools sort -O BAM tmp/alignments/{}.sam &gt; tmp/alignments/{}.bam&quot;</span>
 
+<span class="co"># Index the BAM file for each sample.</span>
 <span class="kw">cat</span> tmp/names.txt <span class="kw">|</span> <span class="kw">parallel</span> -t <span class="st">&quot;samtools index tmp/alignments/{}.bam&quot;</span></code></pre>
 <p>Now check that a <code>bam</code> and a <code>bai</code> exist for each sample.</p>
 <p>To view what's in a BAM file, you have to use <code>samtools view</code></p>
-<pre class="sourceCode bash"><code class="sourceCode bash"><span class="kw">samtools</span> view tmp/alignments/f1_B.bam <span class="kw">|</span> <span class="kw">less</span> -S
+<pre class="sourceCode bash"><code class="sourceCode bash"><span class="co"># View the entire BAM file:</span>
+<span class="kw">samtools</span> view tmp/alignments/f1_B.bam <span class="kw">|</span> <span class="kw">less</span> -S
 
-<span class="co"># To view a particular region:</span>
+<span class="co"># View a particular region of the reference:</span>
 <span class="kw">samtools</span> view tmp/alignments/f1_B.bam scaffold_1:10000-10500 <span class="kw">|</span> <span class="kw">less</span> -S</code></pre>
 <p>Copy the <code>.bam</code> and <code>.bai</code> files to the <code>results</code> directory.</p>
 <pre class="sourceCode bash"><code class="sourceCode bash"><span class="kw">cp</span> tmp/alignments/*.bam results/
 <span class="kw">cp</span> tmp/alignments/*.bai results/</code></pre>
 <h2 id="variant-calling">Variant calling</h2>
-<p>Set up a new directory for the second part of today's practical (<code>2020-10-xx-genotyping</code>). You will want to set up the relevant subdirectories and <code>WHATIDID.txt</code> file as before. Then create symlinks from <code>/shared/data/popgen/reference.fa</code> and the <code>results</code> from the mapping part of the practical to your <code>input</code> directory. Remember to keep your commands in the <code>WHATIDID.txt</code> file.</p>
+<p>Set up a new directory for the second part of today's practical (e.g., <code>2020-10-xx-genotyping</code>). You will want to set up the relevant subdirectories and <code>WHATIDID.txt</code> file as before. Then symlink the reference genome <code>/shared/data/popgen/reference.fa</code> and the alignments from the mapping part of the practical (both <code>.bam</code> and <code>.bai</code> files) to your <code>input</code> directory. Remember to keep your commands in the <code>WHATIDID.txt</code> file.</p>
 <pre><code>2020-10-xx-genotyping/
 ├── input
 │   ├── -&gt; /shared/data/popgen/reference.fa
-│   └── -&gt; ~/2020-10-xx-mapping/results/*
+│   ├── -&gt; ~/2020-10-xx-mapping/results/f1_B.bam
+│   ├── -&gt; ~/2020-10-xx-mapping/results/f1_B.bam.bai
+│   └── -&gt; ...
 ├── results
 ├── tmp
-└── WHATIDID.txt
-</code></pre>
+└── WHATIDID.txt</code></pre>
 <p>There are several approaches to call variants. The simplest approach is to look for positions where the mapped reads consistently have a different base than the reference assembly (the consensus approach). We need to run two steps, <code>bcftools mpileup</code>, which looks for inconsistencies between the reference and the aligned reads, and <code>bcftools call</code>, which interprets them as variants.</p>
 <p>We will use multiallelic caller (option <code>-m</code>) of bcftools and set all individuals as haploid.</p>
 <pre class="sourceCode bash"><code class="sourceCode bash"><span class="co"># Symlink reference.fa to tmp/</span>
@@ -151,7 +156,8 @@ code > span.er { color: #ff0000; font-weight: bold; }
 <li>What does a Phred-scale quality score of 30 mean?</li>
 </ul>
 <p>We will filter the VCF using <code>bcftools filter</code>. We can remove anything with quality call smaller than 30:</p>
-<pre class="sourceCode bash"><code class="sourceCode bash"><span class="kw">bcftools</span> filter --exclude <span class="st">'QUAL &lt; 30'</span> tmp/variants/calls.vcf <span class="kw">|</span> <span class="kw">bcftools</span> view -g ^miss <span class="kw">&gt;</span> tmp/variants/filtered_calls.vcf</code></pre>
+<pre class="sourceCode bash"><code class="sourceCode bash"><span class="co"># Remove variant site with quality score less than 30. Then remove sites that have a missing genotype call.</span>
+<span class="kw">bcftools</span> filter --exclude <span class="st">'QUAL &lt; 30'</span> tmp/variants/calls.vcf <span class="kw">|</span> <span class="kw">bcftools</span> view -g ^miss <span class="kw">&gt;</span> tmp/variants/filtered_calls.vcf</code></pre>
 <p>In more serious analyses, it may be important to filter by other parameters.</p>
 <p>In the downstream analysis, we only want to look at sites that are:</p>
 <ol class="incremental">
@@ -159,7 +165,8 @@ code > span.er { color: #ff0000; font-weight: bold; }
 <li>biallelic (-m2 -M2)<br /></li>
 <li>where the minor allele is present in at least one individual (because we do not care for the sites where all individuals are different from the reference, yet equal to each other)</li>
 </ol>
-<pre class="sourceCode bash"><code class="sourceCode bash"><span class="kw">bcftools</span> view -v snps -m2 -M2 --min-ac 1:minor tmp/variants/filtered_calls.vcf <span class="kw">&gt;</span> tmp/variants/snp.vcf</code></pre>
+<pre class="sourceCode bash"><code class="sourceCode bash"><span class="co"># Select biallelic variant sites that are snps and at least one individual differs from the rest.</span>
+<span class="kw">bcftools</span> view -v snps -m2 -M2 --min-ac 1:minor tmp/variants/filtered_calls.vcf <span class="kw">&gt;</span> tmp/variants/snp.vcf</code></pre>
 <ul class="incremental">
 <li>How many SNPs does the resulting VCF file have?<br /></li>
 <li>Can you find any other parameters indicating the quality of the site?<br /></li>

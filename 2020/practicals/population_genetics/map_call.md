@@ -20,7 +20,7 @@ The aim of this practical is to genotype these 14 individuals. The steps in the 
 3. Filter the SNP calls to produce a set of good-quality SNPs.
 4. Visualise the alignments and the SNP calls in the genome browser `igv`.
 
-We recommend that you set up a directory for this work following the same principles as in the last few practicals. You should have subdirectories called `input`, `results` and `tmp` and a `WHATIDID.txt` file in which to log your commands:
+We recommend that you set up a directory for this work following the same principles as in the last few practicals (e.g., `2020-10-xx-mapping`). You should have subdirectories called `input`, `results` and `tmp` and a `WHATIDID.txt` file in which to log your commands. Symlink the reference genome `/shared/data/popgen/reference.fa` and the directory containing the reads `/shared/data/popgen/reads` to `input` subdirectory:
 
 ```bash
 2020-10-xx-mapping/
@@ -31,8 +31,6 @@ We recommend that you set up a directory for this work following the same princi
 ├── tmp
 └── WHATIDID.txt
 ```
-
-For the first step of the pipeline, symlink the reference genome `/shared/data/popgen/reference.fa` and the directory containing the reads `/shared/data/popgen/reads` to `~/2020-10-xx-mapping/input/`.
 
 Check how many scaffolds there are in the reference genome:
 
@@ -65,8 +63,10 @@ bowtie2-build tmp/reference.fa tmp/reference
 The second step is the alignment itself:
 
 ```bash
+# Create directory for the alignments.
 mkdir tmp/alignments
 
+# Use bowtie2 to align paired reads from f1_B sample to the reference.
 bowtie2 --local -x tmp/reference -1 input/reads/f1_B.1.fq.gz -2 input/reads/f1_B.2.fq.gz > tmp/alignments/f1_B.sam
 ```
 
@@ -98,8 +98,10 @@ samtools index tmp/alignments/f1_B.bam
 Again, we can use `parallel` to run this step for all the samples:
 
 ```bash
+# For each sample, sort the SAM file for each and convert to BAM.
 cat tmp/names.txt | parallel -t "samtools sort -O BAM tmp/alignments/{}.sam > tmp/alignments/{}.bam"
 
+# Index the BAM file for each sample.
 cat tmp/names.txt | parallel -t "samtools index tmp/alignments/{}.bam"
 ```
 
@@ -108,9 +110,10 @@ Now check that a `bam` and a `bai` exist for each sample.
 To view what's in a BAM file, you have to use `samtools view`
 
 ```bash
+# View the entire BAM file:
 samtools view tmp/alignments/f1_B.bam | less -S
 
-# To view a particular region:
+# View a particular region of the reference:
 samtools view tmp/alignments/f1_B.bam scaffold_1:10000-10500 | less -S
 ```
 
@@ -124,17 +127,18 @@ cp tmp/alignments/*.bai results/
 
 ## Variant calling
 
-Set up a new directory for the second part of today's practical (`2020-10-xx-genotyping`). You will want to set up the relevant subdirectories and `WHATIDID.txt` file as before. Then create symlinks from `/shared/data/popgen/reference.fa` and the `results` from the mapping part of the practical to your `input` directory. Remember to keep your commands in the `WHATIDID.txt` file.
+Set up a new directory for the second part of today's practical (e.g., `2020-10-xx-genotyping`). You will want to set up the relevant subdirectories and `WHATIDID.txt` file as before. Then symlink the reference genome `/shared/data/popgen/reference.fa` and the alignments from the mapping part of the practical (both `.bam` and `.bai` files) to your `input` directory. Remember to keep your commands in the `WHATIDID.txt` file.
 
 ```
 2020-10-xx-genotyping/
 ├── input
 │   ├── -> /shared/data/popgen/reference.fa
-│   └── -> ~/2020-10-xx-mapping/results/*
+│   ├── -> ~/2020-10-xx-mapping/results/f1_B.bam
+│   ├── -> ~/2020-10-xx-mapping/results/f1_B.bam.bai
+│   └── -> ...
 ├── results
 ├── tmp
 └── WHATIDID.txt
-
 ```
 
 There are several approaches to call variants. The simplest approach is to look for positions where the mapped reads consistently have a different base than the reference assembly (the consensus approach). We need to run two steps, `bcftools mpileup`, which looks for inconsistencies between the reference and the aligned reads, and `bcftools call`, which interprets them as variants.
@@ -176,6 +180,7 @@ Not all variants that we called are necessarily of good quality, so it is essent
 We will filter the VCF using `bcftools filter`. We can remove anything with quality call smaller than 30:
 
 ```bash
+# Remove variant site with quality score less than 30. Then remove sites that have a missing genotype call.
 bcftools filter --exclude 'QUAL < 30' tmp/variants/calls.vcf | bcftools view -g ^miss > tmp/variants/filtered_calls.vcf
 ```
 
@@ -187,6 +192,7 @@ In the downstream analysis, we only want to look at sites that are:
 3. where the minor allele is present in at least one individual (because we do not care for the sites where all individuals are different from the reference, yet equal to each other)
 
 ```bash
+# Select biallelic variant sites that are snps and at least one individual differs from the rest.
 bcftools view -v snps -m2 -M2 --min-ac 1:minor tmp/variants/filtered_calls.vcf > tmp/variants/snp.vcf
 ```
 
