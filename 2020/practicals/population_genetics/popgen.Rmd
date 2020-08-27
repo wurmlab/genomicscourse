@@ -10,26 +10,37 @@ In the first part of the analysis, we are going to create a heat map of the geno
 
 In the second part, we are going to measure genetic differentiation between the two groups (B and b). We will do this analysis over a sliding window, to see if the differentiation between B and b are specific to any portion of the genome. We will also measure the genetic diversity among each of the groups, which may tell us something about the evolutionary history of the portions of genome represented in our assembly. This will be done using the `PopGenome` package in R.
 
-## Input into R
+## Load packages
 
-The package `adegenet` uses an object called `r genlight`. To create it, we need to input a matrix where each row is an individual and each column is a locus (i.e. a SNP position). We can do this using bcftools:
+Before we start with the analysis, let us first load the R packages we will need and configure them.
+
+```{r}
+# Load libraries
+library(dplyr)
+library(ggplot2)
+library(adegenet)
+library(PopGenome)
+
+# Configure ggplot to use 'theme_minimal'
+theme_set(theme_minimal())
+```
+
+## Analysis using `adegenet`
+
+The package `adegenet` uses an object called `r genlight`. To create it, we need to input a matrix where each row is an individual and each column is a locus (i.e. a SNP position). We can do this using `bcftools`:
 
 ```{bash engine.opts='-l'}
 # Select the information in the vcf file without the header
 bcftools query input/snp.vcf -f '%CHROM\t%POS[\t%GT]\n' > snp_matrix.txt
 
-# get sample names
+# Get sample names
 bcftools query -l input/snp.vcf > sample_names.txt
 ```
-```{r}
-# Load libraries
-library(ggplot2, dplyr, adegenet, PopGenome)
-ggplot2.theme_set(theme_minimal))
-```
+
 Next, create the `r genlight` object from the files we just created:
 
 ```{r}
-# input the SNP data and the sample names by reading the .txt files you just created with bcftools
+# Input the SNP data and the sample names by reading the .txt files you just created with bcftools
 snp_data   <- read.table("snp_matrix.txt")
 names_input <- read.table("sample_names.txt")
 raw_sample_names <- names_input$V1
@@ -38,42 +49,37 @@ raw_sample_names <- names_input$V1
 loci       <- snp_data[, 1:2]
 colnames(loci) <- c("scaffold", "position")
 
-
 # Transpose the data (turn it on its side so that rows = individuals and columns = loci)
 snp_matrix <- t(snp_data[,3:ncol(snp_data)])
 
 # Clean the sample names and add them to the rows of our matrix
-
 sample_names <- gsub("\\.bam", "", raw_sample_names)
 row.names(snp_matrix) <- sample_names
 
 # Finally we reorder the rows by population 
 bb <- sample_names[grep("B", sample_names)] # B samples (bb = "big B")
-lb <- sample_names[grep("b", sample_names) ]# b samples (lb = "little b")
-
+lb <- sample_names[grep("b", sample_names)] # b samples (lb = "little b")
 snp_matrix <- snp_matrix[c(bb, lb), ]
-```
 
-## Analysis using `adegenet`
-
-Once this is done, we can create a new `genlight` object that contains all the SNP data
-
-```{r}
-
-# Note that the following line has been split up over multiple lines to make it easier to read
-# R won't run the command until all brackets have been closed
+# Now we can create a new `genlight` object that contains all the SNP data. Note that the
+# following line has been split up over multiple lines to make it easier to read R won't
+# run the command until all brackets have been closed.
 snp <- new("genlight",
            snp_matrix,
            chromosome = loci$scaffold,
            position = loci$position,
            pop = as.factor(c(rep("B", 7), rep("b", 7))))
 
-# You can access the data using the "@" sign:
-snp
-snp@ind.names
-snp@gen
 
-snp@chromosome
+# Print details of the snp genlight object:
+snp
+```
+
+You can access the content of `snp` object using the "@" sign:
+
+```{r}
+# Print name of the individuals:
+snp@ind.names
 
 # There are some functions that may also be helpful:
 ploidy(snp)
@@ -200,14 +206,14 @@ We will measure FST and nucleotide diversity (a measure of genetic diversity) us
 In theory, the `r PopGenome` can read VCF files directly, using the `readVCF` function. However, because our samples are haploid, we need to use a different function, `readData`, which requires a folder with a separate VCF for each scaffold.
 
 ```{bash engine.opts='-l'}
-## On your command line
 # Make new directory
 mkdir popgenome-vcf
 
-# compress and index the VCF
-bgzip input/snp.vcf # This step is not necessary if you downloaded the snp.vcf.gz file from the link above
+# Compress and index the VCF
+bgzip input/snp.vcf
 tabix -p vcf input/snp.vcf.gz
 
+# Separate variant sites for each scaffold into different files.
 bcftools view input/snp.vcf.gz scaffold_1 > popgenome-vcf/scaffold_1
 bcftools view input/snp.vcf.gz scaffold_2 > popgenome-vcf/scaffold_2
 ```
