@@ -2,10 +2,6 @@
 
 You need to have gone through [Part 1: Read cleaning](read-cleaning) before starting this practical.
 
-### Offline exercise
-
-Find (or make) some friends; find a table. In groups of 4 or 5, ask an assistant for an assembly task.
-
 ### Brief assembly example / concepts
 
 Many different pieces of software exist for genome assembly. We will be using [SPAdes](https://cab.spbu.ru/software/spades/).
@@ -17,7 +13,7 @@ cd ~/2020-09-xx-assembly
 ln -s ~/2020-09-xx-read_cleaning/results/reads.pe*.clean.fq input/
 ```
 
-* What is the meaning of `*` in the above command?
+Did you note the use of `*` in the above command? What do you think it means? (hint: it is called 'globbing')
 
 To assemble our cleaned reads with SPAdes, run the following line. *THIS WILL TAKE ABOUT 10 MINUTES*
 
