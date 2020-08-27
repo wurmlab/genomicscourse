@@ -474,12 +474,6 @@ body>*:last-child {
     margin-bottom: 0 !important
 }
 
-@media screen {
-    body {
-        box-shadow: 0 0 0 1px #cacaca, 0 0 0 4px #eee
-    }
-}
-
 h1,
 h2,
 h3,
