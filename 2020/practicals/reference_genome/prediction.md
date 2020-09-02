@@ -50,11 +50,11 @@ So now we have some gene predictions... how can we know if they are any good? Th
 
 ##### Running BLAST
 
-We will use [SequenceServer](https://doi.org/10.1093/molbev/msz185) to run BLAST. Open http://3.129.147.181/sequenceserver/ in your browser, paste the [example rice and honeybee protein sequences](predictions.fa.txt) in the textbox and click on the 'BLAST' button to run a BLAST search.
+We will use [SequenceServer](https://doi.org/10.1093/molbev/msz185) to run BLAST. Open http://3.129.147.181/sequenceserver/ in your browser, paste the [example rice and honeybee protein sequences](predictions.fa.txt) in the textbox and click on the 'BLAST' button to run a BLAST search. *THIS WILL TAKE A MINUTE or TWO*
 
-Do any of the gene predictions have significant similarity to known sequences? For a given gene prediction, do you think it is complete, or can you infer from the BLAST alignments that something may be wrong? Start by comparing the length of your gene prediction to that of the BLAST hits. Is your gene prediction considerably longer or considerably shorter than BLAST hits? Why?
+Now, looking at the BLAST results ask yourself the following questions: Do any of the gene predictions have significant similarity to known sequences? For a given gene prediction, do you think it is complete, or can you infer from the BLAST alignments that something may be wrong? Start by comparing the length of your gene prediction to that of the BLAST hits. Is your gene prediction considerably longer or considerably shorter than BLAST hits? Why?
 
-Now try a few of your gene predictions. BLAST only a maximum of 8 sequences at a time (instead of simply selecting the first 8 genes in your file, copy-paste sequences randomly from the file).
+Now try a few of your gene predictions. BLAST only a maximum of 12 sequences at a time (instead of simply selecting the first 12 genes in your file, copy-paste sequences randomly from the file).
 
 ---
 
