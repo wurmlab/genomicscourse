@@ -50,7 +50,7 @@ So now we have some gene predictions... how can we know if they are any good? Th
 
 ##### Running BLAST
 
-We will use [SequenceServer](https://doi.org/10.1093/molbev/msz185) to run BLAST. Open http://uniref50.wurmlab.com/sequenceserver/ in your browser, paste the [example rice and honeybee protein sequences](predictions.fa.txt) in the textbox and click on the 'BLAST' button to run a BLAST search. *THIS WILL TAKE A MINUTE or TWO*
+We will use [SequenceServer](https://doi.org/10.1093/molbev/msz185) to run BLAST. Open http://blast.genomicscourse.com/sequenceserver/ in your browser, paste the [example rice and honeybee protein sequences](predictions.fa.txt) in the textbox and click on the 'BLAST' button to run a BLAST search. *THIS WILL TAKE A MINUTE or TWO*
 
 Now, looking at the BLAST results ask yourself the following questions: Do any of the gene predictions have significant similarity to known sequences? For a given gene prediction, do you think it is complete, or can you infer from the BLAST alignments that something may be wrong? Start by comparing the length of your gene prediction to that of the BLAST hits. Is your gene prediction considerably longer or considerably shorter than BLAST hits? Why?
 
@@ -68,7 +68,7 @@ As you can see, gene prediction software is imperfect – this is even the case 
 
 The [GeneValidator](http://bioinformatics.oxfordjournals.org/content/32/10/1559.long) tool can help to evaluate the quality of a gene prediction by comparing features of a predicted gene to similar database sequences. This approach expects that similar sequences should for example be of similar length.
 
-Try to run the [example rice and honeybee protein sequences](predictions.fa.txt) through GeneValidator: http://uniref50.wurmlab.com/genevalidator/
+Try to run the [example rice and honeybee protein sequences](predictions.fa.txt) through GeneValidator: http://blast.genomicscourse.com/genevalidator/
 
 
 ### Comparing whole genesets & prioritizing genes for manual curation
