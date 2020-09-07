@@ -210,7 +210,7 @@ cp tmp/variants/snp.vcf results
 
 In this part of the practical, we are going to use the software IGV to visualise the alignments we created and check some of the positions where variants were called.
 
-Copy the BAM and their index files (.bai) to `~/www/igv/bams`. To visualise them, open IGV in your browser by typing your IP followed by `/~` and your username.
+Copy the BAM and their index files (.bai) to `~/www/igv/bams`. To visualise them, open IGV by entering your address in a web browser (e.g., james.genomicscourse.com) and clicking on the 'igv' link in the displayed page.
 
 This uses an embedable version of IGV that is pre configured to use the assembly (`reference.fa` file) you used for variant calling.
 

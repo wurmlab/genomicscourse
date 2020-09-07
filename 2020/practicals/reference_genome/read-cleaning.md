@@ -89,7 +89,7 @@ Your [resulting directory structure](http://github.com/wurmlab/templates/blob/ma
 └── WHATIDID.txt
 ```
 
-To inspect the FastQC report, copy over the html file to `www` folder in your home directory. To view the report, type your IP in a browser followed by `/~` and your username.
+To inspect the FastQC report, copy over the html file to `www` folder in your home directory. To view the report, enter your address (the same that you use for ssh, e.g., james.genomicscourse.com) in a web browser and click on the link to the html file.
 
 What does the FastQC report tell you? ([the documentation clarifies what each plot means](http://www.bioinformatics.babraham.ac.uk/projects/fastqc/Help/3%20Analysis%20Modules/) and [here is a reminder of what quality scores means](https://learn.gencore.bio.nyu.edu/ngs-file-formats/quality-scores/)). For comparison, have a look at some plots from other sequencing libraries: e.g, [[1]](img-qc/per_base_quality.png), [[2]](img-qc/qc_factq_tile_sequence_quality.png), [[3]](img-qc/per_base_sequence_content.png).
 
