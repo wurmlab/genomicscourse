@@ -197,10 +197,23 @@ bcftools view -v snps -m2 -M2 --min-ac 1:minor tmp/filtered_calls.vcf > tmp/snp.
 * Can you find any other parameters indicating the quality of the site?
 * Can you find any other parameters indicating the quality of the variant call for a given individual on a given site?
 
+In this practical we only looked at a subset of the fire ant genome. When calling variants for the entire genome and using hundreds or thousands of samples, the resulting VCF files can end up being very large (reaching terabytes for cancer genomics projects!). It is thus a good idea to compress and index a VCF file. This is typically done using `bgzip` (for compression) and `tabix` (for indexing - tabix requires the file to be compressed using `bgzip`).
+
+```bash
+# Compress the VCF file using bgzip. This will remove the
+# snp.vcf file and produce snp.vcf.gz file in its place.
+bgzip tmp/snp.vcf
+
+# Index the compressed VCF file. This will produce a .tbi
+# file alongsied snp.vcf.gz file.
+tabix tmp/snp.vcf.gz
+```
+
 Now that we have a SNP set, we can copy it to `results` directory.
 
 ```bash
-cp tmp/snp.vcf results
+cp tmp/snp.vcf.gz results
+cp tmp/snp.vcf.gz.tbi results
 ```
 
 ## Viewing the results using IGV (Integrative Genome Viewer)
