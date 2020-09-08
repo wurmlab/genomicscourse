@@ -6,15 +6,15 @@ We have samples with two genotypes: the B genotype (associated with single-queen
 
 Our dummy assembly has two scaffolds, from two different chromosomes. The aim of our analysis is to test whether any parts of this assembly differ between the individuals from these two groups (B and b).
 
-In the first part of the analysis, we are going to create a heat map of the genotypes of the individuals and we are going to run Principal Component Analysis (PCA) on these genotypes. This will allow us to test if any of the individuals cluster together by their B/b genotype. This will be done using the `adegenet` package in R.
+In the first part of the analysis, we are going to create a heat map of the genotypes of the individuals and we are going to run Principal Component Analysis (PCA) on these genotypes. This will allow us to test if any of the individuals cluster together by their B/b genotype. This will be done using the ``adegenet`` package in R.
 
-In the second part, we are going to measure genetic differentiation between the two groups (B and b). We will do this analysis over a sliding window, to see if the differentiation between B and b are specific to any portion of the genome. We will also measure the genetic diversity among each of the groups, which may tell us something about the evolutionary history of the portions of genome represented in our assembly. This will be done using the `PopGenome` package in R.
+In the second part, we are going to measure genetic differentiation between the two groups (B and b). We will do this analysis over a sliding window, to see if the differentiation between B and b are specific to any portion of the genome. We will also measure the genetic diversity among each of the groups, which may tell us something about the evolutionary history of the portions of genome represented in our assembly. This will be done using the ``PopGenome`` package in R.
 
 ## Load packages
 
 Before we start with the analysis, let us first load the R packages we will need and configure them.
 
-```{r}
+```{r message=FALSE}
 # Load libraries
 library(dplyr)
 library(ggplot2)
@@ -25,19 +25,19 @@ library(PopGenome)
 theme_set(theme_minimal())
 ```
 
-## Analysis using `adegenet`
+## Analysis using ``adegenet``
 
-The package `adegenet` uses an object called `r genlight`. To create it, we need to input a matrix where each row is an individual and each column is a locus (i.e. a SNP position). We can do this using `bcftools`:
+The package ``adegenet`` uses an R object called ``genlight``. To create it, we need to input a matrix where each row is an individual and each column is a locus (i.e. a SNP position). We can do this using ``bcftools``:
 
 ```{bash engine.opts='-l'}
 # Select the information in the vcf file without the header
-bcftools query input/snp.vcf -f '%CHROM\t%POS[\t%GT]\n' > snp_matrix.txt
+bcftools query input/snp.vcf.gz -f '%CHROM\t%POS[\t%GT]\n' > snp_matrix.txt
 
 # Get sample names
-bcftools query -l input/snp.vcf > sample_names.txt
+bcftools query -l input/snp.vcf.gz > sample_names.txt
 ```
 
-Next, create the `r genlight` object from the files we just created:
+Next, create the R ``genlight`` object from the files we just created:
 
 ```{r}
 # Input the SNP data and the sample names by reading the .txt files you just created with bcftools
@@ -61,7 +61,7 @@ bb <- sample_names[grep("B", sample_names)] # B samples (bb = "big B")
 lb <- sample_names[grep("b", sample_names)] # b samples (lb = "little b")
 snp_matrix <- snp_matrix[c(bb, lb), ]
 
-# Now we can create a new `genlight` object that contains all the SNP data. Note that the
+# Now we can create a new genlight object that contains all the SNP data. Note that the
 # following line has been split up over multiple lines to make it easier to read R won't
 # run the command until all brackets have been closed.
 snp <- new("genlight",
@@ -75,7 +75,7 @@ snp <- new("genlight",
 snp
 ```
 
-You can access the content of `snp` object using the "@" sign:
+You can access the content of ``snp`` object using the "@" sign:
 
 ```{r}
 # Print name of the individuals:
@@ -156,7 +156,7 @@ scaffold_2_pca_plot <- scaffold_2_pca_inv %>%
     geom_point(size = 2) +
     xlab("PC1") +
     ylab("PC2") +
-    coord_fixed(ratio = 1) 
+    coord_fixed(ratio = 1)
 
 scaffold_2_pca_plot
 ```
@@ -195,23 +195,19 @@ scaffold_1_pca_plot
 * Is differentiation coming mainly from one of the scaffolds?
 * If so, which one?
 
-## Using `PopGenome` to measure differentiation and diversity
+## Using ``PopGenome`` to measure differentiation and diversity
 
 Another way of measuring differentiation between groups of individuals is using the fixation index, FST, which tests whether there is genetic structure in the population. FST can be used, for example, to test whether there is evidence of low gene flow between populations. In the case of the fire ant, the B and b supergene variants coexist in the population, but do not recombine with each other - so they should show strong differentiation.
 
 An important population genetics measure is genetic diversity. Patterns of genetic diversity can be informative of a population's evolutionary past - for example, low genetic diversity may be evidence for a recent population bottleneck. Furthermore, the variation of diversity within the genome can be informative of different evolutionary effects, such as the strength of selection in different parts of the genome.
 
-We will measure FST and nucleotide diversity (a measure of genetic diversity) using the R package `PopGenome`.
+We will measure FST and nucleotide diversity (a measure of genetic diversity) using the R package ``PopGenome``.
 
-In theory, the `r PopGenome` can read VCF files directly, using the `readVCF` function. However, because our samples are haploid, we need to use a different function, `readData`, which requires a folder with a separate VCF for each scaffold.
+In theory, ``PopGenome`` can read VCF files directly, using the ``readVCF`` function. However, because our samples are haploid, we need to use a different function, ``readData``, which requires a folder with a separate VCF for each scaffold.
 
 ```{bash engine.opts='-l'}
 # Make new directory
-mkdir popgenome-vcf
-
-# Compress and index the VCF
-bgzip input/snp.vcf
-tabix -p vcf input/snp.vcf.gz
+mkdir -p popgenome-vcf
 
 # Separate variant sites for each scaffold into different files.
 bcftools view input/snp.vcf.gz scaffold_1 > popgenome-vcf/scaffold_1
