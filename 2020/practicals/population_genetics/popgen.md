@@ -21,4 +21,4 @@ Again, make a directory for this practical (e.g., `2020-10-xx-population_genetic
 └── popgen.Rmd
 ```
 
-Next, open Rstudio by entering your address in a web browser (e.g., james.genomicscourse.com) and clicking on the 'rstudio' link in the displayed page. Login using the same username and password that you use for ssh. In Rstudio, open the file `popgen.Rmd` and work through the rest of the practical there.
+Next, open Rstudio by entering your address in a web browser (e.g., james.genomicscourse.com) and clicking on the 'rstudio' link in the displayed page. Login using your username (e.g., james) and the password that you use for ssh. In Rstudio, open the file `popgen.Rmd` and work through the rest of the practical there.
