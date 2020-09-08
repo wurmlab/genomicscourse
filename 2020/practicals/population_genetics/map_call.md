@@ -218,11 +218,15 @@ cp tmp/snp.vcf.gz.tbi results
 
 ## Viewing the results using IGV (Integrative Genome Viewer)
 
-In this part of the practical, we are going to use the software IGV to visualise the alignments we created and check some of the positions where variants were called.
+In this part of the practical, we will use the software IGV to visualise the alignments and the SNPs we generated, and verify some of the called SNPs.
 
-Copy the BAM and their index files (.bai) to `~/www/igv/bams`. To visualise them, open IGV by entering your address in a web browser (e.g., james.genomicscourse.com) and clicking on the 'igv' link in the displayed page.
+Copy the BAM and their index files (.bai) to `~/www/igv/data`.
 
-This uses an embedable version of IGV that is pre configured to use the assembly (`reference.fa` file) you used for variant calling.
+Copy the `snp.vcf.gz` and its index file (.tbi) to `~/www/igv/data`.
+
+To visualise them, open IGV by entering your address in a web browser (e.g., james.genomicscourse.com) and clicking on the 'igv' link in the displayed page.
+
+Here, we use a version of IGV that can be embedded into web pages and is pre configured to use the assembly (`reference.fa` file) you used for variant calling.
 
 * Has bcftools/mpileup recovered the same positions as you would by looking at the alignments with IGV?
 * Do you think our filtering was effective?
