@@ -141,7 +141,7 @@ Set up a new directory for the second part of today's practical (e.g., `2020-10-
 └── WHATIDID.txt
 ```
 
-There are several approaches to call variants. The simplest approach is to look for positions where the mapped reads consistently have a different base than the reference assembly (the consensus approach). We need to run two steps, `bcftools mpileup`, which looks for inconsistencies between the reference and the aligned reads, and `bcftools call`, which interprets them as variants.
+There are several approaches to call variants. The simplest approach is to look for positions where the mapped reads consistently have a different base than the reference assembly (the consensus approach). We need to run two commands, `bcftools mpileup`, which looks for inconsistencies between the reference and the aligned reads, and `bcftools call`, which interprets them as variants.
 
 We will use multiallelic caller (option `-m`) of bcftools and set all individuals as haploid.
 
@@ -152,19 +152,16 @@ ln -s ~/2020-10-xx-genotyping/input/reference.fa tmp/
 # Create index of the reference (different from that used by bowtie2)
 samtools faidx tmp/reference.fa
 
-# Run samtools mpileup
-mkdir tmp/variants
-bcftools mpileup -Ou -f tmp/reference.fa input/*.bam > tmp/variants/raw_calls.bcf
-
-# Run bcftools call
-bcftools call --ploidy 1 -v -m tmp/variants/raw_calls.bcf > tmp/variants/calls.vcf
+# Call variants using bcftools: identify all differences between reference and reads using mpileup
+# subcommand and pipe it to call subcommand to determine if the identified difference are variants.
+bcftools mpileup -Ou -f tmp/reference.fa input/*.bam | bcftools call --ploidy 1 -v -m > tmp/calls.vcf
 ```
 
 * Do you understand why we are using the `-v` option in `bcftools call`? Is it ever useful to leave it out?
 
 The file produced a VCF (Variant Call Format) format telling the position, nature and quality of the called variants.
 
-Let's take a look at the VCF file produced by typing `less -S tmp/variants/calls.vcf`. The file is composed of a header and rows for all the variant positions. Have a look at the different columns and check what each is (the header includes labels). Notice that some columns include several fields.
+Let's take a look at the VCF file produced by typing `less -S tmp/calls.vcf`. The file is composed of a header and rows for all the variant positions. Have a look at the different columns and check what each is (the header includes labels). Notice that some columns include several fields.
 
 * Where does the header start and end?
 * How is the genotype of each sample coded?
@@ -181,7 +178,7 @@ We will filter the VCF using `bcftools filter`. We can remove anything with qual
 
 ```bash
 # Remove variant site with quality score less than 30. Then remove sites that have a missing genotype call.
-bcftools filter --exclude 'QUAL < 30' tmp/variants/calls.vcf | bcftools view -g ^miss > tmp/variants/filtered_calls.vcf
+bcftools filter --exclude 'QUAL < 30' tmp/calls.vcf | bcftools view -g ^miss > tmp/filtered_calls.vcf
 ```
 
 In more serious analyses, it may be important to filter by other parameters.
@@ -193,26 +190,43 @@ In the downstream analysis, we only want to look at sites that are:
 
 ```bash
 # Select biallelic variant sites that are snps and at least one individual differs from the rest.
-bcftools view -v snps -m2 -M2 --min-ac 1:minor tmp/variants/filtered_calls.vcf > tmp/variants/snp.vcf
+bcftools view -v snps -m2 -M2 --min-ac 1:minor tmp/filtered_calls.vcf > tmp/snp.vcf
 ```
 
 * How many SNPs does the resulting VCF file have?
 * Can you find any other parameters indicating the quality of the site?
 * Can you find any other parameters indicating the quality of the variant call for a given individual on a given site?
 
+In this practical we only looked at a subset of the fire ant genome. When calling variants for the entire genome and using hundreds or thousands of samples, the resulting VCF files can end up being very large (reaching terabytes for cancer genomics projects!). It is thus a good idea to compress and index a VCF file. This is typically done using `bgzip` (for compression) and `tabix` (for indexing - tabix requires the file to be compressed using `bgzip`).
+
+```bash
+# Compress the VCF file using bgzip. This will remove the
+# snp.vcf file and produce snp.vcf.gz file in its place.
+bgzip tmp/snp.vcf
+
+# Index the compressed VCF file. This will produce a .tbi
+# file alongsied snp.vcf.gz file.
+tabix tmp/snp.vcf.gz
+```
+
 Now that we have a SNP set, we can copy it to `results` directory.
 
 ```bash
-cp tmp/variants/snp.vcf results
+cp tmp/snp.vcf.gz results
+cp tmp/snp.vcf.gz.tbi results
 ```
 
 ## Viewing the results using IGV (Integrative Genome Viewer)
 
-In this part of the practical, we are going to use the software IGV to visualise the alignments we created and check some of the positions where variants were called.
+In this part of the practical, we will use the software IGV to visualise the alignments and the SNPs we generated, and verify some of the called SNPs.
 
-Copy the BAM and their index files (.bai) to `~/www/igv/bams`. To visualise them, open IGV by entering your address in a web browser (e.g., james.genomicscourse.com) and clicking on the 'igv' link in the displayed page.
+Copy the BAM and their index files (.bai) to `~/www/igv/data`.
 
-This uses an embedable version of IGV that is pre configured to use the assembly (`reference.fa` file) you used for variant calling.
+Copy the `snp.vcf.gz` and its index file (.tbi) to `~/www/igv/data`.
+
+To visualise them, open IGV by entering your address in a web browser (e.g., james.genomicscourse.com) and clicking on the 'igv' link in the displayed page.
+
+Here, we use a version of IGV that can be embedded into web pages and is pre configured to use the assembly (`reference.fa` file) you used for variant calling.
 
 * Has bcftools/mpileup recovered the same positions as you would by looking at the alignments with IGV?
 * Do you think our filtering was effective?

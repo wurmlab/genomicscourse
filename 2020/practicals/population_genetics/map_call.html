@@ -125,7 +125,7 @@ code > span.er { color: #ff0000; font-weight: bold; }
 ├── results
 ├── tmp
 └── WHATIDID.txt</code></pre>
-<p>There are several approaches to call variants. The simplest approach is to look for positions where the mapped reads consistently have a different base than the reference assembly (the consensus approach). We need to run two steps, <code>bcftools mpileup</code>, which looks for inconsistencies between the reference and the aligned reads, and <code>bcftools call</code>, which interprets them as variants.</p>
+<p>There are several approaches to call variants. The simplest approach is to look for positions where the mapped reads consistently have a different base than the reference assembly (the consensus approach). We need to run two commands, <code>bcftools mpileup</code>, which looks for inconsistencies between the reference and the aligned reads, and <code>bcftools call</code>, which interprets them as variants.</p>
 <p>We will use multiallelic caller (option <code>-m</code>) of bcftools and set all individuals as haploid.</p>
 <pre class="sourceCode bash"><code class="sourceCode bash"><span class="co"># Symlink reference.fa to tmp/</span>
 <span class="kw">ln</span> -s ~/2020-10-xx-genotyping/input/reference.fa tmp/
@@ -133,17 +133,14 @@ code > span.er { color: #ff0000; font-weight: bold; }
 <span class="co"># Create index of the reference (different from that used by bowtie2)</span>
 <span class="kw">samtools</span> faidx tmp/reference.fa
 
-<span class="co"># Run samtools mpileup</span>
-<span class="kw">mkdir</span> tmp/variants
-<span class="kw">bcftools</span> mpileup -Ou -f tmp/reference.fa input/*.bam <span class="kw">&gt;</span> tmp/variants/raw_calls.bcf
-
-<span class="co"># Run bcftools call</span>
-<span class="kw">bcftools</span> call --ploidy 1 -v -m tmp/variants/raw_calls.bcf <span class="kw">&gt;</span> tmp/variants/calls.vcf</code></pre>
+<span class="co"># Call variants using bcftools: identify all differences between reference and reads using mpileup</span>
+<span class="co"># subcommand and pipe it to call subcommand to determine if the identified difference are variants.</span>
+<span class="kw">bcftools</span> mpileup -Ou -f tmp/reference.fa input/*.bam <span class="kw">|</span> <span class="kw">bcftools</span> call --ploidy 1 -v -m <span class="kw">&gt;</span> tmp/calls.vcf</code></pre>
 <ul class="incremental">
 <li>Do you understand why we are using the <code>-v</code> option in <code>bcftools call</code>? Is it ever useful to leave it out?</li>
 </ul>
 <p>The file produced a VCF (Variant Call Format) format telling the position, nature and quality of the called variants.</p>
-<p>Let's take a look at the VCF file produced by typing <code>less -S tmp/variants/calls.vcf</code>. The file is composed of a header and rows for all the variant positions. Have a look at the different columns and check what each is (the header includes labels). Notice that some columns include several fields.</p>
+<p>Let's take a look at the VCF file produced by typing <code>less -S tmp/calls.vcf</code>. The file is composed of a header and rows for all the variant positions. Have a look at the different columns and check what each is (the header includes labels). Notice that some columns include several fields.</p>
 <ul class="incremental">
 <li>Where does the header start and end?<br /></li>
 <li>How is the genotype of each sample coded?<br /></li>
@@ -157,7 +154,7 @@ code > span.er { color: #ff0000; font-weight: bold; }
 </ul>
 <p>We will filter the VCF using <code>bcftools filter</code>. We can remove anything with quality call smaller than 30:</p>
 <pre class="sourceCode bash"><code class="sourceCode bash"><span class="co"># Remove variant site with quality score less than 30. Then remove sites that have a missing genotype call.</span>
-<span class="kw">bcftools</span> filter --exclude <span class="st">'QUAL &lt; 30'</span> tmp/variants/calls.vcf <span class="kw">|</span> <span class="kw">bcftools</span> view -g ^miss <span class="kw">&gt;</span> tmp/variants/filtered_calls.vcf</code></pre>
+<span class="kw">bcftools</span> filter --exclude <span class="st">'QUAL &lt; 30'</span> tmp/calls.vcf <span class="kw">|</span> <span class="kw">bcftools</span> view -g ^miss <span class="kw">&gt;</span> tmp/filtered_calls.vcf</code></pre>
 <p>In more serious analyses, it may be important to filter by other parameters.</p>
 <p>In the downstream analysis, we only want to look at sites that are:</p>
 <ol class="incremental">
@@ -166,18 +163,29 @@ code > span.er { color: #ff0000; font-weight: bold; }
 <li>where the minor allele is present in at least one individual (because we do not care for the sites where all individuals are different from the reference, yet equal to each other)</li>
 </ol>
 <pre class="sourceCode bash"><code class="sourceCode bash"><span class="co"># Select biallelic variant sites that are snps and at least one individual differs from the rest.</span>
-<span class="kw">bcftools</span> view -v snps -m2 -M2 --min-ac 1:minor tmp/variants/filtered_calls.vcf <span class="kw">&gt;</span> tmp/variants/snp.vcf</code></pre>
+<span class="kw">bcftools</span> view -v snps -m2 -M2 --min-ac 1:minor tmp/filtered_calls.vcf <span class="kw">&gt;</span> tmp/snp.vcf</code></pre>
 <ul class="incremental">
 <li>How many SNPs does the resulting VCF file have?<br /></li>
 <li>Can you find any other parameters indicating the quality of the site?<br /></li>
 <li>Can you find any other parameters indicating the quality of the variant call for a given individual on a given site?</li>
 </ul>
+<p>In this practical we only looked at a subset of the fire ant genome. When calling variants for the entire genome and using hundreds or thousands of samples, the resulting VCF files can end up being very large (reaching terabytes for cancer genomics projects!). It is thus a good idea to compress and index a VCF file. This is typically done using <code>bgzip</code> (for compression) and <code>tabix</code> (for indexing - tabix requires the file to be compressed using <code>bgzip</code>).</p>
+<pre class="sourceCode bash"><code class="sourceCode bash"><span class="co"># Compress the VCF file using bgzip. This will remove the</span>
+<span class="co"># snp.vcf file and produce snp.vcf.gz file in its place.</span>
+<span class="kw">bgzip</span> tmp/snp.vcf
+
+<span class="co"># Index the compressed VCF file. This will produce a .tbi</span>
+<span class="co"># file alongsied snp.vcf.gz file.</span>
+<span class="kw">tabix</span> tmp/snp.vcf.gz</code></pre>
 <p>Now that we have a SNP set, we can copy it to <code>results</code> directory.</p>
-<pre class="sourceCode bash"><code class="sourceCode bash"><span class="kw">cp</span> tmp/variants/snp.vcf results</code></pre>
+<pre class="sourceCode bash"><code class="sourceCode bash"><span class="kw">cp</span> tmp/snp.vcf.gz results
+<span class="kw">cp</span> tmp/snp.vcf.gz.tbi results</code></pre>
 <h2 id="viewing-the-results-using-igv-integrative-genome-viewer">Viewing the results using IGV (Integrative Genome Viewer)</h2>
-<p>In this part of the practical, we are going to use the software IGV to visualise the alignments we created and check some of the positions where variants were called.</p>
-<p>Copy the BAM and their index files (.bai) to <code>~/www/igv/bams</code>. To visualise them, open IGV by entering your address in a web browser (e.g., james.genomicscourse.com) and clicking on the 'igv' link in the displayed page.</p>
-<p>This uses an embedable version of IGV that is pre configured to use the assembly (<code>reference.fa</code> file) you used for variant calling.</p>
+<p>In this part of the practical, we will use the software IGV to visualise the alignments and the SNPs we generated, and verify some of the called SNPs.</p>
+<p>Copy the BAM and their index files (.bai) to <code>~/www/igv/data</code>.</p>
+<p>Copy the <code>snp.vcf.gz</code> and its index file (.tbi) to <code>~/www/igv/data</code>.</p>
+<p>To visualise them, open IGV by entering your address in a web browser (e.g., james.genomicscourse.com) and clicking on the 'igv' link in the displayed page.</p>
+<p>Here, we use a version of IGV that can be embedded into web pages and is pre configured to use the assembly (<code>reference.fa</code> file) you used for variant calling.</p>
 <ul class="incremental">
 <li>Has bcftools/mpileup recovered the same positions as you would by looking at the alignments with IGV?<br /></li>
 <li>Do you think our filtering was effective?</li>
