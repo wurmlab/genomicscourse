@@ -46,13 +46,13 @@ ln -s ~/2020-09-xx-read_cleaning/results/reads.pe*.clean.fq input/</code></pre>
 <pre class="sourceCode bash"><code class="sourceCode bash"><span class="kw">spades.py</span> -o tmp -1 input/reads.pe1.clean.fq -2 input/reads.pe2.clean.fq</code></pre>
 <p>Like any other assembler, SPAdes creates many files, including a <code>scaffolds.fasta</code> file that is likely to be used for follow-up analyses<a href="../../data/reference_assembly/output/scaffolds.fasta.gz?raw=true">.</a> Copy this file to your results directory:</p>
 <pre class="sourceCode bash"><code class="sourceCode bash"><span class="kw">cp</span> tmp/scaffolds.fasta results/</code></pre>
-<p>Take a look at the contents of this file (e.g., <code>less results/scaffolds.fasta</code>). Why does this file contain so many NNNN sequences?</p>
+<p>Take a look at the contents of this file (e.g., <code>less results/scaffolds.fasta</code>). Does it contain a lot of NNNN sequences? What do you think might be the reason for that? (Do not worry if your assembly does not contain NNNN sequences.)</p>
 <p>There are many other genome assembly approaches. While waiting for everyone to make it to this stage, try to understand some of the challenges of <em>de novo</em> genome assembly and the approaches used to overcome them via the following papers:</p>
 <ul class="incremental">
-<li><a href="http://www.nature.com/nrg/journal/v16/n11/full/nrg3933.html">Genetic variation and the <em>de novo</em> assembly of human genomes. Chaisson et al 2015 NRG</a> (to overcome the paywall, login via your university, email the authors, or try <a href="http://en.wikipedia.org/wiki/Sci-Hub">scihub</a>).<br /></li>
+<li><a href="https://www.nature.com/articles/nrg3933">Genetic variation and the <em>de novo</em> assembly of human genomes. Chaisson et al 2015 NRG</a> (to overcome the paywall, login via your university, email the authors, or try <a href="http://en.wikipedia.org/wiki/Sci-Hub">scihub</a>).<br /></li>
 <li>The now slightly outdated (2013) <a href="http://gigascience.biomedcentral.com/articles/10.1186/2047-217X-2-10">Assemblathon paper</a>.<br /></li>
 <li><a href="http://genomebiology.biomedcentral.com/articles/10.1186/s13059-015-0764-4">Metassembler: merging and optimizing <em>de novo</em> genome assemblies. Wences &amp; Schatz (2015)</a>.<br /></li>
-<li><a href="http://www.nature.com/nmeth/journal/vaop/ncurrent/full/nmeth.3865.html">A hybrid approach for <em>de novo</em> human genome sequence assembly and phasing. Mostovoy et al (2016)</a>.</li>
+<li><a href="https://www.nature.com/articles/nmeth.3865">A hybrid approach for <em>de novo</em> human genome sequence assembly and phasing. Mostovoy et al (2016)</a>.</li>
 </ul>
 <p>At home: what are the tradeoffs between a <code>de bruijn</code> graph assembly approach and an <code>overlap-layout-consensus</code> assembly approach?</p>
 <h3 id="quality-assessment">Quality assessment</h3>
@@ -62,8 +62,8 @@ ln -s ~/2020-09-xx-read_cleaning/results/reads.pe*.clean.fq input/</code></pre>
 </blockquote>
 <h4 id="simple-metrics">Simple metrics</h4>
 <p>An assembly software will generally provide some statistics about what it did. But the output formats differ between assemblers. <a href="http://bioinf.spbau.ru/quast">Quast</a>, the <em>Quality Assessment Tool for Genome Assemblies</em> creates a standardized report. Run Quast (<code>quast.py</code>) on the <code>scaffolds.fasta</code> file. No special options - just the simple scenario to get some statistics.</p>
-<p>Have a look at the report (pdf or html) Quast generated.</p>
-<p>What do the values in the table mean? For which ones is higher better, and for which ones is smaller better? Is Quast's use of the word &quot;contig&quot; appropriate?</p>
+<p>Have a look at the report (pdf or html) Quast generated (hint: copy over quast's output directory to <code>~/www</code>).</p>
+<p>What do the values in the table mean? For which ones is higher better, and for which ones is smaller better? Why do you think Quast uses the word &quot;contig&quot;?</p>
 <p>Perhaps we have prior knowledge about the %GC content to expect, the number of chromosomes to expect, and the total genome size – these can inform comparisons with output statistics present in Quast's report.</p>
 <h4 id="biologically-meaningful-measures">Biologically meaningful measures</h4>
 <p>Unfortunately, with many of the simple metrics, it is difficult to determine whether the assembler did things correctly, or just haphazardly stuck lots of reads together!</p>

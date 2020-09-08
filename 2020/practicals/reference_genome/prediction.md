@@ -21,9 +21,10 @@ seqtk seq -L 10000 input/scaffolds.fasta > tmp/min10000.fa
 
 Next, `cd` to your `tmp/` folder and run `maker -OPTS`. This will generate an empty `maker_opts.ctl` configuration file (ignore the warnings). Edit that file using a text editor such as `nano` or `vim` to specify:
   * genome: `min10000.fa`
-  * augustus species: a known gene set from a related species, in this case we choose `honeybee1` (yes that's a 1)
-  * deactivate RepeatMasker by replacing `model_org=all` to `model_org= ` (i.e., nothing)
-  * further check that `repeat_protein` setting is empty as well
+  * deactivate RepeatMasker by changing `model_org` line to `model_org=` (i.e., nothing afer `=`)
+  * deactivate RepeatRunner by changing `repeat_protein` line to `repeat_protein=` (i.e., nothing after `=`)
+  * augustus_species: a known gene set from a related species, in this case we choose `honeybee1` (yes that's a 1)
+
 
 For a real project, we *would* include RepeatMasker (perhaps after creating a new repeat library), we would provide as much relevant information as possible (e.g., RNAseq read mappings, transcriptome assembly – both improve gene prediction performance *tremendously*), and iteratively train gene prediction algorithms for our data including Augustus and SNAP.
 
