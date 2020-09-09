@@ -120,7 +120,7 @@ pca_plot <- pca_results_invert %>%
 pca_plot
 ```
 
-The aim of these analysis is to test whether the B and the b individuals cluster together or separately. The first principal component separates B and b. But if you look at the heat map, the separation is not constant in the whole genome (you can navigate between your plots using the arrow buttons above the plot window in Rstudio).
+The aim of these analysis is to test whether the B and the b individuals cluster together or separately. The first principal component separates B and b. But if you look at the heat map, the separation is not constant in the whole genome.
 
 Each of the scaffolds has been retrieved from a different chromosome. We can test whether the differentiation between B and b is only seen in one of the scaffolds.
 
