@@ -61,7 +61,7 @@ ln -s ~/2020-09-xx-read_cleaning/results/reads.pe*.clean.fq input/</code></pre>
 <p><em>&quot;... the performance of different </em>de novo* genome assembly algorithms can vary greatly on the same dataset, although it has been repeatedly demonstrated that no single assembler is optimal in every possible quality metric [6, 7, 8]. The most widely used metrics for evaluating an assembly include 1) contiguity statistics such as scaffold and contig N50 size, 2) accuracy statistics such as the number of structural errors found when compared with an available reference genome (GAGE (Genome Assembly Gold Standard Evaluation) evaluation tool [8]), 3) presence of core eukaryotic genes (CEGMA (Core Eukaryotic Genes Mapping Approach) [9]) or, if available, transcript mapping rates, and 4) the concordance of the sequence with remapped paired-end and mate-pair reads (REAPR (Recognizing Errors in Assemblies using Paired Reads) [10], assembly validation [11], or assembly likelihood [12]).&quot;* - <a href="http://genomebiology.biomedcentral.com/articles/10.1186/s13059-015-0764-4">Wences &amp; Schatz (2015)</a></p>
 </blockquote>
 <h4 id="simple-metrics">Simple metrics</h4>
-<p>An assembly software will generally provide some statistics about what it did. But the output formats differ between assemblers. <a href="http://bioinf.spbau.ru/quast">Quast</a>, the <em>Quality Assessment Tool for Genome Assemblies</em> creates a standardized report. Run Quast (<code>quast.py</code>) on the <code>scaffolds.fasta</code> file. No special options - just the simple scenario to get some statistics.</p>
+<p>An assembly software will generally provide some statistics about what it did. But the output formats differ between assemblers. <a href="http://quast.sourceforge.net/quast">Quast</a>, the <em>Quality Assessment Tool for Genome Assemblies</em> creates a standardized report. Run Quast (<code>quast.py</code>) on the <code>scaffolds.fasta</code> file. No special options - just the simple scenario to get some statistics.</p>
 <p>Have a look at the report (pdf or html) Quast generated (hint: copy over quast's output directory to <code>~/www</code>).</p>
 <p>What do the values in the table mean? For which ones is higher better, and for which ones is smaller better? Why do you think Quast uses the word &quot;contig&quot;?</p>
 <p>Perhaps we have prior knowledge about the %GC content to expect, the number of chromosomes to expect, and the total genome size – these can inform comparisons with output statistics present in Quast's report.</p>
@@ -80,7 +80,6 @@ ln -s ~/2020-09-xx-read_cleaning/results/reads.pe*.clean.fq input/</code></pre>
 </ul></li>
 </ol>
 <p>It is <em>very important</em> to understand the concepts underlying these different approaches.</p>
-<h2 id="part-3-gene-prediction">Part 3: <a href="prediction">Gene prediction</a></h2>
 <hr>
 <small>Copyright <a href="https://github.com/wurmlab/genomicscourse/graphs/contributors">Authors</a>. All rights reserverd.
 

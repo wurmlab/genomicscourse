@@ -49,7 +49,7 @@ How do we know if our genome is good?
 
 #### Simple metrics
 
-An assembly software will generally provide some statistics about what it did. But the output formats differ between assemblers. [Quast](http://bioinf.spbau.ru/quast), the *Quality Assessment Tool for Genome Assemblies* creates a standardized report. Run Quast (`quast.py`) on the `scaffolds.fasta` file. No special options - just the simple scenario to get some statistics.
+An assembly software will generally provide some statistics about what it did. But the output formats differ between assemblers. [Quast](http://quast.sourceforge.net/quast), the *Quality Assessment Tool for Genome Assemblies* creates a standardized report. Run Quast (`quast.py`) on the `scaffolds.fasta` file. No special options - just the simple scenario to get some statistics.
 
 Have a look at the report (pdf or html) Quast generated (hint: copy over quast's output directory to `~/www`).
 
@@ -72,6 +72,3 @@ We probably have other prior information about what to expect in this genome. Fo
     * QUAST also includes a "quick and dirty" method of finding genes.
 
 It is *very important* to understand the concepts underlying these different approaches.
-
-
-## Part 3: [Gene prediction](prediction)

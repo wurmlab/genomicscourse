@@ -75,6 +75,12 @@ fastqc --nogroup --outdir REPLACE input/reads.pe2.fastq.gz
 
 Remember to log the commands you used in the `WHATIDID.txt` file.
 
+Take a moment to verify your directory structure. You can do so using the `tree` command:
+
+```bash
+tree ~/2020-09-xx-read_cleaning
+```
+
 Your [resulting directory structure](http://github.com/wurmlab/templates/blob/master/project_structures.md "Typical multi-day project structure") (`~/2020-09-xx-read_cleaning`), should look like this:
 
 ```bash
