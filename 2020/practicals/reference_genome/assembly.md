@@ -72,6 +72,3 @@ We probably have other prior information about what to expect in this genome. Fo
     * QUAST also includes a "quick and dirty" method of finding genes.
 
 It is *very important* to understand the concepts underlying these different approaches.
-
-
-## Part 3: [Gene prediction](prediction)
