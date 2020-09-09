@@ -1,4 +1,4 @@
-# Part 2: Genome assembly
+## Part 2: Genome assembly
 
 You need to have gone through [Part 1: Read cleaning](read-cleaning) before starting this practical.
 

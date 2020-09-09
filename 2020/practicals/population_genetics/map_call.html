@@ -68,7 +68,7 @@ code > span.er { color: #ff0000; font-weight: bold; }
 <li>Knowing that each scaffold is 200kb, what is the expected coverage per base pair of individual f1_B?</li>
 </ul>
 <h2 id="aligning-reads-to-a-reference-assembly">Aligning reads to a reference assembly</h2>
-<p>The first step in our pipeline is to align the paired end reads to the reference genome. We are using the software <code>bowtie2</code>, which was created to align short read sequences to long sequences such as the scaffolds in a reference assembly. <code>bowtie2</code>, like most aligners, works in two steps.</p>
+<p>The first step in our pipeline is to align the paired end reads to the reference genome. We are using the software <a href="http://bowtie-bio.sourceforge.net/bowtie2/index.shtml"><code>bowtie2</code></a>, which was created to align short read sequences to long sequences such as the scaffolds in a reference assembly. <code>bowtie2</code>, like most aligners, works in two steps.</p>
 <p>In the first step, the scaffold sequence (sometimes known as the database) is indexed, in this case using the <a href="https://en.wikipedia.org/wiki/Burrows-Wheeler_transform">Burrows-Wheeler Transform</a>, which can help compress a large text into less memory. It thus allows for memory efficient alignment. Index files often require the original file to be present in the same directory. We thus start by linking scaffold sequences to <code>tmp</code> directory (where all output will be written first).</p>
 <pre class="sourceCode bash"><code class="sourceCode bash"><span class="co"># Symlink reference.fa to tmp/</span>
 <span class="kw">ln</span> -s ~/2020-10-xx-mapping/input/reference.fa tmp/
@@ -85,14 +85,14 @@ code > span.er { color: #ff0000; font-weight: bold; }
 <li>What is the meaning of the <code>-1</code> and <code>-2</code> parameters?<br /></li>
 <li>Why do we use <code>--local</code> parameter?</li>
 </ul>
-<p>The command produced a SAM file (Sequence Alignment/Map file), which is the standard file used to store sequence alignments. Have a quick look at the file using <code>less</code>. The file includes a header (lines starting with the <code>@</code> symbol), and a line for every read aligned to the reference assembly. For each read, we are given a mapping quality value, the position of both pairs, the actual sequence and its quality by base pair, and a series of flags with additional measures of mapping quality.</p>
-<p>We now need to run <code>bowtie2</code> for all the other samples. We could do this by typing the same command another 13 times (changing the sample name), or we can use the <code>GNU parallel</code> tool, which allows you to run the same command on several samples at once:</p>
+<p>The command produced a SAM file ((Sequence Alignment/Map file)[<a href="http://samtools.github.io/hts-specs/SAMv1.pdf">http://samtools.github.io/hts-specs/SAMv1.pdf</a>]), which is the standard file used to store sequence alignments. Have a quick look at the file using <code>less</code>. The file includes a header (lines starting with the <code>@</code> symbol), and a line for every read aligned to the reference assembly. For each read, we are given a mapping quality value, the position of both pairs, the actual sequence and its quality by base pair, and a series of flags with additional measures of mapping quality.</p>
+<p>We now need to run <code>bowtie2</code> for all the other samples. We could do this by typing the same command another 13 times (changing the sample name), or we can use the <a href="https://www.gnu.org/software/parallel/"><code>GNU parallel</code></a> tool, which allows you to run the same command on several samples at once:</p>
 <pre class="sourceCode bash"><code class="sourceCode bash"><span class="co"># Create a file with all sample names</span>
 <span class="kw">ls</span> input/reads/*fq.gz <span class="kw">|</span> <span class="kw">cut</span> -d <span class="st">'/'</span> -f 3 <span class="kw">|</span> <span class="kw">cut</span> -d <span class="st">'.'</span> -f 1 <span class="kw">|</span> <span class="kw">sort</span> <span class="kw">|</span> <span class="kw">uniq</span> <span class="kw">&gt;</span> tmp/names.txt
 
 <span class="co"># Run bowtie with each sample (will take a few minutes)</span>
 <span class="kw">cat</span> tmp/names.txt <span class="kw">|</span> <span class="kw">parallel</span> -t <span class="st">&quot;bowtie2 --local -x tmp/reference -1 input/reads/{}.1.fq.gz -2 input/reads/{}.2.fq.gz &gt; tmp/alignments/{}.sam&quot;</span></code></pre>
-<p>Because SAM files include a lot of information, they tend to occupy a lot of space (even with our small example data). Therefore, SAM files are generally compressed into BAM files (Binary sAM). Most tools that use aligned reads require BAM files that have been sorted and indexed by genomic position. This is done using <code>samtools</code>, a set of tools created to manipulate SAM/BAM files:</p>
+<p>Because SAM files include a lot of information, they tend to occupy a lot of space (even with our small example data). Therefore, SAM files are generally compressed into BAM files (Binary sAM). Most tools that use aligned reads require BAM files that have been sorted and indexed by genomic position. This is done using <a href="http://www.htslib.org/doc/samtools.html"><code>samtools</code></a>, a set of tools created to manipulate SAM/BAM files:</p>
 <pre class="sourceCode bash"><code class="sourceCode bash"><span class="co"># Sort the SAM file by scaffold position and output in BAM format.</span>
 <span class="kw">samtools</span> sort -O BAM tmp/alignments/f1_B.sam <span class="kw">&gt;</span> tmp/alignments/f1_B.bam
 
@@ -125,7 +125,7 @@ code > span.er { color: #ff0000; font-weight: bold; }
 ├── results
 ├── tmp
 └── WHATIDID.txt</code></pre>
-<p>There are several approaches to call variants. The simplest approach is to look for positions where the mapped reads consistently have a different base than the reference assembly (the consensus approach). We need to run two commands, <code>bcftools mpileup</code>, which looks for inconsistencies between the reference and the aligned reads, and <code>bcftools call</code>, which interprets them as variants.</p>
+<p>There are several approaches to call variants. The simplest approach is to look for positions where the mapped reads consistently have a different base than the reference assembly (the consensus approach). For this, we will use <a href="http://www.htslib.org/doc/bcftools.html"><code>bcftools</code></a>, a set of tools to call variants and manipulate them. We will run two commands, <code>bcftools mpileup</code>, which looks for inconsistencies between the reference and the aligned reads, and <code>bcftools call</code>, which interprets them as variants.</p>
 <p>We will use multiallelic caller (option <code>-m</code>) of bcftools and set all individuals as haploid.</p>
 <pre class="sourceCode bash"><code class="sourceCode bash"><span class="co"># Symlink reference.fa to tmp/</span>
 <span class="kw">ln</span> -s ~/2020-10-xx-genotyping/input/reference.fa tmp/
@@ -139,7 +139,7 @@ code > span.er { color: #ff0000; font-weight: bold; }
 <ul class="incremental">
 <li>Do you understand why we are using the <code>-v</code> option in <code>bcftools call</code>? Is it ever useful to leave it out?</li>
 </ul>
-<p>The file produced a VCF (Variant Call Format) format telling the position, nature and quality of the called variants.</p>
+<p>The file produced a VCF ((Variant Call Format)[<a href="http://samtools.github.io/hts-specs/VCFv4.3.pdf">http://samtools.github.io/hts-specs/VCFv4.3.pdf</a>]) format telling the position, nature and quality of the called variants.</p>
 <p>Let's take a look at the VCF file produced by typing <code>less -S tmp/calls.vcf</code>. The file is composed of a header and rows for all the variant positions. Have a look at the different columns and check what each is (the header includes labels). Notice that some columns include several fields.</p>
 <ul class="incremental">
 <li>Where does the header start and end?<br /></li>
@@ -181,11 +181,11 @@ code > span.er { color: #ff0000; font-weight: bold; }
 <pre class="sourceCode bash"><code class="sourceCode bash"><span class="kw">cp</span> tmp/snp.vcf.gz results
 <span class="kw">cp</span> tmp/snp.vcf.gz.tbi results</code></pre>
 <h2 id="viewing-the-results-using-igv-integrative-genome-viewer">Viewing the results using IGV (Integrative Genome Viewer)</h2>
-<p>In this part of the practical, we will use the software IGV to visualise the alignments and the SNPs we generated, and verify some of the called SNPs.</p>
+<p>In this part of the practical, we will use the software <a href="https://igv.org">IGV</a> to visualise the alignments and the SNPs we generated, and verify some of the called SNPs.</p>
 <p>Copy the BAM and their index files (.bai) to <code>~/www/igv/data</code>.</p>
 <p>Copy the <code>snp.vcf.gz</code> and its index file (.tbi) to <code>~/www/igv/data</code>.</p>
 <p>To visualise them, open IGV by entering your address in a web browser (e.g., james.genomicscourse.com) and clicking on the 'igv' link in the displayed page.</p>
-<p>Here, we use a version of IGV that can be embedded into web pages and is pre configured to use the assembly (<code>reference.fa</code> file) you used for variant calling.</p>
+<p>Here, we use <a href="https://github.com/igvteam/igv.js#igvjs">igv.js</a> which is designed to be embedded in web pages and the installation is pre configured to use the assembly (<code>reference.fa</code> file) you used for variant calling.</p>
 <ul class="incremental">
 <li>Has bcftools/mpileup recovered the same positions as you would by looking at the alignments with IGV?<br /></li>
 <li>Do you think our filtering was effective?</li>
