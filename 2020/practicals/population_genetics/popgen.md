@@ -17,7 +17,8 @@ Again, make a directory for this practical (e.g., `2020-10-xx-population_genetic
 ```bash
 2020-10-xx-population_genetics
 ├── input
-│   └── snp.vcf
+│   ├── snp.vcf.gz
+│   └── snp.vcf.gz.tbi
 └── popgen.Rmd
 ```
 
