@@ -106,7 +106,7 @@ There are a number of SSH clients you can use, but for the purposes of this prac
 4) In the next window, enter in the name of the server, into the Server Name box. If you have been given the server name in the form *yourname@yourname.genomicscourse.com*, you just need the part after the @ (so, *yourname.genomicscourse.com*)
 ![](images/ssh_login.png)
 
-5) Tick the *use default username* box, and add your username (included in the email that we sent you with log in details)
+5) Tick the *specify username* box, and add your username (included in the email that we sent you with log in details)
 
 
 6) Tick OK, at the bottom of the box
