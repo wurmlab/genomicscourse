@@ -108,7 +108,7 @@ Below, we will perform two cleaning steps:
   * K-mer filtering using kmc3.
   * Removing sequences that are of low quality or too short using cutadapt.
 
-Other tools including [fastx_toolkit](http://github.com/agordon/fastx_toolkit), [kmc2](http://arxiv.org/abs/1407.1507) and [Trimmomatic](http://www.usadellab.org/cms/index.php?page=trimmomatic) can also be useful.
+Other tools, such as [fastx_toolkit](http://github.com/agordon/fastx_toolkit), [BBTools](https://jgi.doe.gov/data-and-tools/bbtools/), and [Trimmomatic](http://www.usadellab.org/cms/index.php?page=trimmomatic) can also be useful, **but we won't use them now**.
 
 ### Trimming
 
