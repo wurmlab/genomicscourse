@@ -62,7 +62,7 @@ ln -s ~/2020-09-xx-read_cleaning/results/reads.pe*.clean.fq input/</code></pre>
 </blockquote>
 <h4 id="simple-metrics">Simple metrics</h4>
 <p>An assembly software will generally provide some statistics about what it did. But the output formats differ between assemblers. <a href="http://quast.sourceforge.net/quast">Quast</a>, the <em>Quality Assessment Tool for Genome Assemblies</em> creates a standardized report. Run Quast (<code>quast.py</code>) on the <code>scaffolds.fasta</code> file. No special options - just the simple scenario to get some statistics.</p>
-<p>Have a look at the report (pdf or html) Quast generated (hint: copy over quast's output directory to <code>~/www</code>).</p>
+<p>Have a look at the report (pdf or html) Quast generated (hint: copy over quast's output directory to <code>~/www/tmp</code>).</p>
 <p>What do the values in the table mean? For which ones is higher better, and for which ones is smaller better? Why do you think Quast uses the word &quot;contig&quot;?</p>
 <p>Perhaps we have prior knowledge about the %GC content to expect, the number of chromosomes to expect, and the total genome size – these can inform comparisons with output statistics present in Quast's report.</p>
 <h4 id="biologically-meaningful-measures">Biologically meaningful measures</h4>

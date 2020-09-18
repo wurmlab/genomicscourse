@@ -51,7 +51,7 @@ How do we know if our genome is good?
 
 An assembly software will generally provide some statistics about what it did. But the output formats differ between assemblers. [Quast](http://quast.sourceforge.net/quast), the *Quality Assessment Tool for Genome Assemblies* creates a standardized report. Run Quast (`quast.py`) on the `scaffolds.fasta` file. No special options - just the simple scenario to get some statistics.
 
-Have a look at the report (pdf or html) Quast generated (hint: copy over quast's output directory to `~/www`).
+Have a look at the report (pdf or html) Quast generated (hint: copy over quast's output directory to `~/www/tmp`).
 
 What do the values in the table mean? For which ones is higher better, and for which ones is smaller better? Why do you think Quast uses the word "contig"?
 

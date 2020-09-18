@@ -2,7 +2,7 @@
 
 ## Introduction
 
-[Cheap sequencing](http://www.genome.gov/sequencingcosts/) has created the opportunity to perform molecular-genetic analyses on just about anything. Conceptually, doing this would be similar to working with traditional genetic model organisms. But a large difference exists: For traditional genetic model organisms, large teams and communities of expert assemblers, predictors, and curators have put years of efforts into the prerequisites for most genomic analyses, including a reference genome and a set of gene predictions. In contrast, those of us working on "emerging" model organisms often have limited or no pre-existing resources and are part of much smaller teams.
+[Cheap sequencing](http://www.genome.gov/sequencingcosts/) has created the opportunity to perform molecular-genetic analyses on just about anything. Conceptually, doing this would be similar to working with traditional genetic model organisms. But a large difference exists: For traditional genetic model organisms, large teams and communities of expert assemblers, predictors, and curators have put years of efforts into the prerequisites for most genomic analyses, including a reference genome and a set of gene predictions. In contrast, those of us working on "emerging" model organisms often have limited or no pre-existing resources and are part of much smaller teams. Emerging model organisms includes most crops, animals and plant pest species, many pathogens, and major models for ecology & evolution.
 
 The steps below are meant to provide some ideas that can help obtain a reference genome and a reference geneset of sufficient quality for ecological and evolutionary analyses. They are based on (but updated from) work we did for the [fire ant genome](http://www.pnas.org/content/108/14/5679.long).
 
@@ -95,7 +95,7 @@ Your [resulting directory structure](http://github.com/wurmlab/templates/blob/ma
 └── WHATIDID.txt
 ```
 
-To inspect the FastQC report, copy over the html file to `www` folder in your home directory. To view the report, enter your address (the same that you use for ssh, e.g., james.genomicscourse.com) in a web browser and click on the link to the html file.
+To inspect FastQC HTML report, copy the file to `~/www/tmp`. You can then view the file by clicking on the `~/www/tmp` link in your personal module page (e.g., bt007.genomicscourse.com).
 
 What does the FastQC report tell you? ([the documentation clarifies what each plot means](http://www.bioinformatics.babraham.ac.uk/projects/fastqc/Help/3%20Analysis%20Modules/) and [here is a reminder of what quality scores means](https://learn.gencore.bio.nyu.edu/ngs-file-formats/quality-scores/)). For comparison, have a look at some plots from other sequencing libraries: e.g, [[1]](img-qc/per_base_quality.png), [[2]](img-qc/qc_factq_tile_sequence_quality.png), [[3]](img-qc/per_base_sequence_content.png).
 
