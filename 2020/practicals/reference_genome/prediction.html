@@ -34,7 +34,7 @@ ln -s ~/2020-09-xx-assembly/results/scaffolds.fasta input/</code></pre>
 <p>For a real project, we <em>would</em> include RepeatMasker (perhaps after creating a new repeat library), we would provide as much relevant information as possible (e.g., RNAseq read mappings, transcriptome assembly – both improve gene prediction performance <em>tremendously</em>), and iteratively train gene prediction algorithms for our data including Augustus and SNAP.</p>
 <p>Finally, run <code>maker maker_opts.ctl</code>. This may take a few minutes, depending on how much data you gave it.</p>
 <p>Genome annotation software like MAKER usually provide information about the exon-intron structure of the genes (e.g., in GFF3 format), and sequence of corresponding messenger RNA and protein products (e.g., in FASTA format).</p>
-<p>Once MAKER is done the results will be hidden in subdirectories of <code>min10000.maker.output</code>. MAKER provides a helper script to collect this hidden hidden output in one place (again please ignore the warnings for these steps):</p>
+<p>Once MAKER is done the results will be hidden in subdirectories of <code>min10000.maker.output</code>. MAKER provides a helper script to collect this hidden output in one place (again please ignore the warnings for these steps):</p>
 <pre><code># Pull out information about exon-intron structure of the predicted genes. This
 # will be saved to the file min10000.all.gff.
 gff3_merge -d min10000.maker.output/min10000_master_datastore_index.log
