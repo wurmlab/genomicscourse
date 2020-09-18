@@ -133,7 +133,7 @@ cutadapt --cut REPLACE --quality-cutoff REPLACE input/reads.pe1.fastq.gz > tmp/r
 
 ### K-mer filtering, removal of short sequences
 
-Say you have sequenced your sample at 45x genome coverage. The real coverage distribution will be influenced by factors including DNA quality, library preparation type and local GC content, but you might expect most of the genome to be covered between 20 and 70x. In practice, the distribution can be very strange. One way of rapidly examining the coverage distribution before you have a reference genome is to chop your raw sequence reads into short "k-mers" of, for example, 31 nucleotides, and count how often you get each possible k-mer. An example plot of k-mer frequencies from a haploid sample sequenced at ~45x coverage is shown below:
+Say you have sequenced your sample at 45x genome coverage. This means that every nucleotide of the genome was sequenced 45 times on average ... so for a genome of 450,000,000 nucleotides, this means you have 20,250,000,000 nucleotides of raw sequence. The real coverage distribution will be influenced by factors including DNA quality, library preparation type and local GC content. But you might expect most of the genome to be covered between 20 and 70x. In practice, the distribution can be very strange. One way of rapidly examining the coverage distribution before you have a reference genome is to chop your raw sequence reads into short "k-mers" of, for example, 31 nucleotides, and count how often you get each possible k-mer. An example plot of k-mer frequencies from a haploid sample sequenced at ~45x coverage is shown below:
 
 ![kmer distribution graph from UCSC](img-qc/quake_kmer_distribution.jpg)
 
