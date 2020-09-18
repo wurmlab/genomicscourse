@@ -224,7 +224,7 @@ Copy the BAM and their index files (.bai) to `~/www/igv/data`.
 
 Copy the `snp.vcf.gz` and its index file (.tbi) to `~/www/igv/data`.
 
-To visualise them, open IGV by entering your address in a web browser (e.g., james.genomicscourse.com) and clicking on the 'igv' link in the displayed page.
+To visualise them, open IGV by clicking on the IGV link in your personal module page (e.g., bt007.genomicscourse.com).
 
 Here, we use [igv.js](https://github.com/igvteam/igv.js#igvjs) which is designed to be embedded in web pages and the installation is pre configured to use the assembly (`reference.fa` file) you used for variant calling.
 
