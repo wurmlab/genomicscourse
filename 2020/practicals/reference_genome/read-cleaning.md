@@ -114,7 +114,9 @@ Other tools, such as [fastx_toolkit](http://github.com/agordon/fastx_toolkit), [
 
 [cutadapt](https://cutadapt.readthedocs.io/en/stable/) is a versatile tool for cleaning FASTQ sequences.
 
-Based on the results from FastQC, replace `REPLACE` and `REPLACE` below to appropriately trim from the beginning (`--cut`) and end (`--quality-cutoff`)  of the sequences. Do not trim too much!! (i.e. not more than a few nucleotides). Algorithms are generally able to cope with a small amount of errors. If you trim too much of your sequence, you are also eliminating important information.
+We have a dummy command below to trim reads using cutadapt. Can you tell from cutadapt's documentation the meaning of `--cut` and `--quality-cutoff` options? To identify relevant cutoffs, you'll need to understand [base quality scores](https://learn.gencore.bio.nyu.edu/ngs-file-formats/quality-scores/) and examine the per-base quality score in your FastQC report.
+
+Accordingly, replace `REPLACE` and `REPLACE` below to appropriately trim from the beginning (`--cut`) and end (`--quality-cutoff`) of the sequences. Do not trim too much!! (i.e. not more than a few nucleotides). Algorithms are generally able to cope with a small amount of errors. If you trim too much of your sequence, you are also eliminating important information.
 
 ```bash
 cutadapt --cut REPLACE --quality-cutoff REPLACE input/reads.pe2.fastq.gz > tmp/reads.pe2.trimmed.fq
