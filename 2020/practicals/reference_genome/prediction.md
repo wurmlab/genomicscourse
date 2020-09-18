@@ -32,7 +32,7 @@ Finally, run `maker maker_opts.ctl`. This may take a few minutes, depending on h
 
 Genome annotation software like MAKER usually provide information about the exon-intron structure of the genes (e.g., in GFF3 format), and sequence of corresponding messenger RNA and protein products (e.g., in FASTA format).
 
-Once MAKER is done the results will be hidden in subdirectories of `min10000.maker.output`. MAKER provides a helper script to collect this hidden hidden output in one place (again please ignore the warnings for these steps):
+Once MAKER is done the results will be hidden in subdirectories of `min10000.maker.output`. MAKER provides a helper script to collect this hidden output in one place (again please ignore the warnings for these steps):
 
 ```
 # Pull out information about exon-intron structure of the predicted genes. This
