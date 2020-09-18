@@ -106,7 +106,7 @@ ln -s /shared/data/reads.pe2.fastq.gz input/</code></pre>
 <li>K-mer filtering using kmc3.<br /></li>
 <li>Removing sequences that are of low quality or too short using cutadapt.</li>
 </ul>
-<p>Other tools including <a href="http://github.com/agordon/fastx_toolkit">fastx_toolkit</a>, <a href="http://arxiv.org/abs/1407.1507">kmc2</a> and <a href="http://www.usadellab.org/cms/index.php?page=trimmomatic">Trimmomatic</a> can also be useful.</p>
+<p>Other tools, such as <a href="http://github.com/agordon/fastx_toolkit">fastx_toolkit</a>, <a href="https://jgi.doe.gov/data-and-tools/bbtools/">BBTools</a>, and <a href="http://www.usadellab.org/cms/index.php?page=trimmomatic">Trimmomatic</a> can also be useful, <strong>but we won't use them now</strong>.</p>
 <h3 id="trimming">Trimming</h3>
 <p><a href="https://cutadapt.readthedocs.io/en/stable/">cutadapt</a> is a versatile tool for cleaning FASTQ sequences.</p>
 <p>Based on the results from FastQC, replace <code>REPLACE</code> and <code>REPLACE</code> below to appropriately trim from the beginning (<code>--cut</code>) and end (<code>--quality-cutoff</code>) of the sequences. Do not trim too much!! (i.e. not more than a few nucleotides). Algorithms are generally able to cope with a small amount of errors. If you trim too much of your sequence, you are also eliminating important information.</p>
