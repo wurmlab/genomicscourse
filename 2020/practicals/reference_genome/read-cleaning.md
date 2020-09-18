@@ -4,6 +4,8 @@
 
 [Cheap sequencing](http://www.genome.gov/sequencingcosts/) has created the opportunity to perform molecular-genetic analyses on just about anything. Conceptually, doing this would be similar to working with traditional genetic model organisms. But a large difference exists: For traditional genetic model organisms, large teams and communities of expert assemblers, predictors, and curators have put years of efforts into the prerequisites for most genomic analyses, including a reference genome and a set of gene predictions. In contrast, those of us working on "emerging" model organisms often have limited or no pre-existing resources and are part of much smaller teams. Emerging model organisms includes most crops, animals and plant pest species, many pathogens, and major models for ecology & evolution.
 
+Please do not jump ahead. You will gain the most by following through each section of the practical one by one.
+
 The steps below are meant to provide some ideas that can help obtain a reference genome and a reference geneset of sufficient quality for ecological and evolutionary analyses. They are based on (but updated from) work we did for the [fire ant genome](http://www.pnas.org/content/108/14/5679.long).
 
 Specifically, focusing on low coverage of ~0.5% of the fire ant genome, we will:
