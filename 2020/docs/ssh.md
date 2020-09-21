@@ -129,7 +129,7 @@ There are a number of SSH clients you can use, but for the purposes of this prac
 ![](images/warning.png)
 
 
-8) Type yes and hit return, if the message appears
+8) Click on 'Yes' if the message appears
 
 
 9) You will then be asked for a password.
