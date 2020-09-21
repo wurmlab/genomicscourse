@@ -24,14 +24,14 @@ Click on the link to the operating system you are using
 3) Into the Linux terminal that appears, type `ssh username@servername`, replacing username and servername with the username and server name that you have been emailed:
 
 ```
-ssh james@james.genomicscourse.com
+ssh bt007@bt007.genomicscourse.com
 ```
 
 
 4) The first time you log in, you will see a message talking about the host's authenticity, it's fingerprint and asksing if you wish to continue.
 
 ```
-The authenticity of host 'james.genomicscourse.com (192.135.232.24)' can't be established.
+The authenticity of host 'bt007.genomicscourse.com (192.135.232.24)' can't be established.
 ECDSA key fingerprint is SHA256:xmvrB9Ke/bXNtpu5PXF6IbUS8wxCtF6SNqZ7VV+IRoU.
 Are you sure you want to continue connecting (yes/no)?
 ```
@@ -44,7 +44,7 @@ This message is normal when you log in to a new server. Agreeing will store the 
 6) You will then be asked for a password.
 
 ```
-james@james.genomicscourse.com's password:
+bt007@bt007.genomicscourse.com's password:
 ```
 
 Type in the password that you've been emailed, and hit return. Nothing will appear while you type. If you know you have made a mistake, you can hold down backspace, and retype the password.
@@ -62,14 +62,14 @@ Type in the password that you've been emailed, and hit return. Nothing will appe
 2) Into the Mac terminal that appears, type `ssh username@servername`, replacing username and servername with the username and server name that you have been emailed:
 
 ```
-ssh james@james.genomicscourse.com
+ssh bt007@bt007.genomicscourse.com
 ```
 
 
 3) The first time you log in, you will see a message talking about the host's authenticity, it's fingerprint and asksing if you wish to continue.
 
 ```
-The authenticity of host 'james.genomicscourse.com (192.135.232.24)' can't be established.
+The authenticity of host 'bt007.genomicscourse.com (192.135.232.24)' can't be established.
 ECDSA key fingerprint is SHA256:xmvrB9Ke/bXNtpu5PXF6IbUS8wxCtF6SNqZ7VV+IRoU.
 Are you sure you want to continue connecting (yes/no)?
 ```
@@ -83,7 +83,7 @@ This message is normal when you log in to a new server. Agreeing will store the 
 5) You will then be asked for a password.
 
 ```
-james@james.genomicscourse.com's password:
+bt007@bt007.genomicscourse.com's password:
 ```
 
 Type in the password that you've been emailed, and hit return. Nothing will appear while you type. If you know you have made a mistake, you can hold down backspace, and retype the password.
@@ -129,13 +129,13 @@ There are a number of SSH clients you can use, but for the purposes of this prac
 ![](images/warning.png)
 
 
-8) Type yes and hit return, if the message appears
+8) Click on 'Yes' if the message appears
 
 
 9) You will then be asked for a password.
 
 ```
-james@james.genomicscourse.com's password:
+bt007@bt007.genomicscourse.com's password:
 ```
 
 Type in the password that you've been emailed, and hit return. Nothing will appear while you type. If you know you have made a mistake, you can hold down backspace, and retype the password.
