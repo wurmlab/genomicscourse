@@ -55,7 +55,9 @@ Type in the password that you've been emailed, and hit return. Nothing will appe
 
 # SSH on Mac<a name="sshmac"></a>
 
-1) Press Cmd-Space to open Spotlight and type *Terminal* in it. Press Enter to open Terminal
+1) Press Cmd-Space to open Spotlight, type *Terminal*, and press enter.
+
+![](images/spotlight.png)
 
 2) Into the Mac terminal that appears, type `ssh username@servername`, replacing username and servername with the username and server name that you have been emailed:
 
