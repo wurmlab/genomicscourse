@@ -21,29 +21,33 @@ Click on the link to the operating system you are using
 ![](images/linux_find_terminal.png)
 
 
-3) Into the Linux terminal that appears, type
-   ``ssh username@servername``
-   replacing username and servername with the username and server name that you have been emailed
+3) Into the Linux terminal that appears, type `ssh username@servername`, replacing username and servername with the username and server name that you have been emailed:
 
-   ``ssh james@james.genomicscourse.com``
+```
+ssh james@james.genomicscourse.com
+```
 
 
-4) You will see a message the first time you log in, saying:
+4) The first time you log in, you will see a message talking about the host's authenticity, it's fingerprint and asksing if you wish to continue.
 
-   ``The authenticity of host 'james.genomicscourse.com (192.135.232.24)' can't be established.
-   ECDSA key fingerprint is SHA256:xmvrB9Ke/bXNtpu5PXF6IbUS8wxCtF6SNqZ7VV+IRoU.
-   Are you sure you want to continue connecting (yes/no)? ``
+```
+The authenticity of host 'james.genomicscourse.com (192.135.232.24)' can't be established.
+ECDSA key fingerprint is SHA256:xmvrB9Ke/bXNtpu5PXF6IbUS8wxCtF6SNqZ7VV+IRoU.
+Are you sure you want to continue connecting (yes/no)?
+```
 
-   and asking if you wish to continue connecting. This message is normal when you log in to a new server. Agreeing will store the server's fingerprint, and the message will not appear again.
+This message is normal when you log in to a new server. Agreeing will store the server's fingerprint, and the message will not appear again.
 
-5) Type yes into the Linux terminal and hit return
+5) Type `yes` into the Linux terminal and hit return
 
 
 6) You will then be asked for a password.
 
-   ``james@james.genomicscourse.com's password:``
+```
+james@james.genomicscourse.com's password:
+```
 
-   Type in the password that you've been emailed, and hit return. Nothing will appear while you type. If you know you have made a mistake, you can hold down backspace, and retype the password.
+Type in the password that you've been emailed, and hit return. Nothing will appear while you type. If you know you have made a mistake, you can hold down backspace, and retype the password.
 
 
 7) Congratulations! You are now logged in!
@@ -53,31 +57,37 @@ Click on the link to the operating system you are using
 
 1) Press Cmd-Space to open Spotlight and type *Terminal* in it. Press Enter to open Terminal
 
-2) Into the Mac terminal that appears, type
-    ``ssh username@servername``
-    replacing username and servername with the username and server name that you have been emailed
+2) Into the Mac terminal that appears, type `ssh username@servername`, replacing username and servername with the username and server name that you have been emailed:
 
-    ``ssh james@james.genomicscourse.com``
+```
+ssh james@james.genomicscourse.com
+```
 
 
-3) You will see a message the first time you log in, saying:
+3) The first time you log in, you will see a message talking about the host's authenticity, it's fingerprint and asksing if you wish to continue.
 
-    ``The authenticity of host 'james.genomicscourse.com (192.135.232.24)' can't be established.
-    ECDSA key fingerprint is SHA256:xmvrB9Ke/bXNtpu5PXF6IbUS8wxCtF6SNqZ7VV+IRoU.
-    Are you sure you want to continue connecting (yes/no)? ``
+```
+The authenticity of host 'james.genomicscourse.com (192.135.232.24)' can't be established.
+ECDSA key fingerprint is SHA256:xmvrB9Ke/bXNtpu5PXF6IbUS8wxCtF6SNqZ7VV+IRoU.
+Are you sure you want to continue connecting (yes/no)?
+```
 
-    and asking if you wish to continue connecting. This message is normal when you log in to a new server. Agreeing will store the server's fingerprint, and the message will not appear again.
+This message is normal when you log in to a new server. Agreeing will store the server's fingerprint, and the message will not appear again.
 
-4) Type yes into the Mac terminal and hit return
+
+4) Type `yes` into the Mac terminal and press enter.
 
 
 5) You will then be asked for a password.
 
-   ``james@james.genomicscourse.com's password:``
+```
+james@james.genomicscourse.com's password:
+```
 
-   Type in the password that you've been emailed, and hit return. Nothing will appear while you type. If you know you have made a mistake, you can hold down backspace, and retype the password.
+Type in the password that you've been emailed, and hit return. Nothing will appear while you type. If you know you have made a mistake, you can hold down backspace, and retype the password.
 
 6) Congratulations! You are now logged in!
+
 
 # SSH on Windows<a name="sshwindows"></a>
 
@@ -113,17 +123,19 @@ There are a number of SSH clients you can use, but for the purposes of this prac
 
 
 7) You may see a message the first time you log in, saying that "the authenticity of the host can not be established", and asking if you wish to continue connecting. This message is normal when you log in to a new server. Agreeing will store the server's fingerprint, and the message will not appear again.
+
 ![](images/warning.png)
 
 
 8) Type yes and hit return, if the message appears
 
 
-
 9) You will then be asked for a password.
 
-    ``james@james.genomicscourse.com's password:``
+```
+james@james.genomicscourse.com's password:
+```
 
-    Type in the password that you've been emailed, and hit return. Nothing will appear while you type. If you know you have made a mistake, you can hold down backspace, and retype the password.
+Type in the password that you've been emailed, and hit return. Nothing will appear while you type. If you know you have made a mistake, you can hold down backspace, and retype the password.
 
 10) Congratulations! You are now logged in!
