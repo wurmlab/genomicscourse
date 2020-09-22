@@ -117,7 +117,7 @@ There are a number of SSH clients you can use, but for the purposes of this prac
 
 4) In the next window, enter your computer's hostname in the `Remote host` box (your computer's hostname is included in the email that we sent you with log in details)
 
-5) In the same windows, tick the *specify username* box, and add your username (included in the email that we sent you with log in details)
+5) In the same window, tick the `Specify username` box, and add your username (included in the email that we sent you with log in details)
 
 ![](images/ssh_login.png)
 
