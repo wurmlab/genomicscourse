@@ -115,10 +115,11 @@ There are a number of SSH clients you can use, but for the purposes of this prac
 3) Select SSH in the window that opens
 
 
-4) In the next window, enter in the name of the server, into the Server Name box. If you have been given the server name in the form *yourname@yourname.genomicscourse.com*, you just need the part after the @ (so, *yourname.genomicscourse.com*)
-![](images/ssh_login.png)
+4) In the next window, enter your computer's hostname in the `Remote host` box (your computer's hostname is included in the email that we sent you with log in details)
 
-5) Tick the *specify username* box, and add your username (included in the email that we sent you with log in details)
+5) In the same windows, tick the *specify username* box, and add your username (included in the email that we sent you with log in details)
+
+![](images/ssh_login.png)
 
 
 6) Tick OK, at the bottom of the box
@@ -126,18 +127,18 @@ There are a number of SSH clients you can use, but for the purposes of this prac
 
 7) You may see a message the first time you log in, saying that "the authenticity of the host can not be established", and asking if you wish to continue connecting. This message is normal when you log in to a new server. Agreeing will store the server's fingerprint, and the message will not appear again.
 
+8) Click on `Yes` if the message appears
+
 ![](images/warning.png)
 
-
-8) Click on 'Yes' if the message appears
 
 
 9) You will then be asked for a password.
 
 ```
-bt007@bt007.genomicscourse.com's password:
+james@james.genomicscourse.com's password:
 ```
 
-Type in the password that you've been emailed, and hit return. Nothing will appear while you type. If you know you have made a mistake, you can hold down backspace, and retype the password.
+Type in the password that you've been emailed, and press enter. Nothing will appear while you type. If you know you have made a mistake, you can hold down backspace, and retype the password.
 
 10) Congratulations! You are now logged in!
