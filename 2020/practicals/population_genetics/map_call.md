@@ -73,7 +73,7 @@ bowtie2 --local -x tmp/reference -1 input/reads/f1_B.1.fq.gz -2 input/reads/f1_B
 * What is the meaning of the `-1` and `-2` parameters?
 * Why do we use `--local` parameter?
 
-The command produced a SAM file ([Sequence Alignment/Map file](http://samtools.github.io/hts-specs/SAMv1.pdf)), which is the standard file used to store sequence alignments. Have a quick look at the file using `less`. The file includes a header (lines starting with the `@` symbol), and a line for every read aligned to the reference assembly. For each read, we are given a mapping quality value, the position of both pairs, the actual sequence and its quality by base pair, and a series of flags with additional measures of mapping quality.
+The command produced a SAM file ([Sequence Alignment/Map file](http://samtools.github.io/hts-specs/SAMv1.pdf)), which is the standard file used to store sequence alignments. Have a quick look at the file using `less`. The file includes a header (lines starting with the `@` symbol), and a line for every read aligned to the reference assembly. For each read, we are given a mapping quality value, the position of both reads in a pair, the actual sequence and its quality by base pair, and a series of flags with additional measures of mapping quality - can you tell, by looking at the SAM file specification linked above, which columns correspond to these information?
 
 We now need to run `bowtie2` for all the other samples. We could do this by typing the same command another 13 times (changing the sample name), or we can use the [GNU parallel](https://www.gnu.org/software/parallel/) tool, which allows you to run the same command on several samples at once:
 
