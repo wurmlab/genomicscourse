@@ -36,7 +36,7 @@ For each practical (analysis) that we will perform, you should:
  * work in a relevant subdirectory (`tmp`)
  * copy final results to a relevant subdirectory (`results`)
 
-Each directory in which you have done something [should include a `WHATIDID.txt` file](http://github.com/wurmlab/templates/blob/master/project_structures.md) in which you log your commands.
+Each directory in which you have done something should include a `WHATIDID.txt` file in which you log your commands.
 
 Being disciplined about this is *extremely important*. It is similar to having a laboratory notebook. It will prevent you from becoming overwhelmed by having too many files, or not remembering what you did where.
 
