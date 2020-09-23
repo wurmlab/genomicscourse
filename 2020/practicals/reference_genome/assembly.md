@@ -36,8 +36,6 @@ There are many other genome assembly approaches. While waiting for everyone to m
  * [Metassembler: merging and optimizing *de novo* genome assemblies. Wences & Schatz (2015)](http://genomebiology.biomedcentral.com/articles/10.1186/s13059-015-0764-4).
  * [A hybrid approach for *de novo* human genome sequence assembly and phasing. Mostovoy et al (2016)](https://www.nature.com/articles/nmeth.3865).
 
-In your own time, try to figure out what are the tradeoffs between a `de bruijn` graph assembly approach and an `overlap-layout-consensus` assembly approach.
-
 
 ### Quality assessment
 
@@ -72,3 +70,7 @@ We probably have other prior information about what to expect in this genome. Fo
     * QUAST also includes a "quick and dirty" method of finding genes.
 
 It is *very important* to understand the concepts underlying these different approaches.
+
+### In your own time
+
+Try to figure out what are the tradeoffs between a `de bruijn` graph assembly approach and an `overlap-layout-consensus` assembly approach.
