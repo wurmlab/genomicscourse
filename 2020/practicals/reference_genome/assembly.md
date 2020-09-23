@@ -73,4 +73,4 @@ It is *very important* to understand the concepts underlying these different app
 
 ### In your own time
 
-Try to figure out what are the tradeoffs between a `de bruijn` graph assembly approach and an `overlap-layout-consensus` assembly approach.
+Try to figure out what are the [tradeoffs between `de bruijn` graph and `overlap-layout-consensus` assembly approaches](https://www.nature.com/articles/nrg3367).
