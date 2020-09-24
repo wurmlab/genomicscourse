@@ -26,7 +26,7 @@ Next, `cd` to your `tmp/` folder and run `maker -OPTS`. This will generate an em
   * augustus_species: a known gene set from a related species, in this case we choose `honeybee1` (yes that's a 1)
 
 
-For a real project, we *would* include RepeatMasker (perhaps after creating a new repeat library), we would provide as much relevant information as possible (e.g., RNAseq read mappings, transcriptome assembly – both improve gene prediction performance *tremendously*), and iteratively train gene prediction algorithms for our data including Augustus and SNAP.
+We deactivated RepeatMakser and RepeatRunner due to computational constraints as well as the lack of a suitable repeat library. For a real project, we *would* include RepeatMasker (perhaps after creating a new repeat library), we would provide as much relevant information as possible (e.g., RNAseq read mappings, transcriptome assembly – both improve gene prediction performance *tremendously*), and iteratively train gene prediction algorithms for our data including Augustus and SNAP.
 
 Finally, run `maker maker_opts.ctl`. This may take a few minutes, depending on how much data you gave it.
 
