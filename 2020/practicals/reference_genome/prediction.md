@@ -23,14 +23,18 @@ Next, `cd` to your `tmp/` folder and run `maker -OPTS`. This will generate an em
   * genome: `min10000.fa`
   * deactivate RepeatMasker by changing `model_org` line to `model_org=` (i.e., nothing afer `=`)
   * deactivate RepeatRunner by changing `repeat_protein` line to `repeat_protein=` (i.e., nothing after `=`)
-  * augustus_species: a known gene set from a related species, in this case we choose `honeybee1` (yes that's a 1)
+  * augustus_species:`honeybee1` (yes that's a 1 -  this provides hints to augustus about the gene structure based on what we know from honeybee)
 
 
-We deactivated RepeatMakser and RepeatRunner due to computational constraints as well as the lack of a suitable repeat library. For a real project, we *would* include RepeatMasker (perhaps after creating a new repeat library), we would provide as much relevant information as possible (e.g., RNAseq read mappings, transcriptome assembly – both improve gene prediction performance *tremendously*), and iteratively train gene prediction algorithms for our data including Augustus and SNAP.
+We deactivated RepeatMakser and RepeatRunner due to computational constraints as well as the lack of a suitable repeat library. For a real project, we *would* include RepeatMasker, perhaps after creating a new repeat library.
+
+For a real project, we would also include gene expression data (RNAseq improves gene prediction performance *tremendously*), protein sequences from related species, and iteratively train gene prediction algorithms (e.g., Augustus and SNAP) for our data.
 
 Finally, run `maker maker_opts.ctl`. This may take a few minutes, depending on how much data you gave it.
 
-Genome annotation software like MAKER usually provide information about the exon-intron structure of the genes (e.g., in GFF3 format), and sequence of corresponding messenger RNA and protein products (e.g., in FASTA format).
+Genome annotation software like MAKER usually provide information about the exon-intron structure of the genes (e.g., in [GFF3 format](https://github.com/The-Sequence-Ontology/Specifications/blob/master/gff3.md)), and sequence of corresponding messenger RNA and protein products (e.g., in FASTA format).
+
+While MAKER is running, make a note of the different file formats you have encountered by now. Which type of data do each file formats contain? Do you understand the difference between the different file formats and data types?
 
 Once MAKER is done the results will be hidden in subdirectories of `min10000.maker.output`. MAKER provides a helper script to collect this hidden output in one place (again please ignore the warnings for these steps):
 
