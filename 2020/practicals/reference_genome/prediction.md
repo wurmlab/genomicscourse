@@ -71,7 +71,7 @@ As you can see, gene prediction software is imperfect – this is even the case 
 
 ##### Using GeneValidator
 
-The [GeneValidator](http://bioinformatics.oxfordjournals.org/content/32/10/1559.long) tool can help to evaluate the quality of a gene prediction by comparing features of a predicted gene to similar database sequences. This approach expects that similar sequences should for example be of similar length.
+The [GeneValidator](http://bioinformatics.oxfordjournals.org/content/32/10/1559.long) tool can help to evaluate the quality of a gene prediction by comparing features of a predicted gene to similar database sequences. This approach expects that similar sequences should for example be of similar length. Genevalidator was built to automate the comparison of sequence characteristics in a manner similar to what we just did through visual individual BLAST results.
 
 Try to run the [example rice and honeybee protein sequences](predictions.fa.txt) through GeneValidator: http://blast.genomicscourse.com/genevalidator/
 
@@ -85,3 +85,8 @@ Genevalidator's visual output can be handy when looking at few genes. But the to
 ### Manual curation
 
 Because automated gene predictions aren't perfect, manual inspection and fixing is often required. The most commonly used software for this is [Apollo/WebApollo](http://genomearchitect.org/).
+
+We won't curate any gene models as part of this practical, but you can learn about it through these youtube videos:
+
+1. [EMBL-ABR training 20171121 - Genome Annotation using Apollo](https://youtu.be/Wec7ZlXykQc)
+2. [The i5k Workspace@NAL: a pan-Arthropoda genome database](https://youtu.be/HYo2RQa4BUI?t=865)
