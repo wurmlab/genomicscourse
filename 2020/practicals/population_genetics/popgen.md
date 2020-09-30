@@ -12,7 +12,7 @@ In the second part, we are going to measure genetic differentiation between the 
 
 ## Input into R
 
-Again, make a directory for this practical (e.g., `2020-10-xx-population_genetics`). Copy over the R markdown notebook `/shared/data/popgen/popgen.Rmd` to your project directory. Create `input/` subdirectory and symlink the `snp.vcf.gz` and `snp.vcf.gz.tbi` file we created in the last practical to it. If you don't have this file, you can download it from [here](../../data/popgen/vcf/snp.vcf.gz?raw=true "Download vcf") - make sure to index it!
+Again, make a directory for this practical (e.g., `2020-10-xx-population_genetics`). Copy over the R markdown notebook `/shared/data/popgen/popgen.Rmd` to your project directory. Create `input/` subdirectory and symlink the `snp.vcf.gz` and `snp.vcf.gz.tbi` file we created in the last practical to it. If you don't have these files, you can use the ones in: `/shared/data/backup_vcf`.
 
 ```bash
 2020-10-xx-population_genetics
