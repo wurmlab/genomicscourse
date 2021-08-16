@@ -1,0 +1,19 @@
+Bootstrap: docker
+
+# Use Debian unstable as the base so that we can get BLAST 2.9.0 from apt.
+From: debian:sid
+
+%post
+      # Install base packages.
+      apt-get update
+      apt-get install -y --no-install-recommends build-essential ruby ruby-dev curl gnupg git zlib1g-dev ncbi-blast+
+
+      # Install sequenceserver.
+      gem install --pre --no-document sequenceserver
+
+      # Clean up image
+      apt-get -qqy autoclean
+      rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+
+%runscript
+      exec /usr/local/bin/sequenceserver --num_threads 8 "$@"
