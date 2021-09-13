@@ -13,9 +13,9 @@ mainNavigation:
   - name: Publications
     link: https://wurmlab.com/publications
     external: true
-  - name: Teaching
-    link: https://wurmlab.com/teaching
-    external: true
+  # - name: Teaching
+  #   link: https://wurmlab.com/teaching
+  #   external: true
   - name: Team
     link: https://wurmlab.com/team
     external: true
