@@ -3,13 +3,21 @@
 
 - ## `site-header.html`
     `site-header.html` inlcudes:
+
     - The `<head>` document information for the site
-    - The main header of the site (including site title as determined in [`_config.yml`](../_config.yml))
-    - And the main navigation of the site. The main navigation will display only if the `displayMainNavigation` boolean in [`_data/siteNavigation.yml`](../_data/siteNavigation.yml) is set to `true`
 
+    - The sitewide header (including site title as determined in [`_config.yml`](../_config.yml))
 
----
+    - The main navigation of the site, which will display only if the `displayMainNavigation` boolean in [`_data/siteNavigation.yml`](../_data/siteNavigation.yml) is set to `true`
 
-
+    - Opening tags for `</main>` and `</body>`
 
 - ## `site-footer.html`
+
+    `site-footer.html` inlcudes:
+
+    - The sitewide footer and copyright information
+
+    - Closing tags for `</main>` and `</body>`
+
+    - Any scripts that are loaded before the closing `</body>` tag
