@@ -2,7 +2,7 @@
 
 
 - ## `site-header.html`
-    `site-header.html` inlcudes:
+    `site-header.html` includes:
 
     - The `<head>` document information for the site
 
@@ -14,7 +14,7 @@
 
 - ## `site-footer.html`
 
-    `site-footer.html` inlcudes:
+    `site-footer.html` includes:
 
     - The sitewide footer and copyright information
 
