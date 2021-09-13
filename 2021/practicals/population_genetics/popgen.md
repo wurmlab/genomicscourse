@@ -1,3 +1,7 @@
+---
+layout: page
+---
+
 # Population genetics in R
 
 ## Introduction

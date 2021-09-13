@@ -1,0 +1,85 @@
+/* **************************************************** */
+/*
+
+custom-style.css adds some additional css rules for whatever is not xovered by markdown-style.css.
+
+*/
+/* **************************************************** */
+
+/* add styles for the site header and navigation */
+
+/* ************************************************** */
+
+.site-header {
+  display: grid;
+  grid-template-columns: 1fr 34px;
+  align-items: center;
+}
+
+.site-header .site-title {
+  grid-row: 1;
+  grid-column: 1;
+  border-bottom: unset;
+}
+
+nav#main-menu {
+  display: none;
+  overflow: hidden;
+  z-index: 9999;
+}
+
+nav#main-menu a {
+  display: block;
+  padding-left: 0;
+}
+
+nav#main-menu.responsive {
+  display: block;
+  grid-row: 2;
+}
+
+nav#main-menu.responsive ul {
+  z-index: 9998;
+  list-style-type: none;
+  padding-left: 0 !important;
+}
+
+@media (min-width: 768px) {
+  .site-header {
+    grid-template-columns: 1fr;
+  }
+  nav#main-menu {
+    grid-row: 1;
+    display: inline-block;
+  }
+  nav#main-menu ul {
+    padding-left: 0 !important;
+    margin-bottom: 0;
+  }
+  nav#main-menu ul li {
+    display: inline-block;
+  }
+  nav#main-menu ul li a {
+    padding: 10px 10px 10px 0;
+  }
+}
+
+/* navigation trigger rules */
+
+@media (max-width: 767px) {
+  a.icon {
+    grid-row: 1;
+    grid-column: 2;
+    width: 34px;
+  }
+  a.icon svg {
+    width: 34px;
+    float: right;
+  }
+}
+
+@media (min-width: 768px) {
+  a.icon {
+    display: none;
+  }
+}
