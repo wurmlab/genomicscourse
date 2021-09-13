@@ -7,6 +7,11 @@ _site
 vendor
 
 
+#Added for deploy testing
+
+.gitmodules
+**/2016-BIO721P
+
 # Manually added
 out
 
