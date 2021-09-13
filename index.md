@@ -4,7 +4,6 @@
 
 layout: page
 title: Genomics Course Home
-
 ---
 
 ## This is the main repository for our [introduction to genome bioinformatics practicals](/2021/practicals/).

@@ -1,6 +1,5 @@
 ---
 layout: page
-
 ---
 # Reads to reference genome & gene predictions
 

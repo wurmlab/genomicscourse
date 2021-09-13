@@ -1,7 +1,5 @@
 ---
-
 layout: page
-
 ---
 
 # Practicals for Sept/Oct 2021 Genome Bioinformatics module at qmul.
