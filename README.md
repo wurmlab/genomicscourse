@@ -17,3 +17,4 @@ Folders organised by year.
 # Deploying
 
 I compile, then cp out to gh-pages
+

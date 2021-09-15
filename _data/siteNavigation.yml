@@ -1,0 +1,27 @@
+# select whether or not to display the site navigation in the header (true / false)
+
+displayMainNavigation: true
+
+# name: add the name of the link as it should appear in the navigation
+# link: add the full link
+# enternal: set `external:` to 'true' if you want the link to open in a new tab
+
+mainNavigation:
+  - name: Wurm lab
+    link: https://wurmlab.com/
+    external: true
+  - name: Publications
+    link: https://wurmlab.com/publications
+    external: true
+  # - name: Teaching
+  #   link: https://wurmlab.com/teaching
+  #   external: true
+  - name: Team
+    link: https://wurmlab.com/team
+    external: true
+  - name: News
+    link: https://wurmlab.com/news
+    external: true
+  - name: Tools
+    link: https://wurmlab.com/tools
+    external: true

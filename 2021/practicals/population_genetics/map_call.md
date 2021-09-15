@@ -1,3 +1,7 @@
+---
+layout: page
+---
+
 # Read mapping and variant calling
 
 Roddy Pracana and Yannick Wurm
