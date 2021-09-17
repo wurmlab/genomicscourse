@@ -45,7 +45,7 @@ grep "^>" input/reference.fa
 Now have a look at the `.fq.gz` files (`ls input/reads`).
 * Why does each sample have two sets of reads?
 * What is each line of the `.fq.gz` file? (you can use `zless`)
-* How many reads do we have in individual f1_B? (you can use `zcat` and `wc -l`)
+* How many reads do we have in individual f1_B? (you can use `zless` and `wc -l`)
 * How long are the reads (do all reads have equal size)?
 * Knowing that each scaffold is 200kb, what is the expected coverage per base pair of individual f1_B?
 
