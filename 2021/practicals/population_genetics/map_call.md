@@ -127,7 +127,11 @@ Copy the `.bam` and `.bai` files to the `results` directory.
 cp tmp/alignments/*.bam results/
 cp tmp/alignments/*.bai results/
 ```
+Once you are sure the files are in `results`, clean the `tmp` directory.
 
+```bash
+rm -ri tmp
+```
 
 ## Variant calling
 
