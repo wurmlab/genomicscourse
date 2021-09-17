@@ -16,7 +16,7 @@ There are several approaches to variant calling from short pair-end reads. We ar
 
 We will analyse subsets of whole-genome sequences of several fire ant individuals. The fire ant, *Solenopsis invicta*, is notable for being dimorphic in terms of colony organisation, with some colonies having one queen and other colonies having multiple queens. Interestingly, this trait is genetically determined. In this practical, we will try to find the genetic difference between ants from single queen and multiple queen colonies.
 
-We will use a subset of the reads from whole-genome sequencing of 14 male fire ants. Samples 1B to 7B are from single-queen colonies, samples 1b to 7b are from multiple-queen colonies. Ants are haplodiploid, which means that females are diploid and males are haploid. Here we will use only males, so all our samples are haploid, which makes variant calling easier.
+We will use a subset of the reads from whole-genome sequencing of 14 male fire ants. Samples 1B to 7B are from single-queen colonies, samples 1b to 7b are from multiple-queen colonies. Ants are haplodiploid, which means that females are diploid and males are haploid. Here we will use only males, so all our samples are haploid, which makes variant calling easier. Bacteria and yeast are typically also haploid. The same is true for most of the genome for highly-inbred strains of laboratory organisms.
 
 The aim of this practical is to genotype these 14 individuals. The steps in the practical are:
 1. Align the reads of each individual to a reference genome assembly using the aligner `bowtie2`.
