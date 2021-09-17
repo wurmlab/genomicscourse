@@ -4,8 +4,6 @@ layout: page
 
 # Read mapping and variant calling
 
-Roddy Pracana and Yannick Wurm
-
 ## Introduction
 
 There are several types of variants. Commonly, people look at single nucleotide polymorphisms (SNPs, sometimes also known as single nucleotide variants, SNVs). Other classes include small insertions and deletions (known collectively as indels), as well as larger structural variants, such as large insertions, deletions, inversions and translocations.
