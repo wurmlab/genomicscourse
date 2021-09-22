@@ -80,7 +80,7 @@ fastqc --nogroup --outdir REPLACE input/reads.pe2.fastq.gz
 
 Remember to log the commands you used in the `WHATIDID.txt` file.
 
-Take a moment to verify your directory structure. You can do so using the `tree` command:
+Take a moment to verify your directory structure. You can do so using the `tree` command (be aware of your current working directory):
 
 ```bash
 tree ~/2021-09-xx-read_cleaning
@@ -100,7 +100,7 @@ Your [resulting directory structure](http://github.com/wurmlab/templates/blob/ma
 └── WHATIDID.txt
 ```
 
-To inspect FastQC HTML report, copy the file to `~/www/tmp`. You can then view the file by clicking on the `~/www/tmp` link in your personal module page (e.g., bt007.genomicscourse.com).
+To inspect FastQC HTML report, copy the file `reads.pe2_fastqc.html` to `~/www/tmp`. Then, you can view it in a browser by going to your personal module page (e.g., bt007.genomicscourse.com) and clicking on the `~/www/tmp` link.
 
 What does the FastQC report tell you? ([the documentation clarifies what each plot means](http://www.bioinformatics.babraham.ac.uk/projects/fastqc/Help/3%20Analysis%20Modules/) and [here is a reminder of what quality scores means](https://learn.gencore.bio.nyu.edu/ngs-file-formats/quality-scores/)). For comparison, have a look at some plots from other sequencing libraries: e.g, [[1]](img-qc/per_base_quality.png), [[2]](img-qc/qc_factq_tile_sequence_quality.png), [[3]](img-qc/per_base_sequence_content.png).
 
@@ -122,12 +122,11 @@ Other tools, such as [fastx_toolkit](http://github.com/agordon/fastx_toolkit), [
 We have a dummy command below to trim reads using cutadapt. Can you tell from cutadapt's documentation the meaning of `--cut` and `--quality-cutoff` options? To identify relevant cutoffs, you'll need to understand [base quality scores](https://learn.gencore.bio.nyu.edu/ngs-file-formats/quality-scores/) and examine the per-base quality score in your FastQC report.
 
 Accordingly, replace `REPLACE` and `REPLACE` below to appropriately trim from the beginning (`--cut`) and end (`--quality-cutoff`) of the sequences. Do not trim too much!! (i.e. not more than a few nucleotides). Algorithms are generally able to cope with a small amount of errors. If you trim too much of your sequence, you are also eliminating important information.
+This will only take a few seconds (make sure you replaced `REPLACE`).
 
 ```bash
 cutadapt --cut REPLACE --quality-cutoff REPLACE input/reads.pe2.fastq.gz > tmp/reads.pe2.trimmed.fq
 ```
-
-This will only take a few seconds (make sure you replaced `REPLACE`).
 
 Now, similarly inspect the paired set of reads (`reads.pe1`) using FastQC, and appropriately trim them:
 
