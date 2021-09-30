@@ -82,7 +82,7 @@ As you can see, gene prediction software is imperfect – this is even the case 
 
 The [GeneValidator](http://bioinformatics.oxfordjournals.org/content/32/10/1559.long) tool can help to evaluate the quality of a gene prediction by comparing features of a predicted gene to similar database sequences. This approach expects that similar sequences should for example be of similar length. Genevalidator was built to automate the comparison of sequence characteristics in a manner similar to what we just did through visual individual BLAST results.
 
-Try to run the [example rice and honeybee protein sequences](predictions.fa.txt) through GeneValidator: http://blast.genomicscourse.com/genevalidator/
+Try to run the [example rice and honeybee protein sequences](predictions.fa) through GeneValidator: http://blast.genomicscourse.com/genevalidator/
 
 
 ### Comparing whole genesets & prioritizing genes for manual curation
