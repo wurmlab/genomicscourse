@@ -23,7 +23,7 @@ Pull out the longest few scaffolds from `scaffolds.fasta` into a new file:
 ```
 seqtk seq -L 10000 input/scaffolds.fasta > tmp/min10000.fa
 ```
-If your assembly was of mediocre quality and includes no long scaffolds, life will be difficult. If a gene is, say 2,000 bp long and includes introns, you're unlikely to find many entire genes on really small scaffolds. (You could in that case use our backup assembly, [here](../../data/reference_assembly/output/scaffolds.fasta.gz)).
+If your assembly was of mediocre quality and includes no long scaffolds, life will be difficult. If a gene is, say 2,000 bp long and includes introns, you're unlikely to find many entire genes on really small scaffolds. (You could in that case use `curl` or `wget` to download a [backup assembly](../../data/reference_assembly/output/scaffolds.fasta.gz)).
 
 As in the other practicals, we'll guide you for running Maker, but in a real situation, you'll want to rigorously read the paper and documentation, and likely check what settings were used in recent publications. 
 
@@ -64,7 +64,7 @@ So now we have some gene predictions... how can we know if they are any good? Th
 
 ##### Running BLAST
 
-We will use [SequenceServer](https://sequenceserver.com) to run BLAST. Open http://blast.genomicscourse.com/sequenceserver/ in your browser, paste the [example rice and honeybee protein sequences](predictions.fa.txt) in the textbox and click on the 'BLAST' button to run a BLAST search. *THIS WILL TAKE A MINUTE or TWO*. Alternatively, just use the results of the run that we performed this morning: http://blast.genomicscourse.com/sequenceserver/cac10ebf-dfb1-4ce6-9661-63d7d728babf
+We will use [SequenceServer](https://sequenceserver.com) to run BLAST. Open http://blast.genomicscourse.com/sequenceserver/ in your browser, paste the [example rice and honeybee protein sequences](predictions.fa.txt) in the textbox and click on the 'BLAST' button to run a BLAST search. *THIS WILL TAKE A MINUTE or TWO*. Alternatively, just use the results of the [BLAST that we performed this morning](http://blast.genomicscourse.com/sequenceserver/cac10ebf-dfb1-4ce6-9661-63d7d728babf).
 
 Now, looking at the BLAST results ask yourself the following questions: **Do any of the gene predictions have significant similarity to known sequences? For a given gene prediction, do you think it is complete, or can you infer from the BLAST alignments that something may be wrong? Start by comparing the length of your gene prediction to that of the BLAST hits. Is your gene prediction considerably longer or considerably shorter than BLAST hits? Why?**
 
