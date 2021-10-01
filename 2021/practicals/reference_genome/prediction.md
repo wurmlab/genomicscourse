@@ -16,6 +16,7 @@ Create a new main directory for today's practical (e.g., `2021-10-xx-gene_predic
 ```
 cd ~/2021-10-xx-gene_prediction/input
 ln -s ~/2021-09-xx-assembly/results/scaffolds.fasta .
+cd ..
 ```
 
 Pull out the longest few scaffolds from `scaffolds.fasta` into a new file:
