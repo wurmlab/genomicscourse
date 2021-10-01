@@ -22,7 +22,7 @@ The aim of this practical is to genotype these 14 individuals. The steps in the 
 3. Filter the SNP calls to produce a set of good-quality SNPs.
 4. Visualise the alignments and the SNP calls in the genome browser `igv`.
 
-We recommend that you set up a directory for this work following the same principles as in the last few practicals (e.g., `2021-10-xx-mapping`). You should have subdirectories called `input`, `results` and `tmp` and a `WHATIDID.txt` file in which to log your commands. Symlink the reference genome `/shared/data/popgen/reference.fa` and the directory containing the reads `/shared/data/popgen/reads` to `input` subdirectory:
+We recommend that you set up a directory for this work following the same principles as in the last few practicals (e.g., `2021-10-xx-mapping`). You should have subdirectories called `input`, `results` and `tmp` and a `WHATIDID.txt` file in which to log your commands. Symlink (i.e., creat a soft/symbolic link) the reference genome `/shared/data/popgen/reference.fa` and the directory containing the reads `/shared/data/popgen/reads` to `input` subdirectory:
 
 ```bash
 2021-10-xx-mapping/
