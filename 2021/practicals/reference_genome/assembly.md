@@ -14,7 +14,9 @@ Create a new main directory for today's practical (e.g., `2021-09-xx-assembly`) 
 
 ```
 cd ~/2021-09-xx-assembly
-ln -s ~/2021-09-xx-read_cleaning/results/reads.pe*.clean.fq input/
+cd input
+ln -s ~/2021-09-xx-read_cleaning/results/reads.pe*.clean.fq .
+cd ..
 ```
 
 Did you note the use of `*` in the above command? What do you think it means? (hint: it is called 'globbing')
