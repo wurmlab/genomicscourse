@@ -27,7 +27,7 @@ We suppose that you are at ease:
 
 ## Computers
 
-Computers should be set up as necessary to do all of this. It may alternatively be possible to do all of this on Apocrita or on QMUL's Linux VDI (Virtual Desktop). It could also be feasible to do some of this stuff on a your favorite cluster or your local machine. However, it will be complicated. Among other things you'll need to install a bunch of [software](../software) and [data](../data).
+Computers should be set up as necessary to do all of this. It may alternatively be possible to do all of this on Apocrita or on QMUL's Linux VDI (Virtual Desktop). It could also be feasible to do some of this stuff on a your favorite cluster or your local machine. However, it will be complicated. Among other things you'll need to install a bunch of [software](../software.md) and [data](../data/).
 
 
 ## Authors/Credits
