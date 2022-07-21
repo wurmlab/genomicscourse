@@ -1,38 +1,74 @@
----
-layout: page
----
-
 # Read mapping and variant calling
 
 ## Introduction
 
-There are several types of variants. Commonly, people look at single nucleotide polymorphisms (SNPs, sometimes also known as single nucleotide variants, SNVs). Other classes include small insertions and deletions (known collectively as indels), as well as larger structural variants, such as large insertions, deletions, inversions and translocations.
+There are several types of variants. Commonly, people look at **single 
+nucleotide polymorphisms** (**SNPs**, sometimes also known as **single 
+nucleotide variants**, **SNVs**). Other classes include small insertions and 
+deletions (known collectively as **indels**), as well as larger structural 
+variants, such as large insertions, deletions, inversions and translocations.
 
-There are several approaches to variant calling from short pair-end reads. We are going to use one of them. First, we will map the reads from each individual to a reference assembly similar to the one created in the [previous practical](../reference_genome/assembly) (you can use your assembly too, but that is better left as an exercise for later!). Then we will find the positions where at least some of the individuals differ from the reference (and each other).
+In bioinformatics, there are several approaches to variant calling from **short 
+pair-end reads**.  
+We are going to use one of them. First, we will map the reads from each 
+individual to a reference assembly similar to the one created in the
+[previous practical](../reference_genome/assembly.md) (you can use your assembly
+too, but that is better left as an exercise for later!). Then we will find the
+positions where at least some of the individuals differ from the reference (and 
+each other).
 
 ## Pipeline
 
-We will analyse subsets of whole-genome sequences of several fire ant individuals. The fire ant, *Solenopsis invicta*, is notable for being dimorphic in terms of colony organisation, with some colonies having one queen and other colonies having multiple queens. Interestingly, this trait is genetically determined. In this practical, we will try to find the genetic difference between ants from single queen and multiple queen colonies.
+We will analyse subsets of whole-genome sequences of several fire ant 
+individuals. The fire ant, *Solenopsis invicta*, is notable for being dimorphic
+in terms of colony organisation, with some colonies having one queen and other
+colonies having multiple queens. Interestingly, this trait is genetically
+determined. In this practical, we will try to find the genetic difference
+between ants from single queen and multiple queen colonies.
 
-We will use a subset of the reads from whole-genome sequencing of 14 male fire ants. Samples 1B to 7B are from single-queen colonies, samples 1b to 7b are from multiple-queen colonies. Ants are haplodiploid, which means that females are diploid and males are haploid. Here we will use only males, so all our samples are haploid, which makes variant calling easier. Bacteria and yeast are typically also haploid. The same is true for most of the genome for highly-inbred strains of laboratory organisms.
+We will use a subset of the reads from whole-genome sequencing of 14 male fire
+ants. Samples 1B to 7B are from single-queen colonies, samples 1b to 7b are from multiple-queen colonies. Ants are haplodiploid, which means that females are
+diploid and males are haploid. Here we will use only males, so all our samples
+are haploid, which makes variant calling easier. Bacteria and yeast are
+typically also haploid. The same is true for most of the genome for
+highly-inbred strains of laboratory organisms.
 
-The aim of this practical is to genotype these 14 individuals. The steps in the practical are:
-1. Align the reads of each individual to a reference genome assembly using the aligner `bowtie2`.
-2. Find positions that differ between each individual and the reference with the software `samtools` and `bcftools`.
+The aim of this practical is to genotype these 14 individuals. The steps in the
+practical are:
+1. Align the reads of each individual to a reference genome assembly using the
+   aligner `bowtie2`.
+2. Find positions that differ between each individual and the reference with 
+   the software `samtools` and `bcftools`.
 3. Filter the SNP calls to produce a set of good-quality SNPs.
 4. Visualise the alignments and the SNP calls in the genome browser `igv`.
 
-We recommend that you set up a directory for this work following the same principles as in the last few practicals (e.g., `2021-10-xx-mapping`). You should have subdirectories called `input`, `results` and `tmp` and a `WHATIDID.txt` file in which to log your commands. Symlink (i.e., creat a soft/symbolic link) the reference genome `/shared/data/popgen/reference.fa` and the directory containing the reads `/shared/data/popgen/reads` to `input` subdirectory:
+We recommend that you create a directory for this work following the same
+principles as in the last few practicals (e.g., `2021-10-xx-mapping`). You
+should have subdirectories called `input`, `results` and `tmp` and a 
+`WHATIDID.txt` file in which to log your commands.  
+Create a symlink (using `ln -s`) from the reference genome
+`/shared/data/popgen/reference.fa` and the directory containing the reads
+`/shared/data/popgen/reads` to `input` subdirectory:
 
 ```bash
 2021-10-xx-mapping/
 ├── input
-│   ├── -> /shared/data/popgen/reference.fa
-│   └── -> /shared/data/popgen/reads
+│   ├──> /shared/data/popgen/reference.fa
+│   └──> /shared/data/popgen/reads
 ├── results
 ├── tmp
 └── WHATIDID.txt
 ```
+
+To check that the reference genome and the reads directory are linked
+(not copied) in the `input` directory, change to the directory `input` and run
+the command:
+
+```
+ls -a
+```
+
+
 
 Check how many scaffolds there are in the reference genome:
 
@@ -135,7 +171,19 @@ rm -ri tmp
 
 ## Variant calling
 
-Set up a new directory for the second part of today's practical (e.g., `2021-10-xx-genotyping`). You will want to set up the relevant subdirectories and `WHATIDID.txt` file as before. Then symlink the reference genome `/shared/data/popgen/reference.fa` and the alignments from the mapping part of the practical (both `.bam` and `.bai` files) to your `input` directory. Remember to keep your commands in the `WHATIDID.txt` file.
+Create a new directory for the second part of today's practical (e.g., `2021-10-xx-genotyping`). You will want to set up the relevant subdirectories 
+and `WHATIDID.txt` file as before. Then symlink (`ln -s`) the reference genome 
+`/shared/data/popgen/reference.fa` and the alignments from the mapping part of
+the practical (both `.bam` and `.bai` files) to your `input` directory.  
+
+---
+
+### **Note:**
+Remember to keep your commands in the `WHATIDID.txt` file.
+
+---
+
+This is what your directory structure should look like:
 
 ```
 2021-10-xx-genotyping/
@@ -149,9 +197,19 @@ Set up a new directory for the second part of today's practical (e.g., `2021-10-
 └── WHATIDID.txt
 ```
 
-There are several approaches to call variants. The simplest approach is to look for positions where the mapped reads consistently have a different base than the reference assembly (the consensus approach). For this, we will use [`bcftools`](http://www.htslib.org/doc/bcftools.html), a set of tools to call variants and manipulate them. We will run two commands, `bcftools mpileup`, which looks for inconsistencies between the reference and the aligned reads, and `bcftools call`, which interprets them as variants.
+There are several approaches to call variants. The simplest approach is to look for positions where the mapped reads consistently have a different base than the reference assembly (the consensus approach). For this, we will use [`bcftools`](http://www.htslib.org/doc/bcftools.html), a set of tools to call variants and manipulate them. We will run two commands,
+```
+bcftools mpileup
+```
+which looks for inconsistencies between the reference and the aligned reads, and
 
-We will use multiallelic caller (option `-m`) of bcftools and set all individuals as haploid.
+```
+bcftools call
+```
+which interprets them as variants.  
+
+We will use *multiallelic caller* (option `-m`) of `bcftools` and set all 
+individuals as **haploid**.
 
 ```bash
 # Symlink reference.fa to tmp/
@@ -162,12 +220,19 @@ cd ..
 # Create index of the reference (different from that used by bowtie2)
 samtools faidx tmp/reference.fa
 
-# Call variants using bcftools: identify all differences between reference and reads using mpileup
-# subcommand and pipe it to call subcommand to determine if the identified difference are variants.
+# Call variants using bcftools: identify all differences between reference and 
+# reads using mpileup subcommand and pipe it to call subcommand to determine if
+# the identified difference are variants.
 bcftools mpileup -Ou -f tmp/reference.fa input/*.bam | bcftools call --ploidy 1 -v -m > tmp/calls.vcf
 ```
 
-* Do you understand why we are using the `-v` option in `bcftools call`? Is it ever useful to leave it out?
+---
+
+### **Question:**
+
+* Why we are using the `-v` option in `bcftools call`?
+* Is it ever useful to leave it out?
+---
 
 The file produced a VCF ([Variant Call Format](http://samtools.github.io/hts-specs/VCFv4.3.pdf)) format telling the position, nature and quality of the called variants.
 
