@@ -93,7 +93,7 @@ strategy. We will not formally cover those here & instead jump right into our da
 
 # Part 1: Short read cleaning
 
-In this practical, we will work with a paired ends short reads acquired
+In this practical, we will work with a paired ends short reads
 (Illumina). In this case, we expect to have two files per sequences,
 corresponding to the two reading directions.
 
@@ -128,7 +128,7 @@ write in this file all commands and outputs you will get during the practical.
 After, create a symbolic link (using `ln -s`) from the reads files to the input
 folder:
 
-```
+```bash
 # Change directory to your main directory (the one in the 
 # YYYY-MM-DD-read_cleaning format)
 # Remember to use the actual name instead of YYYY-...
@@ -158,13 +158,14 @@ The structure of your directory should look like this (use the command `tree`):
 └── WHATIDID.txt
 ```
 
-Now, you can start evaluating the quality of the reads `pe1` and `pe2`. To do
-so, you will use [FastQC](http://www.bioinformatics.babraham.ac.uk/projects/fastqc/)
+Now, you can start evaluating the quality of the reads `reads.pe1.fastq.gz` and
+`reads.pe2.fastq.gz`. To do so, we will use
+[FastQC](http://www.bioinformatics.babraham.ac.uk/projects/fastqc/)
 ([documentation](http://www.bioinformatics.babraham.ac.uk/projects/fastqc/Help/)).
 FASTQC is a software tool that can help you understand sequence quality and
 composition, and thus can inform about the read cleaning strategy.
 
-Run FastQC on the `reads.pe2.fastq.gz` file (we will get to `reads.pe1` later).
+Run FastQC on the `reads.pe1.fastq.gz` and `reads.pe2.fastq.gz` files.
 The command is given below, where instead of `YOUR_OUTDIR`, you will need
 replace `YOUR_OUTDIR` with the path to your `tmp` directory (e.g. if you main
 directory is `2022-10-09-read_cleaning`, you need to replace `YOUR_OUTDIR` with
@@ -208,11 +209,11 @@ Your [resulting directory structure](http://github.com/wurmlab/templates/blob/ma
 └── WHATIDID.txt
 ```
 
-To inspect the FastQC report, copy the files `reads.pe1_fastqc.html` and
+Now inspect the FastQC report. First, copy the files `reads.pe1_fastqc.html` and
 `reads.pe2_fastqc.html` to the directory `~/www/tmp`. Then, open the browser and
 go to your personal module page (e.g., if your QMUL username is `bt007`,  the
 URL will be `bt007.genomicscourse.com`) and click on the `~/www/tmp` link. After
-that, click on one of the links avaiable.
+that, click on one of the links corresponding to the reports files.
 
 > **_Question:_**  
 > What does the FastQC report tell you?  
@@ -220,7 +221,9 @@ that, click on one of the links avaiable.
 
 For comparison, have a look at some plots from other sequencing libraries: e.g, [[1]](img-qc/per_base_quality.png), [[2]](img-qc/qc_factq_tile_sequence_quality.png), [[3]](img-qc/per_base_sequence_content.png). *NOTE:* the results for your sequences may look different.
 
-Clearly, some sequences have very low quality bases towards the end. Furthermore, many more sequences start with the nucleotide **A** rather than **T**.
+Clearly, some sequences have very low quality bases towards the end.
+Furthermore, many more sequences start with the nucleotide **A** rather
+than **T**.
 
 > **_Questions:_**  
 > * Which FastQC plots shows the relationship between base quality and position
