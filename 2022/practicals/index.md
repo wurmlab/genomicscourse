@@ -17,9 +17,9 @@ We suppose that you are at ease:
 
 ## Practicals
 
-* [Short read cleaning](./reference_genome/read-cleaning.md): Illumina short read cleaning
-* [Reads to genome](./reference_genome/assembly.md): genome assembly, quality control
-* [Gene prediction](./reference_genome/prediction.md): gene prediction, quality control
+* [Short read cleaning](./reference_genome/pt-1-read-cleaning.md): Illumina short read cleaning
+* [Reads to genome](./reference_genome/pt-2-assembly.md): genome assembly, quality control
+* [Gene prediction](./reference_genome/pt-3-prediction.md): gene prediction, quality control
 * Population sequencing to genotypes to population genetics statistics:
      * [Mapping reads, calling variants, visualizing variant calls.](./population_genetics/map_call.md)
      * [Analysing variants: PCA, measuring Differentiation & Diversity.](./population_genetics/popgen.md)
