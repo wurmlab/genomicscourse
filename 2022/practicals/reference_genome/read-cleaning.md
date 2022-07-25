@@ -59,15 +59,33 @@ be found
 For the purpose of these practicals we will use a slightly simplified version of
 the directory structure explained above.
 
-For each practical (analysis) that we will perform, you should:
+For each practical, you will have to create the following directory structure:
 
-* have a main directory in your home directory (e.g., `2021-09-xx-read_cleaning`)
-* have input data in a relevant subdirectory (`input`)
-* work in a relevant subdirectory (`tmp`)
-* copy final results to a relevant subdirectory (`results`)
+* main directory in your home directory in the format
+  (`YYYY-MM-DD-name_of_the_practial`, where `YYYY` is the current year, `MM` is
+  the current month, and `DD` is the current day, and `name_of_the_practical`
+  matches the practical). For instance, on the 9th of October 2022 you should
+  create the directory `2022-10-09_read_cleaning` for this practical. In the
+  tutorial we will use this example directory name.
+* Inside this directory, create other three directories, called `input`, `tmp`,
+  and `results`.
+* The directory `input` will contain the FASTQ files.
+* The directory `tmp` will represent your working directory.
+* The direcyory `results` will contain a copy of the final results.
 
 Each directory in which you have done something should include a `WHATIDID.txt` 
 file in which you log your commands.
+
+Your directory structure should look like this (launch `tree` in your `home`
+directory):
+
+```bash
+2022-10-09-read_cleaning
+├── input
+├── tmp
+├── results
+└── WHATIDID.txt
+```
 
 Being disciplined about this is *extremely important*. It is similar to having 
 a laboratory notebook. It will prevent you from becoming overwhelmed by having 
@@ -114,25 +132,17 @@ performing any form of analysis.
 
 ## a) Initial inspection
 
-Before starting to pre-process the reads, create a directory for today's 
-practical (e.g., `YYYY-MM-DD-read_cleaning`, where `YYYY` is the current year,
-`MM` is the current month and `DD` the current day. In the entire document, we
-will use `2022-10-09-read_cleaning` corresponding to the 9th of October 2022).
-
-Inside this directory, create other three directories, called `input`, `tmp`,
-and `results`.
-
-Create a text file called `WHATIDID.txt` in the main directory. You will have to
-write in this file all commands and outputs you will get during the practical.
-
-After, create a symbolic link (using `ln -s`) from the reads files to the input
-folder:
+Move to the main directory for this practical:
 
 ```bash
-# Change directory to your main directory (the one in the 
-# YYYY-MM-DD-read_cleaning format)
-# Remember to use the actual name instead of YYYY-...
-cd ~/2022-10-09-read_cleaning
+# Remember that yours can have a different date
+cd ~/2022-10-09_read_cleaning
+```
+
+After, create a symbolic link (using `ln -s`) from the reads files to the
+`input` directory:
+
+```bash
 
 # Change directory to input
 cd input
