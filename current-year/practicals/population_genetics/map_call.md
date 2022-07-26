@@ -27,7 +27,8 @@ determined. In this practical, we will try to find the genetic difference
 between ants from single queen and multiple queen colonies.
 
 We will use a subset of the reads from whole-genome sequencing of 14 male fire
-ants. Samples 1B to 7B are from single-queen colonies, samples 1b to 7b are from multiple-queen colonies. Ants are haplodiploid, which means that females are
+ants. Samples 1B to 7B are from single-queen colonies, samples 1b to 7b are from
+multiple-queen colonies. Ants are haplodiploid, which means that females are
 diploid and males are haploid. Here we will use only males, so all our samples
 are haploid, which makes variant calling easier. Bacteria and yeast are
 typically also haploid. The same is true for most of the genome for
@@ -64,11 +65,9 @@ To check that the reference genome and the reads directory are linked
 (not copied) in the `input` directory, change to the directory `input` and run
 the command:
 
-```
+```bash
 ls -a
 ```
-
-
 
 Check how many scaffolds there are in the reference genome:
 
@@ -81,14 +80,24 @@ Now have a look at the `.fq.gz` files (`ls input/reads`).
 * What is each line of the `.fq.gz` file? (you can use `zless`)
 * How many reads do we have in individual f1_B? (you can use `zless` and `wc -l`)
 * How long are the reads (do all reads have equal size)?
-* Knowing that each scaffold is 200kb, what is the expected coverage per base pair of individual f1_B?
+* Knowing that each scaffold is 200kb, what is the expected coverage per base
+  pair of individual f1_B?
 
 
 ## Aligning reads to a reference assembly
 
-The first step in our pipeline is to align the paired end reads to the reference genome. We are using the software [bowtie2](http://bowtie-bio.sourceforge.net/bowtie2/index.shtml), which was created to align short read sequences to long sequences such as the scaffolds in a reference assembly. `bowtie2`, like most aligners, works in two steps.
+The first step in our pipeline is to align the paired end reads to the reference
+genome. We are using the software [bowtie2](http://bowtie-bio.sourceforge.net/bowtie2/index.shtml),
+which was created to align short read sequences to long sequences such as the
+scaffolds in a reference assembly. `bowtie2`, like most aligners, works in two
+steps.
 
-In the first step, the scaffold sequence (sometimes known as the database) is indexed, in this case using the [Burrows-Wheeler Transform](https://en.wikipedia.org/wiki/Burrows-Wheeler_transform), which can help compress a large text into less memory. It thus allows for memory efficient alignment. Index files often require the original file to be present in the same directory. We thus start by linking scaffold sequences to `tmp` directory (where all output will be written first).
+In the first step, the scaffold sequence (sometimes known as the database) is
+indexed, in this case using the [Burrows-Wheeler Transform](https://en.wikipedia.org/wiki/Burrows-Wheeler_transform),
+which can help compress a large text into less memory. It thus allows for memory
+efficient alignment. Index files often require the original file to be present
+in the same directory. We thus start by linking scaffold sequences to `tmp`
+directory (where all output will be written first).
 
 ```bash
 # Symlink reference.fa to tmp/

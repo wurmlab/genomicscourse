@@ -1,56 +1,34 @@
-# Reads to reference genome & gene predictions
+---
+layout: page
+title: Part 1 - Reads to reference genome and gene predictions
+---
 
-# 1. Introduction
+<!-- Updated by Paolo Inglese, 2022 -->
 
-[Cheap sequencing](http://www.genome.gov/sequencingcosts/) has created the
-opportunity to perform molecular-genetic analyses on just about anything.
-Conceptually, doing this would be similar to working with traditional genetic
-model organisms. But a large difference exists: For traditional genetic model
-organisms, large teams and communities of expert assemblers, predictors, and
-curators have put years of efforts into the prerequisites for most genomic
-analyses, including a reference genome and a set of gene predictions. In
-contrast, those of us working on "emerging" model organisms often have limited
-or no pre-existing resources and are part of much smaller teams. Emerging model
-organisms includes most crops, animals and plant pest species, many pathogens,
-and major models for ecology & evolution.
+# Part 1: Reads to reference genome and gene predictions
 
 It is adviced to follow the sections sequentially as they are presented in this 
 document. This approach will ensure that you will get all useful information to
 perform the computational tasks.
 
-The steps below are meant to provide some ideas that can help obtain a reference
+The steps below are meant to provide some ideas that can help obtaining a reference
 genome and a reference geneset of sufficient quality for **ecological and 
 evolutionary analyses**. They are based on (and updated from) work we did for 
-the <cite>[fire ant genome](http://www.pnas.org/content/108/14/5679.long "The genome of the fire ant Solenopsis invicta"
-)[1]</cite>.
+the _[fire ant genome](http://www.pnas.org/content/108/14/5679.long "The genome of the fire ant Solenopsis invicta")[1]_.
 
 The dataset that you will use represents ~0.5% of the fire ant genome. In this 
 way, all computational tasks are expected to locally run on a modern PC.
 
-During this module, you will learn to:
+# 1. Software and environment
 
-1. inspect and clean short (Illumina) reads,
-2. perform genome assembly,
-3. assess the quality of the genome assembly using simple statistics,
-4. predict protein-coding genes,
-5. assess quality of gene predictions,
-6. assess quality of the entire process using a biologically meaningful measure.
-
-*NOTE:* The exemplar datasets are simplified to run on laptops and to fit into
-the short format of this course. For real projects, much more sophisticated
-approaches are needed!
-
-# 2. Software and environment
-
-## 2.1 Test that the necessary software are available
+## 1.1 Test that the necessary software are available
 
 Run `seqtk`. If this prints "command not found", ask for help, otherwise, move
 to the next section.
 
-## 2.2 Set up directory hierarchy to work in
+## 1.2 Set up directory hierarchy to work in
 
-Drawing on ideas from 
-<cite>[Noble (2009)](http://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1000424 "A Quick Guide to Organizing Computational Biology Projects")[2]</cite>
+Drawing on ideas from _[Noble (2009)](http://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1000424 "A Quick Guide to Organizing Computational Biology Projects")[2]_
 and others, we recommend following a specific directory convention for all your
 projects. The details of the convention that we will use in this practical can
 be found 
@@ -91,7 +69,7 @@ Being disciplined about this is *extremely important*. It is similar to having
 a laboratory notebook. It will prevent you from becoming overwhelmed by having 
 too many files, or not remembering what you did where.
 
-# 3. Sequencing an appropriate sample
+# 2. Sequencing an appropriate sample
 
 Certain properties of sequences may affect the processing software performances.
 For instance, less diversity and complexity in a sample makes life easier: 
@@ -109,19 +87,11 @@ Thus:
 Many considerations go into the appropriate experimental design and sequencing
 strategy. We will not formally cover those here & instead jump right into our data.
 
-# Part 1: Short read cleaning
+# 3. Short read cleaning
 
 In this practical, we will work with a paired ends short reads
 (Illumina). In this case, we expect to have two files per sequences,
 corresponding to the two reading directions.
-
-<!-- ---
-
-<img src="img/nextera-mate-pair-library-prep-kit-web-graphic.png" title="" alt="" data-align="center">
-
-Example of short and long paired ends reads (Copyright Illumina)
-
---- -->
 
 However, sequencers aren't perfect. Several problems may affect the quality of
 the reads. You can find some examples 
@@ -130,7 +100,7 @@ and [here](http://sequencing.qcfail.com/). Also, as you may already know,
 "*garbage in – garbage out*", which means that reads should be cleaned before
 performing any form of analysis.
 
-## a) Initial inspection
+## 3.1 Initial inspection
 
 Move to the main directory for this practical:
 
@@ -253,7 +223,7 @@ Other tools, such as [fastx_toolkit](http://github.com/agordon/fastx_toolkit),
 [Trimmomatic](http://www.usadellab.org/cms/index.php?page=trimmomatic) can also
 be useful, **but we won't use them now**.
 
-## b) Sequence trimming
+## 3.2 Sequence trimming
 
 To clean the FASTQ sequences, we will use a software tool called
 [cutadapt](https://cutadapt.readthedocs.io/en/stable/). As stated on the
@@ -300,7 +270,7 @@ cutadapt --cut BEGINNING --quality-cutoff CUTOFF \
     input/reads.pe1.fastq.gz > tmp/reads.pe1.trimmed.fq
 ```
 
-## c) K-mer filtering, removal of short sequences
+## 3.3 K-mer filtering, removal of short sequences
 
 Let's suppose that you have sequenced your sample at 45x genome coverage. This
 means that every nucleotide of the genome was sequenced 45 times on average.
@@ -389,14 +359,27 @@ cutadapt --trim-n --minimum-length 21 -o tmp/reads.pe1.clean.fq -p tmp/reads.pe2
 cp tmp/reads.pe1.clean.fq tmp/reads.pe2.clean.fq results
 ```
 
-### Inspecting quality of cleaned reads
+## 3.4 Inspecting quality of cleaned reads
 
 Which percentage of reads have we removed overall? (hint: `wc -l` can count
 lines in a non-gzipped file). Is there a general rule about how much we should
 be removing?
 
-# References
+# 4. References
 
-[1]: Wurm, Y., Wang, J., Riba-Grognuz, O., Corona, M., Nygaard, S., Hunt, B.G., Ingram, K.K., Falquet, L., Nipitwattanaphon, M., Gotzek, D. and Dijkstra, M.B., 2011. The genome of the fire ant Solenopsis invicta. *Proceedings of the National Academy of Sciences*, 108(14), pp.5679-5684.
+1. Wurm, Y., Wang, J., Riba-Grognuz, O., Corona, M., Nygaard, S., Hunt, B.G., 
+   Ingram, K.K., Falquet, L., Nipitwattanaphon, M., Gotzek, D. and Dijkstra, 
+   M.B., 2011. The genome of the fire ant Solenopsis invicta. *Proceedings of the 2012.
+   National Academy of Sciences*, 108(14), pp.5679-5684.
 
-[2]: Noble, W.S., 2009. A quick guide to organizing computational biology projects. *PLoS computational biology*, 5(7), p.e1000424.
+2. Noble, W.S., 2009. A quick guide to organizing computational biology
+   projects. *PLoS computational biology*, 5(7), p.e1000424.
+
+# 5. Further reading
+
+* MARTIN Marcel. Cutadapt removes adapter sequences from high-throughput 
+  sequencing reads. EMBnet.journal, [S.l.], v. 17, n. 1, p. pp. 10-12, may 2011.
+  ISSN 2226-6089. doi: https://doi.org/10.14806/ej.17.1.200.
+
+* Kokot, M., Długosz, M. and Deorowicz, S., 2017. KMC 3: counting and 
+  manipulating k-mer statistics. Bioinformatics, 33(17), pp.2759-2761.
