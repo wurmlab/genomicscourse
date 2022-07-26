@@ -54,8 +54,10 @@ markdown:  kramdown
 #   - vendor/gems/
 #   - vendor/ruby/
 
+exclude:
+    - previous-courses/
 
 collections:
-  "2021":
-    output: true
-    permalink: /2021/:path/
+  "2022":
+    output:     true
+    permalink:  /2022/:path/

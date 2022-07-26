@@ -1,0 +1,60 @@
+# Modified from gh:NIH-HPC/singularity-examples/tree/master/rstudio
+
+BootStrap: docker
+From: debian:buster
+
+%runscript
+    rstudio "$@"
+
+%post
+#
+# Choose your mirror from the list at
+# http://cran.r-project.org/mirrors.html
+#
+    export r_mirror="https://cran.ma.imperial.ac.uk"
+
+# Disable interactive package configuration prompts
+    export DEBIAN_FRONTEND=noninteractive
+
+#
+# Install required Debian packages.
+#
+    apt-get update
+    # libssl and libcurl are needed to build some R packages. You may
+    # need to install others depending on the R packages you need.
+    #
+    # libudunits2 and libgdal are needed to build adegenet.
+    #
+    # libasound is required by rstudio (other packages required by rstudio are
+    # automatically pulled by the commands in the Install RStudio section,
+    # except this one)
+    apt-get install -y gnupg libssl-dev libcurl4-openssl-dev libudunits2-dev \
+        libgdal-dev libasound2 r-base-core r-base-dev r-recommended wget xorg
+
+#
+# Install RStudio
+# see https://www.rstudio.com/products/rstudio/download/#download
+#
+    wget https://download1.rstudio.org/desktop/bionic/amd64/rstudio-1.2.5001-amd64.deb
+    dpkg -i --force-depends rstudio-1.2.5001-amd64.deb
+    apt-get -f install -y
+
+#
+# Remove all downloaded packages to minimize the container size
+#
+    rm -f rstudio-*.deb
+    apt-get -qqy autoclean
+    rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+
+
+#
+# Install additional R packages from CRAN and Bioconductor
+#
+    R --no-save --no-restore <<__INSTALLCMDS__
+packages <- c('ggplot2', 'adegenet', 'PopGenome')
+install.packages(packages, repos="$r_mirror")
+__INSTALLCMDS__
+
+%environment
+# Set locale
+    export LC_ALL=C.UTF-8

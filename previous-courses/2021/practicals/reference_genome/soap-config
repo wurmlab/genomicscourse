@@ -1,0 +1,8 @@
+max_rd_len=101
+[LIB]
+avg_ins=355
+reverse_seq=0
+asm_flags=3
+rank=1
+q1=/data/SBCS-MSc-BioInf/user/ant.pe1.fastq
+q2=/data/SBCS-MSc-BioInf/user/ant.pe2.fastq

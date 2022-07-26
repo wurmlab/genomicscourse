@@ -1,0 +1,1137 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+
+<MINiML
+   xmlns="http://www.ncbi.nlm.nih.gov/geo/info/MINiML"
+   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+   xsi:schemaLocation="http://www.ncbi.nlm.nih.gov/geo/info/MINiML http://www.ncbi.nlm.nih.gov/geo/info/MINiML.xsd"
+   version="0.5.0" >
+
+  <Contributor iid="contrib1">
+    <Person><First>Maroun</First><Last>Bou Sleiman</Last></Person>
+    <Email>maroun.bousleiman@epfl.ch</Email>
+    <Laboratory>UPLEM</Laboratory>
+    <Department>GHI</Department>
+    <Organization>EPFL</Organization>
+    <Address>
+      <Line>Rue Cantonale</Line>
+      <City>Lausanne</City>
+      <State>Vaud</State>
+      <Postal-Code>1015</Postal-Code>
+      <Country>Switzerland</Country>
+    </Address>
+  </Contributor>
+
+  <Contributor iid="contrib2">
+    <Organization>GEO</Organization>
+    <Address>
+      <City></City>
+      <Country>USA</Country>
+    </Address>
+  </Contributor>
+
+  <Contributor iid="contrib3">
+    <Person><First>Maroun</First><Middle>S</Middle><Last>Bou Sleiman</Last></Person>
+  </Contributor>
+
+  <Contributor iid="contrib4">
+    <Person><First>Dani</First><Last>Osman</Last></Person>
+  </Contributor>
+
+  <Contributor iid="contrib5">
+    <Person><First>Andreas</First><Last>Massouras</Last></Person>
+  </Contributor>
+
+  <Contributor iid="contrib6">
+    <Person><First>Ary</First><Middle>A</Middle><Last>Hoffmann</Last></Person>
+  </Contributor>
+
+  <Contributor iid="contrib7">
+    <Person><First>Bruno</First><Last>Lemaitre</Last></Person>
+  </Contributor>
+
+  <Contributor iid="contrib8">
+    <Person><First>Bart</First><Last>Deplancke</Last></Person>
+  </Contributor>
+
+  <Database iid="GEO">
+    <Name>Gene Expression Omnibus (GEO)</Name>
+    <Public-ID>GEO</Public-ID>
+    <Organization>NCBI NLM NIH</Organization>
+    <Web-Link>http://www.ncbi.nlm.nih.gov/geo</Web-Link>
+    <Email>geo@ncbi.nlm.nih.gov</Email>
+  </Database>
+
+  <Platform iid="GPL13304">
+    <Status database="GEO">
+      <Submission-Date>2011-03-21</Submission-Date>
+      <Release-Date>2011-03-21</Release-Date>
+      <Last-Update-Date>2016-04-20</Last-Update-Date>
+    </Status>
+    <Title>Illumina HiSeq 2000 (Drosophila melanogaster)</Title>
+    <Accession database="GEO">GPL13304</Accession>
+    <Technology>high-throughput sequencing</Technology>
+    <Distribution>virtual</Distribution>
+    <Organism taxid="7227">Drosophila melanogaster</Organism>
+    <Manufacturer></Manufacturer>
+    <Manufacture-Protocol>
+    </Manufacture-Protocol>
+    <Contact-Ref ref="contrib2" />
+  </Platform>
+
+  <Sample iid="GSM1436542">
+    <Status database="GEO">
+      <Submission-Date>2014-07-14</Submission-Date>
+      <Release-Date>2015-06-02</Release-Date>
+      <Last-Update-Date>2015-06-02</Last-Update-Date>
+    </Status>
+    <Title>RAL-802-Unchallenged</Title>
+    <Accession database="GEO">GSM1436542</Accession>
+    <Type>SRA</Type>
+    <Channel-Count>1</Channel-Count>
+    <Channel position="1">
+      <Source>Whole gut from adult female</Source>
+      <Organism taxid="7227">Drosophila melanogaster</Organism>
+      <Characteristics tag="treatment">
+Unchallenged
+      </Characteristics>
+      <Characteristics tag="dgrp line">
+RAL-802
+      </Characteristics>
+      <Characteristics tag="resistance">
+Resistant
+      </Characteristics>
+      <Characteristics tag="developmental stage">
+adult
+      </Characteristics>
+      <Characteristics tag="gender">
+female
+      </Characteristics>
+      <Molecule>total RNA</Molecule>
+      <Extract-Protocol>
+Guts were dissected and put in Trizol on ice. RNA was harvested using Trizol reagent.
+Illumina TruSeq Stranded mRNA LT kit (cat# RS-122-2101) was used with 1 ug of total RNA for the construction of sequencing libraries.
+      </Extract-Protocol>
+    </Channel>
+    <Description>
+Sample 1
+    </Description>
+    <Data-Processing>
+Post processing was done using Illumina Casava 1.82
+Reads were aligned to the DGRP line-specific transcriptomes that were obtained based on the Drosophila melanogaster reference genome release 5.45, DGRP freeze 2 variant information, and the RefSeq annotation.
+Count data was converted to Count Per Million (cpm) using the Voom function in the R limma package.
+RPKM values were calculated for each transcript based on annotation data from Refseq tables extracted from UCSC genome browser.
+Genome_build: Dm3 R5.45
+Supplementary_files_format_and_content: Text files with log2(RPKM) values
+    </Data-Processing>
+    <Platform-Ref ref="GPL13304" />
+    <Library-Strategy>RNA-Seq</Library-Strategy>
+    <Library-Source>transcriptomic</Library-Source>
+    <Library-Selection>cDNA</Library-Selection>
+    <Instrument-Model>
+      <Predefined>Illumina HiSeq 2000</Predefined>
+    </Instrument-Model>
+    <Contact-Ref ref="contrib1" />
+    <Supplementary-Data type="TXT">
+ftp://ftp.ncbi.nlm.nih.gov/pub/geo/DATA/supplementary/samples/GSM1436nnn/GSM1436542/GSM1436542_Sample1.txt.gz
+    </Supplementary-Data>
+    <Supplementary-Data type="SRA Experiment">
+ftp://ftp-trace.ncbi.nlm.nih.gov/sra/sra-instant/reads/ByExp/sra/SRX/SRX652/SRX652718
+    </Supplementary-Data>
+    <Relation type="BioSample" target="http://www.ncbi.nlm.nih.gov/biosample/SAMN02911633" />
+    <Relation type="SRA" target="http://www.ncbi.nlm.nih.gov/sra?term=SRX652718" />
+  </Sample>
+
+  <Sample iid="GSM1436543">
+    <Status database="GEO">
+      <Submission-Date>2014-07-14</Submission-Date>
+      <Release-Date>2015-06-02</Release-Date>
+      <Last-Update-Date>2015-06-02</Last-Update-Date>
+    </Status>
+    <Title>RAL-857-Unchallenged</Title>
+    <Accession database="GEO">GSM1436543</Accession>
+    <Type>SRA</Type>
+    <Channel-Count>1</Channel-Count>
+    <Channel position="1">
+      <Source>Whole gut from adult female</Source>
+      <Organism taxid="7227">Drosophila melanogaster</Organism>
+      <Characteristics tag="treatment">
+Unchallenged
+      </Characteristics>
+      <Characteristics tag="dgrp line">
+RAL-857
+      </Characteristics>
+      <Characteristics tag="resistance">
+Resistant
+      </Characteristics>
+      <Characteristics tag="developmental stage">
+adult
+      </Characteristics>
+      <Characteristics tag="gender">
+female
+      </Characteristics>
+      <Molecule>total RNA</Molecule>
+      <Extract-Protocol>
+Guts were dissected and put in Trizol on ice. RNA was harvested using Trizol reagent.
+Illumina TruSeq Stranded mRNA LT kit (cat# RS-122-2101) was used with 1 ug of total RNA for the construction of sequencing libraries.
+      </Extract-Protocol>
+    </Channel>
+    <Description>
+Sample 2
+    </Description>
+    <Data-Processing>
+Post processing was done using Illumina Casava 1.82
+Reads were aligned to the DGRP line-specific transcriptomes that were obtained based on the Drosophila melanogaster reference genome release 5.45, DGRP freeze 2 variant information, and the RefSeq annotation.
+Count data was converted to Count Per Million (cpm) using the Voom function in the R limma package.
+RPKM values were calculated for each transcript based on annotation data from Refseq tables extracted from UCSC genome browser.
+Genome_build: Dm3 R5.45
+Supplementary_files_format_and_content: Text files with log2(RPKM) values
+    </Data-Processing>
+    <Platform-Ref ref="GPL13304" />
+    <Library-Strategy>RNA-Seq</Library-Strategy>
+    <Library-Source>transcriptomic</Library-Source>
+    <Library-Selection>cDNA</Library-Selection>
+    <Instrument-Model>
+      <Predefined>Illumina HiSeq 2000</Predefined>
+    </Instrument-Model>
+    <Contact-Ref ref="contrib1" />
+    <Supplementary-Data type="TXT">
+ftp://ftp.ncbi.nlm.nih.gov/pub/geo/DATA/supplementary/samples/GSM1436nnn/GSM1436543/GSM1436543_Sample2.txt.gz
+    </Supplementary-Data>
+    <Supplementary-Data type="SRA Experiment">
+ftp://ftp-trace.ncbi.nlm.nih.gov/sra/sra-instant/reads/ByExp/sra/SRX/SRX652/SRX652719
+    </Supplementary-Data>
+    <Relation type="BioSample" target="http://www.ncbi.nlm.nih.gov/biosample/SAMN02911634" />
+    <Relation type="SRA" target="http://www.ncbi.nlm.nih.gov/sra?term=SRX652719" />
+  </Sample>
+
+  <Sample iid="GSM1436544">
+    <Status database="GEO">
+      <Submission-Date>2014-07-14</Submission-Date>
+      <Release-Date>2015-06-02</Release-Date>
+      <Last-Update-Date>2015-06-02</Last-Update-Date>
+    </Status>
+    <Title>RAL-208-Unchallenged</Title>
+    <Accession database="GEO">GSM1436544</Accession>
+    <Type>SRA</Type>
+    <Channel-Count>1</Channel-Count>
+    <Channel position="1">
+      <Source>Whole gut from adult female</Source>
+      <Organism taxid="7227">Drosophila melanogaster</Organism>
+      <Characteristics tag="treatment">
+Unchallenged
+      </Characteristics>
+      <Characteristics tag="dgrp line">
+RAL-208
+      </Characteristics>
+      <Characteristics tag="resistance">
+Resistant
+      </Characteristics>
+      <Characteristics tag="developmental stage">
+adult
+      </Characteristics>
+      <Characteristics tag="gender">
+female
+      </Characteristics>
+      <Molecule>total RNA</Molecule>
+      <Extract-Protocol>
+Guts were dissected and put in Trizol on ice. RNA was harvested using Trizol reagent.
+Illumina TruSeq Stranded mRNA LT kit (cat# RS-122-2101) was used with 1 ug of total RNA for the construction of sequencing libraries.
+      </Extract-Protocol>
+    </Channel>
+    <Description>
+Sample 3
+    </Description>
+    <Data-Processing>
+Post processing was done using Illumina Casava 1.82
+Reads were aligned to the DGRP line-specific transcriptomes that were obtained based on the Drosophila melanogaster reference genome release 5.45, DGRP freeze 2 variant information, and the RefSeq annotation.
+Count data was converted to Count Per Million (cpm) using the Voom function in the R limma package.
+RPKM values were calculated for each transcript based on annotation data from Refseq tables extracted from UCSC genome browser.
+Genome_build: Dm3 R5.45
+Supplementary_files_format_and_content: Text files with log2(RPKM) values
+    </Data-Processing>
+    <Platform-Ref ref="GPL13304" />
+    <Library-Strategy>RNA-Seq</Library-Strategy>
+    <Library-Source>transcriptomic</Library-Source>
+    <Library-Selection>cDNA</Library-Selection>
+    <Instrument-Model>
+      <Predefined>Illumina HiSeq 2000</Predefined>
+    </Instrument-Model>
+    <Contact-Ref ref="contrib1" />
+    <Supplementary-Data type="TXT">
+ftp://ftp.ncbi.nlm.nih.gov/pub/geo/DATA/supplementary/samples/GSM1436nnn/GSM1436544/GSM1436544_Sample3.txt.gz
+    </Supplementary-Data>
+    <Supplementary-Data type="SRA Experiment">
+ftp://ftp-trace.ncbi.nlm.nih.gov/sra/sra-instant/reads/ByExp/sra/SRX/SRX652/SRX652720
+    </Supplementary-Data>
+    <Relation type="BioSample" target="http://www.ncbi.nlm.nih.gov/biosample/SAMN02911635" />
+    <Relation type="SRA" target="http://www.ncbi.nlm.nih.gov/sra?term=SRX652720" />
+  </Sample>
+
+  <Sample iid="GSM1436545">
+    <Status database="GEO">
+      <Submission-Date>2014-07-14</Submission-Date>
+      <Release-Date>2015-06-02</Release-Date>
+      <Last-Update-Date>2015-06-02</Last-Update-Date>
+    </Status>
+    <Title>RAL-486-Unchallenged</Title>
+    <Accession database="GEO">GSM1436545</Accession>
+    <Type>SRA</Type>
+    <Channel-Count>1</Channel-Count>
+    <Channel position="1">
+      <Source>Whole gut from adult female</Source>
+      <Organism taxid="7227">Drosophila melanogaster</Organism>
+      <Characteristics tag="treatment">
+Unchallenged
+      </Characteristics>
+      <Characteristics tag="dgrp line">
+RAL-486
+      </Characteristics>
+      <Characteristics tag="resistance">
+Resistant
+      </Characteristics>
+      <Characteristics tag="developmental stage">
+adult
+      </Characteristics>
+      <Characteristics tag="gender">
+female
+      </Characteristics>
+      <Molecule>total RNA</Molecule>
+      <Extract-Protocol>
+Guts were dissected and put in Trizol on ice. RNA was harvested using Trizol reagent.
+Illumina TruSeq Stranded mRNA LT kit (cat# RS-122-2101) was used with 1 ug of total RNA for the construction of sequencing libraries.
+      </Extract-Protocol>
+    </Channel>
+    <Description>
+Sample 4
+    </Description>
+    <Data-Processing>
+Post processing was done using Illumina Casava 1.82
+Reads were aligned to the DGRP line-specific transcriptomes that were obtained based on the Drosophila melanogaster reference genome release 5.45, DGRP freeze 2 variant information, and the RefSeq annotation.
+Count data was converted to Count Per Million (cpm) using the Voom function in the R limma package.
+RPKM values were calculated for each transcript based on annotation data from Refseq tables extracted from UCSC genome browser.
+Genome_build: Dm3 R5.45
+Supplementary_files_format_and_content: Text files with log2(RPKM) values
+    </Data-Processing>
+    <Platform-Ref ref="GPL13304" />
+    <Library-Strategy>RNA-Seq</Library-Strategy>
+    <Library-Source>transcriptomic</Library-Source>
+    <Library-Selection>cDNA</Library-Selection>
+    <Instrument-Model>
+      <Predefined>Illumina HiSeq 2000</Predefined>
+    </Instrument-Model>
+    <Contact-Ref ref="contrib1" />
+    <Supplementary-Data type="TXT">
+ftp://ftp.ncbi.nlm.nih.gov/pub/geo/DATA/supplementary/samples/GSM1436nnn/GSM1436545/GSM1436545_Sample4.txt.gz
+    </Supplementary-Data>
+    <Supplementary-Data type="SRA Experiment">
+ftp://ftp-trace.ncbi.nlm.nih.gov/sra/sra-instant/reads/ByExp/sra/SRX/SRX652/SRX652721
+    </Supplementary-Data>
+    <Relation type="BioSample" target="http://www.ncbi.nlm.nih.gov/biosample/SAMN02911636" />
+    <Relation type="SRA" target="http://www.ncbi.nlm.nih.gov/sra?term=SRX652721" />
+  </Sample>
+
+  <Sample iid="GSM1436546">
+    <Status database="GEO">
+      <Submission-Date>2014-07-14</Submission-Date>
+      <Release-Date>2015-06-02</Release-Date>
+      <Last-Update-Date>2015-06-02</Last-Update-Date>
+    </Status>
+    <Title>RAL-502-Unchallenged</Title>
+    <Accession database="GEO">GSM1436546</Accession>
+    <Type>SRA</Type>
+    <Channel-Count>1</Channel-Count>
+    <Channel position="1">
+      <Source>Whole gut from adult female</Source>
+      <Organism taxid="7227">Drosophila melanogaster</Organism>
+      <Characteristics tag="treatment">
+Unchallenged
+      </Characteristics>
+      <Characteristics tag="dgrp line">
+RAL-502
+      </Characteristics>
+      <Characteristics tag="resistance">
+Susceptible
+      </Characteristics>
+      <Characteristics tag="developmental stage">
+adult
+      </Characteristics>
+      <Characteristics tag="gender">
+female
+      </Characteristics>
+      <Molecule>total RNA</Molecule>
+      <Extract-Protocol>
+Guts were dissected and put in Trizol on ice. RNA was harvested using Trizol reagent.
+Illumina TruSeq Stranded mRNA LT kit (cat# RS-122-2101) was used with 1 ug of total RNA for the construction of sequencing libraries.
+      </Extract-Protocol>
+    </Channel>
+    <Description>
+Sample 5
+    </Description>
+    <Data-Processing>
+Post processing was done using Illumina Casava 1.82
+Reads were aligned to the DGRP line-specific transcriptomes that were obtained based on the Drosophila melanogaster reference genome release 5.45, DGRP freeze 2 variant information, and the RefSeq annotation.
+Count data was converted to Count Per Million (cpm) using the Voom function in the R limma package.
+RPKM values were calculated for each transcript based on annotation data from Refseq tables extracted from UCSC genome browser.
+Genome_build: Dm3 R5.45
+Supplementary_files_format_and_content: Text files with log2(RPKM) values
+    </Data-Processing>
+    <Platform-Ref ref="GPL13304" />
+    <Library-Strategy>RNA-Seq</Library-Strategy>
+    <Library-Source>transcriptomic</Library-Source>
+    <Library-Selection>cDNA</Library-Selection>
+    <Instrument-Model>
+      <Predefined>Illumina HiSeq 2000</Predefined>
+    </Instrument-Model>
+    <Contact-Ref ref="contrib1" />
+    <Supplementary-Data type="TXT">
+ftp://ftp.ncbi.nlm.nih.gov/pub/geo/DATA/supplementary/samples/GSM1436nnn/GSM1436546/GSM1436546_Sample5.txt.gz
+    </Supplementary-Data>
+    <Supplementary-Data type="SRA Experiment">
+ftp://ftp-trace.ncbi.nlm.nih.gov/sra/sra-instant/reads/ByExp/sra/SRX/SRX652/SRX652722
+    </Supplementary-Data>
+    <Relation type="BioSample" target="http://www.ncbi.nlm.nih.gov/biosample/SAMN02911637" />
+    <Relation type="SRA" target="http://www.ncbi.nlm.nih.gov/sra?term=SRX652722" />
+  </Sample>
+
+  <Sample iid="GSM1436547">
+    <Status database="GEO">
+      <Submission-Date>2014-07-14</Submission-Date>
+      <Release-Date>2015-06-02</Release-Date>
+      <Last-Update-Date>2015-06-02</Last-Update-Date>
+    </Status>
+    <Title>RAL-229-Unchallenged</Title>
+    <Accession database="GEO">GSM1436547</Accession>
+    <Type>SRA</Type>
+    <Channel-Count>1</Channel-Count>
+    <Channel position="1">
+      <Source>Whole gut from adult female</Source>
+      <Organism taxid="7227">Drosophila melanogaster</Organism>
+      <Characteristics tag="treatment">
+Unchallenged
+      </Characteristics>
+      <Characteristics tag="dgrp line">
+RAL-229
+      </Characteristics>
+      <Characteristics tag="resistance">
+Susceptible
+      </Characteristics>
+      <Characteristics tag="developmental stage">
+adult
+      </Characteristics>
+      <Characteristics tag="gender">
+female
+      </Characteristics>
+      <Molecule>total RNA</Molecule>
+      <Extract-Protocol>
+Guts were dissected and put in Trizol on ice. RNA was harvested using Trizol reagent.
+Illumina TruSeq Stranded mRNA LT kit (cat# RS-122-2101) was used with 1 ug of total RNA for the construction of sequencing libraries.
+      </Extract-Protocol>
+    </Channel>
+    <Description>
+Sample 6
+    </Description>
+    <Data-Processing>
+Post processing was done using Illumina Casava 1.82
+Reads were aligned to the DGRP line-specific transcriptomes that were obtained based on the Drosophila melanogaster reference genome release 5.45, DGRP freeze 2 variant information, and the RefSeq annotation.
+Count data was converted to Count Per Million (cpm) using the Voom function in the R limma package.
+RPKM values were calculated for each transcript based on annotation data from Refseq tables extracted from UCSC genome browser.
+Genome_build: Dm3 R5.45
+Supplementary_files_format_and_content: Text files with log2(RPKM) values
+    </Data-Processing>
+    <Platform-Ref ref="GPL13304" />
+    <Library-Strategy>RNA-Seq</Library-Strategy>
+    <Library-Source>transcriptomic</Library-Source>
+    <Library-Selection>cDNA</Library-Selection>
+    <Instrument-Model>
+      <Predefined>Illumina HiSeq 2000</Predefined>
+    </Instrument-Model>
+    <Contact-Ref ref="contrib1" />
+    <Supplementary-Data type="TXT">
+ftp://ftp.ncbi.nlm.nih.gov/pub/geo/DATA/supplementary/samples/GSM1436nnn/GSM1436547/GSM1436547_Sample6.txt.gz
+    </Supplementary-Data>
+    <Supplementary-Data type="SRA Experiment">
+ftp://ftp-trace.ncbi.nlm.nih.gov/sra/sra-instant/reads/ByExp/sra/SRX/SRX652/SRX652723
+    </Supplementary-Data>
+    <Relation type="BioSample" target="http://www.ncbi.nlm.nih.gov/biosample/SAMN02911638" />
+    <Relation type="SRA" target="http://www.ncbi.nlm.nih.gov/sra?term=SRX652723" />
+  </Sample>
+
+  <Sample iid="GSM1436548">
+    <Status database="GEO">
+      <Submission-Date>2014-07-14</Submission-Date>
+      <Release-Date>2015-06-02</Release-Date>
+      <Last-Update-Date>2015-06-02</Last-Update-Date>
+    </Status>
+    <Title>RAL-908-Unchallenged</Title>
+    <Accession database="GEO">GSM1436548</Accession>
+    <Type>SRA</Type>
+    <Channel-Count>1</Channel-Count>
+    <Channel position="1">
+      <Source>Whole gut from adult female</Source>
+      <Organism taxid="7227">Drosophila melanogaster</Organism>
+      <Characteristics tag="treatment">
+Unchallenged
+      </Characteristics>
+      <Characteristics tag="dgrp line">
+RAL-908
+      </Characteristics>
+      <Characteristics tag="resistance">
+Susceptible
+      </Characteristics>
+      <Characteristics tag="developmental stage">
+adult
+      </Characteristics>
+      <Characteristics tag="gender">
+female
+      </Characteristics>
+      <Molecule>total RNA</Molecule>
+      <Extract-Protocol>
+Guts were dissected and put in Trizol on ice. RNA was harvested using Trizol reagent.
+Illumina TruSeq Stranded mRNA LT kit (cat# RS-122-2101) was used with 1 ug of total RNA for the construction of sequencing libraries.
+      </Extract-Protocol>
+    </Channel>
+    <Description>
+Sample 7
+    </Description>
+    <Data-Processing>
+Post processing was done using Illumina Casava 1.82
+Reads were aligned to the DGRP line-specific transcriptomes that were obtained based on the Drosophila melanogaster reference genome release 5.45, DGRP freeze 2 variant information, and the RefSeq annotation.
+Count data was converted to Count Per Million (cpm) using the Voom function in the R limma package.
+RPKM values were calculated for each transcript based on annotation data from Refseq tables extracted from UCSC genome browser.
+Genome_build: Dm3 R5.45
+Supplementary_files_format_and_content: Text files with log2(RPKM) values
+    </Data-Processing>
+    <Platform-Ref ref="GPL13304" />
+    <Library-Strategy>RNA-Seq</Library-Strategy>
+    <Library-Source>transcriptomic</Library-Source>
+    <Library-Selection>cDNA</Library-Selection>
+    <Instrument-Model>
+      <Predefined>Illumina HiSeq 2000</Predefined>
+    </Instrument-Model>
+    <Contact-Ref ref="contrib1" />
+    <Supplementary-Data type="TXT">
+ftp://ftp.ncbi.nlm.nih.gov/pub/geo/DATA/supplementary/samples/GSM1436nnn/GSM1436548/GSM1436548_Sample7.txt.gz
+    </Supplementary-Data>
+    <Supplementary-Data type="SRA Experiment">
+ftp://ftp-trace.ncbi.nlm.nih.gov/sra/sra-instant/reads/ByExp/sra/SRX/SRX652/SRX652724
+    </Supplementary-Data>
+    <Relation type="BioSample" target="http://www.ncbi.nlm.nih.gov/biosample/SAMN02911639" />
+    <Relation type="SRA" target="http://www.ncbi.nlm.nih.gov/sra?term=SRX652724" />
+  </Sample>
+
+  <Sample iid="GSM1436549">
+    <Status database="GEO">
+      <Submission-Date>2014-07-14</Submission-Date>
+      <Release-Date>2015-06-02</Release-Date>
+      <Last-Update-Date>2015-06-02</Last-Update-Date>
+    </Status>
+    <Title>RAL-280-Unchallenged</Title>
+    <Accession database="GEO">GSM1436549</Accession>
+    <Type>SRA</Type>
+    <Channel-Count>1</Channel-Count>
+    <Channel position="1">
+      <Source>Whole gut from adult female</Source>
+      <Organism taxid="7227">Drosophila melanogaster</Organism>
+      <Characteristics tag="treatment">
+Unchallenged
+      </Characteristics>
+      <Characteristics tag="dgrp line">
+RAL-280
+      </Characteristics>
+      <Characteristics tag="resistance">
+Susceptible
+      </Characteristics>
+      <Characteristics tag="developmental stage">
+adult
+      </Characteristics>
+      <Characteristics tag="gender">
+female
+      </Characteristics>
+      <Molecule>total RNA</Molecule>
+      <Extract-Protocol>
+Guts were dissected and put in Trizol on ice. RNA was harvested using Trizol reagent.
+Illumina TruSeq Stranded mRNA LT kit (cat# RS-122-2101) was used with 1 ug of total RNA for the construction of sequencing libraries.
+      </Extract-Protocol>
+    </Channel>
+    <Description>
+Sample 8
+    </Description>
+    <Data-Processing>
+Post processing was done using Illumina Casava 1.82
+Reads were aligned to the DGRP line-specific transcriptomes that were obtained based on the Drosophila melanogaster reference genome release 5.45, DGRP freeze 2 variant information, and the RefSeq annotation.
+Count data was converted to Count Per Million (cpm) using the Voom function in the R limma package.
+RPKM values were calculated for each transcript based on annotation data from Refseq tables extracted from UCSC genome browser.
+Genome_build: Dm3 R5.45
+Supplementary_files_format_and_content: Text files with log2(RPKM) values
+    </Data-Processing>
+    <Platform-Ref ref="GPL13304" />
+    <Library-Strategy>RNA-Seq</Library-Strategy>
+    <Library-Source>transcriptomic</Library-Source>
+    <Library-Selection>cDNA</Library-Selection>
+    <Instrument-Model>
+      <Predefined>Illumina HiSeq 2000</Predefined>
+    </Instrument-Model>
+    <Contact-Ref ref="contrib1" />
+    <Supplementary-Data type="TXT">
+ftp://ftp.ncbi.nlm.nih.gov/pub/geo/DATA/supplementary/samples/GSM1436nnn/GSM1436549/GSM1436549_Sample8.txt.gz
+    </Supplementary-Data>
+    <Supplementary-Data type="SRA Experiment">
+ftp://ftp-trace.ncbi.nlm.nih.gov/sra/sra-instant/reads/ByExp/sra/SRX/SRX652/SRX652725
+    </Supplementary-Data>
+    <Relation type="BioSample" target="http://www.ncbi.nlm.nih.gov/biosample/SAMN02911640" />
+    <Relation type="SRA" target="http://www.ncbi.nlm.nih.gov/sra?term=SRX652725" />
+  </Sample>
+
+  <Sample iid="GSM1436550">
+    <Status database="GEO">
+      <Submission-Date>2014-07-14</Submission-Date>
+      <Release-Date>2015-06-02</Release-Date>
+      <Last-Update-Date>2015-06-02</Last-Update-Date>
+    </Status>
+    <Title>RAL-802-Challenged</Title>
+    <Accession database="GEO">GSM1436550</Accession>
+    <Type>SRA</Type>
+    <Channel-Count>1</Channel-Count>
+    <Channel position="1">
+      <Source>Whole gut from adult female</Source>
+      <Organism taxid="7227">Drosophila melanogaster</Organism>
+      <Characteristics tag="treatment">
+Challenged
+      </Characteristics>
+      <Characteristics tag="dgrp line">
+RAL-802
+      </Characteristics>
+      <Characteristics tag="resistance">
+Resistant
+      </Characteristics>
+      <Characteristics tag="developmental stage">
+adult
+      </Characteristics>
+      <Characteristics tag="gender">
+female
+      </Characteristics>
+      <Molecule>total RNA</Molecule>
+      <Extract-Protocol>
+Guts were dissected and put in Trizol on ice. RNA was harvested using Trizol reagent.
+Illumina TruSeq Stranded mRNA LT kit (cat# RS-122-2101) was used with 1 ug of total RNA for the construction of sequencing libraries.
+      </Extract-Protocol>
+    </Channel>
+    <Description>
+Sample 9
+    </Description>
+    <Data-Processing>
+Post processing was done using Illumina Casava 1.82
+Reads were aligned to the DGRP line-specific transcriptomes that were obtained based on the Drosophila melanogaster reference genome release 5.45, DGRP freeze 2 variant information, and the RefSeq annotation.
+Count data was converted to Count Per Million (cpm) using the Voom function in the R limma package.
+RPKM values were calculated for each transcript based on annotation data from Refseq tables extracted from UCSC genome browser.
+Genome_build: Dm3 R5.45
+Supplementary_files_format_and_content: Text files with log2(RPKM) values
+    </Data-Processing>
+    <Platform-Ref ref="GPL13304" />
+    <Library-Strategy>RNA-Seq</Library-Strategy>
+    <Library-Source>transcriptomic</Library-Source>
+    <Library-Selection>cDNA</Library-Selection>
+    <Instrument-Model>
+      <Predefined>Illumina HiSeq 2000</Predefined>
+    </Instrument-Model>
+    <Contact-Ref ref="contrib1" />
+    <Supplementary-Data type="TXT">
+ftp://ftp.ncbi.nlm.nih.gov/pub/geo/DATA/supplementary/samples/GSM1436nnn/GSM1436550/GSM1436550_Sample9.txt.gz
+    </Supplementary-Data>
+    <Supplementary-Data type="SRA Experiment">
+ftp://ftp-trace.ncbi.nlm.nih.gov/sra/sra-instant/reads/ByExp/sra/SRX/SRX652/SRX652726
+    </Supplementary-Data>
+    <Relation type="BioSample" target="http://www.ncbi.nlm.nih.gov/biosample/SAMN02911641" />
+    <Relation type="SRA" target="http://www.ncbi.nlm.nih.gov/sra?term=SRX652726" />
+  </Sample>
+
+  <Sample iid="GSM1436551">
+    <Status database="GEO">
+      <Submission-Date>2014-07-14</Submission-Date>
+      <Release-Date>2015-06-02</Release-Date>
+      <Last-Update-Date>2015-06-02</Last-Update-Date>
+    </Status>
+    <Title>RAL-857-Challenged</Title>
+    <Accession database="GEO">GSM1436551</Accession>
+    <Type>SRA</Type>
+    <Channel-Count>1</Channel-Count>
+    <Channel position="1">
+      <Source>Whole gut from adult female</Source>
+      <Organism taxid="7227">Drosophila melanogaster</Organism>
+      <Characteristics tag="treatment">
+Challenged
+      </Characteristics>
+      <Characteristics tag="dgrp line">
+RAL-857
+      </Characteristics>
+      <Characteristics tag="resistance">
+Resistant
+      </Characteristics>
+      <Characteristics tag="developmental stage">
+adult
+      </Characteristics>
+      <Characteristics tag="gender">
+female
+      </Characteristics>
+      <Molecule>total RNA</Molecule>
+      <Extract-Protocol>
+Guts were dissected and put in Trizol on ice. RNA was harvested using Trizol reagent.
+Illumina TruSeq Stranded mRNA LT kit (cat# RS-122-2101) was used with 1 ug of total RNA for the construction of sequencing libraries.
+      </Extract-Protocol>
+    </Channel>
+    <Description>
+Sample 10
+    </Description>
+    <Data-Processing>
+Post processing was done using Illumina Casava 1.82
+Reads were aligned to the DGRP line-specific transcriptomes that were obtained based on the Drosophila melanogaster reference genome release 5.45, DGRP freeze 2 variant information, and the RefSeq annotation.
+Count data was converted to Count Per Million (cpm) using the Voom function in the R limma package.
+RPKM values were calculated for each transcript based on annotation data from Refseq tables extracted from UCSC genome browser.
+Genome_build: Dm3 R5.45
+Supplementary_files_format_and_content: Text files with log2(RPKM) values
+    </Data-Processing>
+    <Platform-Ref ref="GPL13304" />
+    <Library-Strategy>RNA-Seq</Library-Strategy>
+    <Library-Source>transcriptomic</Library-Source>
+    <Library-Selection>cDNA</Library-Selection>
+    <Instrument-Model>
+      <Predefined>Illumina HiSeq 2000</Predefined>
+    </Instrument-Model>
+    <Contact-Ref ref="contrib1" />
+    <Supplementary-Data type="TXT">
+ftp://ftp.ncbi.nlm.nih.gov/pub/geo/DATA/supplementary/samples/GSM1436nnn/GSM1436551/GSM1436551_Sample10.txt.gz
+    </Supplementary-Data>
+    <Supplementary-Data type="SRA Experiment">
+ftp://ftp-trace.ncbi.nlm.nih.gov/sra/sra-instant/reads/ByExp/sra/SRX/SRX652/SRX652727
+    </Supplementary-Data>
+    <Relation type="BioSample" target="http://www.ncbi.nlm.nih.gov/biosample/SAMN02911642" />
+    <Relation type="SRA" target="http://www.ncbi.nlm.nih.gov/sra?term=SRX652727" />
+  </Sample>
+
+  <Sample iid="GSM1436552">
+    <Status database="GEO">
+      <Submission-Date>2014-07-14</Submission-Date>
+      <Release-Date>2015-06-02</Release-Date>
+      <Last-Update-Date>2015-06-02</Last-Update-Date>
+    </Status>
+    <Title>RAL-208-Challenged</Title>
+    <Accession database="GEO">GSM1436552</Accession>
+    <Type>SRA</Type>
+    <Channel-Count>1</Channel-Count>
+    <Channel position="1">
+      <Source>Whole gut from adult female</Source>
+      <Organism taxid="7227">Drosophila melanogaster</Organism>
+      <Characteristics tag="treatment">
+Challenged
+      </Characteristics>
+      <Characteristics tag="dgrp line">
+RAL-208
+      </Characteristics>
+      <Characteristics tag="resistance">
+Resistant
+      </Characteristics>
+      <Characteristics tag="developmental stage">
+adult
+      </Characteristics>
+      <Characteristics tag="gender">
+female
+      </Characteristics>
+      <Molecule>total RNA</Molecule>
+      <Extract-Protocol>
+Guts were dissected and put in Trizol on ice. RNA was harvested using Trizol reagent.
+Illumina TruSeq Stranded mRNA LT kit (cat# RS-122-2101) was used with 1 ug of total RNA for the construction of sequencing libraries.
+      </Extract-Protocol>
+    </Channel>
+    <Description>
+Sample 11
+    </Description>
+    <Data-Processing>
+Post processing was done using Illumina Casava 1.82
+Reads were aligned to the DGRP line-specific transcriptomes that were obtained based on the Drosophila melanogaster reference genome release 5.45, DGRP freeze 2 variant information, and the RefSeq annotation.
+Count data was converted to Count Per Million (cpm) using the Voom function in the R limma package.
+RPKM values were calculated for each transcript based on annotation data from Refseq tables extracted from UCSC genome browser.
+Genome_build: Dm3 R5.45
+Supplementary_files_format_and_content: Text files with log2(RPKM) values
+    </Data-Processing>
+    <Platform-Ref ref="GPL13304" />
+    <Library-Strategy>RNA-Seq</Library-Strategy>
+    <Library-Source>transcriptomic</Library-Source>
+    <Library-Selection>cDNA</Library-Selection>
+    <Instrument-Model>
+      <Predefined>Illumina HiSeq 2000</Predefined>
+    </Instrument-Model>
+    <Contact-Ref ref="contrib1" />
+    <Supplementary-Data type="TXT">
+ftp://ftp.ncbi.nlm.nih.gov/pub/geo/DATA/supplementary/samples/GSM1436nnn/GSM1436552/GSM1436552_Sample11.txt.gz
+    </Supplementary-Data>
+    <Supplementary-Data type="SRA Experiment">
+ftp://ftp-trace.ncbi.nlm.nih.gov/sra/sra-instant/reads/ByExp/sra/SRX/SRX652/SRX652728
+    </Supplementary-Data>
+    <Relation type="BioSample" target="http://www.ncbi.nlm.nih.gov/biosample/SAMN02911643" />
+    <Relation type="SRA" target="http://www.ncbi.nlm.nih.gov/sra?term=SRX652728" />
+  </Sample>
+
+  <Sample iid="GSM1436553">
+    <Status database="GEO">
+      <Submission-Date>2014-07-14</Submission-Date>
+      <Release-Date>2015-06-02</Release-Date>
+      <Last-Update-Date>2015-06-02</Last-Update-Date>
+    </Status>
+    <Title>RAL-486-Challenged</Title>
+    <Accession database="GEO">GSM1436553</Accession>
+    <Type>SRA</Type>
+    <Channel-Count>1</Channel-Count>
+    <Channel position="1">
+      <Source>Whole gut from adult female</Source>
+      <Organism taxid="7227">Drosophila melanogaster</Organism>
+      <Characteristics tag="treatment">
+Challenged
+      </Characteristics>
+      <Characteristics tag="dgrp line">
+RAL-486
+      </Characteristics>
+      <Characteristics tag="resistance">
+Resistant
+      </Characteristics>
+      <Characteristics tag="developmental stage">
+adult
+      </Characteristics>
+      <Characteristics tag="gender">
+female
+      </Characteristics>
+      <Molecule>total RNA</Molecule>
+      <Extract-Protocol>
+Guts were dissected and put in Trizol on ice. RNA was harvested using Trizol reagent.
+Illumina TruSeq Stranded mRNA LT kit (cat# RS-122-2101) was used with 1 ug of total RNA for the construction of sequencing libraries.
+      </Extract-Protocol>
+    </Channel>
+    <Description>
+Sample 12
+    </Description>
+    <Data-Processing>
+Post processing was done using Illumina Casava 1.82
+Reads were aligned to the DGRP line-specific transcriptomes that were obtained based on the Drosophila melanogaster reference genome release 5.45, DGRP freeze 2 variant information, and the RefSeq annotation.
+Count data was converted to Count Per Million (cpm) using the Voom function in the R limma package.
+RPKM values were calculated for each transcript based on annotation data from Refseq tables extracted from UCSC genome browser.
+Genome_build: Dm3 R5.45
+Supplementary_files_format_and_content: Text files with log2(RPKM) values
+    </Data-Processing>
+    <Platform-Ref ref="GPL13304" />
+    <Library-Strategy>RNA-Seq</Library-Strategy>
+    <Library-Source>transcriptomic</Library-Source>
+    <Library-Selection>cDNA</Library-Selection>
+    <Instrument-Model>
+      <Predefined>Illumina HiSeq 2000</Predefined>
+    </Instrument-Model>
+    <Contact-Ref ref="contrib1" />
+    <Supplementary-Data type="TXT">
+ftp://ftp.ncbi.nlm.nih.gov/pub/geo/DATA/supplementary/samples/GSM1436nnn/GSM1436553/GSM1436553_Sample12.txt.gz
+    </Supplementary-Data>
+    <Supplementary-Data type="SRA Experiment">
+ftp://ftp-trace.ncbi.nlm.nih.gov/sra/sra-instant/reads/ByExp/sra/SRX/SRX652/SRX652729
+    </Supplementary-Data>
+    <Relation type="BioSample" target="http://www.ncbi.nlm.nih.gov/biosample/SAMN02911644" />
+    <Relation type="SRA" target="http://www.ncbi.nlm.nih.gov/sra?term=SRX652729" />
+  </Sample>
+
+  <Sample iid="GSM1436554">
+    <Status database="GEO">
+      <Submission-Date>2014-07-14</Submission-Date>
+      <Release-Date>2015-06-02</Release-Date>
+      <Last-Update-Date>2015-06-02</Last-Update-Date>
+    </Status>
+    <Title>RAL-502-Challenged</Title>
+    <Accession database="GEO">GSM1436554</Accession>
+    <Type>SRA</Type>
+    <Channel-Count>1</Channel-Count>
+    <Channel position="1">
+      <Source>Whole gut from adult female</Source>
+      <Organism taxid="7227">Drosophila melanogaster</Organism>
+      <Characteristics tag="treatment">
+Challenged
+      </Characteristics>
+      <Characteristics tag="dgrp line">
+RAL-502
+      </Characteristics>
+      <Characteristics tag="resistance">
+Susceptible
+      </Characteristics>
+      <Characteristics tag="developmental stage">
+adult
+      </Characteristics>
+      <Characteristics tag="gender">
+female
+      </Characteristics>
+      <Molecule>total RNA</Molecule>
+      <Extract-Protocol>
+Guts were dissected and put in Trizol on ice. RNA was harvested using Trizol reagent.
+Illumina TruSeq Stranded mRNA LT kit (cat# RS-122-2101) was used with 1 ug of total RNA for the construction of sequencing libraries.
+      </Extract-Protocol>
+    </Channel>
+    <Description>
+Sample 13
+    </Description>
+    <Data-Processing>
+Post processing was done using Illumina Casava 1.82
+Reads were aligned to the DGRP line-specific transcriptomes that were obtained based on the Drosophila melanogaster reference genome release 5.45, DGRP freeze 2 variant information, and the RefSeq annotation.
+Count data was converted to Count Per Million (cpm) using the Voom function in the R limma package.
+RPKM values were calculated for each transcript based on annotation data from Refseq tables extracted from UCSC genome browser.
+Genome_build: Dm3 R5.45
+Supplementary_files_format_and_content: Text files with log2(RPKM) values
+    </Data-Processing>
+    <Platform-Ref ref="GPL13304" />
+    <Library-Strategy>RNA-Seq</Library-Strategy>
+    <Library-Source>transcriptomic</Library-Source>
+    <Library-Selection>cDNA</Library-Selection>
+    <Instrument-Model>
+      <Predefined>Illumina HiSeq 2000</Predefined>
+    </Instrument-Model>
+    <Contact-Ref ref="contrib1" />
+    <Supplementary-Data type="TXT">
+ftp://ftp.ncbi.nlm.nih.gov/pub/geo/DATA/supplementary/samples/GSM1436nnn/GSM1436554/GSM1436554_Sample13.txt.gz
+    </Supplementary-Data>
+    <Supplementary-Data type="SRA Experiment">
+ftp://ftp-trace.ncbi.nlm.nih.gov/sra/sra-instant/reads/ByExp/sra/SRX/SRX652/SRX652730
+    </Supplementary-Data>
+    <Relation type="BioSample" target="http://www.ncbi.nlm.nih.gov/biosample/SAMN02911645" />
+    <Relation type="SRA" target="http://www.ncbi.nlm.nih.gov/sra?term=SRX652730" />
+  </Sample>
+
+  <Sample iid="GSM1436555">
+    <Status database="GEO">
+      <Submission-Date>2014-07-14</Submission-Date>
+      <Release-Date>2015-06-02</Release-Date>
+      <Last-Update-Date>2015-06-02</Last-Update-Date>
+    </Status>
+    <Title>RAL-229-Challenged</Title>
+    <Accession database="GEO">GSM1436555</Accession>
+    <Type>SRA</Type>
+    <Channel-Count>1</Channel-Count>
+    <Channel position="1">
+      <Source>Whole gut from adult female</Source>
+      <Organism taxid="7227">Drosophila melanogaster</Organism>
+      <Characteristics tag="treatment">
+Challenged
+      </Characteristics>
+      <Characteristics tag="dgrp line">
+RAL-229
+      </Characteristics>
+      <Characteristics tag="resistance">
+Susceptible
+      </Characteristics>
+      <Characteristics tag="developmental stage">
+adult
+      </Characteristics>
+      <Characteristics tag="gender">
+female
+      </Characteristics>
+      <Molecule>total RNA</Molecule>
+      <Extract-Protocol>
+Guts were dissected and put in Trizol on ice. RNA was harvested using Trizol reagent.
+Illumina TruSeq Stranded mRNA LT kit (cat# RS-122-2101) was used with 1 ug of total RNA for the construction of sequencing libraries.
+      </Extract-Protocol>
+    </Channel>
+    <Description>
+Sample 14
+    </Description>
+    <Data-Processing>
+Post processing was done using Illumina Casava 1.82
+Reads were aligned to the DGRP line-specific transcriptomes that were obtained based on the Drosophila melanogaster reference genome release 5.45, DGRP freeze 2 variant information, and the RefSeq annotation.
+Count data was converted to Count Per Million (cpm) using the Voom function in the R limma package.
+RPKM values were calculated for each transcript based on annotation data from Refseq tables extracted from UCSC genome browser.
+Genome_build: Dm3 R5.45
+Supplementary_files_format_and_content: Text files with log2(RPKM) values
+    </Data-Processing>
+    <Platform-Ref ref="GPL13304" />
+    <Library-Strategy>RNA-Seq</Library-Strategy>
+    <Library-Source>transcriptomic</Library-Source>
+    <Library-Selection>cDNA</Library-Selection>
+    <Instrument-Model>
+      <Predefined>Illumina HiSeq 2000</Predefined>
+    </Instrument-Model>
+    <Contact-Ref ref="contrib1" />
+    <Supplementary-Data type="TXT">
+ftp://ftp.ncbi.nlm.nih.gov/pub/geo/DATA/supplementary/samples/GSM1436nnn/GSM1436555/GSM1436555_Sample14.txt.gz
+    </Supplementary-Data>
+    <Supplementary-Data type="SRA Experiment">
+ftp://ftp-trace.ncbi.nlm.nih.gov/sra/sra-instant/reads/ByExp/sra/SRX/SRX652/SRX652731
+    </Supplementary-Data>
+    <Relation type="BioSample" target="http://www.ncbi.nlm.nih.gov/biosample/SAMN02911646" />
+    <Relation type="SRA" target="http://www.ncbi.nlm.nih.gov/sra?term=SRX652731" />
+  </Sample>
+
+  <Sample iid="GSM1436556">
+    <Status database="GEO">
+      <Submission-Date>2014-07-14</Submission-Date>
+      <Release-Date>2015-06-02</Release-Date>
+      <Last-Update-Date>2015-06-02</Last-Update-Date>
+    </Status>
+    <Title>RAL-908-Challenged</Title>
+    <Accession database="GEO">GSM1436556</Accession>
+    <Type>SRA</Type>
+    <Channel-Count>1</Channel-Count>
+    <Channel position="1">
+      <Source>Whole gut from adult female</Source>
+      <Organism taxid="7227">Drosophila melanogaster</Organism>
+      <Characteristics tag="treatment">
+Challenged
+      </Characteristics>
+      <Characteristics tag="dgrp line">
+RAL-908
+      </Characteristics>
+      <Characteristics tag="resistance">
+Susceptible
+      </Characteristics>
+      <Characteristics tag="developmental stage">
+adult
+      </Characteristics>
+      <Characteristics tag="gender">
+female
+      </Characteristics>
+      <Molecule>total RNA</Molecule>
+      <Extract-Protocol>
+Guts were dissected and put in Trizol on ice. RNA was harvested using Trizol reagent.
+Illumina TruSeq Stranded mRNA LT kit (cat# RS-122-2101) was used with 1 ug of total RNA for the construction of sequencing libraries.
+      </Extract-Protocol>
+    </Channel>
+    <Description>
+Sample 15
+    </Description>
+    <Data-Processing>
+Post processing was done using Illumina Casava 1.82
+Reads were aligned to the DGRP line-specific transcriptomes that were obtained based on the Drosophila melanogaster reference genome release 5.45, DGRP freeze 2 variant information, and the RefSeq annotation.
+Count data was converted to Count Per Million (cpm) using the Voom function in the R limma package.
+RPKM values were calculated for each transcript based on annotation data from Refseq tables extracted from UCSC genome browser.
+Genome_build: Dm3 R5.45
+Supplementary_files_format_and_content: Text files with log2(RPKM) values
+    </Data-Processing>
+    <Platform-Ref ref="GPL13304" />
+    <Library-Strategy>RNA-Seq</Library-Strategy>
+    <Library-Source>transcriptomic</Library-Source>
+    <Library-Selection>cDNA</Library-Selection>
+    <Instrument-Model>
+      <Predefined>Illumina HiSeq 2000</Predefined>
+    </Instrument-Model>
+    <Contact-Ref ref="contrib1" />
+    <Supplementary-Data type="TXT">
+ftp://ftp.ncbi.nlm.nih.gov/pub/geo/DATA/supplementary/samples/GSM1436nnn/GSM1436556/GSM1436556_Sample15.txt.gz
+    </Supplementary-Data>
+    <Supplementary-Data type="SRA Experiment">
+ftp://ftp-trace.ncbi.nlm.nih.gov/sra/sra-instant/reads/ByExp/sra/SRX/SRX652/SRX652732
+    </Supplementary-Data>
+    <Relation type="BioSample" target="http://www.ncbi.nlm.nih.gov/biosample/SAMN02911647" />
+    <Relation type="SRA" target="http://www.ncbi.nlm.nih.gov/sra?term=SRX652732" />
+  </Sample>
+
+  <Sample iid="GSM1436557">
+    <Status database="GEO">
+      <Submission-Date>2014-07-14</Submission-Date>
+      <Release-Date>2015-06-02</Release-Date>
+      <Last-Update-Date>2015-06-02</Last-Update-Date>
+    </Status>
+    <Title>RAL-280-Challenged</Title>
+    <Accession database="GEO">GSM1436557</Accession>
+    <Type>SRA</Type>
+    <Channel-Count>1</Channel-Count>
+    <Channel position="1">
+      <Source>Whole gut from adult female</Source>
+      <Organism taxid="7227">Drosophila melanogaster</Organism>
+      <Characteristics tag="treatment">
+Challenged
+      </Characteristics>
+      <Characteristics tag="dgrp line">
+RAL-280
+      </Characteristics>
+      <Characteristics tag="resistance">
+Susceptible
+      </Characteristics>
+      <Characteristics tag="developmental stage">
+adult
+      </Characteristics>
+      <Characteristics tag="gender">
+female
+      </Characteristics>
+      <Molecule>total RNA</Molecule>
+      <Extract-Protocol>
+Guts were dissected and put in Trizol on ice. RNA was harvested using Trizol reagent.
+Illumina TruSeq Stranded mRNA LT kit (cat# RS-122-2101) was used with 1 ug of total RNA for the construction of sequencing libraries.
+      </Extract-Protocol>
+    </Channel>
+    <Description>
+Sample 16
+    </Description>
+    <Data-Processing>
+Post processing was done using Illumina Casava 1.82
+Reads were aligned to the DGRP line-specific transcriptomes that were obtained based on the Drosophila melanogaster reference genome release 5.45, DGRP freeze 2 variant information, and the RefSeq annotation.
+Count data was converted to Count Per Million (cpm) using the Voom function in the R limma package.
+RPKM values were calculated for each transcript based on annotation data from Refseq tables extracted from UCSC genome browser.
+Genome_build: Dm3 R5.45
+Supplementary_files_format_and_content: Text files with log2(RPKM) values
+    </Data-Processing>
+    <Platform-Ref ref="GPL13304" />
+    <Library-Strategy>RNA-Seq</Library-Strategy>
+    <Library-Source>transcriptomic</Library-Source>
+    <Library-Selection>cDNA</Library-Selection>
+    <Instrument-Model>
+      <Predefined>Illumina HiSeq 2000</Predefined>
+    </Instrument-Model>
+    <Contact-Ref ref="contrib1" />
+    <Supplementary-Data type="TXT">
+ftp://ftp.ncbi.nlm.nih.gov/pub/geo/DATA/supplementary/samples/GSM1436nnn/GSM1436557/GSM1436557_Sample16.txt.gz
+    </Supplementary-Data>
+    <Supplementary-Data type="SRA Experiment">
+ftp://ftp-trace.ncbi.nlm.nih.gov/sra/sra-instant/reads/ByExp/sra/SRX/SRX652/SRX652733
+    </Supplementary-Data>
+    <Relation type="BioSample" target="http://www.ncbi.nlm.nih.gov/biosample/SAMN02911648" />
+    <Relation type="SRA" target="http://www.ncbi.nlm.nih.gov/sra?term=SRX652733" />
+  </Sample>
+
+  <Series iid="GSE59411">
+    <Status database="GEO">
+      <Submission-Date>2014-07-14</Submission-Date>
+      <Release-Date>2015-06-02</Release-Date>
+      <Last-Update-Date>2016-04-20</Last-Update-Date>
+    </Status>
+    <Title>Genetic, Molecular and Physiological Basis of Variation in Gut Immunocompetence</Title>
+    <Accession database="GEO">GSE59411</Accession>
+    <Summary>
+Gut immunocompetence involves immune, stress, and regenerative processes. To investigate the determinants underlying inter-individual variation in gut immunocompetence, we perform enteric infection of 140 Drosophila lines with the entomopathogenic bacterium Pseudomonas entomophila and observe extensive variation in survival. Using genome-wide association analysis, we identify several novel immune modulators. Transcriptional profiling further shows that the intestinal molecular states of resistant and susceptible lines differ, already before infection, with one transcriptional module involving genes linked to reactive oxygen species (ROS) metabolism contributing to this difference. This genetic and molecular variation is physiologically manifested in lower ROS activity, lower susceptibility to ROS-inducing agent, faster pathogen clearance and higher stem cell activity in resistant versus susceptible lines. This study provides novel insights into the determinants underlying population-level variability in gut immunocompetence, revealing how relatively minor, but systematic genetic and transcriptional variation can mediate overt physiological differences that determine enteric infection susceptibility.
+    </Summary>
+    <Overall-Design>
+RNA-sequencing of whole guts of female adults from different lines of the Drosophila Genetic Reference Panel (DGRP) was performed under two conditions: fed on sucrose or infected with Pseudomonas entomophila.
+    </Overall-Design>
+    <Type>Expression profiling by high throughput sequencing</Type>
+    <Contributor-Ref ref="contrib3" position="1" />
+    <Contributor-Ref ref="contrib4" position="2" />
+    <Contributor-Ref ref="contrib5" position="3" />
+    <Contributor-Ref ref="contrib6" position="4" />
+    <Contributor-Ref ref="contrib7" position="5" />
+    <Contributor-Ref ref="contrib8" position="6" />
+    <Contact-Ref ref="contrib1" />
+    <Sample-Ref ref="GSM1436542" />
+    <Sample-Ref ref="GSM1436543" />
+    <Sample-Ref ref="GSM1436544" />
+    <Sample-Ref ref="GSM1436545" />
+    <Sample-Ref ref="GSM1436546" />
+    <Sample-Ref ref="GSM1436547" />
+    <Sample-Ref ref="GSM1436548" />
+    <Sample-Ref ref="GSM1436549" />
+    <Sample-Ref ref="GSM1436550" />
+    <Sample-Ref ref="GSM1436551" />
+    <Sample-Ref ref="GSM1436552" />
+    <Sample-Ref ref="GSM1436553" />
+    <Sample-Ref ref="GSM1436554" />
+    <Sample-Ref ref="GSM1436555" />
+    <Sample-Ref ref="GSM1436556" />
+    <Sample-Ref ref="GSM1436557" />
+    <Supplementary-Data type="TAR">
+ftp://ftp.ncbi.nlm.nih.gov/pub/geo/DATA/supplementary/series/GSE59411/GSE59411_RAW.tar
+    </Supplementary-Data>
+    <Supplementary-Data type="SRA Study">
+ftp://ftp-trace.ncbi.nlm.nih.gov/sra/sra-instant/reads/ByStudy/sra/SRP/SRP044/SRP044339
+    </Supplementary-Data>
+    <Relation type="BioProject" target="http://www.ncbi.nlm.nih.gov/bioproject/PRJNA255258" />
+    <Relation type="SRA" target="http://www.ncbi.nlm.nih.gov/sra?term=SRP044339" />
+  </Series>
+
+</MINiML>

@@ -1,0 +1,84 @@
+@font-face {
+  font-family: 'jsMath cmsy10::MENU';
+  font-style: normal;
+  font-weight: 400;
+  src: local('jsMath-cmsy10'), url(https://themes.googleusercontent.com/static/fonts/jsmathcmsy10/v3/QTZ2F6-N2KBSZvG48dFYbY2cof54KyXTZ48wzMToefo.woff) format('woff');
+}
+@font-face {
+  font-family: 'Droid Serif::MENU';
+  font-style: normal;
+  font-weight: 400;
+  src: local('Droid Serif'), local('DroidSerif'), url(https://themes.googleusercontent.com/static/fonts/droidserif/v3/0AKsP294HTD-nvJgucYTaJXfdieUyyORoM9wGrfggHw.woff) format('woff');
+}
+@font-face {
+  font-family: 'jsMath cmti10::MENU';
+  font-style: normal;
+  font-weight: 400;
+  src: local('jsMath-cmti10'), url(https://themes.googleusercontent.com/static/fonts/jsmathcmti10/v3/mrXZJMtAIRbOuKCWEl5K0I2cof54KyXTZ48wzMToefo.woff) format('woff');
+}
+@font-face {
+  font-family: 'Corsiva::MENU';
+  font-style: normal;
+  font-weight: 400;
+  src: local('Corsiva'), url(https://themes.googleusercontent.com/licensed/font?kit=Gv6LCd1-36ZR97f1YeZnowLUuEpTyoUstqEm5AMlJo4) format('woff');
+}
+@font-face {
+  font-family: 'Droid Sans::MENU';
+  font-style: normal;
+  font-weight: 400;
+  src: local('Droid Sans'), local('DroidSans'), url(https://themes.googleusercontent.com/static/fonts/droidsans/v3/vk1xBJHzOPMZIrllGO7pBL3hpw3pgy2gAi-Ip7WPMi0.woff) format('woff');
+}
+@font-face {
+  font-family: 'jsMath cmbx10::MENU';
+  font-style: normal;
+  font-weight: 400;
+  src: local('jsMath-cmbx10'), url(https://themes.googleusercontent.com/static/fonts/jsmathcmbx10/v3/mQWqSxeuMfOFFco6wXjtYY2cof54KyXTZ48wzMToefo.woff) format('woff');
+}
+@font-face {
+  font-family: 'Calibri::MENU';
+  font-style: normal;
+  font-weight: 400;
+  src: local('Calibri'), url(https://themes.googleusercontent.com/licensed/font?kit=QV7iPCY0Krv0-Xyt14BH7QLUuEpTyoUstqEm5AMlJo4) format('woff');
+}
+@font-face {
+  font-family: 'jsMath cmex10::MENU';
+  font-style: normal;
+  font-weight: 400;
+  src: local('jsMath-cmex10'), url(https://themes.googleusercontent.com/static/fonts/jsmathcmex10/v3/n7p2sMu2ciQhmbPABQDTcY2cof54KyXTZ48wzMToefo.woff) format('woff');
+}
+@font-face {
+  font-family: 'jsMath cmmi10::MENU';
+  font-style: normal;
+  font-weight: 400;
+  src: local('jsMath-cmmi10'), url(https://themes.googleusercontent.com/static/fonts/jsmathcmmi10/v3/0JSKQqP4Y5vIZB4l52jAjI2cof54KyXTZ48wzMToefo.woff) format('woff');
+}
+@font-face {
+  font-family: 'Consolas::MENU';
+  font-style: normal;
+  font-weight: 400;
+  src: local('Consolas'), url(https://themes.googleusercontent.com/licensed/font?kit=tU9YDI746eMeg42M7b80THYhjbSpvc47ee6xR_80Hnw) format('woff');
+}
+@font-face {
+  font-family: 'Ubuntu::MENU';
+  font-style: normal;
+  font-weight: 400;
+  src: local('Ubuntu'), url(https://themes.googleusercontent.com/static/fonts/ubuntu/v4/tcKMcGiTiP6oQJ3OO9TdcuvvDin1pK8aKteLpeZ5c0A.woff) format('woff');
+}
+@font-face {
+  font-family: 'Cambria::MENU';
+  font-style: normal;
+  font-weight: 400;
+  src: local('Cambria'), url(https://themes.googleusercontent.com/licensed/font?kit=1nMY87THe_NAM5Gtd_-H7gLUuEpTyoUstqEm5AMlJo4) format('woff');
+}
+@font-face {
+  font-family: 'Syncopate::MENU';
+  font-style: normal;
+  font-weight: 400;
+  src: local('Syncopate'), local('Syncopate-Regular'), url(https://themes.googleusercontent.com/static/fonts/syncopate/v3/J8LIyVp-BBfhgWRYSdAgPrO3LdcAZYWl9Si6vvxL-qU.woff) format('woff');
+}
+@font-face {
+  font-family: 'jsMath cmr10::MENU';
+  font-style: normal;
+  font-weight: 400;
+  src: local('jsMath-cmr10'), url(https://themes.googleusercontent.com/static/fonts/jsmathcmr10/v3/_2fBznrzTFuHymY6OLQcELyZXjRt7DtCfnhPeGk_nvY.woff) format('woff');
+}

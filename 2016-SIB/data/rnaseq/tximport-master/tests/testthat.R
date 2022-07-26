@@ -1,5 +1,0 @@
-library(testthat)
-library(tximport)
-library(tximportData)
-library(readr)
-test_check("tximport")
