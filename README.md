@@ -10,9 +10,12 @@ Practicals include:
 * Read mapping and variant calling
 * Simple gene expression analysis
 
-Newer is better.
+Previous years courses are backed up in the `previous-courses` directory, while the current course is saved in a directory named as the current year.  
 
-Folders organised by year.
+# Website generation
+
+Website is generated from Mardowns using `Jekyll`. Be sure that the file `_config.yml` is updated to point to the current year course materials.  
+The links in the Markdowns must point to the `html`, not the `md` files.
 
 # Deploying
 
