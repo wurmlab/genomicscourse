@@ -60,18 +60,19 @@ Prerequisites for the practicals are:
 3. [Gene prediction](./current-year/practicals/reference_genome/pt-3-prediction.html): gene prediction,
   quality control
 * Population sequencing to genotypes to population genetics statistics:  
-     4. [Mapping reads, calling variants, visualizing variant calls.](./current-year/practicals/population_genetics/map_call.html)  
-     5. [Analysing variants: PCA, measuring Differentiation & Diversity.](./current-year/practicals/population_genetics/popgen.html)
+     4. [Mapping reads, calling variants, visualizing variant calls.](./current-year/practicals/population_genetics/pt-4-map-call.html)  
+     5. [Analysing variants: PCA, measuring Differentiation & Diversity.](./current-year/practicals/population_genetics/pt-5-popgen.html)
 
 ## 3. Computers
 
 To perform the practicals, you will remotely connect to the Amazon Web Services
 (AWS) ([here](https://en.wikipedia.org/wiki/Amazon_Web_Services), for more
 informations).
-You will use an SSH ([here] for more information), client to connect to a remote
-shell, where you will run the first three practicals. Some results will be
-available on a personal web page created for the course. The same web page
-will allow you to perform the fourth and fifth practicals.
+You will use an SSH ([here](./current-year/docs/ssh.html) for more information),
+client to connect to a remote shell, where you will run the first three
+practicals. Some results will be available on a personal web page created for 
+the course. The same web page will allow you to perform the fourth and fifth 
+practicals.
 
 ## 4. Authors/Credits
 

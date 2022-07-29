@@ -1,6 +1,8 @@
 ---
 layout: page
 title: Part 1 - Reads to reference genome and gene predictions
+post_url: pt-1-read-cleaning
+
 ---
 
 <!-- Updated by Paolo Inglese, 2022 -->
@@ -140,7 +142,7 @@ The structure of your directory should look like this (use the command `tree`):
 
 Now, you can start evaluating the quality of the reads `reads.pe1.fastq.gz` and
 `reads.pe2.fastq.gz`. To do so, we will use
-[FastQC](http://www.bioinformatics.babraham.ac.uk/projects/fastqc/)
+[*FastQC*](http://www.bioinformatics.babraham.ac.uk/projects/fastqc/)
 ([documentation](http://www.bioinformatics.babraham.ac.uk/projects/fastqc/Help/)).
 FASTQC is a software tool that can help you understand sequence quality and
 composition, and thus can inform about the read cleaning strategy.
@@ -196,16 +198,23 @@ URL will be `bt007.genomicscourse.com`) and click on the `~/www/tmp` link. After
 that, click on one of the links corresponding to the reports files.
 
 > **_Question:_**  
-> What does the FastQC report tell you?  
-> If in doubt, check the documentation [here](http://www.bioinformatics.babraham.ac.uk/projects/fastqc/Help/3%20Analysis%20Modules/) and what the quality scores mean [here](https://learn.gencore.bio.nyu.edu/ngs-file-formats/quality-scores/).
+> What does the *FastQC* report tell you?  
+> If in doubt, check the documentation 
+> [here](http://www.bioinformatics.babraham.ac.uk/projects/fastqc/Help/3%20Analysis%20Modules/) 
+> and what the quality scores mean 
+> [here](https://learn.gencore.bio.nyu.edu/ngs-file-formats/quality-scores/).
 
-For comparison, have a look at some plots from other sequencing libraries: e.g, [[1]](img-qc/per_base_quality.png), [[2]](img-qc/qc_factq_tile_sequence_quality.png), [[3]](img-qc/per_base_sequence_content.png). *NOTE:* the results for your sequences may look different.
+For comparison, have a look at some plots from other sequencing libraries: 
+e.g, [[1]](img-qc/per_base_quality.png), 
+[[2]](img-qc/qc_factq_tile_sequence_quality.png), 
+[[3]](img-qc/per_base_sequence_content.png). 
+*NOTE:* the results for your sequences may look different.
 
 Clearly, some sequences have very low quality bases towards the end.
 Furthermore, many more sequences start with the nucleotide **A** rather
 than **T**.
 
-> **_Questions:_**  
+> **_Question:_**  
 > * Which FastQC plots shows the relationship between base quality and position
 >   in the sequence? What else does this plot tell you about nucleotide 
 >   composition towards the end of the sequences?
@@ -215,22 +224,22 @@ than **T**.
 In the following sections, we will perform two cleaning steps:
 
 * Trimming the ends of sequence reads using cutadapt.
-* K-mer filtering using kmc3.
+* K-mer filtering using *kmc3*.
 * Removing sequences that are of low quality or too short using cutadapt.
 
-Other tools, such as [fastx_toolkit](http://github.com/agordon/fastx_toolkit),
-[BBTools](https://jgi.doe.gov/data-and-tools/bbtools/), and
-[Trimmomatic](http://www.usadellab.org/cms/index.php?page=trimmomatic) can also
-be useful, **but we won't use them now**.
+Other tools, such as [*fastx_toolkit*](http://github.com/agordon/fastx_toolkit),
+[*BBTools*](https://jgi.doe.gov/data-and-tools/bbtools/), and
+[*Trimmomatic*](http://www.usadellab.org/cms/index.php?page=trimmomatic) can 
+also be useful, **but we won't use them now**.
 
 ## 3.2 Sequence trimming
 
 To clean the FASTQ sequences, we will use a software tool called
-[cutadapt](https://cutadapt.readthedocs.io/en/stable/). As stated on the
+[*cutadapt*](https://cutadapt.readthedocs.io/en/stable/). As stated on the
 official website:  
 
 > Cutadapt finds and removes adapter sequences, primers, poly-A tails and
->other types of unwanted sequence from your high-throughput sequencing reads.
+> other types of unwanted sequence from your high-throughput sequencing reads.
 
 Specifically, we will use `cutadapt` to trim the sequences.
 
@@ -260,7 +269,7 @@ The command to run `cutadapt` on the two reads files is reported below, where
 `BEGINNING` and `CUTOFF` are the the two integer values corresponding to the
 number of bases to trim from the beginning of the sequence and the quality
 threshold (see the above note for suggestion about the values to use). Remember
-that each `fastq` file can have a different set of values.
+that each `.fq` file can have a different set of values.
 
 ```bash
 cutadapt --cut BEGINNING --quality-cutoff CUTOFF \
@@ -303,20 +312,20 @@ coverage (up to 10,000). These could be pathogens or repetitive elements.
 > softwares. Eliminating them can reduce subsequent memory, disk space and CPU
 > requirements considerably.
 
-Below, we use [kmc3](http://github.com/refresh-bio/KMC) to "mask" extremely rare
-k-mers (i.e., convert each base in the sequences corresponding to rare k-mers
-into **N**). In this way, we will ignore these bases (those called **N**)
+Below, we use [*kmc3*](http://github.com/refresh-bio/KMC) to "mask" extremely
+rare k-mers (i.e., convert each base in the sequences corresponding to rare
+k-mers into **N**). In this way, we will ignore these bases (those called **N**)
 because they are not really present in the species. Multiple alternative
 approaches for k-mer filtering exist (e.g., using 
-[khmer](http://github.com/ged-lab/khmer)).
+[*khmer*](http://github.com/ged-lab/khmer)).
 
-Here, we use `kmc3` to estimate the coverage of k-mers with a size of 21 
+Here, we use *kmc3* to estimate the coverage of k-mers with a size of 21 
 nucleotides. When the masked k-mers are located at the end of the reads, we trim
-them in a subsequent step using `cutadapt`. If the masked k-mers are in the
+them in a subsequent step using *cutadapt*. If the masked k-mers are in the
 **middle** of the reads, we **leave them** just masked.  
 Trimming reads (either masked k-mers or low quality ends in the previous step)
 can cause some reads to become too short to be informative. We remove such
-reads in the same step using `cutadapt`. Finally, discarding reads (because they
+reads in the same step using *cutadapt*. Finally, discarding reads (because they
 are too short) can cause the corresponding read of the pair to become
 **"unpaired"**. While it is possible to capture and use unpaired reads, we do 
 not illustrate that here for simplicity. Understanding the exact commands 

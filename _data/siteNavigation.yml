@@ -25,3 +25,27 @@ mainNavigation:
   - name: Tools
     link: https://wurmlab.com/tools
     external: true
+
+moduleNavigation:
+  - name: Home
+    link: "index.md"
+    external: false
+  - name: SSH
+    link: "current-year/docs/ssh.md"
+    external: false
+  - name: Part 1
+    link: "current-year/practicals/reference_genome/pt-1-read-cleaning.md"
+    external: false
+  - name: Part 2
+    link: "current-year/practicals/reference_genome/pt-2-assembly.md"
+    external: false
+  - name: Part 3
+    link: "current-year/practicals/reference_genome/pt-3-prediction.md"
+    external: false
+  - name: Part 4
+    link: "current-year/practicals/population_genetics/pt-4-map-call.md"
+    external: false
+  - name: Part 5
+    link: "current-year/practicals/population_genetics/pt-5-popgen.md"
+    external: false
+    
