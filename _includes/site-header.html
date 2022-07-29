@@ -40,6 +40,15 @@
                         item.name | upcase }}</a></li>
                 {% endfor -%}
             </ul>
+            <nav id="course-menu" class="topnav">
+                <ul class="site-links">
+                    {% for item in site.data.siteNavigation.moduleNavigation -%}
+                    <li><a href="{%- link {{ item.link }} -%}" {% if item.external==true %} target="_blank"
+                            rel="noopener" {% endif %}>{{
+                            item.name | upcase }}</a></li>
+                    {% endfor -%}
+                </ul>
+            </nav>
         </nav>
         {% endif %}
     </header>
