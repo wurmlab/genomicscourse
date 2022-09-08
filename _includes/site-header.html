@@ -23,39 +23,4 @@
         {% endfor %}
     </div>
     {% endif %}
-    <!--
-    <header class="site-header border-bottom">
-        <h1 class="site-title">{{site.title}}</h1>
-        {% if site.data.siteNavigation.displayMainNavigation == true%}
-        <a href="javascript:void(0);" title="Expand Menu" class="icon" onclick="mainNavigation()">
-            <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg"
-                xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 11 8.9"
-                style="enable-background:new 0 0 11 8.9;" xml:space="preserve">
-                <path class="st0" d="M11,3.2H0V2.3h11V3.2z M11,4H0v0.9h11V4z M11,5.7H0v0.9h11V5.7z" />
-            </svg>
-        </a>
-        <nav id="main-menu" class="topnav">
-            <ul class="site-links">
-                {% for item in site.data.siteNavigation.mainNavigation -%}
-                <li><a href="{{ item.link }}" {% if item.external==true %} target="_blank" rel="noopener" {% endif %}>{{
-                        item.name | upcase }}</a></li>
-                {% endfor -%}
-            </ul>
-
-
-
-                <ul class="site-links">
-                    {% for item in site.data.siteNavigation.moduleNavigation -%}
-                    <li><a href="{%- link {{ item.link }} -%}" {% if item.external==true %} target="_blank"
-                            rel="noopener" {% endif %}>{{
-                            item.name | upcase }}</a></li>
-                    {% endfor -%}
-                </ul>
-            </nav>
-        </nav>
-
-        {% endif %}
-        -->
-
-    </header>
     <main>
