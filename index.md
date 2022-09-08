@@ -30,9 +30,9 @@ At the end of this module, you should be able to:
 5. assess quality of gene predictions,
 6. assess quality of the entire process using a biologically meaningful measure.
 
-> **NOTE:_**  
-> The exemplar datasets are simplified to run on laptops and to fit into the 
-> short format of this course. For real projects, much more sophisticated 
+> **NOTE:_**
+> The exemplar datasets are simplified to run on laptops and to fit into the
+> short format of this course. For real projects, much more sophisticated
 > approaches are needed!
 
 ---
@@ -41,28 +41,31 @@ At the end of this module, you should be able to:
 
 Prerequisites for the practicals are:
 
- * a basic knowledge of Linux command line. For a refresher, try the SIB's 
+ * a basic knowledge of Linux command line. For a refresher, try the SIB's
    UNIX fundamentals online course ([here](http://edu.isb-sib.ch/course/view.php?id=82)).
  * a basic knowledge of R programming. The `swirl()` library course ([here](http://swirlstats.com))
    can help.
    In particular, it can be useful:
-     * following the *R programming* self-led course (skip the sections 
+     * following the *R programming* self-led course (skip the sections
        *Simulation* and *Dates and Times*)
      * following at least the *ggplot* section of the *Exploratory_Data_Analysis*
        swirl course.
 
+<!--
+
 ## 2. Practicals
 
-1. [Short read cleaning](./current-year/practicals/reference_genome/pt-1-read-cleaning.html): Illumina 
+1. [Short read cleaning](./current-year/practicals/reference_genome/pt-1-read-cleaning.html): Illumina
   short read cleaning
 2. [Reads to genome](./current-year/practicals/reference_genome/pt-2-assembly.html): genome assembly,
   quality control
 3. [Gene prediction](./current-year/practicals/reference_genome/pt-3-prediction.html): gene prediction,
   quality control
-* Population sequencing to genotypes to population genetics statistics:  
-     4. [Mapping reads, calling variants, visualizing variant calls.](./current-year/practicals/population_genetics/pt-4-map-call.html)  
+* Population sequencing to genotypes to population genetics statistics:
+     4. [Mapping reads, calling variants, visualizing variant calls.](./current-year/practicals/population_genetics/pt-4-map-call.html)
      5. [Analysing variants: PCA, measuring Differentiation & Diversity.](./current-year/practicals/population_genetics/pt-5-popgen.html)
 
+-->
 ## 3. Computers
 
 To perform the practicals, you will remotely connect to the Amazon Web Services
@@ -70,8 +73,8 @@ To perform the practicals, you will remotely connect to the Amazon Web Services
 informations).
 You will use an SSH ([here](./current-year/docs/ssh.html) for more information),
 client to connect to a remote shell, where you will run the first three
-practicals. Some results will be available on a personal web page created for 
-the course. The same web page will allow you to perform the fourth and fifth 
+practicals. Some results will be available on a personal web page created for
+the course. The same web page will allow you to perform the fourth and fifth
 practicals.
 
 ## 4. Authors/Credits
@@ -80,21 +83,18 @@ The initial version of this practical was put together by
     * [Yannick Wurm](http://wurmlab.com) [@yannick__](http://twitter.com/yannick__)
     * [Oksana Riba-Grognuz](https://www.linkedin.com/in/oksana80)' contributions
       for the 2012 edition of this course
- 
+
  It was heavily heavily heavily revised and improved thanks to efforts and new
- content by 
+ content by
    * [Rodrigo Pracana](https://wurmlab.github.io/team/rpracana/)
-   * Anurag Priyam, Carlos MartinezRuiz, Nazrath Nawz,
+   * Anurag Priyam, Carlos MartinezRuiz, Nazrath Nawz, many others in the lab.
      [Robert Waterhouse](http://www.rmwaterhouse.org/),
      [Bruno Vieira](http://wurmlab.github.io/team/bmpvieira)
 
-Special thanks to Tom King, Tom Bradford, Simon Butcher, Sam Court, ITS and
-ITSResearch for setting up computers and clusters at QMUL so they just work. 
+## 5. Things used in other versions of this course:
 
-## 5. Things used in other versions of this course: 
-	
 * ~~[Inferring population sizes and gene flow.](./msmc/msmc-tutorial/guide) (Credit Stefan Schiffels [@stschiff](http://twitter.com/stschiff))~~
 * ~~Gene expression  ( Credit Julien Roux [www](http://www.unil.ch/dee/home/menuinst/people/post-docs--associates/dr-julien-roux.html) [@_julien_roux](http://twitter.com/_julien_roux)):~~
-     * ~~[From raw sequencing data to transcript expression levels.](./rnaseq/TP1)~~
-     * ~~[Gene-level clustering and differential expression analysis.](./rnaseq/TP2)~~
+     * ~~[From raw sequencing data to transcript expression levels.](./2016-SIB/practicals/rnaseq/TP1)~~
+     * ~~[Gene-level clustering and differential expression analysis.](./2016-SIB/practicals/rnaseq/TP2)~~
 
