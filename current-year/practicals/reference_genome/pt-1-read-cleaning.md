@@ -44,8 +44,8 @@ For each practical, you will have to create the following directory structure:
 * main directory in your home directory in the format
   (`YYYY-MM-DD-name_of_the_practial`, where `YYYY` is the current year, `MM` is
   the current month, and `DD` is the current day, and `name_of_the_practical`
-  matches the practical). For instance, on the 9th of October 2022 you should
-  create the directory `2022-10-09_read_cleaning` for this practical. In the
+  matches the practical). For instance, on the 27th of September 2022 you should
+  create the directory `2022-09-27-read_cleaning` for this practical. In the
   tutorial we will use this example directory name.
 * Inside this directory, create other three directories, called `input`, `tmp`,
   and `results`.
@@ -60,7 +60,7 @@ Your directory structure should look like this (launch `tree` in your `home`
 directory):
 
 ```bash
-2022-10-09-read_cleaning
+2022-09-27-read_cleaning
 ├── input
 ├── tmp
 ├── results
@@ -108,7 +108,7 @@ Move to the main directory for this practical:
 
 ```bash
 # Remember that yours can have a different date
-cd ~/2022-10-09_read_cleaning
+cd ~/2022-09-27-read_cleaning
 ```
 
 After, create a symbolic link (using `ln -s`) from the reads files to the
@@ -131,7 +131,7 @@ cd ..
 The structure of your directory should look like this (use the command `tree`):
 
 ```bash
-2022-10-09-read_cleaning
+2022-09-27-read_cleaning
 ├── input
 │   ├── reads.pe1.fastq.gz -> /shared/data/reads.pe1.fastq.gz
 │   └── reads.pe2.fastq.gz -> /shared/data/reads.pe2.fastq.gz
@@ -150,8 +150,8 @@ composition, and thus can inform about the read cleaning strategy.
 Run FastQC on the `reads.pe1.fastq.gz` and `reads.pe2.fastq.gz` files.
 The command is given below, where instead of `YOUR_OUTDIR`, you will need
 replace `YOUR_OUTDIR` with the path to your `tmp` directory (e.g. if you main
-directory is `2022-10-09-read_cleaning`, you need to replace `YOUR_OUTDIR` with
-`2022-10-09-read_cleaning/tmp`):
+directory is `2022-09-27-read_cleaning`, you need to replace `YOUR_OUTDIR` with
+`2022-09-27-read_cleaning/tmp`):
 
 ```bash
 fastqc --nogroup --outdir YOUR_OUTDIR input/reads.pe1.fastq.gz
@@ -171,14 +171,14 @@ Take a moment to verify your directory structure. You can do so using the `tree`
 command (be aware of your current working directory using the command `pwd`):
 
 ```bash
-tree ~/2022-10-09-read_cleaning
+tree ~/2022-09-27-read_cleaning
 ```
 
 Your [resulting directory structure](http://github.com/wurmlab/templates/blob/master/project_structures.md "Typical multi-day project structure")
-(`~/2022-10-09-read_cleaning`), should look like this:
+(`~/2022-09-27-read_cleaning`), should look like this:
 
 ```bash
-2022-10-09-read_cleaning
+2022-09-27-read_cleaning
 ├── input
 │   ├── reads.pe1.fastq.gz -> /shared/data/reads.pe1.fastq.gz
 │   └── reads.pe2.fastq.gz -> /shared/data/reads.pe2.fastq.gz
