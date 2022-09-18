@@ -26,14 +26,14 @@ In this practical, we will use `MAKER`.
 
 Following the same procedure described in Section 1.2 of
 [Part 1: Read cleaning](pt-1-read-cleaning.html), create a new main directory
-for today's practical (e.g., `2022-10-09-gene_prediction`) and the `input`,
+for today's practical (e.g., `2022-09-30-gene_prediction`) and the `input`,
 `tmp`, and `results` subdirectories, and the file `WHATIDID.txt` to log your
 commands.
 Link the output (assembly) from Part 2 practical into `input` subdirectory:
 
 ```bash
-cd ~/2022-10-09-gene_prediction/input
-ln -s ~/2022-10-09-assembly/results/scaffolds.fasta .
+cd ~/2022-09-30-gene_prediction/input
+ln -s ~/2022-09-29-assembly/results/scaffolds.fasta .
 cd ..
 ```
 
@@ -65,7 +65,7 @@ which settings were used in recent publications can be very helpful.
 Change to your `tmp` directory and run `maker`:
 
 ```bash
-cd ~/2022-10-09-assembly/tmp
+cd tmp
 maker -OPTS
 ```
 This will generate an empty `maker_opts.ctl` configuration file (ignore the
