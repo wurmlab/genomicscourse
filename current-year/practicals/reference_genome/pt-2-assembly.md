@@ -23,9 +23,9 @@ commands.
 Link the output (cleaned reads) from Part 1 practical into `input` subdirectory:
 
 ```bash
-cd ~/2021-10-09-assembly
+cd ~/2022-10-09-assembly
 cd input
-ln -s ~/2021-10-09-read_cleaning/results/reads.pe*.clean.fq .
+ln -s ~/2022-10-09-read_cleaning/results/reads.pe*.clean.fq .
 cd ..
 ```
 
@@ -97,7 +97,7 @@ generate a standardized report. Run *Quast* on the `scaffolds.fasta`
 file without special options to get the basic statistics:
 
 ```bash
-cd ~/2021-10-09-assembly/results
+cd ~/2022-10-09-assembly/results
 quast.py scaffolds.fasta
 ```
 
