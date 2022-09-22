@@ -51,7 +51,7 @@ cp tmp/scaffolds.fasta results/
 ```
 
 Take a look at the contents of this file (e.g., to see the first 10 lines, use 
-`head results/scaffolds.fasta`, or `less results/scaffolds.fasta` to see the
+`head results/scaffolds.fasta`, or `tail results/scaffolds.fasta` to see the
 last 10 lines).
 
 > **_Question:_**  
