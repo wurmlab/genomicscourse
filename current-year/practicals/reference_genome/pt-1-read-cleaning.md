@@ -107,7 +107,7 @@ performing any form of analysis.
 Move to the main directory for this practical:
 
 ```bash
-# Remember that yours can have a different date
+# Remember that yours may have a different date
 cd ~/2022-09-27-read_cleaning
 ```
 
