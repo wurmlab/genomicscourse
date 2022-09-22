@@ -276,7 +276,7 @@ cutadapt --cut BEGINNING --quality-cutoff CUTOFF \
     input/reads.pe1.fastq.gz > tmp/reads.pe1.trimmed.fq
 
 cutadapt --cut BEGINNING --quality-cutoff CUTOFF \
-    input/reads.pe1.fastq.gz > tmp/reads.pe1.trimmed.fq
+    input/reads.pe2.fastq.gz > tmp/reads.pe2.trimmed.fq
 ```
 
 ## 3.3 K-mer filtering, removal of short sequences
