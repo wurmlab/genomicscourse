@@ -6,7 +6,7 @@ post_url: pt-1-read-cleaning
 ---
 
 # Part 1: Reads to reference genome and gene predictions
-## Introduction
+## 1. Introduction
 
 [Cheap sequencing](http://www.genome.gov/sequencingcosts/) has created the opportunity to perform molecular-genetic analyses on just about anything. Traditional genetic model organisms benefit from years of efforts by expert genome assemblers, gene predictors, and curators. They have created most of the prerequisites for genomic analyses. In contrast, genomic resources are much more limited for those working on "emerging" model organisms or other species. These new organisms includes most crops, animals and plant pest species, many pathogens, and major models for ecology & evolution.
 
@@ -27,12 +27,12 @@ During this series of practicals, we will:
 
 Note: Please do not jump ahead. You will gain the most by following through each section of the practical one by one. If you're fast, dig deeper into particular aspects. Dozens of approaches and tools exist for each step - try to understand their tradeoffs.
 
-## Software and environment setup
+## 2. Software and environment setup
 
 ### Test that the necessary bioinformatics software is available
 
-Run `seqtk`. If this prints "command not found", ask for help, otherwise, move
-to the next section. If that one is available, we'll suppose that everything else is too.
+Run `seqtk`. If this prints `command not found`, ask for help. Otherwise, move
+to the next section. If that one is available and you see it's help screen, we'll suppose that everything else is too.
 
 ### Set up directory hierarchy to work in
 
@@ -62,7 +62,7 @@ For each practical, you will have to create the following directory structure:
 Each directory in which you have done something should include a `WHATIDID.txt`
 file in which you log your commands.
 
-Your directory structure should look like this (launch `tree` in your `home`
+Your directory structure should look like this (run `tree` in your `home`
 directory):
 
 ```bash
@@ -73,16 +73,17 @@ directory):
 └── WHATIDID.txt
 ```
 
-Being disciplined about this is *extremely important*. It is similar to having
+Being disciplined about structuring analyses is *extremely important*. It is similar to having
 a laboratory notebook. It will prevent you from becoming overwhelmed by having
 too many files, or not remembering what you did where.
 
-## Sequencing an appropriate sample
+## 3. Sequencing an appropriate sample
 
-Certain properties of sequences may affect the processing software performances.
+**The properties of your data can affect the ability of bioinformatics algorithms to handle them.**
 For instance, less diversity and complexity in a sample makes life easier:
 assembly algorithms *really* struggle when given similar sequences. So less
 heterozygosity and fewer repeats are easier.
+
 Thus:
 
 * A haploid is easier than a diploid  (those of us working on haplo-diploid
@@ -95,22 +96,20 @@ Thus:
 Many considerations go into the appropriate experimental design and sequencing
 strategy. We will not formally cover those here & instead jump right into our data.
 
-# 3. Short read cleaning
+## 4. Illumina short read cleaning
 
-In this practical, we will work with a paired ends short reads
-(Illumina). In this case, we expect to have two files per sequences,
-corresponding to the two reading directions.
+In this practical, we will work with paired ends short read sequences from an Illumina machine. Each piece of DNA was thus sequenced once from the 5' and once from the 3' end. Thus we expect to have two files per sequences.
 
 However, sequencers aren't perfect. Several problems may affect the quality of
 the reads. You can find some examples
 [here](http://genomecuration.github.io/genometrain/a-experimental-design/curated-collection/Presentations/Sequencing%20Troubleshooting.pptx)
 and [here](http://sequencing.qcfail.com/). Also, as you may already know,
 "*garbage in – garbage out*", which means that reads should be cleaned before
-performing any form of analysis.
+performing any analysis.
 
-## 3.1 Initial inspection
+### Setup and initial inspection using FastQC
 
-Move to the main directory for this practical:
+Lets move to the main directory for this practical, so that everything we need and do and create is in one place:
 
 ```bash
 # Remember that yours may have a different date
@@ -150,8 +149,8 @@ Now, you can start evaluating the quality of the reads `reads.pe1.fastq.gz` and
 `reads.pe2.fastq.gz`. To do so, we will use
 [*FastQC*](http://www.bioinformatics.babraham.ac.uk/projects/fastqc/)
 ([documentation](http://www.bioinformatics.babraham.ac.uk/projects/fastqc/Help/)).
-FASTQC is a software tool that can help you understand sequence quality and
-composition, and thus can inform about the read cleaning strategy.
+FASTQC is a software tool to help visualise characteristics of a sequencing run.
+It can thus inform yourread cleaning strategy.
 
 Run FastQC on the `reads.pe1.fastq.gz` and `reads.pe2.fastq.gz` files.
 The command is given below, where instead of `YOUR_OUTDIR`, you will need
@@ -197,10 +196,13 @@ Your [resulting directory structure](http://github.com/wurmlab/templates/blob/ma
 └── WHATIDID.txt
 ```
 
+If your directory and file structure looks different, ask for some help.
+
+
 Now inspect the FastQC report. First, copy the files `reads.pe1_fastqc.html` and
 `reads.pe2_fastqc.html` to the directory `~/www/tmp`. Then, open the browser and
-go to your personal module page (e.g., if your QMUL username is `bt007`,  the
-URL will be `bt007.genomicscourse.com`) and click on the `~/www/tmp` link. After
+go to your personal module page (e.g., if your QMUL username is `bob`,  the
+URL will be `https://bob.genomicscourse.com`) and click on the `~/www/tmp` link. After
 that, click on one of the links corresponding to the reports files.
 
 > **_Question:_**
@@ -216,9 +218,9 @@ e.g, [[1]](img-qc/per_base_quality.png),
 [[3]](img-qc/per_base_sequence_content.png).
 *NOTE:* the results for your sequences may look different.
 
-Clearly, some sequences have very low quality bases towards the end.
+Clearly, some sequences have very low quality bases towards the end. Why do you think that may be?
 Furthermore, many more sequences start with the nucleotide **A** rather
-than **T**.
+than **T**. Is this what you would expect?
 
 > **_Question:_**
 > * Which FastQC plots shows the relationship between base quality and position
@@ -233,12 +235,12 @@ In the following sections, we will perform two cleaning steps:
 * K-mer filtering using *kmc3*.
 * Removing sequences that are of low quality or too short using cutadapt.
 
-Other tools, such as [*fastx_toolkit*](http://github.com/agordon/fastx_toolkit),
+Other tools, including [*fastx_toolkit*](http://github.com/agordon/fastx_toolkit),
 [*BBTools*](https://jgi.doe.gov/data-and-tools/bbtools/), and
 [*Trimmomatic*](http://www.usadellab.org/cms/index.php?page=trimmomatic) can
 also be useful, **but we won't use them now**.
 
-## 3.2 Sequence trimming
+### Read trimming
 
 To clean the FASTQ sequences, we will use a software tool called
 [*cutadapt*](https://cutadapt.readthedocs.io/en/stable/). As stated on the
@@ -263,7 +265,7 @@ corresponding to the number of nucleotides to trim from the beginning (`--cut`)
 and end (`--quality-cutoff`) of the sequences.
 
 > **_Note:_**
-> If you trim too much of your sequence (i.e. too large values for `--cut` and
+> If you trim too much of your sequence (i.e., too large values for `--cut` and
 > `--quality-cutoff`), you increase the likelihood of eliminating important
 > information. Additionally, if the trimming is too aggressive, some sequences
 > may be discarded completely, which will cause problems in the subsequent
@@ -285,18 +287,17 @@ cutadapt --cut BEGINNING --quality-cutoff CUTOFF \
     input/reads.pe2.fastq.gz > tmp/reads.pe2.trimmed.fq
 ```
 
-## 3.3 K-mer filtering, removal of short sequences
+## 5. K-mer filtering, removal of short sequences
 
 Let's suppose that you have sequenced your sample at 45x genome coverage. This
 means that every nucleotide of the genome was sequenced 45 times on average.
-So, for a genome of 1,000,000 nucleotides, you expect to have about 45,000,000
-nucleotides of raw sequence. Obviously, the real coverage distribution will be
-influenced by factors including DNA quality, library preparation type and local
-**GC** content. But you might expect most of the genome to be covered between
+So, for a genome of 100,000,000 nucleotides, you expect to have about 4,500,000,000
+nucleotides of raw sequence. But that coverage will not be homogeneous. Instead, the real coverage distribution will be influenced by factors including DNA quality, library preparation type, how was DNA packaged within the chromosomes (e.g., hetero vs. euchromatin)  and local **GC** content. But you might expect most of the genome to be covered between
 20 and 70x.
+
 In practice, this distribution can be very strange. One way of rapidly examining
 the coverage distribution before you have a reference genome is to chop your raw
-sequence reads into short *"k-mers"* of *k* nucleotides, and estimate the
+sequence reads into short *"k-mers"* of *k* nucleotides long, and estimate the
 frequency of occurrence of all k-mers. An example plot of k-mer frequencies from
 a **haploid** sample sequenced at **~45x** coverage is shown below:
 
@@ -304,18 +305,20 @@ a **haploid** sample sequenced at **~45x** coverage is shown below:
 
 In the above plot, the *y* axis represents the proportion of k-mers in the
 dataset that are observed *x* times (called *Coverage*). As, expected, we
-observe a peak in the region close to 45, which corresponds to the defined
+observe a peak in the region close to 45, which corresponds to the targeted
 coverage.
-However, we also see that a large fraction of sequences have a very small
+
+However, we also see that a large fraction of sequences have a very low
 coverage (they are found only 10 times or less).
+
 These rare k-mers are likely to be errors that appeared during library
 preparation or sequencing, or **could be rare somatic mutations**. Analogously
 (although not shown in the above plot) other k-mers may exist at very large
-coverage (up to 10,000). These could be pathogens or repetitive elements.
+coverage (up to 10,000). These could be viruses or other pathogens, or highly repetitive parts of the genome, such as transposons or LINE elements.
 
 > **_Note_:**
-> Both extremely rare and extremely frequent sequences can confuse assembly
-> softwares. Eliminating them can reduce subsequent memory, disk space and CPU
+> Extremely rare and extremely frequent sequences can both confuse assembly
+> algorithms. Eliminating them can reduce subsequent memory, disk space and CPU
 > requirements considerably.
 
 Below, we use [*kmc3*](http://github.com/refresh-bio/KMC) to "mask" extremely
@@ -333,9 +336,9 @@ Trimming reads (either masked k-mers or low quality ends in the previous step)
 can cause some reads to become too short to be informative. We remove such
 reads in the same step using *cutadapt*. Finally, discarding reads (because they
 are too short) can cause the corresponding read of the pair to become
-**"unpaired"**. While it is possible to capture and use unpaired reads, we do
-not illustrate that here for simplicity. Understanding the exact commands
-– which are a bit convoluted – is unnecessary. It is important to understand the
+**"unpaired"**. While it is possible to capture and use unpaired reads, we skip
+that here for simplicity. Understanding the exact commands – which are a bit
+convoluted – is unnecessary. However, it is important to understand the
 concept of k-mer filtering and the reasoning behind each step.
 
 ```bash
@@ -374,13 +377,13 @@ cutadapt --trim-n --minimum-length 21 -o tmp/reads.pe1.clean.fq -p tmp/reads.pe2
 cp tmp/reads.pe1.clean.fq tmp/reads.pe2.clean.fq results
 ```
 
-## 3.4 Inspecting quality of cleaned reads
+### Inspecting quality of cleaned reads
 
 Which percentage of reads have we removed overall? (hint: `wc -l` can count
 lines in a non-gzipped file). Is there a general rule about how much we should
 be removing?
 
-# 4. References
+## 6. References
 
 1. Wurm, Y., Wang, J., Riba-Grognuz, O., Corona, M., Nygaard, S., Hunt, B.G.,
    Ingram, K.K., Falquet, L., Nipitwattanaphon, M., Gotzek, D. and Dijkstra,
@@ -390,16 +393,17 @@ be removing?
 2. Noble, W.S., 2009. A quick guide to organizing computational biology
    projects. *PLoS computational biology*, 5(7), p.e1000424.
 
-# 5. Further reading
+## 7. Further reading
 
 * MARTIN Marcel. Cutadapt removes adapter sequences from high-throughput
   sequencing reads. EMBnet.journal, [S.l.], v. 17, n. 1, p. pp. 10-12, may 2011.
   ISSN 2226-6089. doi: https://doi.org/10.14806/ej.17.1.200.
 
-<<<<<<< Updated upstream
 * Kokot, M., Długosz, M. and Deorowicz, S., 2017. KMC 3: counting and
   manipulating k-mer statistics. Bioinformatics, 33(17), pp.2759-2761.
-=======
-* Kokot, M., Długosz, M. and Deorowicz, S., 2017. KMC 3: counting and
-  manipulating k-mer statistics. Bioinformatics, 33(17), pp.2759-2761.
->>>>>>> Stashed changes
+
+## 8. Bonus questions if you're done early
+
+  * Which read cleaners exist and are the most popular today? Which would you use for Illumina data? And for long-read data? Why?
+  * How do read cleaning strategies for RNAseq and DNAseq differ?
+  * Can having an existing genome assembly help with read cleaning? How?
