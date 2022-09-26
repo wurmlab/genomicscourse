@@ -24,7 +24,7 @@ description: >- # this means to ignore newlines until "baseurl:"
   This is the main repository for our introduction to genome bioinformatics practicals.
 baseurl: "/genomicscourse" # the subpath of your site, e.g. /blog
 url: "https://wurmlab.com/genomicscourse" # the base hostname & protocol for your site, e.g. http://example.com
-twitter_username:
+twitter_username: yannick__
 github_username:
 
 # Build settings
@@ -33,6 +33,7 @@ plugins:
 
 # Use kramdown Flavored Markdown
 markdown:  kramdown
+highlighter: rouge
 
 # Exclude from processing.
 # The following items will not be processed, by default.
