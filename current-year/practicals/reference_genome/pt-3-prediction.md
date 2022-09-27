@@ -144,7 +144,7 @@ OR TWO*. Alternatively, just use the results of the
 
 > **_Question:_**  
 > Look at the BLAST results:
-> * do any of the gene predictions have significant similarity to known 
+> * Do any of the gene predictions have significant similarity to known 
 >   sequences?
 > * For a given gene prediction, do you think it is complete, or can you infer
 >   from the BLAST alignments that something may be wrong?
