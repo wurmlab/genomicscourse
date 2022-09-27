@@ -140,7 +140,7 @@ We will use [SequenceServer](https://sequenceserver.com) to run BLAST. Open
 [example rice and honeybee protein sequences](predictions.fa) in the textbox
 and click on the 'BLAST' button to run a BLAST search. *THIS WILL TAKE A MINUTE 
 OR TWO*. Alternatively, just use the results of the 
-[BLAST that we performed before](http://blast.genomicscourse.com/sequenceserver/cac10ebf-dfb1-4ce6-9661-63d7d728babf).
+[BLAST that we performed before](https://genomicscourse.sequenceserver.com/2ec082aa-c495-4858-b1c7-0c3f8d371a38).
 
 > **_Question:_**  
 > Look at the BLAST results:
