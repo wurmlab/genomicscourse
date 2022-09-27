@@ -48,7 +48,7 @@ the directory structure explained above.
 For each practical, you will have to create the following directory structure:
 
 * main directory in your home directory in the format
-  (`YYYY-MM-DD-name_of_the_practial`, where `YYYY` is the current year, `MM` is
+  (`YYYY-MM-DD-name_of_the_practical`, where `YYYY` is the current year, `MM` is
   the current month, and `DD` is the current day, and `name_of_the_practical`
   matches the practical). For instance, on the 9th of October 2022 you should
   create the directory `2022-09-27_read_cleaning` for this practical. In the
