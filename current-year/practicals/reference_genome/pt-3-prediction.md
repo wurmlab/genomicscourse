@@ -54,7 +54,7 @@ genes.
 > assembled scaffolds.
 > ```bash
 > # Link this scaffolds file into your input directory
-> ln -s ../../data/reference_assembly/output/scaffolds.fasta.gz .
+> ln -s ../../../../data/backup_assembly/scaffolds.fasta .
 > ```
 
 In this practical, we will show how to run MAKER in a simple scenarion. For a
