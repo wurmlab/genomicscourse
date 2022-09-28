@@ -156,7 +156,7 @@ Run FastQC on the `reads.pe1.fastq.gz` and `reads.pe2.fastq.gz` files.
 The command is given below, where instead of `YOUR_OUTDIR`, you will need
 replace `YOUR_OUTDIR` with the path to your `tmp` directory (e.g. if you main
 directory is `2022-09-27-read_cleaning`, you need to replace `YOUR_OUTDIR` with
-`2022-09-27-read_cleaning/tmp`):
+`tmp`):
 
 ```bash
 fastqc --nogroup --outdir YOUR_OUTDIR input/reads.pe1.fastq.gz
