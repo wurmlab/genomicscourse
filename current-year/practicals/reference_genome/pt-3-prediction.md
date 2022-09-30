@@ -179,7 +179,7 @@ built to automate the comparison of sequence characteristics in a manner similar
 to what we just did through visual individual BLAST results.
 
 Try to run the [example rice and honeybee protein sequences](predictions.fa)
-through *GeneValidator*: https://genevalidator.sbcs.qmul.ac.uk/ 
+through *GeneValidator*: [genevalidator.sbcs.qmul.ac.uk](https://genevalidator.sbcs.qmul.ac.uk/) 
 
 
 # 3. Comparing whole genesets and prioritizing genes for manual curation
