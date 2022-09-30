@@ -135,8 +135,7 @@ We will compare them using BLAST to known sequences from other species in the
 
 ## 2.1 Running BLAST with SequenceServer
 
-We will use [SequenceServer](https://sequenceserver.com) to run BLAST. Open
-[genomicscourse.sequenceserver.com](https://genomicscourse.sequenceserver.com) in your browser, paste the
+We will use [SequenceServer](https://sequenceserver.com) to run BLAST. Open [http://3.21.218.250/sequenceserver](http://3.21.218.250/sequenceserver) or [genomicscourse.sequenceserver.com](https://genomicscourse.sequenceserver.com) in your browser or [http://tools.genomicscourse.com/sequenceserver](http://tools.genomicscourse.com/sequenceserver), paste the
 [example rice and honeybee protein sequences](predictions.fa) in the textbox
 and click on the 'BLAST' button to run a BLAST search. *THIS WILL TAKE A MINUTE 
 OR TWO*. Alternatively, just use the results of the 
@@ -179,7 +178,7 @@ built to automate the comparison of sequence characteristics in a manner similar
 to what we just did through visual individual BLAST results.
 
 Try to run the [example rice and honeybee protein sequences](predictions.fa)
-through *GeneValidator*: [genevalidator.sbcs.qmul.ac.uk](https://genevalidator.sbcs.qmul.ac.uk/) 
+through *GeneValidator*. It should be accessible at [http://3.21.218.250 /genevalidator](http://3.21.218.250/genevalidator) or [http://tools.genomicscourse.com/genevalidator](http://tools.genomicscourse.com/genevalidator) . 
 
 
 # 3. Comparing whole genesets and prioritizing genes for manual curation
