@@ -69,11 +69,12 @@ Create a symlink (using `ln -s`) from the reference genome
 ```
 
 To check that the reference genome and the reads directory are linked
-(not copied) in the `input` directory, change to the directory `input` and run
-the command:
+(not copied) in the `input` directory, you could use one of the following
+commands from your `input` directory:
 
 ```bash
 ls -a
+l
 ```
 
 Check how many scaffolds there are in the reference genome:
