@@ -2,13 +2,13 @@
 
 ## Introduction
 
-We have samples with two genotypes: the B genotype (associated with single-queen colony phenotype) and the b genotype (associated with multiple-queen colony phenotype). 
+We have samples with two genotypes: the B genotype (associated with single-queen colony phenotype) and the b genotype (found exclusively in multiple-queen colonies).
 
-Our dummy assembly has two scaffolds, from two different chromosomes. The aim of our analysis is to test whether any parts of this assembly differ between the individuals from these two groups (B and b).
+Our dummy assembly has two scaffolds, from two different chromosomes. We aim to test whether any parts of this assembly differ between the individuals from these two groups (B and b).
 
-In the first part of the analysis, we are going to create a heat map of the genotypes of the individuals and we are going to run Principal Component Analysis (PCA) on these genotypes. This will allow us to test if any of the individuals cluster together by their B/b genotype. This will be done using the ``adegenet`` package in R.
+First, we will create a heat map of the genotypes of the individuals and we will run Principal Component Analysis (PCA) on these genotypes. This will allow us to visualise if  individuals cluster together by their B/b genotype. This will be done using the ``adegenet`` package in R.
 
-In the second part, we are going to measure genetic differentiation between the two groups (B and b). We will do this analysis over a sliding window, to see if the differentiation between B and b are specific to any portion of the genome. We will also measure the genetic diversity among each of the groups, which may tell us something about the evolutionary history of the portions of genome represented in our assembly. This will be done using the ``PopGenome`` package in R.
+In a second part, we are going to measure genetic differentiation between the two groups (B and b). We will do this analysis over a sliding window, to see if the differentiation between B and b are specific to any portion of the genome. We will also measure the genetic diversity among each of the groups, which may tell us something about the evolutionary history of the portions of genome represented in our assembly. This will be done using the ``PopGenome`` package in R.
 
 ## Load packages
 
@@ -56,7 +56,7 @@ snp_matrix <- t(snp_data[,3:ncol(snp_data)])
 sample_names <- gsub("\\.bam", "", raw_sample_names)
 row.names(snp_matrix) <- sample_names
 
-# Finally we reorder the rows by population 
+# Finally we reorder the rows by population
 bb <- sample_names[grep("B", sample_names)] # B samples (bb = "big B")
 lb <- sample_names[grep("b", sample_names)] # b samples (lb = "little b")
 snp_matrix <- snp_matrix[c(bb, lb), ]
@@ -105,7 +105,7 @@ pca_results_invert <- as.data.frame(pca_results$x)
 # Add additional column with B or b to set colours in the plot
 pca_results_invert$sample <- rownames(pca_results_invert)
 # Plot the PCA
-pca_plot <- pca_results_invert %>% 
+pca_plot <- pca_results_invert %>%
   mutate_all(~ gsub("results/|f1|f2|f3|f4|f5|f6|f7|_", "", .)) %>%  # Remove redundant pattern from the data to only have B or b
   transform(pca_results_invert,  # Transform values to numeric
   PC1 = as.numeric(PC1),
@@ -120,9 +120,9 @@ pca_plot <- pca_results_invert %>%
 pca_plot
 ```
 
-The aim of these analysis is to test whether the B and the b individuals cluster together or separately. The first principal component separates B and b. But if you look at the heat map, the separation is not constant in the whole genome.
+The aim of these analyses is to test whether the B and the b individuals cluster together or separately. The first principal component separates B and b. But if you look at the heat map, the separation is not constant in the whole genome.
 
-Each of the scaffolds has been retrieved from a different chromosome. We can test whether the differentiation between B and b is only seen in one of the scaffolds.
+Each of the scaffolds is from a different chromosome. We can test whether the differentiation between B and b is only seen in one of the scaffolds.
 
 We will start with scaffold_2.
 
@@ -146,13 +146,13 @@ scaffold_2_pca_inv <- as.data.frame(scaffold_2_pca_res$x)
 # Add additional column with B or b to set colours in the plot
 scaffold_2_pca_inv$sample <- sample_names
 # Plot the PCA
-scaffold_2_pca_plot <- scaffold_2_pca_inv %>% 
+scaffold_2_pca_plot <- scaffold_2_pca_inv %>%
   mutate_all(~ gsub("results/|f1|f2|f3|f4|f5|f6|f7|_", "", .)) %>%  # Remove redundant pattern from the data to only have B or b
   transform(pca_results_invert,  # Transform values to numeric
   PC1 = as.numeric(PC1),
   PC2 = as.numeric(PC2), PC3 = as.numeric(PC3)
 ) %>%
-  ggplot(aes(x = PC1, y = PC2, colour = sample)) + 
+  ggplot(aes(x = PC1, y = PC2, colour = sample)) +
     geom_point(size = 2) +
     xlab("PC1") +
     ylab("PC2") +
@@ -178,17 +178,17 @@ summary(scaffold_1_pca_res)
 scaffold_1_pca_inv <- as.data.frame(scaffold_1_pca_res$x)
 scaffold_1_pca_inv$sample <- sample_names
 
-scaffold_1_pca_plot <- scaffold_1_pca_inv %>% 
-  mutate_all(~ gsub("results/|f1|f2|f3|f4|f5|f6|f7|_", "", .)) %>%  
-  transform(pca_results_invert,  
+scaffold_1_pca_plot <- scaffold_1_pca_inv %>%
+  mutate_all(~ gsub("results/|f1|f2|f3|f4|f5|f6|f7|_", "", .)) %>%
+  transform(pca_results_invert,
   PC1 = as.numeric(PC1),
   PC2 = as.numeric(PC2), PC3 = as.numeric(PC3)
 ) %>%
-  ggplot(aes(x = PC1, y = PC2, colour = sample)) + 
+  ggplot(aes(x = PC1, y = PC2, colour = sample)) +
     geom_point(size = 2) +
     xlab("PC1") +
     ylab("PC2") +
-    coord_fixed(ratio = 1) 
+    coord_fixed(ratio = 1)
 
 scaffold_1_pca_plot
 ```
@@ -261,7 +261,7 @@ Another useful tool is to do the calculations along a sliding window.
 ```{r}
 # Transform object into object divided by sliding window
 win_snp <- sliding.window.transform(snp,
-    width = 10000, 
+    width = 10000,
     jump = 10000,
     type = 2,
     whole.data = FALSE)
@@ -279,34 +279,34 @@ Now we can look at the FST for each window.
 # A simple plot
 win_fst <- win_snp@nucleotide.F_ST[, 1]
 
-ggplot(data = data.frame(window = 1:length(win_fst), value = win_fst)) + 
-  geom_point(aes(x  = window, y = value)) + 
+ggplot(data = data.frame(window = 1:length(win_fst), value = win_fst)) +
+  geom_point(aes(x  = window, y = value)) +
   xlab("Window") +
-  ylab("FST per window") 
+  ylab("FST per window")
 ```
 
 Diversity among B individuals.
 
 ```{r}
 # diversity among B (bb = "big B")
-bb_div <- win_snp@nuc.diversity.within[, 1] 
+bb_div <- win_snp@nuc.diversity.within[, 1]
 
-ggplot(data = data.frame(window = 1:length(bb_div), value = bb_div)) + 
-  geom_point(aes(x  = window, y = value)) + 
+ggplot(data = data.frame(window = 1:length(bb_div), value = bb_div)) +
+  geom_point(aes(x  = window, y = value)) +
   xlab("Window") +
-  ylab("Diversity among B") 
+  ylab("Diversity among B")
 ```
 
 Diversity among b individuals.
 
 ```{r}
 # diversity among b (lb = "little b")
-lb_div <- win_snp@nuc.diversity.within[, 2] 
+lb_div <- win_snp@nuc.diversity.within[, 2]
 
-ggplot(data = data.frame(window = 1:length(lb_div), value = lb_div)) + 
-  geom_point(aes(x  = window, y = value)) + 
+ggplot(data = data.frame(window = 1:length(lb_div), value = lb_div)) +
+  geom_point(aes(x  = window, y = value)) +
   xlab("Window") +
-  ylab("Diversity among b") 
+  ylab("Diversity among b")
 ```
 
 * Knowing that there is no recombination between B and b somewhere in the genome, why do you think there is high FST in one scaffold and not the other?
