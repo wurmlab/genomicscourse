@@ -295,7 +295,7 @@ bcftools mpileup --output-type u --fasta-ref tmp/reference.fa input/*.bam | bcft
 ```
 
 > **_Question:_**  
-> * Why we are using the `-v` option in `bcftools call`?
+> * Why we are using the `--variants-only` option in `bcftools call`?
 > * Is it ever useful to leave it out?
 
 The output `calls.vcf` is a file in the *VCF* 
@@ -345,15 +345,15 @@ quality call smaller than **30**:
 
 ```bash
 # Remove variant site with quality score less than 30. Then remove sites that have a missing genotype call.
-bcftools filter --exclude 'QUAL < 30' tmp/calls.vcf | bcftools view -g ^miss > tmp/filtered_calls.vcf
+bcftools filter --exclude 'QUAL < 30' tmp/calls.vcf | bcftools view --genotype ^miss > tmp/filtered_calls.vcf
 ```
 
 In real scenarios, it may be important to filter by other parameters.
 
 In the downstream analysis, we only want to look at sites that are:
 
-1. snps (-v snps)
-2. biallelic (-m2 -M2)
+1. snps (--types snps)
+2. biallelic (--min-alleles 2 --max-alleles 2)
 3. where the minor allele is present in at least one individual (because we are
    not interested in the sites where all individuals are different from the 
    reference, yet equal to each other)
@@ -362,7 +362,7 @@ Now, select **biallelic** variant sites that are SNPs and at least one
 individual differs from the rest:
 
 ```bash
-bcftools view -v snps -m2 -M2 --min-ac 1:minor tmp/filtered_calls.vcf > tmp/snp.vcf
+bcftools view --types snps --min-alleles 2 --max-alleles 2 --min-ac 1:minor tmp/filtered_calls.vcf > tmp/snp.vcf
 ```
 
 (Always check that the output file in `tmp` has the right extension `.vcf`)
