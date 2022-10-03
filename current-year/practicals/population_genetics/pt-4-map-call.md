@@ -58,6 +58,9 @@ Create a symlink (using `ln -s`) from the reference genome
 `/shared/data/popgen/reference.fa` and the directory containing the reads
 `/shared/data/popgen/reads` to `input` subdirectory:
 
+> **_Note:_**  
+> Remember to keep your commands in the `WHATIDID.txt` file.
+
 ```bash
 2022-10-03-mapping/
 ├── input
@@ -223,7 +226,7 @@ rm -ri tmp
 
 ## 4. Variant calling
 
-Create a new directory for the second part of today's practical 
+Create a new directory on your `home` for the second part of today's practical 
 (e.g., `2022-10-03-genotyping`). You will want to set up the relevant
 subdirectories  and `WHATIDID.txt` file as before. Then symlink (`ln -s`) the
 reference genome `/shared/data/popgen/reference.fa` and the alignments
@@ -233,7 +236,7 @@ from the mapping part of the practical (both `.bam` and `.bai` files) to your
 > **_Note:_**  
 > Remember to keep your commands in the `WHATIDID.txt` file.
 
-This is what your directory structure should look like, when running `tree`:
+This is what your directory structure should look like when running `tree`:
 
 ```bash
 2022-10-03-genotyping/
