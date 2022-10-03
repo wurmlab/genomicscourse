@@ -79,8 +79,8 @@ To check that the reference genome and the reads directory are linked
 commands from your `input` directory:
 
 ```bash
-ls -a
-l
+ls -al
+l # on your computers, this is a shortcut for ls -al
 ```
 
 Check how many scaffolds there are in the reference genome:
