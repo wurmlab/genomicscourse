@@ -291,7 +291,7 @@ reference and reads using `mpileup` subcommand and pipe it to call subcommand
 to determine if the identified difference are variants.
 
 ```bash
-bcftools mpileup -Ou -f tmp/reference.fa input/*.bam | bcftools call --ploidy 1 -v -m > tmp/calls.vcf
+bcftools mpileup --output-type u --fasta-ref tmp/reference.fa input/*.bam | bcftools call --ploidy 1 --variants-only --multiallelic-caller > tmp/calls.vcf
 ```
 
 > **_Question:_**  
