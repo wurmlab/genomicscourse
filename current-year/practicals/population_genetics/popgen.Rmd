@@ -53,12 +53,12 @@ colnames(loci) <- c("scaffold", "position")
 snp_matrix <- t(snp_data[,3:ncol(snp_data)])
 
 # Clean the sample names and add them to the rows of our matrix
-sample_names <- gsub("\\.bam", "", raw_sample_names)
+sample_names <- gsub(pattern = "\\.bam", replacement = "", x = raw_sample_names)
 row.names(snp_matrix) <- sample_names
 
 # Finally we reorder the rows by population
-bb <- sample_names[grep("B", sample_names)] # B samples (bb = "big B")
-lb <- sample_names[grep("b", sample_names)] # b samples (lb = "little b")
+bb <- sample_names[grep(pattern = "B", x = sample_names)] # B samples (bb = "big B")
+lb <- sample_names[grep(pattern = "b", x = sample_names)] # b samples (lb = "little b")
 snp_matrix <- snp_matrix[c(bb, lb), ]
 
 # Now we can create a new genlight object that contains all the SNP data. Note that the
@@ -106,7 +106,7 @@ pca_results_invert <- as.data.frame(pca_results$x)
 pca_results_invert$sample <- rownames(pca_results_invert)
 # Plot the PCA
 pca_plot <- pca_results_invert %>%
-  mutate_all(~ gsub("results/|f1|f2|f3|f4|f5|f6|f7|_", "", .)) %>%  # Remove redundant pattern from the data to only have B or b
+  mutate_all(~ gsub(pattern = "results/|f1|f2|f3|f4|f5|f6|f7|_", replacement = "", .)) %>%  # Remove redundant pattern from the data to only have B or b
   transform(pca_results_invert,  # Transform values to numeric
   PC1 = as.numeric(PC1),
   PC2 = as.numeric(PC2), PC3 = as.numeric(PC3)
@@ -147,7 +147,7 @@ scaffold_2_pca_inv <- as.data.frame(scaffold_2_pca_res$x)
 scaffold_2_pca_inv$sample <- sample_names
 # Plot the PCA
 scaffold_2_pca_plot <- scaffold_2_pca_inv %>%
-  mutate_all(~ gsub("results/|f1|f2|f3|f4|f5|f6|f7|_", "", .)) %>%  # Remove redundant pattern from the data to only have B or b
+  mutate_all(~ gsub(pattern = "results/|f1|f2|f3|f4|f5|f6|f7|_", replacement = "", .)) %>%  # Remove redundant pattern from the data to only have B or b
   transform(pca_results_invert,  # Transform values to numeric
   PC1 = as.numeric(PC1),
   PC2 = as.numeric(PC2), PC3 = as.numeric(PC3)
@@ -179,7 +179,7 @@ scaffold_1_pca_inv <- as.data.frame(scaffold_1_pca_res$x)
 scaffold_1_pca_inv$sample <- sample_names
 
 scaffold_1_pca_plot <- scaffold_1_pca_inv %>%
-  mutate_all(~ gsub("results/|f1|f2|f3|f4|f5|f6|f7|_", "", .)) %>%
+  mutate_all(~ gsub(pattern = "results/|f1|f2|f3|f4|f5|f6|f7|_", replacement = "", .)) %>%
   transform(pca_results_invert,
   PC1 = as.numeric(PC1),
   PC2 = as.numeric(PC2), PC3 = as.numeric(PC3)
@@ -230,8 +230,8 @@ snp@n.sites
 
 # Set populations
 pops <- get.individuals(snp)[[1]]
-pop1 <- pops[grep("B\\.bam", pops)]
-pop2 <- pops[grep("b\\.bam",pops)]
+pop1 <- pops[grep(pattern = "B\\.bam", x = pops)]
+pop2 <- pops[grep(pattern = "b\\.bam", x = pops)]
 
 snp  <- set.populations(snp, list(pop1, pop2))
 
