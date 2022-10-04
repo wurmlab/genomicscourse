@@ -34,27 +34,23 @@ The package ``adegenet`` uses an R object called ``genlight``. To create it, we 
 bcftools query input/snp.vcf.gz -f '%CHROM\t%POS[\t%GT]\n' > snp_matrix.txt
 
 # Get sample names
-bcftools query -l input/snp.vcf.gz > sample_names.txt
+bcftools query -l input/snp.vcf.gz | sed 's/.bam//g' > sample_names.txt
 ```
 
 Next, create the R ``genlight`` object from the files we just created:
 
 ```{r}
 # Input the SNP data and the sample names by reading the .txt files you just created with bcftools
-snp_data   <- read.table("snp_matrix.txt")
-names_input <- read.table("sample_names.txt")
-raw_sample_names <- names_input$V1
+names_input  <- read.table("sample_names.txt", col.names = c("names"))
+sample_names <- as.vector(names_input$names)
+
+snp_data     <- read.table("snp_matrix.txt", col.names = c("scaffold", "position", sample_names)) 
 
 # Keep the position of the loci
-loci       <- snp_data[, 1:2]
-colnames(loci) <- c("scaffold", "position")
+loci       <- snp_data[, c("scaffold", "position")]
 
 # Transpose the data (turn it on its side so that rows = individuals and columns = loci)
 snp_matrix <- t(snp_data[,3:ncol(snp_data)])
-
-# Clean the sample names and add them to the rows of our matrix
-sample_names <- gsub(pattern = "\\.bam", replacement = "", x = raw_sample_names)
-row.names(snp_matrix) <- sample_names
 
 # Finally we reorder the rows by population
 bb <- sample_names[grep(pattern = "B", x = sample_names)] # B samples (bb = "big B")
@@ -134,7 +130,7 @@ glPlot(scaffold_2)
 
 # Plot PCA
 # Select only "scaffold_2" rows
-scaffold_2_pca <- snp_data %>% dplyr::group_by(V1) %>% dplyr::filter(V1 == "scaffold_2")
+scaffold_2_pca <- snp_data %>% dplyr::group_by(scaffold) %>% dplyr::filter(scaffold == "scaffold_2")
 # Transpose the data
 scaffold_2_pca <- t(scaffold_2_pca[, 3:ncol(scaffold_2_pca)])
 scaffold_2_pca_res <- prcomp(scaffold_2_pca, scale. = TRUE)
@@ -168,7 +164,7 @@ scaffold_1 <- snp[, which(snp@chromosome == "scaffold_1")]
 glPlot(scaffold_1)
 
 # Plot PCA
-scaffold_1_pca <- snp_data %>% dplyr::group_by(V1) %>% dplyr::filter(V1 == "scaffold_1")
+scaffold_1_pca <- snp_data %>% dplyr::group_by(scaffold) %>% dplyr::filter(scaffold == "scaffold_1")
 scaffold_1_pca <- t(scaffold_1_pca[, 3:ncol(scaffold_1_pca)])
 scaffold_1_pca_res <- prcomp(scaffold_1_pca, scale. = TRUE)
 summary(scaffold_1_pca_res)
