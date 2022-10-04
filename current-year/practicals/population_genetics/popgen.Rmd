@@ -129,8 +129,7 @@ We will start with scaffold_2.
 ```{r}
 ## scaffold_2
 # Plot heat map
-scaffold_2_index <- which(snp@chromosome == "scaffold_2")
-scaffold_2 <- snp[, scaffold_2_index]
+scaffold_2 <- snp[, which(snp@chromosome == "scaffold_2")]
 glPlot(scaffold_2)
 
 # Plot PCA
@@ -165,8 +164,7 @@ Now check scaffold_1.
 ```{r}
 ## scaffold_1
 # Plot heat map
-scaffold_1_index <- which(snp@chromosome == "scaffold_1")
-scaffold_1 <- snp[, scaffold_1_index]
+scaffold_1 <- snp[, which(snp@chromosome == "scaffold_1")]
 glPlot(scaffold_1)
 
 # Plot PCA
