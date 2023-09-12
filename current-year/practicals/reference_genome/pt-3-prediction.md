@@ -138,7 +138,7 @@ We will compare them using BLAST to known sequences from other species in the
 We will use [SequenceServer](https://sequenceserver.com) to run BLAST. Open [genomicscourse.sequenceserver.com](https://genomicscourse.sequenceserver.com) in your browser, paste the [example rice and honeybee protein sequences](predictions.fa) 
 in the textbox and click on the 'BLAST' button to run a BLAST search. *THIS WILL TAKE A MINUTE 
 OR TWO*. Alternatively, just use the results of the 
-[BLAST that we performed before](https://genomicscourse.sequenceserver.com/2ec082aa-c495-4858-b1c7-0c3f8d371a38).
+[BLAST that we performed before](https://genomicscourse.sequenceserver.com/42c77718-7b26-43eb-8315-d4ee9df96985).
 
 > **_Question:_**  
 > Look at the BLAST results:
