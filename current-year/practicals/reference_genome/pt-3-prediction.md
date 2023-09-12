@@ -135,9 +135,8 @@ We will compare them using BLAST to known sequences from other species in the
 
 ## 2.1 Running BLAST with SequenceServer
 
-We will use [SequenceServer](https://sequenceserver.com) to run BLAST. Open [http://3.21.218.250/sequenceserver](http://3.21.218.250/sequenceserver) or [genomicscourse.sequenceserver.com](https://genomicscourse.sequenceserver.com) in your browser or [http://tools.genomicscourse.com/sequenceserver](http://tools.genomicscourse.com/sequenceserver), paste the
-[example rice and honeybee protein sequences](predictions.fa) in the textbox
-and click on the 'BLAST' button to run a BLAST search. *THIS WILL TAKE A MINUTE 
+We will use [SequenceServer](https://sequenceserver.com) to run BLAST. Open [genomicscourse.sequenceserver.com](https://genomicscourse.sequenceserver.com) in your browser, paste the [example rice and honeybee protein sequences](predictions.fa) 
+in the textbox and click on the 'BLAST' button to run a BLAST search. *THIS WILL TAKE A MINUTE 
 OR TWO*. Alternatively, just use the results of the 
 [BLAST that we performed before](https://genomicscourse.sequenceserver.com/2ec082aa-c495-4858-b1c7-0c3f8d371a38).
 
@@ -178,7 +177,7 @@ built to automate the comparison of sequence characteristics in a manner similar
 to what we just did through visual individual BLAST results.
 
 Try to run the [example rice and honeybee protein sequences](predictions.fa)
-through *GeneValidator*. It should be accessible at [http://3.21.218.250 /genevalidator](http://3.21.218.250/genevalidator) or [http://tools.genomicscourse.com/genevalidator](http://tools.genomicscourse.com/genevalidator) . 
+through *GeneValidator*. It should be accessible at [https://genevalidator.genomicscourse.com/](https://genevalidator.genomicscourse.com/) or [https://genevalidator.wurmlab.com/](https://genevalidator.wurmlab.com/). 
 
 
 # 3. Comparing whole genesets and prioritizing genes for manual curation
