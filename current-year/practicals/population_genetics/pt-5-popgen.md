@@ -3,7 +3,7 @@ layout: page
 title: Part 5 - Population genetics in R
 ---
 
-<!-- Updated by Paolo Inglese, 2022 -->
+<!-- Updated by Alexis Gkantiragas, 2023 -->
 
 # Part 5 - Population genetics in R
 
@@ -39,7 +39,7 @@ package in R.
 ## 2. Input into R
 
 As before, create a directory for this practical (e.g.,
-`2022-10-xx-population_genetics`). Copy over the R markdown notebook
+`2023-10-xx-population_genetics`). Copy over the R markdown notebook
 `/shared/data/popgen/popgen.Rmd` to your project directory. Create `input/` 
 subdirectory and symlink the `snp.vcf.gz` and `snp.vcf.gz.tbi` file we created
 in the last practical to it. If you don't have these files, you can use the
@@ -47,7 +47,7 @@ ones in: `/shared/data/backup_vcf`.
 The output of the `tree` command should look like this:
 
 ```bash
-2022-10-xx-population_genetics
+2023-10-xx-population_genetics
 ├── input
 │   ├── snp.vcf.gz
 │   └── snp.vcf.gz.tbi
