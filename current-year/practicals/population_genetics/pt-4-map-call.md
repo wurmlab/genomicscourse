@@ -3,7 +3,7 @@ layout: page
 title: Part 4 - Read mapping and variant calling
 ---
 
-<!-- Updated by Paolo Inglese, 2022 -->
+<!-- Updated by Alexis Gkantiragas, 2023 -->
 
 # Part 4: Population genetics - Read mapping and variant calling
 
@@ -54,7 +54,7 @@ The aim of this practical is to genotype these 14 individuals. We will:
 4. Visualise the alignments and the SNP calls in the genome browser *IGV*.
 
 We recommend that you create a directory for this work following the same
-principles as in the last few practicals (e.g., `2022-10-03-mapping`). You
+principles as in the last few practicals (e.g., `2023-10-02-mapping`). You
 should have subdirectories called `input`, `results` and `tmp` and a
 `WHATIDID.txt` file in which to log your commands.
 Create a symlink (using `ln -s`) from the reference genome
@@ -65,7 +65,7 @@ Create a symlink (using `ln -s`) from the reference genome
 > Remember to keep your commands in the `WHATIDID.txt` file.
 
 ```bash
-2022-10-03-mapping/
+2023-10-02-mapping/
 ├── input
 │   ├── -> /shared/data/popgen/reference.fa
 │   └── -> /shared/data/popgen/reads
@@ -121,7 +121,7 @@ Symlink `reference.fa` to `tmp/`:
 
 ```bash
 cd tmp
-ln -s ~/2022-10-03-mapping/input/reference.fa .
+ln -s ~/2023-10-02-mapping/input/reference.fa .
 cd ..
 ```
 
@@ -232,7 +232,7 @@ rm -ri tmp
 ## 4. Variant calling
 
 Create a new directory in your `home` for the second part of today's practical
-(e.g., `2022-10-03-genotyping`). You will want to set up the relevant
+(e.g., `2023-10-02-genotyping`). You will want to set up the relevant
 subdirectories  and `WHATIDID.txt` file as before. Then symlink (`ln -s`) the
 reference genome `/shared/data/popgen/reference.fa` and the alignments
 from the mapping part of the practical (both `.bam` and `.bai` files) to your
@@ -244,11 +244,11 @@ from the mapping part of the practical (both `.bam` and `.bai` files) to your
 This is what your directory structure should look like when running `tree`:
 
 ```bash
-2022-10-03-genotyping/
+2023-10-02-genotyping/
 ├── input
 │   ├── -> /shared/data/popgen/reference.fa
-│   ├── -> ~/2022-10-03-mapping/results/f1_B.bam
-│   ├── -> ~/2022-10-03-mapping/results/f1_B.bam.bai
+│   ├── -> ~/2023-10-02-mapping/results/f1_B.bam
+│   ├── -> ~/2023-10-02-mapping/results/f1_B.bam.bai
 │   └── -> ...
 ├── results
 ├── tmp
@@ -281,7 +281,7 @@ First link `reference.fa` to `tmp/`
 
 ```bash
 cd tmp
-ln -s ~/2022-10-03-genotyping/input/reference.fa .
+ln -s ~/2023-10-02-genotyping/input/reference.fa .
 cd ..
 ```
 
