@@ -50,7 +50,7 @@ For each practical, you will have to create the following directory structure:
 * main directory in your home directory in the format
   (`YYYY-MM-DD-name_of_the_practical`, where `YYYY` is the current year, `MM` is
   the current month, and `DD` is the current day, and `name_of_the_practical`
-  matches the practical). For instance, on the 9th of October 2022 you should
+  matches the practical). For instance, on the 26th of September 2023 you should
   create the directory `2023-09-26_read_cleaning` for this practical. In the
   tutorial we will use this example directory name.
 * Inside this directory, create other three directories, called `input`, `tmp`,
