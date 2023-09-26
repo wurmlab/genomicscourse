@@ -280,11 +280,9 @@ threshold (see the above note for suggestion about the values to use). Remember
 that each `.fq` file can have a different set of values.
 
 ```bash
-cutadapt --cut BEGINNING --quality-cutoff CUTOFF \
-    input/reads.pe1.fastq.gz > tmp/reads.pe1.trimmed.fq
+cutadapt --cut BEGINNING --quality-cutoff CUTOFF input/reads.pe1.fastq.gz > tmp/reads.pe1.trimmed.fq
 
-cutadapt --cut BEGINNING --quality-cutoff CUTOFF \
-    input/reads.pe2.fastq.gz > tmp/reads.pe2.trimmed.fq
+cutadapt --cut BEGINNING --quality-cutoff CUTOFF input/reads.pe2.fastq.gz > tmp/reads.pe2.trimmed.fq
 ```
 
 ## 5. K-mer filtering, removal of short sequences
