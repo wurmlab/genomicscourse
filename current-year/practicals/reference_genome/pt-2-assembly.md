@@ -3,7 +3,7 @@ layout: page
 title: Part 2 - Genome assembly
 ---
 
-<!-- Updated by Paolo Inglese, 2022 -->
+<!-- Updated by Alexis Gkantiragas, 2023 -->
 
 # Part 2: Genome assembly
 
@@ -17,15 +17,15 @@ Many different pieces of software exist for genome assembly. We will be using
 
 Following the same procedure described in Section 1.2 of
 [Part 1: Read cleaning](pt-1-read-cleaning.html), create a new main directory
-for today's practical (e.g., `2022-09-29-assembly`), the `input`, `tmp`,
+for today's practical (e.g., `2023-09-27-assembly`), the `input`, `tmp`,
 and `results` subdirectories, and the file `WHATIDID.txt` to log your
 commands.  
 Link the output (cleaned reads) from Part 1 practical into `input` subdirectory:
 
 ```bash
-cd ~/2022-09-29-assembly
+cd ~/2023-09-27-assembly
 cd input
-ln -s ~/2022-09-27-read_cleaning/results/reads.pe*.clean.fq .
+ln -s ~/2023-09-26-read_cleaning/results/reads.pe*.clean.fq .
 cd ..
 ```
 
@@ -97,7 +97,7 @@ generate a standardized report. Run *Quast* on the `scaffolds.fasta`
 file without special options to get the basic statistics:
 
 ```bash
-cd ~/2022-09-29-assembly/results
+cd ~/2023-09-27-assembly/results
 quast.py scaffolds.fasta
 ```
 

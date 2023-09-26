@@ -3,7 +3,7 @@ layout: page
 title: Part 3 - Gene prediction
 ---
 
-<!-- Updated by Paolo Inglese, 2022 -->
+<!-- Updated by Alexis Gkantiragas, 2023 -->
 
 # Part 3: Gene prediction
 
@@ -26,14 +26,14 @@ In this practical, we will use `MAKER`.
 
 Following the same procedure described in Section 1.2 of
 [Part 1: Read cleaning](pt-1-read-cleaning.html), create a new main directory
-for today's practical (e.g., `2022-09-30-gene_prediction`) and the `input`,
+for today's practical (e.g., `2023-09-29-gene_prediction`) and the `input`,
 `tmp`, and `results` subdirectories, and the file `WHATIDID.txt` to log your
 commands.
 Link the output (assembly) from Part 2 practical into `input` subdirectory:
 
 ```bash
-cd ~/2022-09-30-gene_prediction/input
-ln -s ~/2022-09-29-assembly/results/scaffolds.fasta .
+cd ~/2023-09-29-gene_prediction/input
+ln -s ~/2023-09-27-assembly/results/scaffolds.fasta .
 cd ..
 ```
 
