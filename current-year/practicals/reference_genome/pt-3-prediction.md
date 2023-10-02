@@ -54,10 +54,10 @@ genes.
 > assembled scaffolds.
 > ```bash
 > # Link this scaffolds file into your input directory
-> ln -s ../../../../data/backup_assembly/scaffolds.fasta .
+> ln -s /shared/data/backup_assembly/scaffolds.fasta .
 > ```
 
-In this practical, we will show how to run MAKER in a simple scenarion. For a
+In this practical, we will show how to run MAKER in a simple scenario. For a
 better understanding of how this tool works, and how it can be applied in real
 case scenarios, we encourage to read the paper and documentation. Also, checking
 which settings were used in recent publications can be very helpful. 
@@ -78,8 +78,7 @@ specify:
   * deactivate RepeatRunner by changing `repeat_protein` line to 
     `repeat_protein=` (i.e., nothing after `=`)
   * Augustus_species:`honeybee1` (remember to add 1 at the end; this provides
-    hints to Augustus about the gene structure based on what we know from
-    honeybee).
+    hints to Augustus about the gene structure based on what we know about gene composition from the honeybee.
 
 We deactivated RepeatMakser and RepeatRunner due to computational limitations
 as well as the lack of a suitable library of repetitive elements for this
@@ -130,8 +129,7 @@ fasta_merge -d min10000.maker.output/min10000_master_datastore_index.log
 So now we have some gene predictions... *how can we know if they are any good?*
 The easiest way to get a feel for this is to use the following example
 sequences: [predicted protein sequences from rice and honeybee](predictions.fa).
-We will compare them using BLAST to known sequences from other species in the
-[uniref50 database](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4375400/).
+We will compare them using BLAST to known sequences from other species against the Swissprot database (faster), or the Uniref50 database (slower).
 
 ## 2.1 Running BLAST with SequenceServer
 
