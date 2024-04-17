@@ -44,7 +44,8 @@ Next, create the R ``genlight`` object from the files we just created:
 names_input  <- read.table("sample_names.txt", col.names = c("names"))
 sample_names <- as.vector(names_input$names)
 
-snp_data     <- read.table("snp_matrix.txt", col.names = c("scaffold", "position", sample_names)) 
+snp_data     <- read.table("snp_matrix.txt") 
+colnames(snp_data) <- c("scaffold", "position", sample_names)
 
 # Keep the position of the loci
 loci       <- snp_data[, c("scaffold", "position")]

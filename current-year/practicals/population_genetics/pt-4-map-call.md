@@ -80,7 +80,6 @@ commands from your `input` directory:
 
 ```bash
 ls -al
-l # on your computers, this is a shortcut for ls -al
 ```
 
 Check how many scaffolds there are in the reference genome:
