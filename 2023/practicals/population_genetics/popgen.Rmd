@@ -1,0 +1,308 @@
+# Population genetics in R
+
+## Introduction
+
+We have samples with two genotypes: the B genotype (associated with single-queen colony phenotype) and the b genotype (found exclusively in multiple-queen colonies).
+
+Our dummy assembly has two scaffolds, from two different chromosomes. We aim to test whether any parts of this assembly differ between the individuals from these two groups (B and b).
+
+First, we will create a heat map of the genotypes of the individuals and we will run Principal Component Analysis (PCA) on these genotypes. This will allow us to visualise if  individuals cluster together by their B/b genotype. This will be done using the ``adegenet`` package in R.
+
+In a second part, we are going to measure genetic differentiation between the two groups (B and b). We will do this analysis over a sliding window, to see if the differentiation between B and b are specific to any portion of the genome. We will also measure the genetic diversity among each of the groups, which may tell us something about the evolutionary history of the portions of genome represented in our assembly. This will be done using the ``PopGenome`` package in R.
+
+## Load packages
+
+Before we start with the analysis, let us first load the R packages we will need and configure them.
+
+```{r message=FALSE}
+# Load libraries
+library(dplyr)
+library(ggplot2)
+library(adegenet)
+library(PopGenome)
+
+# Configure ggplot to use 'theme_minimal'
+theme_set(theme_minimal())
+```
+
+## Analysis using ``adegenet``
+
+The package ``adegenet`` uses an R object called ``genlight``. To create it, we need to input a matrix where each row is an individual and each column is a locus (i.e. a SNP position). We can do this using ``bcftools``:
+
+```{bash engine.opts='-l'}
+# Select the information in the vcf file without the header
+bcftools query input/snp.vcf.gz -f '%CHROM\t%POS[\t%GT]\n' > snp_matrix.txt
+
+# Get sample names
+bcftools query -l input/snp.vcf.gz | sed 's/.bam//g' > sample_names.txt
+```
+
+Next, create the R ``genlight`` object from the files we just created:
+
+```{r}
+# Input the SNP data and the sample names by reading the .txt files you just created with bcftools
+names_input  <- read.table("sample_names.txt", col.names = c("names"))
+sample_names <- as.vector(names_input$names)
+
+snp_data     <- read.table("snp_matrix.txt") 
+colnames(snp_data) <- c("scaffold", "position", sample_names)
+
+# Keep the position of the loci
+loci       <- snp_data[, c("scaffold", "position")]
+
+# Transpose the data (turn it on its side so that rows = individuals and columns = loci)
+snp_matrix <- t(snp_data[,3:ncol(snp_data)])
+
+# Finally we reorder the rows by population
+bb <- sample_names[grep(pattern = "B", x = sample_names)] # B samples (bb = "big B")
+lb <- sample_names[grep(pattern = "b", x = sample_names)] # b samples (lb = "little b")
+snp_matrix <- snp_matrix[c(bb, lb), ]
+
+# Now we can create a new genlight object that contains all the SNP data. Note that the
+# following line has been split up over multiple lines to make it easier to read R won't
+# run the command until all brackets have been closed.
+snp <- new("genlight",
+           snp_matrix,
+           chromosome = loci$scaffold,
+           position = loci$position,
+           pop = as.factor(c(rep("B", 7), rep("b", 7))))
+
+
+# Print details of the snp genlight object:
+snp
+```
+
+You can access the content of ``snp`` object using the "@" sign:
+
+```{r}
+# Print name of the individuals:
+snp@ind.names
+
+# There are some functions that may also be helpful:
+ploidy(snp)
+```
+
+Now plot a heatmap showing the genotypes.
+
+```{r}
+## Heat map of genotype
+glPlot(snp)
+```
+
+You can also perform a Principle Component Analysis (PCA) and plot the first few components.
+
+```{r}
+## PCA
+# Run PCA - scale = TRUE meaning any outlier will be accounted for, recommended if no previous normalisation was applied to the data
+pca_results <- prcomp(snp_matrix, scale. = TRUE)
+# Check how much variance each PC explains
+summary(pca_results)
+# Call out another dimension of the data
+pca_results_invert <- as.data.frame(pca_results$x)
+# Add additional column with B or b to set colours in the plot
+pca_results_invert$sample <- rownames(pca_results_invert)
+# Plot the PCA
+pca_plot <- pca_results_invert %>%
+  mutate_all(~ gsub(pattern = "results/|f1|f2|f3|f4|f5|f6|f7|_", replacement = "", .)) %>%  # Remove redundant pattern from the data to only have B or b
+  transform(pca_results_invert,  # Transform values to numeric
+  PC1 = as.numeric(PC1),
+  PC2 = as.numeric(PC2), PC3 = as.numeric(PC3)
+) %>%
+  ggplot(aes(x = PC1, y = PC2, colour = sample)) + # Plot 2 first PC values
+    geom_point(size = 2) +
+    xlab("PC1") +
+    ylab("PC2") +
+    coord_fixed(ratio = 1)
+
+pca_plot
+```
+
+The aim of these analyses is to test whether the B and the b individuals cluster together or separately. The first principal component separates B and b. But if you look at the heat map, the separation is not constant in the whole genome.
+
+Each of the scaffolds is from a different chromosome. We can test whether the differentiation between B and b is only seen in one of the scaffolds.
+
+We will start with scaffold_2.
+
+```{r}
+## scaffold_2
+# Plot heat map
+scaffold_2 <- snp[, which(snp@chromosome == "scaffold_2")]
+glPlot(scaffold_2)
+
+# Plot PCA
+# Select only "scaffold_2" rows
+scaffold_2_pca <- snp_data %>% dplyr::group_by(scaffold) %>% dplyr::filter(scaffold == "scaffold_2")
+# Transpose the data
+scaffold_2_pca <- t(scaffold_2_pca[, 3:ncol(scaffold_2_pca)])
+scaffold_2_pca_res <- prcomp(scaffold_2_pca, scale. = TRUE)
+# Check how much variance each PC explains
+summary(scaffold_2_pca_res)
+# Call out another dimension of the data
+scaffold_2_pca_inv <- as.data.frame(scaffold_2_pca_res$x)
+# Add additional column with B or b to set colours in the plot
+scaffold_2_pca_inv$sample <- sample_names
+# Plot the PCA
+scaffold_2_pca_plot <- scaffold_2_pca_inv %>%
+  mutate_all(~ gsub(pattern = "results/|f1|f2|f3|f4|f5|f6|f7|_", replacement = "", .)) %>%  # Remove redundant pattern from the data to only have B or b
+  transform(pca_results_invert,  # Transform values to numeric
+  PC1 = as.numeric(PC1),
+  PC2 = as.numeric(PC2), PC3 = as.numeric(PC3)
+) %>%
+  ggplot(aes(x = PC1, y = PC2, colour = sample)) +
+    geom_point(size = 2) +
+    xlab("PC1") +
+    ylab("PC2") +
+    coord_fixed(ratio = 1)
+
+scaffold_2_pca_plot
+```
+
+Now check scaffold_1.
+```{r}
+## scaffold_1
+# Plot heat map
+scaffold_1 <- snp[, which(snp@chromosome == "scaffold_1")]
+glPlot(scaffold_1)
+
+# Plot PCA
+scaffold_1_pca <- snp_data %>% dplyr::group_by(scaffold) %>% dplyr::filter(scaffold == "scaffold_1")
+scaffold_1_pca <- t(scaffold_1_pca[, 3:ncol(scaffold_1_pca)])
+scaffold_1_pca_res <- prcomp(scaffold_1_pca, scale. = TRUE)
+summary(scaffold_1_pca_res)
+
+scaffold_1_pca_inv <- as.data.frame(scaffold_1_pca_res$x)
+scaffold_1_pca_inv$sample <- sample_names
+
+scaffold_1_pca_plot <- scaffold_1_pca_inv %>%
+  mutate_all(~ gsub(pattern = "results/|f1|f2|f3|f4|f5|f6|f7|_", replacement = "", .)) %>%
+  transform(pca_results_invert,
+  PC1 = as.numeric(PC1),
+  PC2 = as.numeric(PC2), PC3 = as.numeric(PC3)
+) %>%
+  ggplot(aes(x = PC1, y = PC2, colour = sample)) +
+    geom_point(size = 2) +
+    xlab("PC1") +
+    ylab("PC2") +
+    coord_fixed(ratio = 1)
+
+scaffold_1_pca_plot
+```
+* Is differentiation coming mainly from one of the scaffolds?
+* If so, which one?
+
+## Using ``PopGenome`` to measure differentiation and diversity
+
+Another way of measuring differentiation between groups of individuals is using the fixation index, FST, which tests whether there is genetic structure in the population. FST can be used, for example, to test whether there is evidence of low gene flow between populations. In the case of the fire ant, the B and b supergene variants coexist in the population, but do not recombine with each other - so they should show strong differentiation.
+
+An important population genetics measure is genetic diversity. Patterns of genetic diversity can be informative of a population's evolutionary past - for example, low genetic diversity may be evidence for a recent population bottleneck. Furthermore, the variation of diversity within the genome can be informative of different evolutionary effects, such as the strength of selection in different parts of the genome.
+
+We will measure FST and nucleotide diversity (a measure of genetic diversity) using the R package ``PopGenome``.
+
+In theory, ``PopGenome`` can read VCF files directly, using the ``readVCF`` function. However, because our samples are haploid, we need to use a different function, ``readData``, which requires a folder with a separate VCF for each scaffold.
+
+```{bash engine.opts='-l'}
+# Make new directory
+mkdir -p popgenome-vcf
+
+# Separate variant sites for each scaffold into different files.
+bcftools view input/snp.vcf.gz scaffold_1 > popgenome-vcf/scaffold_1
+bcftools view input/snp.vcf.gz scaffold_2 > popgenome-vcf/scaffold_2
+```
+
+Now we can analyse the data:
+
+```{r}
+# Load the data
+# MODIFY the path for the above created folder
+snp <- readData("popgenome-vcf", format = "VCF")
+
+# This is complex object, with several slots
+get.sum.data(snp)
+show.slots(snp)
+
+# You can access the different "slots" by using the "@" sign:
+snp@n.sites
+
+# Set populations
+pops <- get.individuals(snp)[[1]]
+pop1 <- pops[grep(pattern = "B\\.bam", x = pops)]
+pop2 <- pops[grep(pattern = "b\\.bam", x = pops)]
+
+snp  <- set.populations(snp, list(pop1, pop2))
+
+snp@populations # check if it worked
+```
+
+Let's calculate FST between the two populations and nucleotide diversity in each of the populations.
+
+```{r}
+# Diversities and FST (by scaffold)
+snp <- F_ST.stats(snp) # this does the calculations and
+                       # adds the results to the appropriate slots
+
+# Print FST
+get.F_ST(snp) # each line is a scaffold
+snp@nucleotide.F_ST
+
+# Print diversities
+get.diversity(snp)
+get.diversity(snp)[[1]] # pop1 (B)
+get.diversity(snp)[[2]] # pop2 (b)
+snp@nuc.diversity.within
+```
+
+Another useful tool is to do the calculations along a sliding window.
+
+```{r}
+# Transform object into object divided by sliding window
+win_snp <- sliding.window.transform(snp,
+    width = 10000,
+    jump = 10000,
+    type = 2,
+    whole.data = FALSE)
+
+# Measurements per window
+win_snp <- F_ST.stats(win_snp)
+
+win_snp@nucleotide.F_ST
+win_snp@nuc.diversity.within
+```
+
+Now we can look at the FST for each window.
+
+```{r}
+# A simple plot
+win_fst <- win_snp@nucleotide.F_ST[, 1]
+
+ggplot(data = data.frame(window = 1:length(win_fst), value = win_fst)) +
+  geom_point(aes(x  = window, y = value)) +
+  xlab("Window") +
+  ylab("FST per window")
+```
+
+Diversity among B individuals.
+
+```{r}
+# diversity among B (bb = "big B")
+bb_div <- win_snp@nuc.diversity.within[, 1]
+
+ggplot(data = data.frame(window = 1:length(bb_div), value = bb_div)) +
+  geom_point(aes(x  = window, y = value)) +
+  xlab("Window") +
+  ylab("Diversity among B")
+```
+
+Diversity among b individuals.
+
+```{r}
+# diversity among b (lb = "little b")
+lb_div <- win_snp@nuc.diversity.within[, 2]
+
+ggplot(data = data.frame(window = 1:length(lb_div), value = lb_div)) +
+  geom_point(aes(x  = window, y = value)) +
+  xlab("Window") +
+  ylab("Diversity among b")
+```
+
+* Knowing that there is no recombination between B and b somewhere in the genome, why do you think there is high FST in one scaffold and not the other?
+* What factors could make b have such low diversity in one of the scaffolds?
