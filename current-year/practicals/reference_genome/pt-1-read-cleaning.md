@@ -8,11 +8,11 @@ post_url: pt-1-read-cleaning
 # Part 1: Reads to reference genome and gene predictions
 ## 1. Introduction
 
-[Cheap sequencing](http://www.genome.gov/sequencingcosts/) has created the opportunity to perform molecular-genetic analyses on just about anything. Traditional genetic model organisms benefit from years of efforts by expert genome assemblers, gene predictors, and curators. They have created most of the prerequisites for genomic analyses. In contrast, genomic resources are much more limited for those working on "emerging" model organisms or other species. These new organisms includes most crops, animals and plant pest species, many pathogens, and major models for ecology & evolution.
+[Cheap sequencing](https://www.genome.gov/sequencingcosts/) has created the opportunity to perform molecular-genetic analyses on just about anything. Traditional genetic model organisms benefit from years of efforts by expert genome assemblers, gene predictors, and curators. They have created most of the prerequisites for genomic analyses. In contrast, genomic resources are much more limited for those working on "emerging" model organisms or other species. These new organisms includes most crops, animals and plant pest species, many pathogens, and major models for ecology & evolution.
 
 The steps below are meant to provide some ideas that can help obtaining a reference
 genome and a reference geneset of sufficient quality for many analyses. They are based on (and updated from) work we did for
-the [fire ant genome](http://www.pnas.org/content/108/14/5679.long "The genome of the fire ant Solenopsis invicta")[1].
+the [fire ant genome](https://www.pnas.org/content/108/14/5679.long "The genome of the fire ant Solenopsis invicta")[1].
 
 The dataset that you will use represents ~0.5% of the fire ant genome. This enables us to perform a toy/sandbox version of all analyses within a much shorter amount of time than would normally be required. For real projects, much more sophisticated approaches are needed!
 
@@ -36,11 +36,11 @@ to the next section. If that one is available and you see it's help screen, we'l
 
 ### Set up directory hierarchy to work in
 
-Start by creating a directory to work in. Drawing on ideas from _[Noble (2009)](http://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1000424 "A Quick Guide to Organizing Computational Biology Projects")[2]_
+Start by creating a directory to work in. Drawing on ideas from _[Noble (2009)](https://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1000424 "A Quick Guide to Organizing Computational Biology Projects")[2]_
 and others, we recommend following a specific directory convention for all your
 projects. The details of the convention that we will use in this practical can
 be found
-[here](http://github.com/wurmlab/templates/blob/master/project_structures.md "Typical multi-day project structure").
+[here](https://github.com/wurmlab/templates/blob/master/project_structures.md "Typical multi-day project structure").
 
 For the purpose of these practicals we will use a slightly simplified version of
 the directory structure explained above.
@@ -102,8 +102,8 @@ In this practical, we will work with paired ends short read sequences from an Il
 
 However, sequencers aren't perfect. Several problems may affect the quality of
 the reads. You can find some examples
-[here](http://genomecuration.github.io/genometrain/a-experimental-design/curated-collection/Presentations/Sequencing%20Troubleshooting.pptx)
-and [here](http://sequencing.qcfail.com/). Also, as you may already know,
+[here](https://genomecuration.github.io/genometrain/a-experimental-design/curated-collection/Presentations/Sequencing%20Troubleshooting.pptx)
+and [here](https://sequencing.qcfail.com/). Also, as you may already know,
 "*garbage in – garbage out*", which means that reads should be cleaned before
 performing any analysis.
 
@@ -147,8 +147,8 @@ The structure of your directory should look like this (use the command `tree`):
 
 Now, you can start evaluating the quality of the reads `reads.pe1.fastq.gz` and
 `reads.pe2.fastq.gz`. To do so, we will use
-[*FastQC*](http://www.bioinformatics.babraham.ac.uk/projects/fastqc/)
-([documentation](http://www.bioinformatics.babraham.ac.uk/projects/fastqc/Help/)).
+[*FastQC*](https://www.bioinformatics.babraham.ac.uk/projects/fastqc/)
+([documentation](https://www.bioinformatics.babraham.ac.uk/projects/fastqc/Help/)).
 FASTQC is a software tool to help visualise characteristics of a sequencing run.
 It can thus inform yourread cleaning strategy.
 
@@ -179,7 +179,7 @@ command (be aware of your current working directory using the command `pwd`):
 tree ~/2023-09-26-read_cleaning
 ```
 
-Your [resulting directory structure](http://github.com/wurmlab/templates/blob/master/project_structures.md "Typical multi-day project structure")
+Your [resulting directory structure](https://github.com/wurmlab/templates/blob/master/project_structures.md "Typical multi-day project structure")
 (`~/2023-09-26-read_cleaning`), should look like this:
 
 ```bash
@@ -208,7 +208,7 @@ that, click on one of the links corresponding to the reports files.
 > **_Question:_**
 > What does the *FastQC* report tell you?
 > If in doubt, check the documentation
-> [here](http://www.bioinformatics.babraham.ac.uk/projects/fastqc/Help/3%20Analysis%20Modules/)
+> [here](https://www.bioinformatics.babraham.ac.uk/projects/fastqc/Help/3%20Analysis%20Modules/)
 > and what the quality scores mean
 > [here](https://learn.gencore.bio.nyu.edu/ngs-file-formats/quality-scores/).
 
@@ -235,9 +235,9 @@ In the following sections, we will perform two cleaning steps:
 * K-mer filtering using *kmc3*.
 * Removing sequences that are of low quality or too short using cutadapt.
 
-Other tools, including [*fastx_toolkit*](http://github.com/agordon/fastx_toolkit),
+Other tools, including [*fastx_toolkit*](https://github.com/agordon/fastx_toolkit),
 [*BBTools*](https://jgi.doe.gov/data-and-tools/bbtools/), and
-[*Trimmomatic*](http://www.usadellab.org/cms/index.php?page=trimmomatic) can
+[*Trimmomatic*](https://www.usadellab.org/cms/index.php?page=trimmomatic) can
 also be useful, **but we won't use them now**.
 
 ### Read trimming
@@ -319,12 +319,12 @@ coverage (up to 10,000). These could be viruses or other pathogens, or highly re
 > algorithms. Eliminating them can reduce subsequent memory, disk space and CPU
 > requirements considerably.
 
-Below, we use [*kmc3*](http://github.com/refresh-bio/KMC) to "mask" extremely
+Below, we use [*kmc3*](https://github.com/refresh-bio/KMC) to "mask" extremely
 rare k-mers (i.e., convert each base in the sequences corresponding to rare
 k-mers into **N**). In this way, we will ignore these bases (those called **N**)
 because they are not really present in the species. Multiple alternative
 approaches for k-mer filtering exist (e.g., using
-[*khmer*](http://github.com/ged-lab/khmer)).
+[*khmer*](https://github.com/ged-lab/khmer)).
 
 Here, we use *kmc3* to estimate the coverage of k-mers with a size of 21
 nucleotides. When the masked k-mers are located at the end of the reads, we trim

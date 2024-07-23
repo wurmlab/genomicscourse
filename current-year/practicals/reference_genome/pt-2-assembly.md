@@ -13,7 +13,7 @@ before starting this practical.
 # 1. Brief assembly example / concepts
 
 Many different pieces of software exist for genome assembly. We will be using
-[*SPAdes*](https://cab.spbu.ru/software/spades/).
+[*SPAdes*](https://github.com/ablab/spades).
 
 Following the same procedure described in Section 1.2 of
 [Part 1: Read cleaning](pt-1-read-cleaning.html), create a new main directory
@@ -141,7 +141,7 @@ For example:
     of each of the "house-keeping" genes found in related species. This is 
     applied in *BUSCO* (Benchmarking Universal Single-Copy Orthologs).  
     Note that:
-    * *BUSCO* is a refined, modernized implementation of [*CEGMA*]("http://korflab.ucdavis.edu/Datasets/cegma/") 
+    * *BUSCO* is a refined, modernized implementation of [*CEGMA*](http://korflab.ucdavis.edu/Datasets/cegma/) 
       (Core Eukaryotic Genes Mapping Approach). *CEGMA* examines a eukaryotic
       genome assembly for presence and completeness of 248 "core eukaryotic genes".
     * *Quast* also includes a "quick and dirty" method of finding genes.

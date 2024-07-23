@@ -238,6 +238,9 @@ from the mapping part of the practical (both `.bam` and `.bai` files) to your
 `input` directory.
 
 > **_Note:_**
+> When you create links from one directory to another, it is better to use absolute path for links like `~/2023-10-02-mapping/results/*.bam*` instead of `../../2023-10-02-mapping/results/*.bam`
+
+> **_Note:_**
 > Remember to keep your commands in the `WHATIDID.txt` file.
 
 This is what your directory structure should look like when running `tree`:
