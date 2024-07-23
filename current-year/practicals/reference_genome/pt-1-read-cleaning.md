@@ -73,6 +73,9 @@ directory):
 └── WHATIDID.txt
 ```
 
+> **_Note:_**
+> You should actually create this directories and get this tree structure by running `tree` command inside the directory ending with `-read_cleaning`.
+
 Being disciplined about structuring analyses is *extremely important*. It is similar to having
 a laboratory notebook. It will prevent you from becoming overwhelmed by having
 too many files, or not remembering what you did where.
