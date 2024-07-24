@@ -5,7 +5,7 @@ title: Genomics Course Home
 
 <!-- Updated by Paolo Inglese, 2022 -->
 
-# Practicals for 2022 Genome Bioinformatics module.
+# Practicals for 2024 Genome Bioinformatics module.
 
 ## Introduction
 
