@@ -7,7 +7,7 @@ title: Tutorial - SSH
 
 Click on the link to the operating system you are using
 
-[SSH on Linux](#sshlinux)
+[SSH on Linux](#sshlinux) - *For in class practicals you should follow this section.*
 
 [SSH on Mac](#sshmac)
 
@@ -33,7 +33,7 @@ open the terminal. From step 3 onwards, everything should be identical.
 ssh bt007@bt007.genomicscourse.com
 ```
 
-1) The first time you log in, you will see a message talking about the host's
+4) The first time you log in, you will see a message talking about the host's
    authenticity, it's fingerprint and asksing if you wish to continue.
 
 ```
@@ -44,9 +44,9 @@ Are you sure you want to continue connecting (yes/no)?
 
 This message is normal when you log in to a new server. Agreeing will store the server's fingerprint, and the message will not appear again.
 
-1) Type `yes` into the Linux terminal and hit return.
+5) Type `yes` into the Linux terminal and hit return.
 
-2) You will then be asked for a password.
+6) You will then be asked for a password.
 
 ```
 bt007@bt007.genomicscourse.com's password:
@@ -95,7 +95,48 @@ Type in the password that you've been emailed, and hit return. Nothing will appe
 
 # SSH on Windows<a name="sshwindows"></a>
 
-## Installing MobaXTerm
+## Using OpenSSH client for Windows
+
+1) On Windows 10+, type cmd (short for command) into the search box, and press Enter.
+
+2) Into the Windoes command line that appears, type `ssh username@servername`, 
+   replacing username and servername with the username and server name that you 
+   have been emailed:
+
+```bash
+ssh bt007@bt007.genomicscourse.com
+```
+
+If you get a message that there is no command `ssh`, then you need to [enable the OpenSSH client](https://docs.microsoft.com/en-us/windows-server/administration/openssh/openssh_install_firstuse). 
+
+4) The first time you log in, you will see a message talking about the host's
+   authenticity, it's fingerprint and asksing if you wish to continue.
+
+```
+The authenticity of host 'bt007.genomicscourse.com (192.135.232.24)' can't be established.
+ECDSA key fingerprint is SHA256:xmvrB9Ke/bXNtpu5PXF6IbUS8wxCtF6SNqZ7VV+IRoU.
+Are you sure you want to continue connecting (yes/no)?
+```
+
+This message is normal when you log in to a new server. Agreeing will store the server's fingerprint, and the message will not appear again.
+
+5) Type `yes` into the Windoes command line and hit return.
+
+6) You will then be asked for a password.
+
+```
+bt007@bt007.genomicscourse.com's password:
+```
+
+Type in the password that you've been emailed, and hit return. Nothing will appear while you type. If you know you have made a mistake, you can hold down backspace, and retype the password.
+
+7) Congratulations! You are now logged in!
+
+## Using MobaXTerm SSH client
+
+If built-in SSH client did not work for you, then use MobaXTerm as exlained below.
+
+### Installing MobaXTerm
 
 There are a number of SSH clients you can use, but for the purposes of this practical, we would recommend MobaXTerm.
 
@@ -106,7 +147,7 @@ There are a number of SSH clients you can use, but for the purposes of this prac
 
 3) Run the file ending in .msi - you'll get a windows prompt to install this, which it is safe to agree to. Install MobaXTerm in the default location, and you're then ready to log in.
 
-## Logging in through MobaXTerm
+### Logging in through MobaXTerm
 
 1) Open MobaXTerm from the Windows start menu (if you can't find it, use the search bar).
 
@@ -123,16 +164,13 @@ There are a number of SSH clients you can use, but for the purposes of this prac
 
 ![](images/ssh_login.png)
 
+6) Tick OK, at the bottom of the box.
 
-1) Tick OK, at the bottom of the box.
+7) You may see a message the first time you log in, saying that "the authenticity of the host can not be established", and asking if you wish to continue connecting. This message is normal when you log in to a new server. Agreeing will store the server's fingerprint, and the message will not appear again.
 
-2) You may see a message the first time you log in, saying that "the authenticity of the host can not be established", and asking if you wish to continue connecting. This message is normal when you log in to a new server. Agreeing will store the server's fingerprint, and the message will not appear again.
-
-3) Click on `Yes` if the message appears
+8) Click on `Yes` if the message appears
 
 ![](images/warning.png)
-
-
 
 9) You will then be asked for a password.
 

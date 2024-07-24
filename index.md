@@ -51,9 +51,7 @@ Prerequisites for the practicals are:
      * following at least the *ggplot* section of the *Exploratory_Data_Analysis*
        swirl course.
 
-<!--
-
-## 2. Practicals
+2. Practicals
 
 1. [Short read cleaning](./current-year/practicals/reference_genome/pt-1-read-cleaning.html): Illumina
   short read cleaning
@@ -65,7 +63,6 @@ Prerequisites for the practicals are:
      4. [Mapping reads, calling variants, visualizing variant calls.](./current-year/practicals/population_genetics/pt-4-map-call.html)
      5. [Analysing variants: PCA, measuring Differentiation & Diversity.](./current-year/practicals/population_genetics/pt-5-popgen.html)
 
--->
 ## 3. Computers
 
 To perform the practicals, you will remotely connect to the Amazon Web Services
