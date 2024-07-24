@@ -1,9 +1,9 @@
 ---
-layout: page
+layout: mainpage
 title: Genomics Course Home
 ---
 
-<!-- Updated by Paolo Inglese, 2022 -->
+<!-- Updated by Vitaly Voloshin, 2024 -->
 
 # Practicals for 2024 Genome Bioinformatics module.
 
@@ -51,7 +51,7 @@ Prerequisites for the practicals are:
      * following at least the *ggplot* section of the *Exploratory_Data_Analysis*
        swirl course.
 
-2. Practicals
+## 2. Practicals
 
 1. [Short read cleaning](./current-year/practicals/reference_genome/pt-1-read-cleaning.html): Illumina
   short read cleaning
