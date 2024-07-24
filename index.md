@@ -88,10 +88,10 @@ The initial version of this practical was put together by
      [Robert Waterhouse](http://www.rmwaterhouse.org/),
      [Bruno Vieira](http://wurmlab.github.io/team/bmpvieira)
 
-## 5. Things used in other versions of this course:
+<!-- ## 5. Things used in other versions of this course:
 
 * ~~[Inferring population sizes and gene flow.](./msmc/msmc-tutorial/guide) (Credit Stefan Schiffels [@stschiff](http://twitter.com/stschiff))~~
 * ~~Gene expression  ( Credit Julien Roux [www](http://www.unil.ch/dee/home/menuinst/people/post-docs--associates/dr-julien-roux.html) [@_julien_roux](http://twitter.com/_julien_roux)):~~
      * ~~[From raw sequencing data to transcript expression levels.](./2016-SIB/practicals/rnaseq/TP1)~~
-     * ~~[Gene-level clustering and differential expression analysis.](./2016-SIB/practicals/rnaseq/TP2)~~
+     * ~~[Gene-level clustering and differential expression analysis.](./2016-SIB/practicals/rnaseq/TP2)~~ -->
 
