@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{site.title}}</title>
+    <meta name="description" content="{{site.description}}">
+    <link rel="stylesheet" href="{{site.url}}/assets/css/markdown-style.css">
+    <link rel="stylesheet" href="{{site.url}}/assets/css/custom-style.css">
+    <link rel="icon" href="{{site.url}}/favicon.ico" type="image/x-icon" />
+</head>
+
+<body class="markdown-body">
+    {% if site.data.siteBreadcrumbs.displaySiteBreadcrumbs == true%}
+    <div id="breadcrumbs">
+        {% assign crumbs = page.url | remove:'/index.html' | split: '/' %}
+        <a href="/">{{site.title}}</a>
+        {% for crumb in crumbs offset: 1 %}
+        / <a
+            href="{% assign crumb_limit = forloop.index | plus: 1 %}{% for crumb in crumbs limit: crumb_limit %}{{ crumb | append: '/' | replace:'without-plugin/','without-plugins/' }}{% endfor %}">{{
+            crumb | replace:'-',' ' | remove:'.html' | capitalize }}</a>
+        {% endfor %}
+    </div>
+    {% endif %}
+    <main>
