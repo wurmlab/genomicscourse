@@ -99,7 +99,7 @@ Type in the password that you've been emailed, and hit return. Nothing will appe
 
 1) On Windows 10+, type cmd (short for command) into the search box, and press Enter.
 
-2) Into the Windoes command line that appears, type `ssh username@servername`, 
+2) Into the Windows command line that appears, type `ssh username@servername`, 
    replacing username and servername with the username and server name that you 
    have been emailed:
 
@@ -120,7 +120,7 @@ Are you sure you want to continue connecting (yes/no)?
 
 This message is normal when you log in to a new server. Agreeing will store the server's fingerprint, and the message will not appear again.
 
-5) Type `yes` into the Windoes command line and hit return.
+5) Type `yes` into the Windows command line and hit return.
 
 6) You will then be asked for a password.
 

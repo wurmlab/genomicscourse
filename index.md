@@ -42,7 +42,7 @@ At the end of this module, you should be able to:
 Prerequisites for the practicals are:
 
  * a basic knowledge of Linux command line. For a refresher, try the SIB's
-   UNIX fundamentals online course ([here](http://edu.isb-sib.ch/course/view.php?id=82)).
+   UNIX fundamentals online course ([here](http://edu.isb-sib.ch/course/view.php?id=82)). You can also go through a [Command Line Bootcamp](https://command-line-bootcamp.genomicscourse.com/).
  * a basic knowledge of R programming. The `swirl()` library course ([here](http://swirlstats.com))
    can help.
    In particular, it can be useful:
@@ -81,12 +81,12 @@ The initial version of this practical was put together by
     * [Oksana Riba-Grognuz](https://www.linkedin.com/in/oksana80)' contributions
       for the 2012 edition of this course
 
- It was heavily heavily heavily revised and improved thanks to efforts and new
- content by
-   * [Rodrigo Pracana](https://wurmlab.github.io/team/rpracana/)
-   * Anurag Priyam, Carlos MartinezRuiz, Nazrath Nawz, many others in the lab.
-     [Robert Waterhouse](http://www.rmwaterhouse.org/),
-     [Bruno Vieira](http://wurmlab.github.io/team/bmpvieira)
+It was heavily heavily heavily revised and improved thanks to efforts and new
+content by
+ * [Rodrigo Pracana](https://wurmlab.github.io/team/rpracana/)
+ * Anurag Priyam, Carlos MartinezRuiz, Nazrath Nawz, many others in the lab.
+   [Robert Waterhouse](http://www.rmwaterhouse.org/),
+   [Bruno Vieira](http://wurmlab.github.io/team/bmpvieira)
 
 <!-- ## 5. Things used in other versions of this course:
 
