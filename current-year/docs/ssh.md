@@ -34,7 +34,7 @@ ssh bt007@bt007.genomicscourse.com
 ```
 
 4) The first time you log in, you will see a message talking about the host's
-   authenticity, it's fingerprint and asksing if you wish to continue.
+   authenticity, it's fingerprint and asking if you wish to continue.
 
 ```
 The authenticity of host 'bt007.genomicscourse.com (192.135.232.24)' can't be established.

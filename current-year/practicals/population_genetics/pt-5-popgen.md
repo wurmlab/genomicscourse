@@ -49,8 +49,8 @@ The output of the `tree` command should look like this:
 ```bash
 2023-10-xx-population_genetics
 ├── input
-│   ├── snp.vcf.gz
-│   └── snp.vcf.gz.tbi
+│   ├── snp.vcf.gz -> /home/alice/2024-08-01-genotyping/results/snp.vcf.gz
+│   └── snp.vcf.gz.tbi -> /home/alice/2024-08-01-genotyping/results/snp.vcf.gz.tbi
 └── popgen.Rmd
 ```
 

@@ -67,8 +67,8 @@ Create a symlink (using `ln -s`) from the reference genome
 ```bash
 2023-10-02-mapping/
 ├── input
-│   ├── -> /shared/data/popgen/reference.fa
-│   └── -> /shared/data/popgen/reads
+│   ├── reads -> /shared/data/popgen/reads
+│   └── reference.fa -> /shared/data/popgen/reference.fa
 ├── results
 ├── tmp
 └── WHATIDID.txt
