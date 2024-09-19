@@ -8,13 +8,13 @@ post_url: pt-1-read-cleaning
 # Part 1: Reads to reference genome and gene predictions
 ## 1. Introduction
 
-[Cheap sequencing](https://www.genome.gov/sequencingcosts/) has created the opportunity to perform molecular-genetic analyses on just about anything. Traditional genetic model organisms benefit from years of efforts by expert genome assemblers, gene predictors, and curators. They have created most of the prerequisites for genomic analyses. In contrast, genomic resources are much more limited for those working on "emerging" model organisms or other species. These new organisms includes most crops, animals and plant pest species, many pathogens, and major models for ecology & evolution.
+[Cheap sequencing](https://www.genome.gov/sequencingcosts/) has created the opportunity to perform molecular-genetic analyses on almost anything. Traditional genetic model organisms benefit from years of efforts by expert genome assemblers, gene predictors, and curators. They have created most of the prerequisites for genomic analyses. In contrast, genomic resources are much more limited for those working on "emerging" model organisms or other species. These new organisms include most crops, animals and plant pest species, many pathogens, and major models for ecology & evolution.
 
 The steps below are meant to provide some ideas that can help obtaining a reference
 genome and a reference geneset of sufficient quality for many analyses. They are based on (and updated from) work we did for
 the [fire ant genome](https://www.pnas.org/content/108/14/5679.long "The genome of the fire ant Solenopsis invicta")[1].
 
-The dataset that you will use represents ~0.5% of the fire ant genome. This enables us to perform a toy/sandbox version of all analyses within a much shorter amount of time than would normally be required. For real projects, much more sophisticated approaches are needed!
+The dataset you will use represents ~0.5% of the fire ant genome. This enables us to perform a toy/sandbox version of all analyses within a much shorter time than would normally be required. For real projects, much more sophisticated approaches are needed! You can ask about these in the forum, or in person.
 
 During this series of practicals, we will:
 
@@ -25,7 +25,7 @@ During this series of practicals, we will:
  5. assess quality of gene predictions,
  6. assess quality of the entire process using a biologically meaningful measure.
 
-Note: Please do not jump ahead. You will gain the most by following through each section of the practical one by one. If you're fast, dig deeper into particular aspects. Dozens of approaches and tools exist for each step - try to understand their tradeoffs.
+*Note: Please do not jump ahead. You will gain the most by following through each section of the practical one by one. If you're fast, dig deeper into particular aspects. Dozens of approaches and tools exist for each step - try to understand their tradeoffs.*
 
 ## 2. Software and environment setup
 
@@ -50,17 +50,21 @@ For each practical, you will have to create the following directory structure:
 * main directory in your home directory in the format
   (`YYYY-MM-DD-name_of_the_practical`, where `YYYY` is the current year, `MM` is
   the current month, and `DD` is the current day, and `name_of_the_practical`
-  matches the practical). For instance, on the 26th of September 2023 you should
-  create the directory `2023-09-26_read_cleaning` for this practical. In the
+  matches the practical). For instance, on the 23rd of September 2024, you should
+  create the directory `2024-09-23_read_cleaning` for this practical. In the
   tutorial we will use this example directory name.
 * Inside this directory, create other three directories, called `input`, `tmp`,
   and `results`.
 * The directory `input` will contain the FASTQ files.
 * The directory `tmp` will represent your working directory.
-* The direcyory `results` will contain a copy of the final results.
+* The directory `results` will contain a copy of the final results.
 
 Each directory in which you have done something should include a `WHATIDID.txt`
-file in which you log your commands.
+file in which you log your commands. 
+
+Being disciplined about structuring analyses is *extremely important*. It is similar to having
+a laboratory notebook. It will prevent you from becoming overwhelmed by having
+too many files, or not remembering what you did where.
 
 Your directory structure should look like this (run `tree` in your `home`
 directory):
@@ -74,11 +78,8 @@ directory):
 ```
 
 > **_Note:_**
-> You should actually create this directories and get this tree structure by running `tree` command inside the directory ending with `-read_cleaning`.
-
-Being disciplined about structuring analyses is *extremely important*. It is similar to having
-a laboratory notebook. It will prevent you from becoming overwhelmed by having
-too many files, or not remembering what you did where.
+> Once you create this directory structure, you can get this tree structure by running the `tree` command
+> inside the directory ending with `-read_cleaning`.
 
 ## 3. Sequencing an appropriate sample
 
@@ -94,7 +95,7 @@ Thus:
 * It goes without saying that a diploid is easier than a tetraploid!
 * An inbred line or strain is easier than a wild-type.
 * A more compact genome (with less repetitive DNA) is easier than one full of
-  repeats - sorry, grasshopper & *Fritillaria* researchers! :)
+  repeats - sorry, grasshopper & *Fritillaria* researchers! ;)
 
 Many considerations go into the appropriate experimental design and sequencing
 strategy. We will not formally cover those here & instead jump right into our data.
@@ -106,7 +107,9 @@ In this practical, we will work with paired ends short read sequences from an Il
 However, sequencers aren't perfect. Several problems may affect the quality of
 the reads. You can find some examples
 [here](https://genomecuration.github.io/genometrain/a-experimental-design/curated-collection/Presentations/Sequencing%20Troubleshooting.pptx)
-and [here](https://sequencing.qcfail.com/). Also, as you may already know,
+and [here](https://sequencing.qcfail.com/). 
+
+Also, as you may already know,
 "*garbage in – garbage out*", which means that reads should be cleaned before
 performing any analysis.
 
@@ -115,8 +118,8 @@ performing any analysis.
 Lets move to the main directory for this practical, so that everything we need and do and create is in one place:
 
 ```bash
-# Remember that yours may have a different date
-cd ~/2023-09-26-read_cleaning
+# Remember that yours may have a different date, now or in future, so be careful to check if you copy-paste code
+cd ~/2024-09-23-read_cleaning
 ```
 
 After, create a symbolic link (using `ln -s`) from the reads files to the
@@ -152,8 +155,8 @@ Now, you can start evaluating the quality of the reads `reads.pe1.fastq.gz` and
 `reads.pe2.fastq.gz`. To do so, we will use
 [*FastQC*](https://www.bioinformatics.babraham.ac.uk/projects/fastqc/)
 ([documentation](https://www.bioinformatics.babraham.ac.uk/projects/fastqc/Help/)).
-FASTQC is a software tool to help visualise characteristics of a sequencing run.
-It can thus inform yourread cleaning strategy.
+FASTQC is a software tool to help visualise the characteristics of a sequencing run.
+It can thus inform your read cleaning strategy.
 
 Run FastQC on the `reads.pe1.fastq.gz` and `reads.pe2.fastq.gz` files.
 The command is given below, where instead of `YOUR_OUTDIR`, you will need
@@ -293,7 +296,10 @@ cutadapt --cut BEGINNING --quality-cutoff CUTOFF input/reads.pe2.fastq.gz > tmp/
 Let's suppose that you have sequenced your sample at 45x genome coverage. This
 means that every nucleotide of the genome was sequenced 45 times on average.
 So, for a genome of 100,000,000 nucleotides, you expect to have about 4,500,000,000
-nucleotides of raw sequence. But that coverage will not be homogeneous. Instead, the real coverage distribution will be influenced by factors including DNA quality, library preparation type, how was DNA packaged within the chromosomes (e.g., hetero vs. euchromatin)  and local **GC** content. But you might expect most of the genome to be covered between
+nucleotides of raw sequence. But that coverage will not be homogeneous. 
+Instead, the real coverage distribution will be influenced by factors including DNA quality, 
+library preparation type, how was DNA packaged within the chromosomes (e.g., hetero vs. euchromatin)  
+and local **GC** content. But you might expect most of the genome to be covered between
 20 and 70x.
 
 In practice, this distribution can be very strange. One way of rapidly examining
@@ -315,12 +321,13 @@ coverage (they are found only 10 times or less).
 These rare k-mers are likely to be errors that appeared during library
 preparation or sequencing, or **could be rare somatic mutations**. Analogously
 (although not shown in the above plot) other k-mers may exist at very large
-coverage (up to 10,000). These could be viruses or other pathogens, or highly repetitive parts of the genome, such as transposons or LINE elements.
+coverage (up to 10,000). These could be viruses or other pathogens, or highly 
+repetitive parts of the genome, such as transposable elements or simple repeats.
 
 > **_Note_:**
 > Extremely rare and extremely frequent sequences can both confuse assembly
 > algorithms. Eliminating them can reduce subsequent memory, disk space and CPU
-> requirements considerably.
+> requirements considerably, making overall computing more efficient and friendly.
 
 Below, we use [*kmc3*](https://github.com/refresh-bio/KMC) to "mask" extremely
 rare k-mers (i.e., convert each base in the sequences corresponding to rare
