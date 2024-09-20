@@ -70,7 +70,7 @@ Your directory structure should look like this (run `tree` in your `home`
 directory):
 
 ```bash
-2023-09-24-read_cleaning
+2024-09-24-read_cleaning
 ├── input
 ├── tmp
 ├── results
@@ -100,9 +100,9 @@ Thus:
 Many considerations go into the appropriate experimental design and sequencing
 strategy. We will not formally cover those here & instead jump right into our data.
 
-## 4. Illumina short read cleaning
+## 4. Illumina short-read cleaning
 
-In this practical, we will work with paired ends short read sequences from an Illumina machine. Each piece of DNA was thus sequenced once from the 5' and once from the 3' end. Thus we expect to have two files per sequences.
+In this practical, we will work with paired ends short read sequences from an Illumina machine. Each piece of DNA was thus sequenced once from the 5' and once from the 3' end. Thus, we expect to have two files per sequence.
 
 However, sequencers aren't perfect. Several problems may affect the quality of
 the reads. You can find some examples
@@ -119,10 +119,10 @@ Lets move to the main directory for this practical, so that everything we need a
 
 ```bash
 # Remember that yours may have a different date, now or in future, so be careful to check if you copy-paste code
-cd ~/2024-09-23-read_cleaning
+cd ~/2024-09-24-read_cleaning
 ```
 
-After, create a symbolic link (using `ln -s`) from the reads files to the
+After, create a symbolic link (or symlink) using `ln -s` from the reads files to the
 `input` directory:
 
 ```bash
@@ -132,8 +132,8 @@ cd input
 
 # Link the two compressed FASTQ files (remember that each correspond to one of
 # the pair)
-ln -s /shared/data/reads.pe1.fastq.gz .
-ln -s /shared/data/reads.pe2.fastq.gz .
+ln -s ../../shared/data/reads.pe1.fastq.gz .
+ln -s ../../shared/data/reads.pe2.fastq.gz .
 
 # Return to the main directory
 cd ..
@@ -142,7 +142,7 @@ cd ..
 The structure of your directory should look like this (use the command `tree`):
 
 ```bash
-2023-09-26-read_cleaning
+2024-09-24-read_cleaning
 ├── input
 │   ├── reads.pe1.fastq.gz -> /shared/data/reads.pe1.fastq.gz
 │   └── reads.pe2.fastq.gz -> /shared/data/reads.pe2.fastq.gz
@@ -161,7 +161,7 @@ It can thus inform your read cleaning strategy.
 Run FastQC on the `reads.pe1.fastq.gz` and `reads.pe2.fastq.gz` files.
 The command is given below, where instead of `YOUR_OUTDIR`, you will need
 replace `YOUR_OUTDIR` with the path to your `tmp` directory (e.g. if you main
-directory is `2023-09-26-read_cleaning`, you need to replace `YOUR_OUTDIR` with
+directory is `2024-09-24-read_cleaning`, you need to replace `YOUR_OUTDIR` with
 `tmp`):
 
 ```bash
@@ -182,14 +182,14 @@ Take a moment to verify your directory structure. You can do so using the `tree`
 command (be aware of your current working directory using the command `pwd`):
 
 ```bash
-tree ~/2023-09-26-read_cleaning
+tree ~/2024-09-24-read_cleaning
 ```
 
 Your [resulting directory structure](https://github.com/wurmlab/templates/blob/master/project_structures.md "Typical multi-day project structure")
-(`~/2023-09-26-read_cleaning`), should look like this:
+(`~/2024-09-24-read_cleaning`), should look like this:
 
 ```bash
-2023-09-26-read_cleaning
+2024-09-24-read_cleaning
 ├── input
 │   ├── reads.pe1.fastq.gz -> /shared/data/reads.pe1.fastq.gz
 │   └── reads.pe2.fastq.gz -> /shared/data/reads.pe2.fastq.gz
