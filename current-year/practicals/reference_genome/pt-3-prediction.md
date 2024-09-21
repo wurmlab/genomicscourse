@@ -3,7 +3,7 @@ layout: page
 title: Part 3 - Gene prediction
 ---
 
-<!-- Updated by Alexis Gkantiragas, 2023 -->
+<!-- Updated by Srishti Arya, 2024 -->
 
 # Part 3: Gene prediction
 
@@ -14,7 +14,8 @@ Many tools exist for gene prediction, some based on *ab initio* statistical
 models of what a protein-coding gene should look like, others that use
 similarity with protein-coding genes from other species, and others (such as
 [Augustus](http://bioinf.uni-greifswald.de/augustus/) and
-[SNAP](https://github.com/KorfLab/SNAP)), that use both.  
+[SNAP](https://github.com/KorfLab/SNAP)), which use both.  
+
 There is no perfect tool or approach, thus we typically run many gene-finding
 tools and call a consensus between the different predicted gene models. 
 [MAKER](http://www.yandell-lab.org/software/maker.html), 
@@ -26,14 +27,14 @@ In this practical, we will use `MAKER`.
 
 Following the same procedure described in Section 1.2 of
 [Part 1: Read cleaning](pt-1-read-cleaning.html), create a new main directory
-for today's practical (e.g., `2023-09-29-gene_prediction`) and the `input`,
+for today's practical (e.g., `2024-09-26-gene_prediction`) and the `input`,
 `tmp`, and `results` subdirectories, and the file `WHATIDID.txt` to log your
 commands.
 Link the output (assembly) from Part 2 practical into `input` subdirectory:
 
 ```bash
-cd ~/2023-09-29-gene_prediction/input
-ln -s ~/2023-09-27-assembly/results/scaffolds.fasta .
+cd ~/2024-09-26-gene_prediction/input
+ln -s ~/2024-09-25-assembly/results/scaffolds.fasta .
 cd ..
 ```
 
@@ -43,14 +44,15 @@ Pull out the longest few scaffolds from `scaffolds.fasta` into a new file:
 seqtk seq -L 10000 input/scaffolds.fasta > tmp/min10000.fa
 ```
 
-Gene prediction can be difficult if the assembly is of low quality and does not
-include long scaffolds. For instance, in the case of short scaffolds, if a gene
-is 2,000 bp long and includes introns, it may be very hard finding many entire
+Gene prediction can be difficult if the assembly is low quality and does not
+include long scaffolds (remember, trash in = trash out). 
+For instance, in the case of short scaffolds, if a gene
+is 2,000 bp long and includes introns, it may be very hard to find many entire
 genes. 
 
 > **_Note_:**  
 > If you have difficulty in predicting the genes or you suspect that your
-> assembly may be affected by the forementioned issues, you can use alreaady
+> assembly may be affected by the aforementioned issues, you can use already
 > assembled scaffolds.
 > ```bash
 > # Link this scaffolds file into your input directory
@@ -58,9 +60,9 @@ genes.
 > ```
 
 In this practical, we will show how to run MAKER in a simple scenario. For a
-better understanding of how this tool works, and how it can be applied in real
-case scenarios, we encourage to read the paper and documentation. Also, checking
-which settings were used in recent publications can be very helpful. 
+better understanding of how this tool works, and how it can be applied in real-case scenarios, 
+we *strongly* encourage to read the paper and documentation. Also, checking
+which settings were used in recent publications can be very helpful for reproducing (or critiquing) analyses. 
 
 Change to your `tmp` directory and run `maker`:
 
@@ -103,10 +105,10 @@ and sequence of corresponding messenger RNA and protein products (e.g., in
 FASTA format).
 
 > **_Question:_**  
-> While MAKER is running, make a note of the different file formats you have 
-> encountered by now.  
-> * Which type of data do each file formats contain?
-> * Do you understand the difference between the different file formats and data
+> While MAKER is running, note the different file formats you have 
+> encountered until now.  
+> * Which type of data does each file format contain?
+> * Do you understand the difference between the file formats and data
 >   types?
 
 Once MAKER is done the results will be hidden in subdirectories of 
@@ -136,7 +138,7 @@ We will compare them using BLAST to known sequences from other species against t
 We will use [SequenceServer](https://sequenceserver.com) to run BLAST. Open [genomicscourse.sequenceserver.com](https://genomicscourse.sequenceserver.com) in your browser, paste the [example rice and honeybee protein sequences](predictions.fa) 
 in the textbox and click on the 'BLAST' button to run a BLAST search. *THIS WILL TAKE A MINUTE 
 OR TWO*. 
-<!-- Alternatively, just use the results of the 
+<!-- Alternatively, you may use the results of the 
 [BLAST that we performed before](https://genomicscourse.sequenceserver.com/42c77718-7b26-43eb-8315-d4ee9df96985).
  -->
 > **_Question:_**  
@@ -172,8 +174,7 @@ The
 tool can help to evaluate the quality of a gene prediction by comparing features
 of a predicted gene to similar database sequences. This approach expects that
 similar sequences should for example be of similar length. *Genevalidator* was
-built to automate the comparison of sequence characteristics in a manner similar
-to what we just did through visual individual BLAST results.
+built to automate the comparison of sequence characteristics similarly to what we just did through visual individual BLAST results.
 
 Try to run the [example rice and honeybee protein sequences](predictions.fa)
 through *GeneValidator*. It should be accessible at [https://genevalidator.genomicscourse.com/](https://genevalidator.genomicscourse.com/) or [https://genevalidator.wurmlab.com/](https://genevalidator.wurmlab.com/). 
@@ -181,7 +182,7 @@ through *GeneValidator*. It should be accessible at [https://genevalidator.genom
 
 # 3. Comparing whole genesets and prioritizing genes for manual curation
 
-*Genevalidator*'s visual output can be handy when looking at few genes. But the 
+*Genevalidator*'s visual output can be handy when looking at a few genes. But the 
 tool also provides tab-delimited output, useful when working in the command-line
 or running the software on whole proteomes. This can help the analysis:
   * in situations when you can choose between multiple gene sets.
@@ -195,7 +196,7 @@ is often required. The most commonly used software for this is
 [*Apollo/WebApollo*](http://genomearchitect.org/).
 
 We will not curate any gene models as part of this practical, but you can learn
-about it through these youtube videos:
+about gene model curation through these YouTube videos:
 
 1. [EMBL-ABR training 20171121 - Genome Annotation using Apollo](https://youtu.be/Wec7ZlXykQc)
 2. [The i5k Workspace@NAL: a pan-Arthropoda genome database](https://youtu.be/HYo2RQa4BUI?t=865)
