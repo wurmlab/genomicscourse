@@ -3,7 +3,7 @@ layout: page
 title: Part 2 - Genome assembly
 ---
 
-<!-- Updated by Alexis Gkantiragas, 2023 -->
+<!-- Updated by Srishti Arya, 2024 -->
 
 # Part 2: Genome assembly
 
@@ -17,21 +17,22 @@ Many different pieces of software exist for genome assembly. We will be using
 
 Following the same procedure described in Section 1.2 of
 [Part 1: Read cleaning](pt-1-read-cleaning.html), create a new main directory
-for today's practical (e.g., `2023-09-27-assembly`), the `input`, `tmp`,
+for today's practical (e.g., `2024-09-25-assembly`), the `input`, `tmp`,
 and `results` subdirectories, and the file `WHATIDID.txt` to log your
-commands.  
+commands. 
+
 Link the output (cleaned reads) from Part 1 practical into `input` subdirectory:
 
 ```bash
-cd ~/2023-09-27-assembly
+cd ~/2024-09-25-assembly
 cd input
-ln -s ~/2023-09-26-read_cleaning/results/reads.pe*.clean.fq .
+ln -s ~/2024-09-24-read_cleaning/results/reads.pe*.clean.fq .
 cd ..
 ```
 
 > **_Question:_**  
 > * Did you note the use of `*` in the above command?
-> * What does it do? (Hint: the symbol `*` is called 'globbing')
+> * What does it do? (Hint: the symbol `*` is called a wildcard, and use of it in a string is called globbing)
 
 To assemble our cleaned reads with *SPAdes*, run the following line: 
 (_This will take about 10 minutes_)
@@ -65,7 +66,7 @@ genome assembly** and the approaches used to overcome them from the following
 papers:
 
  * [Genetic variation and the *de novo* assembly of human genomes. Chaisson et al 2015 NRG](https://www.nature.com/articles/nrg3933)
-   (to overcome the paywall, login via your university, or email the authors).
+   (to overcome the paywall, log in via your university, or email the authors).
  * The now slightly outdated (2013) [Assemblathon paper](http://gigascience.biomedcentral.com/articles/10.1186/2047-217X-2-10).
  * [Metassembler: merging and optimizing *de novo* genome assemblies. Wences & Schatz (2015)](http://genomebiology.biomedcentral.com/articles/10.1186/s13059-015-0764-4).
  * [A hybrid approach for *de novo* human genome sequence assembly and phasing. Mostovoy et al (2016)](https://www.nature.com/articles/nmeth.3865).
@@ -91,13 +92,14 @@ _How do we know if our genome is good?_
 ## 2.1 Simple metrics
 
 An assembly software will generally provide some statistics about what it did.
-But the output formats differ between assemblers. [*Quast*](http://quast.sourceforge.net/quast),
+But, note that the output formats may differ between assemblers. 
+[*Quast*](http://quast.sourceforge.net/quast),
 the _Quality Assessment Tool for Genome Assemblies_ is a tool designed to
 generate a standardized report. Run *Quast* on the `scaffolds.fasta`
 file without special options to get the basic statistics:
 
 ```bash
-cd ~/2023-09-27-assembly/results
+cd ~/2024-09-25-assembly/results
 quast.py scaffolds.fasta
 ```
 
@@ -110,7 +112,7 @@ output directory to `~/www/tmp` and access through your browser).
 > * Why does *Quast* use the word "contig"?
 
 In some cases, we have prior knowledge about the expected percentage of **GC** 
-content, the number of chromosomes, and the total genome size. These information
+content, the number of chromosomes, and the total genome size. This information
 can be compared to the statistics present in Quast's report.
 
 ## 2.2 Biologically meaningful measures
@@ -119,11 +121,11 @@ Unfortunately, with many of the simple metrics, it is difficult to determine
 whether the assembler did things correctly, or just haphazardly stuck lots of
 reads together.
 
-We probably have other prior information about what to expect in this genome.
+We often have other prior information about what to expect in this genome.
 For example:
 
  1. if we have a reference assembly from a not-too-distant relative, we can
-    expect that large parts of genome will be organised in the same order, i.e., 
+    expect that large genome parts will be organised in the same order, i.e., 
     _synteny_.
  2. If we independently created a transcriptome assembly, we can expect that
     the exons making each transcript will be mapped sequentially onto the 
@@ -143,7 +145,7 @@ For example:
     Note that:
     * *BUSCO* is a refined, modernized implementation of [*CEGMA*](http://korflab.ucdavis.edu/Datasets/cegma/) 
       (Core Eukaryotic Genes Mapping Approach). *CEGMA* examines a eukaryotic
-      genome assembly for presence and completeness of 248 "core eukaryotic genes".
+      genome assembly for the presence and completeness of 248 "core eukaryotic genes".
     * *Quast* also includes a "quick and dirty" method of finding genes.
 
 It is *very important* to understand the concepts underlying these different 
