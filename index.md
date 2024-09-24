@@ -53,15 +53,15 @@ Prerequisites for the practicals are:
 
 ## 2. Practicals
 
-1. [Short read cleaning](./current-year/practicals/reference_genome/pt-1-read-cleaning.html): Illumina
+1. Short read cleaning: Illumina
   short read cleaning
-2. [Reads to genome](./current-year/practicals/reference_genome/pt-2-assembly.html): genome assembly,
+2. Reads to genome: genome assembly,
   quality control
-3. [Gene prediction](./current-year/practicals/reference_genome/pt-3-prediction.html): gene prediction,
+3. Gene prediction: gene prediction,
   quality control
 * Population sequencing to genotypes to population genetics statistics:
-     4. [Mapping reads, calling variants, visualizing variant calls.](./current-year/practicals/population_genetics/pt-4-map-call.html)
-     5. [Analysing variants: PCA, measuring Differentiation & Diversity.](./current-year/practicals/population_genetics/pt-5-popgen.html)
+     4. Mapping reads, calling variants, visualizing variant calls.
+     5. Analysing variants: PCA, measuring Differentiation & Diversity.
 
 ## 3. Computers
 
@@ -76,20 +76,15 @@ practicals.
 
 ## 4. Authors/Credits
 
-The initial version of this practical was put together by
+The initial version of this practical was put together by:
+
     * [Yannick Wurm](http://wurmlab.com) [@yannick__](http://twitter.com/yannick__)
-    * [Oksana Riba-Grognuz](https://www.linkedin.com/in/oksana80)' contributions
-      for the 2012 edition of this course
+    * [Oksana Riba-Grognuz](https://www.linkedin.com/in/oksana80)'.
 
 It was heavily heavily heavily revised and improved thanks to efforts and new
-content by
- * [Rodrigo Pracana](https://wurmlab.github.io/team/rpracana/)
- * Anurag Priyam, Carlos MartinezRuiz, Nazrath Nawz, many others in the lab.
-   [Robert Waterhouse](http://www.rmwaterhouse.org/),
-   [Bruno Vieira](http://wurmlab.github.io/team/bmpvieira)
+content by [https://github.com/wurmlab/genomicscourse/graphs/contributors](others). 
 
 <!-- ## 5. Things used in other versions of this course:
-
 * ~~[Inferring population sizes and gene flow.](./msmc/msmc-tutorial/guide) (Credit Stefan Schiffels [@stschiff](http://twitter.com/stschiff))~~
 * ~~Gene expression  ( Credit Julien Roux [www](http://www.unil.ch/dee/home/menuinst/people/post-docs--associates/dr-julien-roux.html) [@_julien_roux](http://twitter.com/_julien_roux)):~~
      * ~~[From raw sequencing data to transcript expression levels.](./2016-SIB/practicals/rnaseq/TP1)~~
