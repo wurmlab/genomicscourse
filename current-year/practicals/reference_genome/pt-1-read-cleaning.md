@@ -132,8 +132,8 @@ cd input
 
 # Link the two compressed FASTQ files (remember that each correspond to one of
 # the pair)
-ln -s ../../shared/data/reads.pe1.fastq.gz .
-ln -s ../../shared/data/reads.pe2.fastq.gz .
+ln -s /shared/data/reads.pe1.fastq.gz .
+ln -s /shared/data/reads.pe2.fastq.gz .
 
 # Return to the main directory
 cd ..
