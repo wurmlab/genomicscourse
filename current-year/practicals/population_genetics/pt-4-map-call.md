@@ -3,7 +3,7 @@ layout: page
 title: Part 4 - Read mapping and variant calling
 ---
 
-<!-- Updated by Alexis Gkantiragas, 2023 -->
+<!-- Updated by Srishti Arya, 2024 -->
 
 # Part 4: Population genetics - Read mapping and variant calling
 
@@ -13,7 +13,7 @@ Different types of genetic variants exist. Commonly, people look at **single
 nucleotide polymorphisms** (**SNPs**, sometimes also known as **single
 nucleotide variants**, **SNVs**). Other classes include small insertions and
 deletions (known collectively as **indels**), as well as larger structural
-variants, such as large insertions, deletions, inversions and translocations. Some
+variants such as large insertions, deletions, inversions and translocations. Some
 of these larger ones are described as **copy number variants**, **CNVs**).
 
 Here, we aim to identify genetic variation and genotypes from **short
@@ -37,7 +37,7 @@ allele of the genetic marker, while individuals carrying the b alelles exist
 exclusively in multiple queen colonies.
 
 We will use a subset of the reads from whole-genome sequencing of 14 male fire
-ants. Samples 1B to 7B are from single-queen colonies, samples 1b to 7b are from
+ants. Samples 1B to 7B are from single-queen colonies, and samples 1b to 7b are from
 multiple-queen colonies. Ants are haplodiploid, which means that females are
 diploid and males are haploid. Here we will use only males, so all our samples
 are haploid, which makes variant calling easier. Bacteria and yeast are
@@ -54,7 +54,7 @@ The aim of this practical is to genotype these 14 individuals. We will:
 4. Visualise the alignments and the SNP calls in the genome browser *IGV*.
 
 We recommend that you create a directory for this work following the same
-principles as in the last few practicals (e.g., `2023-10-02-mapping`). You
+principles as in the last few practicals (e.g., `2024-09-30-mapping`). You
 should have subdirectories called `input`, `results` and `tmp` and a
 `WHATIDID.txt` file in which to log your commands.
 Create a symlink (using `ln -s`) from the reference genome
@@ -65,7 +65,7 @@ Create a symlink (using `ln -s`) from the reference genome
 > Remember to keep your commands in the `WHATIDID.txt` file.
 
 ```bash
-2023-10-02-mapping/
+2024-09-30-mapping/
 ├── input
 │   ├── reads -> /shared/data/popgen/reads
 │   └── reference.fa -> /shared/data/popgen/reference.fa
@@ -120,7 +120,7 @@ Symlink `reference.fa` to `tmp/`:
 
 ```bash
 cd tmp
-ln -s ~/2023-10-02-mapping/input/reference.fa .
+ln -s ~/2024-09-30-mapping/input/reference.fa .
 cd ..
 ```
 
@@ -203,7 +203,7 @@ cat tmp/names.txt | parallel --verbose "samtools sort -O BAM tmp/alignments/{}.s
 cat tmp/names.txt | parallel --verbose "samtools index tmp/alignments/{}.bam"
 ```
 
-Now check that a `.bam` and a `.bai` file exist for each sample.
+Now check that a `.bam` and a `.bai` file exists for each sample.
 
 To view what's in a *BAM* file, you have to use `samtools view`:
 
@@ -231,14 +231,14 @@ rm -ri tmp
 ## 4. Variant calling
 
 Create a new directory in your `home` for the second part of today's practical
-(e.g., `2023-10-02-genotyping`). You will want to set up the relevant
-subdirectories  and `WHATIDID.txt` file as before. Then symlink (`ln -s`) the
+(e.g., `2024-09-02-genotyping`). You will want to set up the relevant
+subdirectories  and `WHATIDID.txt` file, as you have done before. Then symlink (`ln -s`) the
 reference genome `/shared/data/popgen/reference.fa` and the alignments
 from the mapping part of the practical (both `.bam` and `.bai` files) to your
 `input` directory.
 
 > **_Note:_**
-> When you create links from one directory to another, it is better to use absolute path for links like `~/2023-10-02-mapping/results/*.bam*` instead of `../../2023-10-02-mapping/results/*.bam`
+> When you create links from one directory to another, it is better to use the absolute path for links like `~/2024-09-02-mapping/results/*.bam*` instead of `../../2024-09-30-mapping/results/*.bam`
 
 > **_Note:_**
 > Remember to keep your commands in the `WHATIDID.txt` file.
@@ -246,11 +246,11 @@ from the mapping part of the practical (both `.bam` and `.bai` files) to your
 This is what your directory structure should look like when running `tree`:
 
 ```bash
-2023-10-02-genotyping/
+2024-09-30-genotyping/
 ├── input
 │   ├── -> /shared/data/popgen/reference.fa
-│   ├── -> ~/2023-10-02-mapping/results/f1_B.bam
-│   ├── -> ~/2023-10-02-mapping/results/f1_B.bam.bai
+│   ├── -> ~/2024-09-30-mapping/results/f1_B.bam
+│   ├── -> ~/2024-09-30-mapping/results/f1_B.bam.bai
 │   └── -> ...
 ├── results
 ├── tmp
@@ -283,7 +283,7 @@ First link `reference.fa` to `tmp/`
 
 ```bash
 cd tmp
-ln -s ~/2023-10-02-genotyping/input/reference.fa .
+ln -s ~/2024-09-30-genotyping/input/reference.fa .
 cd ..
 ```
 
@@ -327,9 +327,9 @@ which contains the position, nature and quality of the called variants.
 > where you need to substitute YOUR_CALLS_FILENAME with the filename you got
 > from the `ls tmp/calls*` command.
 
-Let's take a look at the *VCF* file produced by typing `less -S tmp/calls.vcf`.
-The file is composed of a header and rows for all the variant positions. Have a
-look at the different columns and check what each is (the header includes
+Let's look at the *VCF* file produced by typing `less -S tmp/calls.vcf`.
+The file is composed of a header and rows for all the variant positions. 
+Look at the different columns and check what each is (the header includes
 labels). Notice that some columns include several fields.
 
 > **_Question:_**
@@ -341,7 +341,7 @@ labels). Notice that some columns include several fields.
 
 ## 5. Quality filtering of variant calls
 
-Some potentially identified genetic variation may be unreliable - for example due
+Some potentially identified genetic variations may be unreliable - for example, due
 to sequencing errors or ambiguous mapping. The VCF file includes several fields with
 quality information that enable us to remove lower-confidence genetic variants.
 The most obvious is the column QUAL, which provides a
@@ -351,10 +351,10 @@ each genetic variant.
 * What does a Phred-scale quality score of 30 mean?
 
 We will filter the VCF using `bcftools filter`. Based on the distribution of quality values we
-see in the file, we suggest removing variant with a quality less than **30**:
+see in the file, we suggest removing variants with a quality less than **30**:
 
 ```bash
-# Remove variant site with quality score less than 30. Then remove sites that have a missing genotype call.
+# Remove variant sites with a quality score under 30. Then remove sites that have a missing genotype call.
 bcftools filter --exclude 'QUAL < 30' tmp/calls.vcf | bcftools view --genotype ^miss > tmp/filtered_calls.vcf
 ```
 
@@ -386,7 +386,7 @@ bcftools view --types snps --min-alleles 2 --max-alleles 2 --min-ac 1:minor tmp/
 
 In this practical, we only looked at a subset of the fire ant genome. When
 calling variants for the entire genome and using hundreds or thousands of
-samples, the resulting VCF files can end up being very large (reaching terabytes
+samples, the resulting VCF files can be very large (reaching terabytes
 for cancer genomics projects!). It is thus a good idea to compress and index a
 *VCF* file. This is typically done using `bgzip` (for compression) and `tabix`
 (for indexing - tabix requires the file to be compressed using `bgzip`).
