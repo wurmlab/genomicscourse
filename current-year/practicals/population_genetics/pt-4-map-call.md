@@ -231,14 +231,14 @@ rm -ri tmp
 ## 4. Variant calling
 
 Create a new directory in your `home` for the second part of today's practical
-(e.g., `2024-09-02-genotyping`). You will want to set up the relevant
+(e.g., `2024-09-30-genotyping`). You will want to set up the relevant
 subdirectories  and `WHATIDID.txt` file, as you have done before. Then symlink (`ln -s`) the
 reference genome `/shared/data/popgen/reference.fa` and the alignments
 from the mapping part of the practical (both `.bam` and `.bai` files) to your
 `input` directory.
 
 > **_Note:_**
-> When you create links from one directory to another, it is better to use the absolute path for links like `~/2024-09-02-mapping/results/*.bam*` instead of `../../2024-09-30-mapping/results/*.bam`
+> When you create links from one directory to another, it is better to use the absolute path for links like `~/2024-09-30-mapping/results/*.bam*` instead of `../../2024-09-30-mapping/results/*.bam`
 
 > **_Note:_**
 > Remember to keep your commands in the `WHATIDID.txt` file.
